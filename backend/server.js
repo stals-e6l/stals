@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const swaggerUi = require('swagger-ui-express')
 const swaggerJsdoc = require('swagger-jsdoc')
 const cors = require('cors')
+const { connectDb } = require('./db')
 
 const server = express()
 const PORT = 5000
@@ -38,6 +39,7 @@ server.use('/api/ping', require('./api/ping'))
 
 const startServer = async () => {
   try {
+    await connectDb()
     server.listen(PORT, HOST, () => {
       console.log(`backend: http://${HOST}:${PORT}`)
       console.log(`api_docs: http://${HOST}:${PORT}${SWAGGER_PATH}`)
