@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "start:dev": "node .",
+    "test": "NODE_ENV=development jest",
+    "start:dev": "NODE_ENV=development node .",
     "dev": "nodemon --exec npm run start:dev"
   },
   "keywords": [],
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^7.0.1"
   },
