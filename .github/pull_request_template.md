@@ -1,12 +1,3 @@
----
-name: Feature request
-about: Feature request
-title: "[frontend/backend/database/infra] - feature title"
-labels: ''
-assignees: ''
-
----
-
 **What to do? List of features to implement**
 - Feature 1
 - Feature 2
