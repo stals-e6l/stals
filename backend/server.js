@@ -1,8 +1,13 @@
 const express = require('express')
+const morgan = require('morgan')
 
 const server = express()
 const PORT = 5000
 const HOST = 'localhost'
+
+const MORGAN_STYLE = 'dev' // TODO: dynamic
+
+server.use(morgan(MORGAN_STYLE))
 
 const startServer = async () => {
   try {
