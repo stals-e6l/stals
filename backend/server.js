@@ -4,8 +4,6 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerJsdoc = require('swagger-jsdoc')
 const cors = require('cors')
 
-const ping = require('./api/ping')
-
 const server = express()
 const PORT = 5000
 const HOST = 'localhost'
@@ -33,7 +31,10 @@ server.use(
   )
 )
 
-server.use(ping)
+/** INSERT API BELOW */
+server.use('/api/ping', require('./api/ping'))
+
+/** END API */
 
 const startServer = async () => {
   try {

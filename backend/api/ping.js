@@ -4,7 +4,7 @@ const ping = Router()
 
 /**
  * @openapi
- * /ping:
+ * /api/ping:
  *      get:
  *          description: Pings the server
  *          responses:
@@ -15,7 +15,7 @@ const ping = Router()
  *                              type: string
  *
  */
-ping.get('/ping', (req, res) => {
+ping.get('/', (req, res) => {
   res.json('Hello World!')
 })
 
