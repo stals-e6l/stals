@@ -52,4 +52,5 @@ module.exports = {
   startServer,
   PORT,
   HOST,
+  server,
 }
