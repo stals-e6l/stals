@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const swaggerUi = require('swagger-ui-express')
 const swaggerJsdoc = require('swagger-jsdoc')
+const cors = require('cors')
 
 const ping = require('./api/ping')
 
@@ -11,8 +12,10 @@ const HOST = 'localhost'
 
 const MORGAN_STYLE = 'dev' // TODO: dynamic
 const SWAGGER_PATH = '/docs'
+const CORS_ALLOWABLE = '*' // TODO: dynamic
 
 server.use(morgan(MORGAN_STYLE))
+server.use(cors({ origin: CORS_ALLOWABLE }))
 server.use(
   SWAGGER_PATH,
   swaggerUi.serve,
