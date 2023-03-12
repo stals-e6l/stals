@@ -1,11 +1,12 @@
 import React from 'react'
+import AppRouter from './AppRouter'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const App: React.FC<IProps> = () => {
-  return <div>hello</div>
+  return <AppRouter />
 }
 
 export default App
