@@ -14,8 +14,6 @@ const MORGAN_STYLE = process.env.MORGAN_STYLE
 const SWAGGER_PATH = '/docs'
 const CORS_ALLOWABLE = process.env.CORS_ALLOWABLE
 
-server.use(morgan(MORGAN_STYLE))
-server.use(cors({ origin: CORS_ALLOWABLE }))
 server.use(
   SWAGGER_PATH,
   swaggerUi.serve,
@@ -32,8 +30,13 @@ server.use(
     })
   )
 )
+server.use(morgan(MORGAN_STYLE))
+server.use(express.urlencoded({ extended: true }))
+server.use(express.json())
+server.use(cors({ origin: CORS_ALLOWABLE }))
 
 /** INSERT API BELOW */
+server.use('/api/auth', require('./api/auth'))
 server.use('/api/ping', require('./api/ping'))
 
 /** END API */
