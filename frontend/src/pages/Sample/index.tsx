@@ -9,7 +9,7 @@ const SamplePage: React.FC<IProps> = () => {
   const { data, dispatch: sampleDispatch } = useSample()
 
   return (
-    <div>
+    <div data-testid="SamplePage">
       {JSON.stringify(data)}
       <button
         onClick={() =>
