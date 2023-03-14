@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerJsdoc = require('swagger-jsdoc')
 const cors = require('cors')
 const { connectDb } = require('./db')
+const api = require('./api')
 
 const server = express()
 const PORT = 5000
@@ -19,7 +20,7 @@ server.use(
   swaggerUi.serve,
   swaggerUi.setup(
     swaggerJsdoc({
-      apis: ['./api/*.js'],
+      apis: ['./api/**/*.js'],
       definition: {
         openapi: '3.0.0',
         info: {
@@ -36,8 +37,7 @@ server.use(express.json())
 server.use(cors({ origin: CORS_ALLOWABLE }))
 
 /** INSERT API BELOW */
-server.use('/api/auth', require('./api/auth'))
-server.use('/api/ping', require('./api/ping'))
+server.use(api.ping)
 
 /** END API */
 

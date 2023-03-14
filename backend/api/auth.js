@@ -3,26 +3,6 @@ const user = require('../entities/user')
 
 const auth = Router()
 
-/**
- * @openapi
- * /api/auth/signup:
- *      post:
- *          description: Signs up new use
- *          consumes: application/json
- *          parameters:
- *              - name: username
- *                type: string
- *                required: true
- *              - name: password
- *                type: string
- *                required: true
- *          responses:
- *              201:
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: object
- */
 auth.post('/signup', async (req, res) => {
   try {
     console.log(req.body)

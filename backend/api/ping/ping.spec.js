@@ -1,4 +1,4 @@
-const request = require('../mock/request')
+const request = require('../../mock/request')
 
 describe('ping.spec.js', () => {
   it('should ping successfully', async () => {
@@ -7,6 +7,7 @@ describe('ping.spec.js', () => {
 
     // assert
     expect(response.statusCode).toBe(200)
-    expect(response.body).toBe('Hello World!')
+    expect(response.body).toHaveProperty('status', 'ok')
+    expect(response.body).toHaveProperty('data.message', 'pong')
   })
 })
