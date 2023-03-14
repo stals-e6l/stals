@@ -1,4 +1,4 @@
-const request = require('../../mock/request')
+const request = require('../../utils/request')
 
 describe('ping.spec.js', () => {
   it('should ping successfully', async () => {

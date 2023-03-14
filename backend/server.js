@@ -8,7 +8,7 @@ const { connectDb } = require('./db')
 const api = require('./api')
 
 const server = express()
-const PORT = 5000
+const PORT = process.env.SERVER_PORT
 const HOST = 'localhost'
 
 const MORGAN_STYLE = process.env.MORGAN_STYLE
