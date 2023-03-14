@@ -92,8 +92,6 @@ auth.post('/api/signin', async (req, res) => {
     const result = await user.findOne({ username: req.body.username })
 
     if (!result) throw new Error('User not signed up!')
-    if (result.password !== req.body.password)
-      throw new Error('Invalid password!')
 
     res.status(200).json({
       status: 'ok',
