@@ -1,11 +1,10 @@
 const { Router } = require('express')
-const user = require('../entities/user')
+const user = require('../../entities/user')
 
 const auth = Router()
 
-auth.post('/signup', async (req, res) => {
+auth.post('/api/signup', async (req, res) => {
   try {
-    console.log(req.body)
     const result = await user.create(req.body)
 
     if (!result) {

@@ -38,7 +38,7 @@ server.use(cors({ origin: CORS_ALLOWABLE }))
 
 /** INSERT API BELOW */
 server.use(api.ping)
-
+server.use(api.auth)
 /** END API */
 
 const startServer = async () => {
