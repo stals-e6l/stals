@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerJsdoc = require('swagger-jsdoc')
 const cors = require('cors')
 const { connectDb } = require('./db')
+var bodyParser = require("body-parser");
 
 const server = express()
 const PORT = 5000
@@ -33,8 +34,11 @@ server.use(
   )
 )
 
+server.use(bodyParser.json());
+
 /** INSERT API BELOW */
 server.use('/api/ping', require('./api/ping'))
+server.use('/api/accomodation', require('./api/accomodation'))
 
 /** END API */
 

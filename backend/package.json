@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=development jest",
-    "test:windows": "set NODE_ENV=development jest",
+    "test:windows": "set NODE_ENV=development&&jest",
     "start:dev": "NODE_ENV=development node .",
-    "start:dev:windows": "set NODE_ENV=development node .",
+    "start:dev:windows": "set NODE_ENV=development&&node .",
     "dev": "nodemon --exec npm run start:dev",
     "dev:windows": "nodemon --exec npm run start:dev:windows"
   },
@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
