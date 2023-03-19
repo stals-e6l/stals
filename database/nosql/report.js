@@ -1,4 +1,4 @@
-/* Subject to review */
+/*  Subject to review  */
 const mongoose = require("mongoose");
 
 const reportSchema = new mongoose.Schema({
