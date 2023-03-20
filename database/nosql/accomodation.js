@@ -37,4 +37,7 @@ var accommodationSchema = new Schema({
         cookingArea: {type: String, enum: ['available', 'not available'], required: true},
     },
     dateCreated: {type: Date, required: true, }
-})
+});
+
+
+module.exports = mongoose.model("Accomodation", accomodationSchema);
