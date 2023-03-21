@@ -4,25 +4,16 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     userName: {
-        type: String, required: true 
+        type: String, required: true, unique: true
     },
     passwordHash: {
         type: String, required: true
     },
-    salt: { // For the password hash
-        type: String, required: true
-    },
     email: {
-        type: String, required: true
-    },
-    phoneNumber: { 
-        type: Number, required: true
+        type: String, required: true, unique: true
     },
     role: { // Di ako masyado sure kung ano right na type for role
         type: String, required: true
-    },
-    createdAt: { // Date of account creation
-        type: Date, required: true
     },
     generatedReports: { // This will be the list of generated reports by this user 
         type: Array, default : []
@@ -33,10 +24,7 @@ const userSchema = new mongoose.Schema({
     messages: { // This will be the list of messages by this user 
         type: Array, default : []
     },
-    /*                              */
-    updateAt: { // Date of last modification to profile
-        type: Date, required: true
-    },
+    /* */
     isOnline: { // 
         type: Boolean, required: true
     },
@@ -44,7 +32,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean, required: true
     }
     /*                               */
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model("User", userSchema);
 
