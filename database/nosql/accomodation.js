@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var accommodationSchema = new Schema({
+const accommodationSchema = new Schema({
     owner: {type: Schema.ObjectId, ref: 'User', required: true}, //Can also be owner: {type: Number, required: true}
     // ownerID: {type: Number, required: true} // may be a better option
     name: {type: String, requried: true},
@@ -9,9 +9,9 @@ var accommodationSchema = new Schema({
     address: {type: String, requried: true},
     latitude: {type: Decimal128, required:true},
     longitude: {type: Decimal128, required:true},
-    accomodationType: {type: String, enum: ['hotel', 'apartment', 'bed space', 'dormitory', 'transient space'], required: true},
+    accommodationType: {type: String, enum: ['hotel', 'apartment', 'bed space', 'dormitory', 'transient space'], required: true},
 
-    // Embedded Sub-document for accomodation details
+    // Embedded Sub-document for accommodation details
     details: {
         landmarks: String,
         size: {type: Number, required: true},
@@ -36,8 +36,7 @@ var accommodationSchema = new Schema({
         laundryArea: {type: String, enum: ['available', 'not available'], required: true},
         cookingArea: {type: String, enum: ['available', 'not available'], required: true},
     },
-    dateCreated: {type: Date, required: true, }
-});
+}, {timestamps: true}); //Uses createdAt and updatedAt
 
 
-module.exports = mongoose.model("Accomodation", accomodationSchema);
+module.exports = mongoose.model("Accommodation", accommodationSchema);
