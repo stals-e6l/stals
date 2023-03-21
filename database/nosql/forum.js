@@ -5,7 +5,7 @@ const forumSchema = new mongoose.Schema({
         type: String, required: true
     },
     content: {
-        type: Array, default: [], required: true
+        type: String, required: true
     },
     status: {
         type: String, enum: ['active', 'archived', 'deleted'], required: true
