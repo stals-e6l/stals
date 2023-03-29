@@ -1,6 +1,6 @@
 # stals 
 
-[TBA]
+Student Accommodation and Lodging System
 
 ## Getting started
 
