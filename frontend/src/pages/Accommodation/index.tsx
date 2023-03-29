@@ -1,29 +1,28 @@
 import React from 'react'
-import { useAccommodation } from '../../store/accommodation'
-import accommodationsActions from '../../store/accommodation/actions'
+import { useNavigate } from 'react-router-dom'
+import { retrieveAccommodations } from '../../store/accommodation/actions'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const AccommodationPage: React.FC<IProps> = () => {
-  const { retrieveAllAccommodations, dispatch } = useAccommodation()
-
-  const accommodations = retrieveAllAccommodations!()
+  const accommodations = retrieveAccommodations()
+  const navigate = useNavigate()
 
   return (
     <div>
-      {JSON.stringify(accommodations)}
-      <button
-        onClick={() => {
-          dispatch({
-            type: accommodationsActions.ACCOMMODATION_CREATE,
-            payload: {},
-          })
-        }}
-      >
-        create
-      </button>
+      <ul>
+        {accommodations.map((accommodation, key: number) => (
+          <li
+            style={{ cursor: 'pointer' }}
+            key={key}
+            onClick={() => navigate(`/accommodations/${accommodation._id}`)}
+          >
+            {accommodation.name}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

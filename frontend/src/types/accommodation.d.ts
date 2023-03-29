@@ -40,9 +40,20 @@ interface IAccommodation {
 }
 
 interface IAccommodationState {
-  accommodations?: IAccommodation[] // why nullable? nullable during fetching/init
-  dispatch?: React.Dispatch
-  // selectors
-  retrieveAllAccommodations?: () => IAccommodation[] | null
-  retrieveAccommodationById?: (id: string) => IAccommodation | null
+  accommodations: IAccommodation[] // why nullable? nullable during fetching/init
+  dispatch: React.Dispatch<
+    IReducerAction<TAccommodationActionType, TAccommodationPayload>
+  >
 }
+
+// ACTIONS
+
+type TAccommodationActionType =
+  | 'AC_INIT'
+  | 'AC_CREATE'
+  | 'AC_RETRIEVE_ALL'
+  | 'AC_RETRIEVE_BY_ID'
+  | 'AC_UPDATE'
+  | 'AC_DELETE'
+
+type TAccommodationPayload = IAccommodation | IAccommodation[] | string
