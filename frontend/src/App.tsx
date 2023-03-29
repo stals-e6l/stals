@@ -1,6 +1,7 @@
 import React from 'react'
 import AppRouter from './AppRouter'
 import SampleProvider from './store/sample'
+import AccommodationProvider from './store/accommodation'
 
 interface IProps {
   children?: React.ReactNode
@@ -9,7 +10,9 @@ interface IProps {
 const App: React.FC<IProps> = () => {
   return (
     <SampleProvider>
-      <AppRouter />
+      <AccommodationProvider>
+        <AppRouter />
+      </AccommodationProvider>
     </SampleProvider>
   )
 }

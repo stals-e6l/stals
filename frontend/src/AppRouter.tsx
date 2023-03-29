@@ -1,5 +1,6 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import AccommodationPage from './pages/Accommodation'
 import SamplePage from './pages/Sample'
 
 interface IProps {
@@ -20,5 +21,9 @@ const router = createBrowserRouter([
   {
     path: '/sample',
     element: <SamplePage />,
+  },
+  {
+    path: '/accommodations',
+    element: <AccommodationPage />,
   },
 ])

@@ -38,3 +38,11 @@ interface IAccommodation {
   updated_at: string
   is_soft_deleted: boolean
 }
+
+interface IAccommodationState {
+  accommodations?: IAccommodation[] // why nullable? nullable during fetching/init
+  dispatch?: React.Dispatch
+  // selectors
+  retrieveAllAccommodations?: () => IAccommodation[] | null
+  retrieveAccommodationById?: (id: string) => IAccommodation | null
+}
