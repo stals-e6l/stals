@@ -1,10 +1,20 @@
-const accommodationsActions = {
-  ACCOMMODATION_INIT: 'ACCOMMODATION_INIT',
-  ACCOMMODATION_CREATE: 'ACCOMMODATION_CREATE',
-  ACCOMMODATION_RETRIEVE_ONE: 'ACCOMMODATION_RETRIEVE_ONE',
-  ACCOMMODATION_RETRIEVE_ALL: 'ACCOMMODATION_RETRIEVE_ALL',
-  ACCOMMODATION_UPDATE: 'ACCOMMODATION_UPDATE',
-  ACCOMMODATION_DELETE: 'ACCOMMODATION_DELETE',
-}
+import { useAccommodation } from '.'
 
-export default accommodationsActions
+export const createAccommodation = (data: IAccommodation) =>
+  useAccommodation().dispatch({
+    type: 'AC_CREATE',
+    payload: data,
+  })
+export const retrieveAccommodations = () => useAccommodation().accommodations
+
+export const retrieveAccommodationById = (id: string) =>
+  useAccommodation().accommodations.filter(el => el._id === id)[0]
+
+export const updateAccommodation = (data: IAccommodation) =>
+  useAccommodation().dispatch({
+    type: 'AC_UPDATE',
+    payload: data,
+  })
+
+export const deleteAccommodation = (id: string) =>
+  useAccommodation().dispatch({ type: 'AC_DELETE', payload: id })

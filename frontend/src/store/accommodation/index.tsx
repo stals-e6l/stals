@@ -6,7 +6,10 @@ interface IProps {
 }
 
 const AccommodationProvider: React.FC<IProps> = ({ children }) => {
-  const [state, dispatch] = React.useReducer(accommodationReducer, {})
+  const [state, dispatch] = React.useReducer(accommodationReducer, {
+    accommodations: [],
+    dispatch: () => undefined,
+  })
 
   // init accommodations
   React.useEffect(() => {
@@ -16,21 +19,11 @@ const AccommodationProvider: React.FC<IProps> = ({ children }) => {
     })
   }, [])
 
-  // selectors
-  const retrieveAllAccommodations = () => state.accommodations || null
-  const retrieveAccommodationById = (id: string) => {
-    const res = state.accommodations?.filter(el => el._id === id)
-    if (!res || res.length === 0) return null
-    return res[0]
-  }
-
   return (
     <accommodationContext.Provider
       value={{
         accommodations: state.accommodations,
         dispatch,
-        retrieveAllAccommodations,
-        retrieveAccommodationById,
       }}
     >
       {children}
@@ -40,7 +33,10 @@ const AccommodationProvider: React.FC<IProps> = ({ children }) => {
 
 export default AccommodationProvider
 
-const accommodationContext = React.createContext<IAccommodationState>({})
+const accommodationContext = React.createContext<IAccommodationState>({
+  accommodations: [],
+  dispatch: () => undefined,
+})
 
 export const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
