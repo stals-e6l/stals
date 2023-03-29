@@ -1,7 +1,5 @@
-**What is the goal of this ticket?**
+**Issue Number**:
 
-**How to implement it?**
+**Summary**
 
-**References (e.g. mockups, APIs)**
-
-**What are the acceptance criteria? List of things needed to be marked as completed**
+**Reviewer/s**
