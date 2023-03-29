@@ -1,5 +1,6 @@
 import React from 'react'
 import accommodationsActions from './actions'
+import { mockAccommodations } from './mock'
 
 interface IProps {
   children?: React.ReactNode
@@ -10,7 +11,10 @@ const AccommodationProvider: React.FC<IProps> = ({ children }) => {
 
   // init accommodations
   React.useEffect(() => {
-    dispatch({ type: accommodationsActions.ACCOMMODATION_INIT, payload: [] })
+    dispatch({
+      type: accommodationsActions.ACCOMMODATION_INIT,
+      payload: mockAccommodations,
+    })
   }, [])
 
   // selectors
