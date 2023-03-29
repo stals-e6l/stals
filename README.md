@@ -1,6 +1,6 @@
 # stals 
 
-Student Accommodation and Lodging System adsfasdffgsdfgd
+Student Accommodation and Lodging System
 
 ## Getting started
 
@@ -45,3 +45,10 @@ Student Accommodation and Lodging System adsfasdffgsdfgd
 4. PM and/or Team Leads will review your code.
 5. If they have comments, resolved it.
 6. If they approve it, merge it to the ```main``` branch.
+
+## Commit cheatsheet
+- Make smaller commits.
+- Use ```chore: [message]``` if the commit is related to removing unused lines of code or any changes that doesn't affect the codebase.
+- Use ```feat: [message]``` if you are implementing a new feature.
+- Use ```refactor: [message]``` if you are improving an existing implementation/feature/
+- Use ```fix: [message]``` if you are addressing bugs.
