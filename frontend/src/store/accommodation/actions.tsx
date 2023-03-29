@@ -1,4 +1,8 @@
-import { useAccommodation } from '.'
+import React from 'react'
+import { accommodationContext } from '.'
+
+const useAccommodation = () =>
+  React.useContext<IAccommodationState>(accommodationContext)
 
 export const createAccommodation = (data: IAccommodation) =>
   useAccommodation().dispatch({

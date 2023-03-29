@@ -33,13 +33,10 @@ const AccommodationProvider: React.FC<IProps> = ({ children }) => {
 
 export default AccommodationProvider
 
-const accommodationContext = React.createContext<IAccommodationState>({
+export const accommodationContext = React.createContext<IAccommodationState>({
   accommodations: [],
   dispatch: () => undefined,
 })
-
-export const useAccommodation = () =>
-  React.useContext<IAccommodationState>(accommodationContext)
 
 const accommodationReducer = (
   state: IAccommodationState,
