@@ -41,7 +41,7 @@
 ## What to do when you already completed your ticket?
 1. Publish your ticket branch.
 2. In Github, create a Pull Request using your recently published ticket branch.
-3. Add details for your PR.
+3. Make sure to add the issue number of your ticket, summary, and reviewers. Usually, the reviewers are your team lead and the project manager.
 4. PM and/or Team Leads will review your code.
 5. If they have comments, resolved it.
-6. If they approve it, merge it to the master branch.
+6. If they approve it, merge it to the ```main``` branch.
