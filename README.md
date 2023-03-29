@@ -27,3 +27,21 @@
 ## For database devs
 1. Follow the instructions for both ```backend``` and ```frontend``` devs.
 2. Access the client link to start testing the application!
+
+## What's the dev process?
+1. Go to our [repository](https://github.com/stals-e6l/stals).
+2. Go to the Issues page.
+3. Find the ticket you are assigned with. You should be able to see the details of the ticket.
+4. In the right panel of the detail page of the ticket, under Development, you should see a link button ```Create a branch```. Click it.
+5. A popup should show up. Now, click the green button to continue creating a branch.
+6. Copy the git commands given to you.
+7. In your terminal, paste the commands. This should change your current branch to your ticket branch.
+8. Start developing!
+
+## What to do when you already completed your ticket?
+1. Publish your ticket branch.
+2. In Github, create a Pull Request using your recently published ticket branch.
+3. Add details for your PR.
+4. PM and/or Team Leads will review your code.
+5. If they have comments, resolved it.
+6. If they approve it, merge it to the master branch.
