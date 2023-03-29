@@ -1,5 +1,4 @@
 import React from 'react'
-import accommodationsActions from './actions'
 import { mockAccommodations } from './mock'
 
 interface IProps {
@@ -12,7 +11,7 @@ const AccommodationProvider: React.FC<IProps> = ({ children }) => {
   // init accommodations
   React.useEffect(() => {
     dispatch({
-      type: accommodationsActions.ACCOMMODATION_INIT,
+      type: 'AC_INIT',
       payload: mockAccommodations,
     })
   }, [])
@@ -46,29 +45,40 @@ const accommodationContext = React.createContext<IAccommodationState>({})
 export const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
 
-// TODO: make action type generic
-// TODO: make payload generic also
 const accommodationReducer = (
   state: IAccommodationState,
-  action: IReducerAction<string, any>
+  action: IReducerAction<TAccommodationActionType, TAccommodationPayload>
 ): IAccommodationState => {
   switch (action.type) {
-    case accommodationsActions.ACCOMMODATION_INIT:
+    case 'AC_INIT':
       return {
         ...state,
-        accommodations: action.payload,
+        accommodations: action.payload as IAccommodation[],
       }
-    case accommodationsActions.ACCOMMODATION_CREATE:
-    case accommodationsActions.ACCOMMODATION_UPDATE:
+    case 'AC_CREATE':
       return {
         ...state,
-        accommodations: [...state.accommodations!, action.payload],
+        accommodations: [
+          ...(state.accommodations || []),
+          action.payload as IAccommodation,
+        ],
       }
-    case accommodationsActions.ACCOMMODATION_DELETE:
+
+    case 'AC_UPDATE':
       return {
         ...state,
-        accommodations: state.accommodations!.filter(
-          el => el._id! !== action.payload
+        accommodations: [
+          ...(state.accommodations || []).filter(
+            el => el._id !== (action.payload as IAccommodation)._id
+          ),
+          action.payload as IAccommodation,
+        ],
+      }
+    case 'AC_DELETE':
+      return {
+        ...state,
+        accommodations: (state.accommodations || []).filter(
+          el => el._id !== (action.payload as string)
         ),
       }
     default:

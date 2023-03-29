@@ -46,3 +46,15 @@ interface IAccommodationState {
   retrieveAllAccommodations?: () => IAccommodation[] | null
   retrieveAccommodationById?: (id: string) => IAccommodation | null
 }
+
+// ACTIONS
+
+type TAccommodationActionType =
+  | 'AC_INIT'
+  | 'AC_CREATE'
+  | 'AC_RETRIEVE_ALL'
+  | 'AC_RETRIEVE_BY_ID'
+  | 'AC_UPDATE'
+  | 'AC_DELETE'
+
+type TAccommodationPayload = IAccommodation | IAccommodation[] | string
