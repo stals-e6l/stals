@@ -1,5 +1,5 @@
 const { Router } = require('express')
-var Accomodation = require("../models/accomodation");
+var Accomodation = require("../models/accommodation");
 
 const accom = Router()
 
@@ -11,10 +11,88 @@ const accom = Router()
  *          type: object
  *          required:
  *              - name
+ *              - address
+ *              - type
+ *              - price
+ *              - size_sqm
+ *              - meters_from_uplb
+ *              - landmarks
+ *              - min_pax
+ *              - max_pax
+ *              - num_rooms
+ *              - num_beds
+ *              - num_views
+ *              - furnishing
+ *              - cooking_rules
+ *              - pet_rules
+ *              - other_rules
+ *              - safety_and_security
+ *              - appliances
+ *              - amenities
+ *              - is_soft_deleted
  *          properties:
  *              name:
  *                  type: string
- *                  description: Accomodation name
+ *                  description: Accommodation name
+ *              address:
+ *                  type: string
+ *                  description: Accommodation address
+ *              type:
+ *                  type: string
+ *                  description: Accommodation type
+ *              price:
+ *                  type: number
+ *                  description: Accommodation price
+ *              size_sqm:
+ *                  type: number
+ *                  description: Accommodation size in square meters
+ *              meters_from_uplb:
+ *                  type: number
+ *                  description: Accommodation distance from uplb in meters
+ *              landmarks:
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *                  description: Accommodation nearest landmarks
+ *              min_pax:
+ *                  type: number
+ *                  description: Accommodation minimum occupants
+ *              max_pax:
+ *                  type: number
+ *                  description: Accommodation maximum occupants
+ *              num_rooms:
+ *                  type: number
+ *                  description: Accommodation number of rooms
+ *              num_beds:
+ *                  type: number
+ *                  description: Accommodation number of beds
+ *              num_views:
+ *                  type: number
+ *                  description: Accommodation number of views
+ *              furnishing:
+ *                  type: string
+ *                  description: Accommodation type of furnishing
+ *              cooking_rules:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation cooking rules
+ *              pet_rules:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation pet rules
+ *              other_rules:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation other_rules
+ *              safety_and_security:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation safety and security  
+ *                  
  */
 
 /**
