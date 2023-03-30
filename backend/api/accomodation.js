@@ -1,5 +1,5 @@
 const { Router } = require('express')
-var Accomodation = require("../models/accomodation");
+var Accomodation = require("../models/accommodation");
 
 const accom = Router()
 
@@ -110,7 +110,7 @@ accom.get('/', async function(req, res){
 
 /**
  * @openapi
- * /api/accomodationId/{id}:
+ * /api/accomodation/{id}:
  *      delete:
  *          description: Delete accomodation by id
  *          parameters:
@@ -129,9 +129,9 @@ accom.get('/', async function(req, res){
 accom.delete('/:accomodationId', async function(req, res){
     try{
         var removedAccom = await Accomodation.deleteOne({_id: req.params.accomodationId});
-        res.send(removedAccom);
+        res.send({success: true, data: null});
     } catch(err){
-        res.send({message: err});
+        res.send({success: false, messages: err});
     }
 
 });
