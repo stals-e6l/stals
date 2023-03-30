@@ -1,5 +1,5 @@
 const { Router } = require('express')
-var Accomodation = require("../models/accomodation");
+var Accomodation = require("../models/accommodation");
 
 const accom = Router()
 
@@ -159,8 +159,12 @@ accom.delete('/:accomodationId', async function(req, res){
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Accomodation'
- *              404:
- *                  description: The accomodation could not be found
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized access
+ *              500:
+ *                  description: Internal server error
  *              
  */
 accom.put('/:accomodationId', async function(req, res){
@@ -168,9 +172,18 @@ accom.put('/:accomodationId', async function(req, res){
         var editedAccom = await Accomodation.updateOne(
             {_id: req.params.accomodationId},
             {$set: {name: req.body.name}});
-        res.send(editedAccom);
+        res.json(editedAccom);
     } catch(err){
-        res.send({message: err});
+        switch(err){
+            case 400:
+                res.json({success: false, message: "Error: Bad request"});
+            case 401:
+                res.json({success: false, message: "Error: Unauthorized access"});
+            case 500:
+                res.json({success: false, message: "Error: Internal server error"});
+            default:
+                res.json({success: false, message: err});
+        }
     }
 
 });
