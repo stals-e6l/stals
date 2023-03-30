@@ -1,5 +1,5 @@
 const { Router } = require('express')
-var Accomodation = require("../models/accomodation");
+var Accomodation = require("../models/accommodation");
 
 const accom = Router()
 
@@ -87,6 +87,9 @@ accom.get('/:accomodationId', async function(req, res){
  * /api/accomodation:
  *      get:
  *          description: Get all accomodations
+ * 
+ * 
+ * 
  *          responses:
  *              200:
  *                  content:
@@ -95,16 +98,33 @@ accom.get('/:accomodationId', async function(req, res){
  *                              type: array
  *                              items:
  *                                  $ref: '#/components/schemas/Accomodation'
- *              404:
- *                  description: The accomodation could not be found
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description:  Unauthorize access
+ *              500:
+ *                  description: Internal Service error
+ *              
  *              
  */
 accom.get('/', async function(req, res){
     try{
-        var accoms = await Accomodation.find();
-        res.send(accoms);
+        var accoms = await Accomodation.find(); 
+        res.json({success:true,data:accoms});
     } catch(err){
-        res.send({message: err});
+        switch(err){
+            case 400:
+                res.send({success:false,message:"Error: Bad request"});  
+                break;
+            case 401:
+                res.send({success:false,message:"Error Unauthorized access"});
+                break;
+            case 500:
+                res.send({success:false,message:"Error Internal service error"});
+                break;
+            default:
+                res.send({success:false,message:err});
+        }
     }
 });
 
