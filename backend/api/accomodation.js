@@ -167,10 +167,10 @@ accom.delete('/:accomodationId', async function(req, res){
  *                  description: Internal server error
  *              
  */
-accom.put('/:accomodationId', async function(req, res){
+accom.put('/:id', async function(req, res){
     try{
-        var editedAccom = await Accomodation.updateOne(
-            {_id: req.params.accomodationId},
+        const editedAccom = await Accomodation.updateOne(
+            {_id: req.params.id},
             {$set: {name: req.body.name}});
         res.json(editedAccom);
     } catch(err){
