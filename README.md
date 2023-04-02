@@ -12,6 +12,12 @@ Student Accommodation and Lodging System
 
 3. You are now good to go!
 
+## Additional setup
+1. Please install MongoDB using this [link](https://www.mongodb.com/docs/manual/administration/install-community/).
+2. Follow the steps correctly. Use the guide based on the recommended OS.
+3. To verify that the MongoDB is installed, run the command ```mongosh```.
+
+
 ## For backend devs
 
 1. Go inside the ```backend``` directory. 
@@ -52,3 +58,4 @@ Student Accommodation and Lodging System
 - Use ```feat: [message]``` if you are implementing a new feature.
 - Use ```refactor: [message]``` if you are improving an existing implementation/feature/
 - Use ```fix: [message]``` if you are addressing bugs.
+- Or for full details, you can follow this [cheatsheet](https://www.conventionalcommits.org/en/v1.0.0/).
