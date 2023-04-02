@@ -1,7 +1,7 @@
 const { Router } = require('express')
-var Accomodation = require("../models/accommodation");
+const Accomodation = require("../models/accommodation");
 
-const accom = Router()
+const accommodationRouter = Router()
 
 /**
  * @openapi
@@ -97,7 +97,7 @@ const accom = Router()
 
 /**
  * @openapi
- * /api/accomodation:
+ * /api/accommodation:
  *      post:
  *          description: Adds accomodation
  *          requestBody:
@@ -116,7 +116,7 @@ const accom = Router()
  *                  description: The accomodation was not created
  *              
  */
-accom.post("/", async function(req, res){
+accommodationRouter.post("/", async function(req, res){
     var accom = new Accomodation({
         name: req.body.name
     });
@@ -131,7 +131,7 @@ accom.post("/", async function(req, res){
 
 /**
  * @openapi
- * /api/accomodation/{id}:
+ * /api/accommodation/{id}:
  *      get:
  *          description: Get accomodation by id
  *          parameters:
@@ -150,7 +150,7 @@ accom.post("/", async function(req, res){
  *                  description: The accomodation could not be found
  *              
  */
-accom.get('/:accomodationId', async function(req, res){
+accommodationRouter.get('/:accomodationId', async function(req, res){
     try{
         var accom = await Accomodation.findById(req.params.accomodationId);
         res.send(accom);
@@ -162,7 +162,7 @@ accom.get('/:accomodationId', async function(req, res){
 
 /**
  * @openapi
- * /api/accomodation:
+ * /api/accommodation:
  *      get:
  *          description: Get all accomodations
  *          responses:
@@ -177,7 +177,7 @@ accom.get('/:accomodationId', async function(req, res){
  *                  description: The accomodation could not be found
  *              
  */
-accom.get('/', async function(req, res){
+accommodationRouter.get('/', async function(req, res){
     try{
         var accoms = await Accomodation.find();
         res.send(accoms);
@@ -188,9 +188,9 @@ accom.get('/', async function(req, res){
 
 /**
  * @openapi
- * /api/accomodationId/{id}:
+ * /api/accommodation/{id}:
  *      delete:
- *          description: Delete accomodation by id
+ *          description: Delete accommodation by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -199,24 +199,37 @@ accom.get('/', async function(req, res){
  *                  required: true
  *          responses:
  *              200:
- *                  description: Accomodation was deleted
+ *                  description: Accommodation was deleted
  *              404:
- *                  description: The accomodation was not found
+ *                  description: The accommodation was not found
+ *              500:
+ *                  description: Internal server error
  *              
  */
-accom.delete('/:accomodationId', async function(req, res){
+accommodationRouter.delete('/:id', async function(req, res){
     try{
-        var removedAccom = await Accomodation.deleteOne({_id: req.params.accomodationId});
-        res.send(removedAccom);
+        const removedAccom = await Accomodation.findByIdAndRemove({_id: req.params.id});
+        
+        if (!removedAccom) {
+            throw new Error("404");
+        } else {
+            res.status(200).json({success: true, data: null});
+        }
+        // TODO: Handle other errors (authentication)
+
     } catch(err){
-        res.send({message: err});
+        if (String(err).includes("404")) {
+            res.status(404).json({success: false, messages: ["Error 404: Accommodation not found"]});
+        } else {
+            res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
+        }
     }
 
 });
 
 /**
  * @openapi
- * /api/accomodation/{id}:
+ * /api/accommodation/{id}:
  *      put:
  *          description: Edit accomodation by id
  *          parameters:
@@ -241,7 +254,7 @@ accom.delete('/:accomodationId', async function(req, res){
  *                  description: The accomodation could not be found
  *              
  */
-accom.put('/:accomodationId', async function(req, res){
+accommodationRouter.put('/:accomodationId', async function(req, res){
     try{
         var editedAccom = await Accomodation.updateOne(
             {_id: req.params.accomodationId},
@@ -253,4 +266,4 @@ accom.put('/:accomodationId', async function(req, res){
 
 });
 
-module.exports = accom
+module.exports = accommodationRouter;
