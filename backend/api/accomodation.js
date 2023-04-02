@@ -169,7 +169,7 @@ accom.delete('/:accomodationId', async function(req, res){
  */
 accom.put('/:id', async function(req, res){
     try{
-        const editedAccom = await Accomodation.updateOne(
+        const editedAccom = await Accomodation.updateOne(   //cannot change to Accommodation.findByIdAndUpdate(), won't update accommodation
             {_id: req.params.id},
             {$set: {name: req.body.name}});
         res.json(editedAccom);
