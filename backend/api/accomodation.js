@@ -130,17 +130,21 @@ accommodationRouter.get('/', async function(req, res){
  */
 accommodationRouter.delete('/:id', async function(req, res){
     try{
-        const removedAccom = await Accomodation.deleteOne({_id: req.params.id});
-
-        if (removedAccom.deletedCount == 0){
-            res.status(404).json({success: false, messages: ["Error 404: Accommodation not found"]})
+        const removedAccom = await Accomodation.findByIdAndRemove({_id: req.params.id});
+        
+        if (!removedAccom) {
+            throw new Error("404");
         } else {
             res.status(200).json({success: true, data: null});
         }
         // TODO: Handle other errors (authentication)
 
     } catch(err){
-        res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
+        if (String(err).includes("404")) {
+            res.status(404).json({success: false, messages: ["Error 404: Accommodation not found"]});
+        } else {
+            res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
+        }
     }
 
 });
