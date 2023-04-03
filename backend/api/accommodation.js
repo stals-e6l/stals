@@ -75,7 +75,7 @@ accom.post("/", async function(req, res){
  *              500:
  *                  description: Internal server error
  *              404:
- *                  description: Internal server error
+ *                  description: Not found
  *              
  */
 
