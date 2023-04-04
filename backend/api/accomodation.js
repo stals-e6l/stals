@@ -134,6 +134,7 @@ const accommodationRouter = Router()
  */
 accommodationRouter.post("/", async function(req, res){
     try{
+        const Accommodation = new Accommodation
         const savedAccom = await Accomodation.create({
             name: req.body.name,
             address: req.body.address,
@@ -164,15 +165,15 @@ accommodationRouter.post("/", async function(req, res){
     } catch(err){
         switch(err) {
             case 404:
-                res.send({success: false, message: "Not found"});
+                res.send({success: false, message: ["Error: Not found"]});
             case 400:
-                res.send({success: false, message: "Bad request"});
+                res.send({success: false, message: ["Error: Bad request"]});
               break;
             case 401:
-                res.send({success: false, message: "Unauthorized access"});
+                res.send({success: false, message: ["Error: Unauthorized access"]});
               break;
             case 500:
-                res.send({success: false, message: "Internal server error"});
+                res.send({success: false, message: ["Error: Internal server error"]});
               break;
             default:
                 res.send({success: false, message: err});
