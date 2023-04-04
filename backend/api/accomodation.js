@@ -133,40 +133,50 @@ const accommodationRouter = Router()
  *              
  */
 accommodationRouter.post("/", async function(req, res){
-    var accom = new Accomodation({
-        name: req.body.name,
-        address: req.body.address,
-        type: req.body.type,
-        price: req.body.price,
-        size_sqm: req.body.size_sqm,
-        meters_from_uplb: req.body.meters_from_uplb,
-        landmarks: req.body.landmarks,
-        min_pax: req.body.min_pax,
-        max_pax: req.body.max_pax,
-        num_rooms: req.body.num_rooms,
-        num_beds: req.body.num_beds,
-        num_views: req.body.num_views,
-        furnishing: req.body.furnishing,
-        cooking_rules: req.body.cooking_rules,
-        pet_rules: req.body.pet_rules,
-        other_rules: req.body.other_rules,
-        safety_and_security: req.body.safety_and_security,
-        appliances: req.body.appliances,
-        amenities: req.body.amenities,
-        is_soft_deleted: req.body.is_soft_deleted
-    });
-
     try{
-        var savedAccom = await accom.save();
-        res.send(savedAccom);
-    } catch(err){
-        if (String(err).includes("404")) {
-            res.status(404).json({success: false, messages: ["Error 404: Accommodation not found"]});
-        } else if(String(err).includes("401")){
-            res.status(401).json({success: false, messages: ["Error 401: Unauthorized access of post method."]});
-        } else {
-            res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
+        const savedAccom = await Accomodation.create({
+            name: req.body.name,
+            address: req.body.address,
+            type: req.body.type,
+            price: req.body.price,
+            size_sqm: req.body.size_sqm,
+            meters_from_uplb: req.body.meters_from_uplb,
+            landmarks: req.body.landmarks,
+            min_pax: req.body.min_pax,
+            max_pax: req.body.max_pax,
+            num_rooms: req.body.num_rooms,
+            num_beds: req.body.num_beds,
+            num_views: req.body.num_views,
+            furnishing: req.body.furnishing,
+            cooking_rules: req.body.cooking_rules,
+            pet_rules: req.body.pet_rules,
+            other_rules: req.body.other_rules,
+            safety_and_security: req.body.safety_and_security,
+            appliances: req.body.appliances,
+            amenities: req.body.amenities,
+            is_soft_deleted: req.body.is_soft_deleted
+        });
+        if(!savedAccom){
+            throw new Error(400);
+        }else{
+            res.status(201).json({ status: true, data: savedAccom });
         }
+    } catch(err){
+        switch(err) {
+            case 404:
+                res.send({success: false, message: "Not found"});
+            case 400:
+                res.send({success: false, message: "Bad request"});
+              break;
+            case 401:
+                res.send({success: false, message: "Unauthorized access"});
+              break;
+            case 500:
+                res.send({success: false, message: "Internal server error"});
+              break;
+            default:
+                res.send({success: false, message: err});
+        } 
     }  
 });
 
