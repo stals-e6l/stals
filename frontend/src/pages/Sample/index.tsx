@@ -12,7 +12,7 @@ const SamplePage: React.FC<IProps> = () => {
   const [ping, setPing] = React.useState<IResponse<string> | null>(null)
 
   const doPing = async () => {
-    const res = await apiGet<string>('http://localhost:5000/api/ping')
+    const res = await apiGet<string>('ping')
     return res
   }
 

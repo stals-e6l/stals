@@ -1,7 +1,9 @@
 import axios from 'axios'
 
-export async function apiGet<D>(url: string) {
-  const res = await axios.get(url)
+export const API_URL = 'http://localhost:5000/api'
+
+export async function apiGet<D>(resource: string) {
+  const res = await axios.get(`${API_URL}/${resource}`)
 
   return {
     success: res.data.success,
