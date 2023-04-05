@@ -16,7 +16,10 @@ const ping = Router()
  *
  */
 ping.get('/', (req, res) => {
-  res.json('Hello World!')
+  res.status(200).json({
+    success: true,
+    data: 'hello',
+  })
 })
 
 module.exports = ping
