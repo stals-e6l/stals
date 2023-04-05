@@ -10,3 +10,20 @@ export async function apiGet<D>(resource: string) {
     data: res.data.data,
   } as IResponse<D>
 }
+
+export async function apiPost<D, E>(
+  resource: string,
+  payload: IRequestPayload<D>
+) {
+  const res = await axios.post(
+    `${API_URL}/${resource}`,
+    { ...payload.payload },
+    {
+      headers: {
+        Accept: 'application/json',
+      },
+    }
+  )
+
+  return res.data as IResponse<E>
+}

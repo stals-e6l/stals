@@ -22,4 +22,24 @@ ping.get('/', (req, res) => {
   })
 })
 
+/**
+ * @openapi
+ * /api/ping:
+ *      post:
+ *          description: Pings the server (post)
+ *          responses:
+ *              201:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *
+ */
+ping.post('/', (req, res) => {
+  res.status(201).json({
+    success: true,
+    data: req.body.data,
+  })
+})
+
 module.exports = ping

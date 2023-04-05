@@ -1,19 +1,23 @@
 import React from 'react'
-import { useSample } from '../../store/sample'
-import { apiGet } from '../../api'
+import { apiGet, apiPost } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const SamplePage: React.FC<IProps> = () => {
-  const { data, dispatch: sampleDispatch } = useSample()
-
   const [ping, setPing] = React.useState<IResponse<string> | null>(null)
 
   const doPing = async () => {
     const res = await apiGet<string>('ping')
     return res
+  }
+
+  const handleClick = async () => {
+    const res = await apiPost<{ data: string }, string>('ping', {
+      payload: { data: 'hello frm frontend' },
+    })
+    setPing(res)
   }
 
   React.useEffect(() => {
@@ -25,16 +29,7 @@ const SamplePage: React.FC<IProps> = () => {
   return (
     <div data-testid="SamplePage">
       {JSON.stringify(ping && ping.data)}
-      <button
-        onClick={() =>
-          sampleDispatch({
-            type: data.sample ? 'changeFalse' : 'changeTrue',
-            payload: { ...data, sample: !data.sample },
-          })
-        }
-      >
-        click me
-      </button>
+      <button onClick={() => handleClick()}>click me</button>
     </div>
   )
 }
