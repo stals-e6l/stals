@@ -135,28 +135,7 @@ const accommodationRouter = Router()
 accommodationRouter.post("/", async function(req, res){
     try{
         const Accommodation = new Accommodation
-        const savedAccom = await Accomodation.create({
-            name: req.body.name,
-            address: req.body.address,
-            type: req.body.type,
-            price: req.body.price,
-            size_sqm: req.body.size_sqm,
-            meters_from_uplb: req.body.meters_from_uplb,
-            landmarks: req.body.landmarks,
-            min_pax: req.body.min_pax,
-            max_pax: req.body.max_pax,
-            num_rooms: req.body.num_rooms,
-            num_beds: req.body.num_beds,
-            num_views: req.body.num_views,
-            furnishing: req.body.furnishing,
-            cooking_rules: req.body.cooking_rules,
-            pet_rules: req.body.pet_rules,
-            other_rules: req.body.other_rules,
-            safety_and_security: req.body.safety_and_security,
-            appliances: req.body.appliances,
-            amenities: req.body.amenities,
-            is_soft_deleted: req.body.is_soft_deleted
-        });
+        const savedAccom = await Accomodation.create({ ...req.body });
         if(!savedAccom){
             throw new Error(400);
         }else{
@@ -165,18 +144,18 @@ accommodationRouter.post("/", async function(req, res){
     } catch(err){
         switch(err) {
             case 404:
-                res.send({success: false, message: ["Error: Not found"]});
+                res.status(404).json({ status: false, messages: ["Error: Not found"]});
             case 400:
-                res.send({success: false, message: ["Error: Bad request"]});
+                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
               break;
             case 401:
-                res.send({success: false, message: ["Error: Unauthorized access"]});
+                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
               break;
             case 500:
-                res.send({success: false, message: ["Error: Internal server error"]});
+                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
               break;
             default:
-                res.send({success: false, message: err});
+                res.send({success: false, messages: [String(err)]});
         } 
     }  
 });
