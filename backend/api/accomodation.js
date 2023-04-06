@@ -134,7 +134,6 @@ const accommodationRouter = Router()
  */
 accommodationRouter.post("/", async function(req, res){
     try{
-        const Accommodation = new Accommodation
         const savedAccom = await Accomodation.create({ ...req.body });
         if(!savedAccom){
             throw new Error(400);
@@ -155,7 +154,7 @@ accommodationRouter.post("/", async function(req, res){
                 res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
               break;
             default:
-                res.send({success: false, messages: [String(err)]});
+                res.json({success: false, messages: [String(err)]});
         } 
     }  
 });
