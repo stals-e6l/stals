@@ -87,9 +87,22 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  * /api/accomodation:
  *      get:
  *          description: Get all accommodations
- * 
- * 
- * 
+ *          parameters:
+ *              -   in: query
+ *                  name: name
+ *                  schema:
+ *                      type: string
+ *                  description: The name of accommodation
+ *              -   in: query
+ *                  name: price
+ *                  schema:
+ *                      type: integer
+ *                  description: The price of accommodation
+ *              -   in: query
+ *                  name: limit
+ *                  schema:
+ *                      type: integer
+ *                  description: The number of items to return
  *          responses:
  *              200:
  *                  content:
@@ -109,21 +122,26 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  */
 accommodationRouter.get('/', async function(req, res){
     try{
-        const accommodations = await Accommodation.find(); 
-        res.json({success:true,data:accommodations});
+        let query = {...req.query}
+        delete query["limit"];  //delete every query that's not part of the database model
+
+        const limit = Number(req.query.limit) || 100;
+        const accommodations = await Accommodation.find(query).limit(limit);
+        
+        res.status(200).json({success:true,data:accommodations});
     } catch(err){
         switch(err){
             case 400:
-                res.send({success:false,message:"Error: Bad request"});  
+                res.status(400).json({success:false,message:"Error: Bad request"});
                 break;
             case 401:
-                res.send({success:false,message:"Error Unauthorized access"});
+                res.status(401).json({success:false,message:"Error: Unauthorized access"});
                 break;
             case 500:
-                res.send({success:false,message:"Error Internal service error"});
+                res.status(500).json({success:false,message:"Error: Internal service error"});
                 break;
             default:
-                res.send({success:false,message:err});
+                res.json({success:false,message:err});
         }
     }
 });
