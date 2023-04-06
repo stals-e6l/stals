@@ -128,20 +128,20 @@ accommodationRouter.get('/', async function(req, res){
         const limit = Number(req.query.limit) || 100;
         const accommodations = await Accommodation.find(query).limit(limit);
         
-        res.status(200).json({success:true,data:accommodations});
+        res.status(200).json({success:true, data:accommodations});
     } catch(err){
         switch(err){
             case 400:
-                res.status(400).json({success:false,message:"Error: Bad request"});
+                res.status(400).json({success:false, messages: ["Error: Bad request"]});
                 break;
             case 401:
-                res.status(401).json({success:false,message:"Error: Unauthorized access"});
+                res.status(401).json({success:false, messages: ["Error: Unauthorized access"]});
                 break;
             case 500:
-                res.status(500).json({success:false,message:"Error: Internal service error"});
+                res.status(500).json({success:false, messages: ["Error: Internal service error"]});
                 break;
             default:
-                res.json({success:false,message:err});
+                res.json({success:false, messages: [err]});
         }
     }
 });
