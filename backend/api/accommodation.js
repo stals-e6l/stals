@@ -79,31 +79,32 @@ accom.post("/", async function(req, res){
  *              
  */
 
-accom.get('/:accommodationId', async function(req, res){
+accom.get('/:id', async function(req, res){
     try{
-        if(req.params.accommodationId.length != 24){
+        if(!req.params.id){
             throw 400;
         }
-        var accom = await Accommodation.findById(req.params.accommodationId);
+        const accom = await Accommodation.findById(req.params.accommodationId);
         if(!accom){
             throw 404;
         }
-        res.json({success: true, data: accom});
+        res.status(200).json({success: true, data: accom});
     } catch(err){
         switch(err) {
             case 404:
-                res.send({success: false, message: "Not found"});
+                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+                break;
             case 400:
-                res.send({success: false, message: "Bad request"});
+                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
               break;
             case 401:
-                res.send({success: false, message: "Unauthorized access"});
+                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
               break;
             case 500:
-                res.send({success: false, message: "Internal server error"});
+                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
               break;
             default:
-                res.send({success: false, message: err});
+                res.json({success: false, messages: [String(err)]});
         } 
     }
     
