@@ -92,7 +92,19 @@ const accommodationRouter = Router()
  *                  items:
  *                      type: string
  *                  description: Accommodation safety and security  
- *                  
+ *              appliances:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation appliances
+ *              amenities:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation ammenities
+ *              is_soft_deleted:
+ *                  type: boolean
+ *                  description: Accommodation is soft deleted
  */
 
 /**
@@ -113,19 +125,37 @@ const accommodationRouter = Router()
  *                          schema:
  *                              $ref: '#/components/schemas/Accomodation'
  *              404:
- *                  description: The accomodation was not created
+ *                  description: The accommodation was not created
+ *              401:
+ *                  description: Unauthorized access.
+ *              500:
+ *                  description: Internal Server error.
  *              
  */
 accommodationRouter.post("/", async function(req, res){
-    var accom = new Accomodation({
-        name: req.body.name
-    });
-
     try{
-        var savedAccom = await accom.save();
-        res.send(savedAccom);
+        const savedAccom = await Accomodation.create({ ...req.body });
+        if(!savedAccom){
+            throw new Error(400);
+        }else{
+            res.status(201).json({ status: true, data: savedAccom });
+        }
     } catch(err){
-        res.send({message: err})
+        switch(err) {
+            case 404:
+                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+            case 400:
+                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
+              break;
+            case 401:
+                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
+              break;
+            case 500:
+                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
+              break;
+            default:
+                res.json({success: false, messages: [String(err)]});
+        } 
     }  
 });
 
