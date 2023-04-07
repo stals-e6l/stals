@@ -134,7 +134,7 @@ const accommodationRouter = Router()
  */
 accommodationRouter.post("/", async function(req, res){
     try{
-        const savedAccom = await Accomodation.create({ ...req.body });
+        const savedAccom = await Accommodation.create({ ...req.body });
         if(!savedAccom){
             throw new Error(400);
         }else{
@@ -186,7 +186,7 @@ accommodationRouter.post("/", async function(req, res){
  *                  description: Not found
  *              
  */
-accommodationRouter.get('/:accomodationId', async function(req, res){
+accommodationRouter.get('/:id', async function(req, res){
     try{
         if(!req.params.id){
             throw 400;
@@ -265,7 +265,7 @@ accommodationRouter.get('/', async function(req, res){
  */
 accommodationRouter.delete('/:id', async function(req, res){
     try{
-        const removedAccom = await Accomodation.findByIdAndRemove({_id: req.params.id});
+        const removedAccom = await Accommodation.findByIdAndRemove({_id: req.params.id});
         
         if (!removedAccom) {
             throw new Error("404");
