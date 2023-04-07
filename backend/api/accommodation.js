@@ -84,7 +84,7 @@ accom.get('/:id', async function(req, res){
         if(!req.params.id){
             throw 400;
         }
-        const accom = await Accommodation.findById(req.params.accommodationId);
+        const accom = await Accommodation.findById(req.params.id);
         if(!accom){
             throw 404;
         }
