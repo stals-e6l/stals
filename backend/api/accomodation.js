@@ -172,17 +172,21 @@ accom.put('/:id', async function(req, res){
         const editedAccom = await Accomodation.findOneAndUpdate(
             {_id: req.params.id},
             {name: req.body.name});
-        res.json(editedAccom);
+        res.status(200).json({ success: true, data: editedAccom })
     } catch(err){
         switch(err){
             case 400:
-                res.json({success: false, message: "Error: Bad request"});
+                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
+                break;
             case 401:
-                res.json({success: false, message: "Error: Unauthorized access"});
+                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
+                break;
             case 500:
-                res.json({success: false, message: "Error: Internal server error"});
+                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
+                break;
             default:
-                res.json({success: false, message: err});
+                res.json({success: false, messages: [String(err)]});
+                break;
         }
     }
 
