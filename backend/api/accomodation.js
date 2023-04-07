@@ -172,7 +172,8 @@ accom.put('/:id', async function(req, res){
         const editedAccom = await Accomodation.findOneAndUpdate(
             {_id: req.params.id},
             {name: req.body.name},
-            {new: true});
+            {new: true},
+            { ...req.body});
         res.status(200).json({ success: true, data: editedAccom })
     } catch(err){
         switch(err){
