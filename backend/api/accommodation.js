@@ -315,7 +315,7 @@ accommodationRouter.delete('/:id', async function(req, res){
  *                  description: Internal server error
  *              
  */
-accom.put('/:id', async function(req, res){
+accommodationRouter.put('/:id', async function(req, res){
     try{
         const editedAccom = await Accommodation.findOneAndUpdate(
             {_id: req.params.id},
