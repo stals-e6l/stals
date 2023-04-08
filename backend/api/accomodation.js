@@ -159,6 +159,8 @@ accom.delete('/:accomodationId', async function(req, res){
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Accomodation'
+ *              404:
+ *                  description: Not found
  *              400:
  *                  description: Bad request
  *              401:
@@ -173,9 +175,15 @@ accom.put('/:id', async function(req, res){
             {_id: req.params.id},
             { ...req.body},
             {new: true});
+        if(!editedAccom){
+            throw 404;
+        };
         res.status(200).json({ success: true, data: editedAccom })
     } catch(err){
         switch(err){
+            case 404:
+                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+                break;
             case 400:
                 res.status(400).json({ status: false, messages: ["Error: Bad request"]});
                 break;
