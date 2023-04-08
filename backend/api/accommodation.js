@@ -1,4 +1,5 @@
 const { Router } = require('express')
+
 var Accommodation = require("../models/accommodation");
 
 const accommodationRouter = Router()
@@ -155,9 +156,9 @@ accommodationRouter.post("/", async function(req, res){
               break;
             default:
                 res.json({success: false, messages: [String(err)]});
-        } 
-    }  
-});
+        }
+    }
+})
 
 /**
  * @openapi
@@ -212,10 +213,9 @@ accommodationRouter.get('/:id', async function(req, res){
               break;
             default:
                 res.json({success: false, messages: [String(err)]});
-        } 
+        }
     }
-    
-});
+})
 
 /**
  * @openapi
@@ -280,7 +280,6 @@ accommodationRouter.delete('/:id', async function(req, res){
             res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
         }
     }
-
 });
 
 /**
@@ -307,17 +306,43 @@ accommodationRouter.delete('/:id', async function(req, res){
  *                          schema:
  *                              $ref: '#/components/schemas/Accommodation'
  *              404:
- *                  description: The accommodation could not be found
+ *                  description: Not found
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized access
+ *              500:
+ *                  description: Internal server error
  *              
  */
-accommodationRouter.put('/:accomodationId', async function(req, res){
+accom.put('/:id', async function(req, res){
     try{
-        var editedAccom = await Accommodation.updateOne(
-            {_id: req.params.accommodationId},
-            {$set: {name: req.body.name}});
-        res.send(editedAccom);
+        const editedAccom = await Accommodation.findOneAndUpdate(
+            {_id: req.params.id},
+            { ...req.body},
+            {new: true});
+        if(!editedAccom){
+            throw 404;
+        };
+        res.status(200).json({ success: true, data: editedAccom })
     } catch(err){
-        res.send({message: err});
+        switch(err){
+            case 404:
+                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+                break;
+            case 400:
+                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
+                break;
+            case 401:
+                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
+                break;
+            case 500:
+                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
+                break;
+            default:
+                res.json({success: false, messages: [String(err)]});
+                break;
+        }
     }
 
 });
