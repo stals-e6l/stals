@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const Accomodation = require("../models/accommodation");
+var Accommodation = require("../models/accommodation");
 
 const accommodationRouter = Router()
 
@@ -7,7 +7,7 @@ const accommodationRouter = Router()
  * @openapi
  * components:
  *  schemas:
- *      Accomodation:
+ *      Accommodation:
  *          type: object
  *          required:
  *              - name
@@ -92,40 +92,70 @@ const accommodationRouter = Router()
  *                  items:
  *                      type: string
  *                  description: Accommodation safety and security  
- *                  
+ *              appliances:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation appliances
+ *              amenities:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation ammenities
+ *              is_soft_deleted:
+ *                  type: boolean
+ *                  description: Accommodation is soft deleted
  */
 
 /**
  * @openapi
  * /api/accommodation:
  *      post:
- *          description: Adds accomodation
+ *          description: Adds accommodation
  *          requestBody:
  *              required: true
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Accomodation'
+ *                          $ref: '#/components/schemas/Accommodation'
  *          responses:
  *              200:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Accomodation'
+ *                              $ref: '#/components/schemas/Accommodation'
  *              404:
- *                  description: The accomodation was not created
+ *                  description: The accommodation was not created
+ *              401:
+ *                  description: Unauthorized access.
+ *              500:
+ *                  description: Internal Server error.
  *              
  */
 accommodationRouter.post("/", async function(req, res){
-    var accom = new Accomodation({
-        name: req.body.name
-    });
-
     try{
-        var savedAccom = await accom.save();
-        res.send(savedAccom);
+        const savedAccom = await Accommodation.create({ ...req.body });
+        if(!savedAccom){
+            throw new Error(400);
+        }else{
+            res.status(201).json({ status: true, data: savedAccom });
+        }
     } catch(err){
-        res.send({message: err})
+        switch(err) {
+            case 404:
+                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+            case 400:
+                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
+              break;
+            case 401:
+                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
+              break;
+            case 500:
+                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
+              break;
+            default:
+                res.json({success: false, messages: [String(err)]});
+        } 
     }  
 });
 
@@ -133,7 +163,7 @@ accommodationRouter.post("/", async function(req, res){
  * @openapi
  * /api/accommodation/{id}:
  *      get:
- *          description: Get accomodation by id
+ *          description: Get accommodation by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -145,17 +175,44 @@ accommodationRouter.post("/", async function(req, res){
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Accomodation'
+ *                              $ref: '#/components/schemas/Accommodation'
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized access
+ *              500:
+ *                  description: Internal server error
  *              404:
- *                  description: The accomodation could not be found
+ *                  description: Not found
  *              
  */
-accommodationRouter.get('/:accomodationId', async function(req, res){
+accommodationRouter.get('/:id', async function(req, res){
     try{
-        var accom = await Accomodation.findById(req.params.accomodationId);
-        res.send(accom);
+        if(!req.params.id){
+            throw 400;
+        }
+        const accom = await Accommodation.findById(req.params.id);
+        if(!accom){
+            throw 404;
+        }
+        res.status(200).json({success: true, data: accom});
     } catch(err){
-        res.send({message: err});
+        switch(err) {
+            case 404:
+                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+                break;
+            case 400:
+                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
+              break;
+            case 401:
+                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
+              break;
+            case 500:
+                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
+              break;
+            default:
+                res.json({success: false, messages: [String(err)]});
+        } 
     }
     
 });
@@ -164,7 +221,7 @@ accommodationRouter.get('/:accomodationId', async function(req, res){
  * @openapi
  * /api/accommodation:
  *      get:
- *          description: Get all accomodations
+ *          description: Get all accommodations
  *          responses:
  *              200:
  *                  content:
@@ -172,14 +229,14 @@ accommodationRouter.get('/:accomodationId', async function(req, res){
  *                          schema:
  *                              type: array
  *                              items:
- *                                  $ref: '#/components/schemas/Accomodation'
+ *                                  $ref: '#/components/schemas/Accommodation'
  *              404:
- *                  description: The accomodation could not be found
+ *                  description: The accommodation could not be found
  *              
  */
 accommodationRouter.get('/', async function(req, res){
     try{
-        var accoms = await Accomodation.find();
+        var accoms = await Accommodation.find();
         res.send(accoms);
     } catch(err){
         res.send({message: err});
@@ -208,7 +265,7 @@ accommodationRouter.get('/', async function(req, res){
  */
 accommodationRouter.delete('/:id', async function(req, res){
     try{
-        const removedAccom = await Accomodation.findByIdAndRemove({_id: req.params.id});
+        const removedAccom = await Accommodation.findByIdAndRemove({_id: req.params.id});
         
         if (!removedAccom) {
             throw new Error("404");
@@ -216,7 +273,6 @@ accommodationRouter.delete('/:id', async function(req, res){
             res.status(200).json({success: true, data: null});
         }
         // TODO: Handle other errors (authentication)
-
     } catch(err){
         if (String(err).includes("404")) {
             res.status(404).json({success: false, messages: ["Error 404: Accommodation not found"]});
@@ -231,7 +287,7 @@ accommodationRouter.delete('/:id', async function(req, res){
  * @openapi
  * /api/accommodation/{id}:
  *      put:
- *          description: Edit accomodation by id
+ *          description: Edit accommodation by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -243,21 +299,21 @@ accommodationRouter.delete('/:id', async function(req, res){
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Accomodation'
+ *                          $ref: '#/components/schemas/Accommodation'
  *          responses:
  *              200:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Accomodation'
+ *                              $ref: '#/components/schemas/Accommodation'
  *              404:
- *                  description: The accomodation could not be found
+ *                  description: The accommodation could not be found
  *              
  */
 accommodationRouter.put('/:accomodationId', async function(req, res){
     try{
-        var editedAccom = await Accomodation.updateOne(
-            {_id: req.params.accomodationId},
+        var editedAccom = await Accommodation.updateOne(
+            {_id: req.params.accommodationId},
             {$set: {name: req.body.name}});
         res.send(editedAccom);
     } catch(err){
