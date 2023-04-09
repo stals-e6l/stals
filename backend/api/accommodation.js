@@ -321,27 +321,35 @@ accommodationRouter.put('/:id', async function(req, res){
             {_id: req.params.id},
             { ...req.body},
             {new: true});
+
         if(!editedAccom){
             throw 404;
-        };
+        }
+        else if(!['unfurnished', 'semifurnished', 'fully_furnished'].includes(editedAccom.furnishing)){
+            throw new Error("ValidationError");
+        }
+        else if(!['hotel', 'apartment', 'bedspace', 'dormitory', 'transient'].includes(editedAccom.type)){
+            throw new Error("ValidationError");
+        }
         res.status(200).json({ success: true, data: editedAccom })
     } catch(err){
-        switch(err){
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
-                break;
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-                break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-                break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-                break;
-            default:
-                res.json({success: false, messages: [String(err)]});
-                break;
+        if(String(err).includes("404")) {
+            res.status(404).json({ status: false, messages: ["Error: Not found"]});
+        }
+        else if(String(err).includes("400")){
+            res.status(400).json({ status: false, messages: ["Error: Bad request"]});
+        }
+        else if(String(err).includes("401")){
+            res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
+        }   
+        else if(String(err).includes("500")){
+            res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
+        }  
+        else if(String(err).includes("ValidationError")){
+            res.json({success: false, messages: ["ValidationError"]});
+        }
+        else{
+            res.json({success: false, messages: [String(err)]});
         }
     }
 
