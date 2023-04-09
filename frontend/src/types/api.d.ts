@@ -1,6 +1,7 @@
 interface IResponse<D> {
   success: boolean
-  data: D
+  data?: D
+  messages?: string[]
 }
 
 interface IRequestPayload<D> {
