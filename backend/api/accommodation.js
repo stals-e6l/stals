@@ -321,27 +321,35 @@ accommodationRouter.put('/:id', async function(req, res){
             {_id: req.params.id},
             { ...req.body},
             {new: true});
+
         if(!editedAccom){
             throw 404;
-        };
+        }
+        
+        if(!['unfurnished', 'semifurnished', 'fully_furnished'].includes(editedAccom.furnishing)){
+            throw 400;
+        }
+        
+        if(!['hotel', 'apartment', 'bedspace', 'dormitory', 'transient'].includes(editedAccom.type)){
+            throw 400;
+        }
         res.status(200).json({ success: true, data: editedAccom })
     } catch(err){
-        switch(err){
+        switch(err) {
             case 404:
                 res.status(404).json({ status: false, messages: ["Error: Not found"]});
                 break;
             case 400:
                 res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-                break;
+              break;
             case 401:
                 res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-                break;
+              break;
             case 500:
                 res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-                break;
+              break;
             default:
                 res.json({success: false, messages: [String(err)]});
-                break;
         }
     }
 
