@@ -11,10 +11,11 @@ interface IProps {
 
 const AccommodationPage: React.FC<IProps> = () => {
   const accommodations = retrieveAccommodations()
+  const createAccommodationHandler = createAccommodation()
   const navigate = useNavigate()
 
   const handleSampleCreate = () => {
-    createAccommodation({
+    createAccommodationHandler({
       name: 'asdfasdfsadf',
       address: 'sdfsdfs',
       type: 'hotel',
