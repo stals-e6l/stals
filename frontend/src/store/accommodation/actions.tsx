@@ -14,9 +14,10 @@ const useAccommodation = () =>
  * const CreateAccommodationForm = (props) => {
  *
  *  const [fieldValues, setFieldValues] = React.useState<IAccommodation>({})
+ *  const createAccommodationHandler = createAccommodation()
  *
  *  const handleCreate = () => {
- *    createAccommodation(fieldValues)
+ *    createAccommodationHandler(fieldValues)
  *  }
  *
  *    return (
@@ -27,24 +28,26 @@ const useAccommodation = () =>
  *    );
  * }
  *
- * @param data The new accommodation data
- * @returns
  */
-export const createAccommodation = async (data: IAccommodation) => {
-  const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
-    payload: data,
-  })
+export const createAccommodation = () => {
+  const { dispatch } = useAccommodation()
 
-  if (!res.success && res.messages) {
-    throw new Error(res.messages[0])
-  }
-
-  if (res.data) {
-    useAccommodation().dispatch({
-      type: 'AC_CREATE',
-      payload: res.data,
+  const createAccommodationHandler = async (data: IAccommodation) => {
+    const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
+      payload: data,
     })
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
+    if (res.data) {
+      dispatch({
+        type: 'AC_CREATE',
+        payload: res.data,
+      })
+    }
   }
+
+  return createAccommodationHandler
 }
 
 /**
