@@ -1,5 +1,6 @@
 import React from 'react'
 import { accommodationContext } from '.'
+import { apiPost } from '../../api'
 
 const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
@@ -13,9 +14,10 @@ const useAccommodation = () =>
  * const CreateAccommodationForm = (props) => {
  *
  *  const [fieldValues, setFieldValues] = React.useState<IAccommodation>({})
+ *  const createAccommodationHandler = createAccommodation()
  *
  *  const handleCreate = () => {
- *    createAccommodation(fieldValues)
+ *    createAccommodationHandler(fieldValues)
  *  }
  *
  *    return (
@@ -26,14 +28,27 @@ const useAccommodation = () =>
  *    );
  * }
  *
- * @param data The new accommodation data
- * @returns
  */
-export const createAccommodation = (data: IAccommodation) =>
-  useAccommodation().dispatch({
-    type: 'AC_CREATE',
-    payload: data,
-  })
+export const createAccommodation = () => {
+  const { dispatch } = useAccommodation()
+
+  const createAccommodationHandler = async (data: IAccommodation) => {
+    const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
+      payload: data,
+    })
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
+    if (res.data) {
+      dispatch({
+        type: 'AC_CREATE',
+        payload: res.data,
+      })
+    }
+  }
+
+  return createAccommodationHandler
+}
 
 /**
  * Use the retrieveAccommodations function to retrieve all the accommodations.
