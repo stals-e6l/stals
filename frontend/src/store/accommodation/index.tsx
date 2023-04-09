@@ -1,5 +1,4 @@
 import React from 'react'
-import { mockAccommodations } from './mock'
 import { apiGet } from '../../api'
 
 interface IProps {
