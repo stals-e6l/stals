@@ -325,10 +325,12 @@ accommodationRouter.put('/:id', async function(req, res){
         if(!editedAccom){
             throw 404;
         }
-        else if(!['unfurnished', 'semifurnished', 'fully_furnished'].includes(editedAccom.furnishing)){
+        
+        if(!['unfurnished', 'semifurnished', 'fully_furnished'].includes(editedAccom.furnishing)){
             throw new Error("ValidationError");
         }
-        else if(!['hotel', 'apartment', 'bedspace', 'dormitory', 'transient'].includes(editedAccom.type)){
+        
+        if(!['hotel', 'apartment', 'bedspace', 'dormitory', 'transient'].includes(editedAccom.type)){
             throw new Error("ValidationError");
         }
         res.status(200).json({ success: true, data: editedAccom })
