@@ -198,6 +198,11 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *                      type: [string]
  *                  description: The included ameneties included in the accommodation
  *              -   in: query
+ *                  name: is_soft_deleted
+ *                  schema:
+ *                      type: boolean
+ *                  description: Whether the accommodation is soft deleted or not
+ *              -   in: query
  *                  name: limit
  *                  schema:
  *                      type: number
