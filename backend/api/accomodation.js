@@ -94,15 +94,105 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *                      type: string
  *                  description: The name of accommodation
  *              -   in: query
+ *                  name: address
+ *                  schema:
+ *                      type: string
+ *                  description: The address of accommodation 
+ *              -   in: query
+ *                  name: type
+ *                  schema:
+ *                      type: string
+ *                  description: The type of accommodation
+ *              -   in: query
+ *                  name: description
+ *                  schema:
+ *                      type: string
+ *                  description: The description of accommodation 
+ *              -   in: query
  *                  name: price
  *                  schema:
- *                      type: integer
+ *                      type: number
  *                  description: The price of accommodation
+ *              -   in: query
+ *                  name: size_sqm
+ *                  schema:
+ *                      type: number
+ *                  description: The size of accommodation
+ *              -   in: query
+ *                  name: meters_from_uplb
+ *                  schema:
+ *                      type: number
+ *                  description: The distance of accommodation from the uplb campus
+ *              -   in: query
+ *                  name: landmarks
+ *                  schema:
+ *                      type: [string]
+ *                  description: The landmarks within the accommodation
+ *              -   in: query
+ *                  name: min_pax
+ *                  schema:
+ *                      type: number
+ *                  description: The minimum capacity of the accommodation
+ *              -   in: query
+ *                  name: max_pax
+ *                  schema:
+ *                      type: number
+ *                  description: The maximum capacity of the accommodation
+ *              -   in: query
+ *                  name: num_rooms
+ *                  schema:
+ *                      type: number
+ *                  description: The number of rooms in the accommodation
+ *              -   in: query
+ *                  name: num_beds
+ *                  schema:
+ *                      type: number
+ *                  description: The number of beds in the accommodation
+ *              -   in: query
+ *                  name: num_views
+ *                  schema:
+ *                      type: number
+ *                  description: The number of views of the accommodation
  *              -   in: query
  *                  name: limit
  *                  schema:
- *                      type: integer
+ *                      type: number
  *                  description: The number of items to return
+ *              -   in: query
+ *                  name: furnishing
+ *                  schema:
+ *                      type: [string]
+ *                  description: furnishing of the accommodation
+ *              -   in: query
+ *                  name: cooking_rules
+ *                  schema:
+ *                      type: [string]
+ *                  description: The cooking rules of the accommodation
+ *              -   in: query
+ *                  name: pet_rules
+ *                  schema:
+ *                      type: [string]
+ *                  description: The pet rules of the accommodation
+ *              -   in: query
+ *                  name: other_rules
+ *                  schema:
+ *                      type: [string]
+ *                  description: The other rules of the accommodation
+ *              -   in: query
+ *                  name: safety_and_security
+ *                  schema:
+ *                      type: [string]
+ *                  description: The safety and security features of the accommodation
+ *              -   in: query
+ *                  name: appliances
+ *                  schema:
+ *                      type: [string]
+ *                  description: The appliances in the accommodation
+ *              -   in: query
+ *                  name: amenities
+ *                  schema:
+ *                      type: [string]
+ *                  description: The included ameneties included in the accommodation
  *          responses:
  *              200:
  *                  content:
