@@ -181,7 +181,11 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *              -   in: query
  *                  name: safety_and_security
  *                  schema:
- *                      type: [string]
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
  *                  description: The safety and security features of the accommodation
  *              -   in: query
  *                  name: appliances
