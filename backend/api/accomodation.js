@@ -197,6 +197,11 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *                  schema:
  *                      type: [string]
  *                  description: The included ameneties included in the accommodation
+ *              -   in: query
+ *                  name: limit
+ *                  schema:
+ *                      type: number
+ *                  description: The number of items to return
  *          responses:
  *              200:
  *                  content:
