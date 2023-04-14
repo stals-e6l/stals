@@ -1,6 +1,6 @@
 import React from 'react'
 import { accommodationContext } from '.'
-import { apiPost, apiPut } from '../../api'
+import { apiDelete, apiPost, apiPut } from '../../api'
 
 const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
@@ -142,5 +142,18 @@ export const updateAccommodation = () => {
  * @param id The id of the accommodation to be deleted
  * @returns
  */
-export const deleteAccommodation = (id: string) =>
-  useAccommodation().dispatch({ type: 'AC_DELETE', payload: id })
+export const deleteAccommodation = () => {
+  const { dispatch } = useAccommodation()
+
+  const deleteAccommodationHandler = async (id: string) => {
+    const res = await apiDelete(`accommodation/${id}`)
+
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
+
+    dispatch({ type: 'AC_DELETE', payload: id })
+  }
+
+  return deleteAccommodationHandler
+}
