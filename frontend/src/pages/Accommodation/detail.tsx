@@ -20,7 +20,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
       <button
         onClick={() => {
           if (accommodation) {
-            updateAccommodationHandler(accommodation)
+            updateAccommodationHandler({ ...accommodation, name: 'STUFF' })
           }
         }}
       >
