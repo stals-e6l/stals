@@ -114,10 +114,10 @@ export const retrieveAccommodationById = (
  * @param data The updated values of accommodation
  * @returns
  */
-export const updateAccommodation = (data: IAccommodation) => {
+export const updateAccommodation = () => {
   const { dispatch } = useAccommodation()
 
-  const updateAccommodationHandler = async () => {
+  const updateAccommodationHandler = async (data: IAccommodation) => {
     const res = await apiPut<IAccommodation, IAccommodation>(
       `accommodation/${data._id}`,
       { payload: data }
