@@ -127,7 +127,12 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *              -   in: query
  *                  name: landmarks
  *                  schema:
- *                      type: string
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
+ *                          
  *                  description: The landmarks within the accommodation
  *              -   in: query
  *                  name: min_pax
@@ -190,11 +195,7 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *              -   in: query
  *                  name: safety_and_security
  *                  schema:
- *                      type: array
- *                      collectionFormat: csv
- *                      items:
- *                          type: string
- *                      example: ["string1","string2"]
+ *                      type: [string]
  *                  description: The safety and security features of the accommodation
  *              -   in: query
  *                  name: appliances
