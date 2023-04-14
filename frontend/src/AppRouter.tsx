@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AccommodationPage from './pages/Accommodation'
 import AccommodationDetailPage from './pages/Accommodation/detail'
 import SamplePage from './pages/Sample'
+import SignInSide from './pages/CreateAccomodation/index'
 
 interface IProps {
   children?: React.ReactNode
@@ -30,5 +31,9 @@ const router = createBrowserRouter([
   {
     path: '/accommodations/:id',
     element: <AccommodationDetailPage />,
+  },
+  {
+    path: '/createAccommodation',
+    element: <SignInSide />,
   },
 ])
