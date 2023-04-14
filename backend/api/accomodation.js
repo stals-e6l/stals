@@ -84,7 +84,7 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
 
 /**
  * @openapi
- * /api/accomodation:
+ * /api/accommodation:
  *      get:
  *          description: Get all accommodations
  *          parameters:
@@ -132,7 +132,6 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *                      items:
  *                          type: string
  *                      example: ["string"]
- *                          
  *                  description: The landmarks within the accommodation
  *              -   in: query
  *                  name: min_pax
@@ -195,7 +194,11 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *              -   in: query
  *                  name: safety_and_security
  *                  schema:
- *                      type: [string]
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
  *                  description: The safety and security features of the accommodation
  *              -   in: query
  *                  name: appliances
