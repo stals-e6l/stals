@@ -27,3 +27,20 @@ export async function apiPost<D, E>(
 
   return res.data as IResponse<E>
 }
+
+export async function apiPut<D, E>(
+  resource: string,
+  payload: IRequestPayload<D>
+) {
+  const res = await axios.put(
+    `${API_URL}/${resource}`,
+    { ...payload.payload },
+    {
+      headers: {
+        Accept: 'application/json',
+      },
+    }
+  )
+
+  return res.data as IResponse<E>
+}
