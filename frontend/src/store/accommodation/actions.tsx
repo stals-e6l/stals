@@ -1,6 +1,6 @@
 import React from 'react'
 import { accommodationContext } from '.'
-import { apiPost } from '../../api'
+import { apiPost, apiPut } from '../../api'
 
 const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
@@ -114,11 +114,28 @@ export const retrieveAccommodationById = (
  * @param data The updated values of accommodation
  * @returns
  */
-export const updateAccommodation = (data: IAccommodation) =>
-  useAccommodation().dispatch({
-    type: 'AC_UPDATE',
-    payload: data,
-  })
+export const updateAccommodation = () => {
+  const { dispatch } = useAccommodation()
+
+  const updateAccommodationHandler = async (data: IAccommodation) => {
+    const res = await apiPut<IAccommodation, IAccommodation>(
+      `accommodation/${data._id}`,
+      { payload: data }
+    )
+
+    if (!res.data || !res.success) {
+      if (res.messages) {
+        throw new Error(res.messages[0])
+      }
+    }
+
+    if (res.data && res.success) {
+      dispatch({ type: 'AC_UPDATE', payload: res.data })
+    }
+  }
+
+  return updateAccommodationHandler
+}
 
 /**
  * Same logic with retrieveAccommodationById
