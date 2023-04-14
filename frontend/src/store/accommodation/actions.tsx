@@ -69,7 +69,11 @@ export const createAccommodation = () => {
  * }
  * @returns All the accommodations
  */
-export const retrieveAccommodations = () => useAccommodation().accommodations
+export const retrieveAccommodations = (): IAccommodation[] => {
+  const { accommodations } = useAccommodation()
+
+  return accommodations
+}
 
 /**
  * Use the retrieveAccommodationById function to retrieve the details of an accommodation by its id.
@@ -94,8 +98,16 @@ export const retrieveAccommodations = () => useAccommodation().accommodations
  * @param id The id of an existing accommodation
  * @returns
  */
-export const retrieveAccommodationById = (id: string) =>
-  useAccommodation().accommodations.filter(el => el._id === id)[0]
+export const retrieveAccommodationById = (
+  id: string
+): IAccommodation | null => {
+  const accommodations = retrieveAccommodations()
+
+  const accommodation = accommodations.filter(val => val._id === id)
+
+  if (!accommodation) return null
+  return accommodation[0]
+}
 
 /**
  * Same logic with createAccommodation.
