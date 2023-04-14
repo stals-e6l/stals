@@ -102,6 +102,7 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *                  name: type
  *                  schema:
  *                      type: string
+ *                      enum: ["hotel","apartment","bedspace","dormitory","transient"]
  *                  description: The type of accommodation
  *              -   in: query
  *                  name: description
@@ -126,7 +127,7 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *              -   in: query
  *                  name: landmarks
  *                  schema:
- *                      type: [string]
+ *                      type: string
  *                  description: The landmarks within the accommodation
  *              -   in: query
  *                  name: min_pax
@@ -154,45 +155,75 @@ accommodationRouter.get('/:accommodationId', async function(req, res){
  *                      type: number
  *                  description: The number of views of the accommodation
  *              -   in: query
- *                  name: limit
- *                  schema:
- *                      type: number
- *                  description: The number of items to return
- *              -   in: query
  *                  name: furnishing
  *                  schema:
- *                      type: [string]
+ *                      type: string
+ *                      enum: ["unfurnished","semifurnished","fully_furnished"]
  *                  description: furnishing of the accommodation
  *              -   in: query
  *                  name: cooking_rules
  *                  schema:
- *                      type: [string]
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
  *                  description: The cooking rules of the accommodation
  *              -   in: query
  *                  name: pet_rules
  *                  schema:
- *                      type: [string]
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
  *                  description: The pet rules of the accommodation
  *              -   in: query
  *                  name: other_rules
  *                  schema:
- *                      type: [string]
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
  *                  description: The other rules of the accommodation
  *              -   in: query
  *                  name: safety_and_security
  *                  schema:
- *                      type: [string]
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string1","string2"]
  *                  description: The safety and security features of the accommodation
  *              -   in: query
  *                  name: appliances
  *                  schema:
- *                      type: [string]
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
  *                  description: The appliances in the accommodation
  *              -   in: query
  *                  name: amenities
  *                  schema:
- *                      type: [string]
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
  *                  description: The included ameneties included in the accommodation
+ *              -   in: query
+ *                  name: is_soft_deleted
+ *                  schema:
+ *                      type: boolean
+ *                  description: Whether the accommodation is soft deleted or not
+ *              -   in: query
+ *                  name: limit
+ *                  schema:
+ *                      type: number
+ *                  description: The number of items to return
  *          responses:
  *              200:
  *                  content:
