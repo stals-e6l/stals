@@ -1,0 +1,102 @@
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url(../../font/SourceSansPro-Regular.ttf) format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url(../../font/SourceSansPro-Bold.ttf) format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  src: url(../../font/Quicksand-Regular.ttf) format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  src: url(../../font/Quicksand-Bold.ttf) format('truetype');
+  font-weight: bold;
+}
+
+
+#location {
+  width: 100%;
+  height: 300px;
+}
+
+#info {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+#NamePrice {
+  display: flex;
+  justify-content: space-between;
+  font-family: Source Sans Pro;
+  font-size: xx-large;
+  font-weight: bold;
+  color: #154360;
+}
+
+#info {
+  font-family: Quicksand;
+}
+
+#boxes {
+  display: flex;
+}
+
+.box {
+  width: 33%;
+  height: 100px;
+  border-radius: 5px;
+  margin: 5px;
+  background-color: #f0f0f0;
+  box-shadow: 0px 3px 5px #888888;
+}
+
+#check{
+  width: 30px;
+  height: 30px;
+}
+
+#pin{
+  width: 50px;
+  height: 50px;
+}
+
+.greenline{
+  width: 3px;
+  height: 20px;
+  margin: 5px;
+  background-color: #60ce80;
+}
+
+.title{
+  display: flex;
+  font-family: Source Sans Pro;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#descriptiontext{
+  padding-left: 10px;
+}
+
+#detailsbox{
+  width: 99%;
+  display: inline-block;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  padding: 15px;
+}
+
+td {
+  padding-right: 150px;
+}
