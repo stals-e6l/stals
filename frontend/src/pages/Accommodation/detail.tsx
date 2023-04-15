@@ -4,7 +4,7 @@ import { retrieveAccommodationById } from '../../store/accommodation/actions'
 import location from '../../assets/Ellens1.jpg'
 import check from '../../assets/Check Green.png'
 import pin from '../../assets/Map pin - Green.png'
-import { Button, Box, Container, Grid } from '@mui/material'
+import { Button, Box, Container, Grid, Typography } from '@mui/material'
 import './detail.css'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
@@ -15,6 +15,14 @@ interface IProps {
 const AccommodationDetailPage: React.FC<IProps> = () => {
   const params = useParams()
   const accommodation = retrieveAccommodationById(params.id as string)
+
+  if (!accommodation) {
+    return (
+      <Box>
+        <Typography>No accommodation found!</Typography>
+      </Box>
+    )
+  }
 
   return (
     <React.Fragment>
