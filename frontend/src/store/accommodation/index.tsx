@@ -1,5 +1,5 @@
 import React from 'react'
-import { mockAccommodations } from './mock'
+import { apiGet } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -12,11 +12,18 @@ const AccommodationProvider: React.FC<IProps> = ({ children }) => {
   })
 
   // init accommodations
+  const initAccommodations = async () => {
+    const res = await apiGet<IAccommodation[]>('accommodation')
+    if (res.success && res.data) {
+      console.log({ loaded: true })
+      dispatch({
+        type: 'AC_INIT',
+        payload: res.data,
+      })
+    }
+  }
   React.useEffect(() => {
-    dispatch({
-      type: 'AC_INIT',
-      payload: mockAccommodations,
-    })
+    initAccommodations()
   }, [])
 
   return (
