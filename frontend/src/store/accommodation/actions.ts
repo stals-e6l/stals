@@ -1,6 +1,6 @@
 import React from 'react'
 import { accommodationContext } from '.'
-import { apiPost } from '../../api'
+import { apiDelete, apiPost, apiPut } from '../../api'
 
 const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
@@ -69,7 +69,11 @@ export const createAccommodation = () => {
  * }
  * @returns All the accommodations
  */
-export const retrieveAccommodations = () => useAccommodation().accommodations
+export const retrieveAccommodations = (): IAccommodation[] => {
+  const { accommodations } = useAccommodation()
+
+  return accommodations
+}
 
 /**
  * Use the retrieveAccommodationById function to retrieve the details of an accommodation by its id.
@@ -94,24 +98,62 @@ export const retrieveAccommodations = () => useAccommodation().accommodations
  * @param id The id of an existing accommodation
  * @returns
  */
-export const retrieveAccommodationById = (id: string) =>
-  useAccommodation().accommodations.filter(el => el._id === id)[0]
+export const retrieveAccommodationById = (
+  id: string
+): IAccommodation | null => {
+  const accommodations = retrieveAccommodations()
+
+  const accommodation = accommodations.filter(val => val._id === id)
+
+  if (!accommodation) return null
+  return accommodation[0]
+}
 
 /**
  * Same logic with createAccommodation.
  * @param data The updated values of accommodation
  * @returns
  */
-export const updateAccommodation = (data: IAccommodation) =>
-  useAccommodation().dispatch({
-    type: 'AC_UPDATE',
-    payload: data,
-  })
+export const updateAccommodation = () => {
+  const { dispatch } = useAccommodation()
+
+  const updateAccommodationHandler = async (data: IAccommodation) => {
+    const res = await apiPut<IAccommodation, IAccommodation>(
+      `accommodation/${data._id}`,
+      { payload: data }
+    )
+
+    if (!res.data || !res.success) {
+      if (res.messages) {
+        throw new Error(res.messages[0])
+      }
+    }
+
+    if (res.data && res.success) {
+      dispatch({ type: 'AC_UPDATE', payload: res.data })
+    }
+  }
+
+  return updateAccommodationHandler
+}
 
 /**
  * Same logic with retrieveAccommodationById
  * @param id The id of the accommodation to be deleted
  * @returns
  */
-export const deleteAccommodation = (id: string) =>
-  useAccommodation().dispatch({ type: 'AC_DELETE', payload: id })
+export const deleteAccommodation = () => {
+  const { dispatch } = useAccommodation()
+
+  const deleteAccommodationHandler = async (id: string) => {
+    const res = await apiDelete(`accommodation/${id}`)
+
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
+
+    dispatch({ type: 'AC_DELETE', payload: id })
+  }
+
+  return deleteAccommodationHandler
+}
