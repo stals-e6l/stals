@@ -25,7 +25,7 @@ interface IAccommodation {
   min_pax: number
   max_pax: number
   num_rooms: number
-  num_beds: string // e.g. 2-3 beds
+  num_beds: number //string // e.g. 2-3 beds
   num_views: number
   furnishing: TAccommodationFurnishing
   cooking_rules: string[]
@@ -34,8 +34,8 @@ interface IAccommodation {
   safety_and_security: string[]
   appliances: string[]
   amenities: string[]
-  created_at: string
-  updated_at: string
+  created_at?: string
+  updated_at?: string
   is_soft_deleted: boolean
 }
 
