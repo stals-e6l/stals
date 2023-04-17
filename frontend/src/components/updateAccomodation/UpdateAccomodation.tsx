@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Box, Input, InputLabel, FormControl, InputAdornment, Dialog } from '@mui/material';
-import image from '../assets/Ellens.jpg'
-import '../update.css'
+import image from '../../assets/Ellens.jpg'
+import '../../update.css'
 import BoxImage from './Box_Image'
 import InputField from './Input_Fields';
 import InputFieldSelect from './Input_Field_Select';
-import { updateAccommodation } from '../store/accommodation/actions';
+import { updateAccommodation } from '../../store/accommodation/actions';
 
 interface AccomDetails {
     open: boolean
@@ -72,11 +72,7 @@ const UpdateAccomodation = ({ open, handleClose, accommodation: props}: AccomDet
     console.log({accommodation,  open, handleClose })
 
     return(
-        <Dialog 
-            open={open} 
-            onClose={handleClose} 
-            fullWidth
-            maxWidth='lg'
+        <Dialog open={open} onClose={handleClose} maxWidth='lg' sx={{style}} fullWidth
             PaperProps={{
                 style:{
                     height: '80%',
@@ -84,42 +80,23 @@ const UpdateAccomodation = ({ open, handleClose, accommodation: props}: AccomDet
                     borderRadius: 15
                 }
             }}
-            sx={{style}}
         >
             <div className='main'>
-                <BoxImage
-                    alt='Ellens'
-                    image={image}
-                    className='image'
-                />
-                <Box sx={{
-                    overflowY: 'scroll',
-                    paddingRight: 1,
-                    width: '100%',
-                    height: '100%'
-                }}>
+                <BoxImage alt='Ellens' image={image} className='image'/>
+                <Box sx={{ overflowY: 'scroll', paddingRight: 1, width: '100%', height: '100%' }}>
                     <h2 className='title'>Edit Listing Details</h2>
 
-                    <InputField
+                    <InputField fieldTitle='Description' placeholder={props.description as string} numRows={4}
                         onChange={(val: string) => setAccommodation(prev => ({...prev, description: val}))}
-                        value={accommodation.description as string}
-                        fieldTitle='Description' placeholder={props.description as string} numRows={4}/>
-                    <InputField 
+                        value={accommodation.description as string}/>
+                    <InputField fieldTitle='Listing Name' placeholder={props.name} numRows={1}
                         onChange={(val: string) => setAccommodation(prev => ({...prev, name: val}))}
-                        value={accommodation.name}
-                        fieldTitle='Listing Name' placeholder={props.name} numRows={1}/>
-                    <InputField 
+                        value={accommodation.name}/>
+                    <InputField fieldTitle='Listing Address' placeholder={props.address} numRows={1}
                         onChange={(val: string) => setAccommodation(prev => ({...prev, address: val}))}
-                        value={accommodation.address}
-                        fieldTitle='Listing Address' placeholder={props.address} numRows={1}/>
+                        value={accommodation.address}/>
 
-                    <Box
-                        sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'
-                        }}
-                    >
+                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <FormControl variant="standard" sx={formControl}>
                             <InputLabel shrink sx={inputLabel}>Price</InputLabel>
                             <Input
@@ -147,27 +124,13 @@ const UpdateAccomodation = ({ open, handleClose, accommodation: props}: AccomDet
                     </Box>
                         
                     <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginTop: 3
-                        }}
-                    >
+                        sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 3 }}>
                         <InputFieldSelect label='Listing Type' defaultValue={props.type}/>
                         <InputFieldSelect label='Listing Type' defaultValue={props.type}/>
                         <InputFieldSelect label='Listing Type' defaultValue={props.type}/>
                     </Box>
 
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginTop: 3,
-                            marginBottom: 3
-                        }}
-                    >
+                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 3, marginBottom: 3 }}>
                         <Button variant='outlined' size='medium' onClick={handleClose}
                             sx={{
                             fontFamily: 'Source Sans Pro',

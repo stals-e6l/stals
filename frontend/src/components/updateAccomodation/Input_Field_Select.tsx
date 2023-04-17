@@ -1,6 +1,5 @@
-import React from 'react'
 import { TextField, MenuItem } from '@mui/material';
-import '../update.css'
+import '../../update.css'
 
 interface Elements{
     label: String
@@ -46,7 +45,6 @@ const InputFieldSelect = (props:Elements) => {
             ))}
         </TextField>
     )
-       
 }
 
 export default InputFieldSelect

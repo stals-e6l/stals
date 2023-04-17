@@ -1,6 +1,5 @@
-import React from 'react'
 import { Input, InputLabel, FormControl } from '@mui/material';
-import '../update.css'
+import '../../update.css'
 
 interface Elements{
     fieldTitle: string
@@ -34,8 +33,7 @@ const InputFieldSmall = (props:Elements) => {
                 multiline rows={props.numRows}
             ></Input>
         </FormControl>
-    )
-       
+    )  
 }
 
 export default InputFieldSmall

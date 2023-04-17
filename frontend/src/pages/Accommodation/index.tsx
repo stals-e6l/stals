@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createAccommodation, retrieveAccommodations } from '../../store/accommodation/actions'
 import { Button, TextField, Box, Modal, Input, InputLabel, FormControl, InputAdornment, MenuItem } from '@mui/material';
-import UpdateAccomodation from '../../components/UpdateAccomodation'
+import UpdateAccomodation from '../../components/updateAccomodation/UpdateAccomodation'
 
 interface IProps {
   children?: React.ReactNode
@@ -17,7 +17,7 @@ const AccommodationPage: React.FC<IProps> = () => {
   const navigate = useNavigate()
   const createAccommodationHandler = createAccommodation()
 
-  // console.log({ accommodations})
+  //console.log({ accommodations})
 
   return (
     <div>
@@ -46,7 +46,7 @@ const AccommodationPage: React.FC<IProps> = () => {
           created_at: "date",
           updated_at: "date",
           is_soft_deleted: false
-      })
+        })
       }}>create</button>
       <ul>
         {accommodations.map((accommodation, key: number) => (

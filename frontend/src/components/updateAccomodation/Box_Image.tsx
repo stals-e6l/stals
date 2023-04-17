@@ -1,6 +1,5 @@
-import React from 'react'
 import { Box } from '@mui/material';
-import '../update.css'
+import '../../update.css'
 
 interface Elements{
     image: string
@@ -17,7 +16,6 @@ const BoxImage = (props:Elements) => {
             className={props.className}
         />
     )
-       
 }
 
 export default BoxImage
