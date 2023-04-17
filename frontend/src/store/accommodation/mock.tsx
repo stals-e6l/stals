@@ -14,7 +14,7 @@ const mockAccommodations: IAccommodation[] = Array.from(Array(3)).map(_ => ({
   min_pax: 1,
   max_pax: 5,
   num_rooms: 3,
-  num_beds: '1-5 rooms',
+  num_beds: 5,
   num_views: faker.datatype.number(),
   furnishing: 'fully_furnished',
   cooking_rules: Array.from(Array(2)).map(_ => faker.lorem.lines(1)),
