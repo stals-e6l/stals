@@ -7,39 +7,11 @@ import InputField from './Input_Fields';
 import InputFieldSelect from './Input_Field_Select';
 import { updateAccommodation } from '../store/accommodation/actions';
 
-interface AccomDetails extends IAccommodation{
+interface AccomDetails {
     open: boolean
     handleClose: () => void
-    // name: string
-    // address: string
-    // type: string
-    // price: number
-    // size_sqm: number
-    // meters_from_uplb: number
-    // min_pax: number
-    // max_pax: number
-    // num_rooms: number
-    // num_beds: string
+    accommodation: IAccommodation
 }
-
-const listingType = [
-    {
-        value: 'apartment',
-        label: 'Apartment',
-    },
-    {
-        value: 'dorm',
-        label: 'Dorm',
-    },
-    {
-        value: 'motel',
-        label: 'Motel',
-    },
-    {
-        value: 'hotel',
-        label: 'Hotel',
-    },
-];
   
 const style = {
     position: 'absolute' as 'absolute',
@@ -65,7 +37,7 @@ const formControl = {
     maxWidth: '31%'
 }
 
-const UpdateAccomodation = (props: AccomDetails) => {
+const UpdateAccomodation = ({ open, handleClose, accommodation: props}: AccomDetails) => {
 
     var listingPrice = String(props.price)
     var listingDistance = String(props.meters_from_uplb)
@@ -82,7 +54,7 @@ const UpdateAccomodation = (props: AccomDetails) => {
         min_pax: 0,
         max_pax: 0,
         num_rooms: 0,
-        num_beds: "1",
+        num_beds: 0,
         num_views: 0,
         furnishing: "semifurnished",
         cooking_rules: [],
@@ -95,15 +67,14 @@ const UpdateAccomodation = (props: AccomDetails) => {
         updated_at: "",
         is_soft_deleted: false
     })
+    const updateAccommodationHandler = updateAccommodation()
 
-    // const updateAccommodationHandler = updateAccommodation()
-
-    console.log({accommodation})
+    console.log({accommodation,  open, handleClose })
 
     return(
         <Dialog 
-            open={props.open} 
-            onClose={props.handleClose} 
+            open={open} 
+            onClose={handleClose} 
             fullWidth
             maxWidth='lg'
             PaperProps={{
@@ -130,11 +101,17 @@ const UpdateAccomodation = (props: AccomDetails) => {
                     <h2 className='title'>Edit Listing Details</h2>
 
                     <InputField
-                    onChange={(val: string) => setAccommodation(prev => ({...prev, description: val}))}
-                    value={accommodation.description as string}
-                    fieldTitle='Description' placeholder='lorem ipsum' numRows={4}/>
-                    {/* <InputField fieldTitle='Listing Name' placeholder={props.name} numRows={1}/>
-                    <InputField fieldTitle='Listing Address' placeholder={props.address} numRows={1}/> */}
+                        onChange={(val: string) => setAccommodation(prev => ({...prev, description: val}))}
+                        value={accommodation.description as string}
+                        fieldTitle='Description' placeholder={props.description as string} numRows={4}/>
+                    <InputField 
+                        onChange={(val: string) => setAccommodation(prev => ({...prev, name: val}))}
+                        value={accommodation.name}
+                        fieldTitle='Listing Name' placeholder={props.name} numRows={1}/>
+                    <InputField 
+                        onChange={(val: string) => setAccommodation(prev => ({...prev, address: val}))}
+                        value={accommodation.address}
+                        fieldTitle='Listing Address' placeholder={props.address} numRows={1}/>
 
                     <Box
                         sx={{
@@ -191,7 +168,7 @@ const UpdateAccomodation = (props: AccomDetails) => {
                             marginBottom: 3
                         }}
                     >
-                        <Button variant='outlined' size='medium' onClick={props.handleClose}
+                        <Button variant='outlined' size='medium' onClick={handleClose}
                             sx={{
                             fontFamily: 'Source Sans Pro',
                             color: '#154360',
@@ -206,9 +183,10 @@ const UpdateAccomodation = (props: AccomDetails) => {
                             }}
                         >Cancel</Button>
                         <Button variant='contained' size='medium'
-                         onClick={() => {
-
-                        }}
+                            onClick={() => {
+                                updateAccommodationHandler(accommodation)
+                                handleClose()
+                            }}
                             sx={{
                             fontFamily: 'Source Sans Pro',
                             backgroundColor: '#154360',
