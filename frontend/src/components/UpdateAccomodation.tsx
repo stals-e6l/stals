@@ -1,21 +1,25 @@
-import React from 'react'
-import { Button, TextField, Box, Modal, Input, InputLabel, FormControl, InputAdornment, MenuItem, Dialog, DialogContent } from '@mui/material';
+import React, { useState } from 'react'
+import { Button, Box, Input, InputLabel, FormControl, InputAdornment, Dialog } from '@mui/material';
 import image from '../assets/Ellens.jpg'
 import '../update.css'
+import BoxImage from './Box_Image'
+import InputField from './Input_Fields';
+import InputFieldSelect from './Input_Field_Select';
+import { updateAccommodation } from '../store/accommodation/actions';
 
-interface AccomDetails{
+interface AccomDetails extends IAccommodation{
     open: boolean
     handleClose: () => void
-    name: string
-    address: string
-    type: string
-    price: number
-    size_sqm: number
-    meters_from_uplb: number
-    min_pax: number
-    max_pax: number
-    num_rooms: number
-    num_beds: string
+    // name: string
+    // address: string
+    // type: string
+    // price: number
+    // size_sqm: number
+    // meters_from_uplb: number
+    // min_pax: number
+    // max_pax: number
+    // num_rooms: number
+    // num_beds: string
 }
 
 const listingType = [
@@ -57,12 +61,6 @@ fontWeight: 'bold',
 color: '#6E6E73',
 }
 
-const input = {
-fontSize: 18,
-color: '#6E6E73',
-marginBottom: 3,
-}
-
 const formControl = {
     maxWidth: '31%'
 }
@@ -72,6 +70,35 @@ const UpdateAccomodation = (props: AccomDetails) => {
     var listingPrice = String(props.price)
     var listingDistance = String(props.meters_from_uplb)
     var listingSize = String(props.size_sqm)
+    const [accommodation, setAccommodation] = useState<IAccommodation>({
+        name: '',
+        description: "",
+        address: "",
+        type: "apartment",
+        price: 0,
+        size_sqm: 0,
+        meters_from_uplb: 0,
+        landmarks: [],
+        min_pax: 0,
+        max_pax: 0,
+        num_rooms: 0,
+        num_beds: "1",
+        num_views: 0,
+        furnishing: "semifurnished",
+        cooking_rules: [],
+        pet_rules: [],
+        other_rules: [],
+        safety_and_security: [],
+        appliances: [],
+        amenities: [],
+        created_at: "",
+        updated_at: "",
+        is_soft_deleted: false
+    })
+
+    // const updateAccommodationHandler = updateAccommodation()
+
+    console.log({accommodation})
 
     return(
         <Dialog 
@@ -89,10 +116,9 @@ const UpdateAccomodation = (props: AccomDetails) => {
             sx={{style}}
         >
             <div className='main'>
-                <Box
-                    component="img"
-                    alt="Ellens"
-                    src={image}
+                <BoxImage
+                    alt='Ellens'
+                    image={image}
                     className='image'
                 />
                 <Box sx={{
@@ -103,20 +129,12 @@ const UpdateAccomodation = (props: AccomDetails) => {
                 }}>
                     <h2 className='title'>Edit Listing Details</h2>
 
-                    <FormControl fullWidth variant='standard'>
-                        <InputLabel shrink sx={inputLabel}>Description</InputLabel>
-                        <Input placeholder='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ac arcu sit amet nisi convallis maximus. Praesent vel dolor hendrerit, semper lectus vitae, feugiat justo. Fusce nec ante at neque lacinia bibendum eget a lectus. Quisque non elit pulvinar, ornare mauris sit amet, ultricies tortor. Sed tempus sed risus ut accumsan. Maecenas a urna quis est tempor sodales vel ut nisi. Donec euismod at tellus et sagittis. Etiam rhoncus sed purus ut convallis. Suspendisse eu nisi a nunc molestie consectetur nec vitae mi.' sx={input} multiline rows={4}></Input>
-                    </FormControl>
-
-                    <FormControl fullWidth variant='standard'>
-                        <InputLabel shrink sx={inputLabel}>Listing Name</InputLabel>
-                        <Input placeholder={props.name} sx={input}></Input>
-                    </FormControl>
-
-                    <FormControl fullWidth variant='standard'>
-                        <InputLabel shrink sx={inputLabel}>Listing Address</InputLabel>
-                        <Input placeholder={props.address} sx={input}></Input>
-                    </FormControl>
+                    <InputField
+                    onChange={(val: string) => setAccommodation(prev => ({...prev, description: val}))}
+                    value={accommodation.description as string}
+                    fieldTitle='Description' placeholder='lorem ipsum' numRows={4}/>
+                    {/* <InputField fieldTitle='Listing Name' placeholder={props.name} numRows={1}/>
+                    <InputField fieldTitle='Listing Address' placeholder={props.address} numRows={1}/> */}
 
                     <Box
                         sx={{
@@ -129,6 +147,7 @@ const UpdateAccomodation = (props: AccomDetails) => {
                             <InputLabel shrink sx={inputLabel}>Price</InputLabel>
                             <Input
                             startAdornment={<InputAdornment position="start">₱</InputAdornment>}
+                            endAdornment={false}
                             placeholder={listingPrice}
                             />
                         </FormControl>
@@ -149,7 +168,7 @@ const UpdateAccomodation = (props: AccomDetails) => {
                             />
                         </FormControl>
                     </Box>
-
+                        
                     <Box
                         sx={{
                             display: 'flex',
@@ -158,47 +177,9 @@ const UpdateAccomodation = (props: AccomDetails) => {
                             marginTop: 3
                         }}
                     >
-                        <TextField
-                            select
-                            label="Listing Type"
-                            defaultValue={props.type}
-                            fullWidth
-                            sx={formControl}
-                        >
-                            {listingType.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </TextField>
-
-                        <TextField
-                            select
-                            label="Listing Type"
-                            defaultValue="hotel"
-                            fullWidth
-                            sx={formControl}
-                        >
-                            {listingType.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </TextField>
-
-                        <TextField
-                            select
-                            label="Listing Type"
-                            defaultValue={props.type}
-                            fullWidth
-                            sx={formControl}
-                        >
-                            {listingType.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </TextField>
+                        <InputFieldSelect label='Listing Type' defaultValue={props.type}/>
+                        <InputFieldSelect label='Listing Type' defaultValue={props.type}/>
+                        <InputFieldSelect label='Listing Type' defaultValue={props.type}/>
                     </Box>
 
                     <Box
@@ -224,12 +205,16 @@ const UpdateAccomodation = (props: AccomDetails) => {
                             }
                             }}
                         >Cancel</Button>
-                        <Button variant='contained' size='medium' onClick={props.handleClose}
+                        <Button variant='contained' size='medium'
+                         onClick={() => {
+
+                        }}
                             sx={{
                             fontFamily: 'Source Sans Pro',
                             backgroundColor: '#154360',
                             "&:hover": { backgroundColor: "#154360" }
                             }}
+                    
                         >Confirm</Button>
                     </Box>
                 </Box>
