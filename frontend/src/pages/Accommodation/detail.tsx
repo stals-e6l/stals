@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { deleteAccommodation, retrieveAccommodationById } from '../../store/accommodation/actions'
+import { retrieveAccommodationById } from '../../store/accommodation/actions'
 
 interface IProps {
   children?: React.ReactNode
