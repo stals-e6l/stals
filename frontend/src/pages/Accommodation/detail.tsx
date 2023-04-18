@@ -1,10 +1,8 @@
 import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import {
-  deleteAccommodation,
-  retrieveAccommodationById,
-  updateAccommodation,
-} from '../../store/accommodation/actions'
+import { useParams } from 'react-router-dom'
+import { retrieveAccommodationById } from '../../store/accommodation/actions'
+import { Button } from '@mui/material'
+import UpdateAccomodation from './update/UpdateAccomodation'
 
 interface IProps {
   children?: React.ReactNode
@@ -12,10 +10,10 @@ interface IProps {
 
 const AccommodationDetailPage: React.FC<IProps> = () => {
   const params = useParams()
-  const navigate = useNavigate()
   const accommodation = retrieveAccommodationById(params.id as string)
-  const updateAccommodationHandler = updateAccommodation()
-  const deleteAccommodationHandler = deleteAccommodation()
+  const [update, setUpdate] = React.useState<boolean>(false)
+
+  const toggleUpdate = () => setUpdate(prev => !prev)
 
   if (!accommodation) {
     return <div>no accommodation found!</div>
@@ -23,30 +21,20 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
 
   return (
     <div>
+      {/* details */}
       {JSON.stringify(accommodation)}
-      <button
-        onClick={() => {
-          if (accommodation) {
-            updateAccommodationHandler({ ...accommodation, name: 'STUFF' })
-          }
-        }}
-      >
-        click to update its name to STUFF
-      </button>
-      <button
-        onClick={async () => {
-          try {
-            if (accommodation._id) {
-              await deleteAccommodationHandler(accommodation._id)
-              navigate('/accommodations')
-            }
-          } catch (err) {
-            alert('error deleting accommodation!')
-          }
-        }}
-      >
-        click to delete accommodation with id {accommodation?._id}
-      </button>
+
+      {/* update */}
+      {update && (
+        <UpdateAccomodation
+          accommodation={accommodation}
+          open={update}
+          handleClose={toggleUpdate}
+        />
+      )}
+      <Button variant="contained" onClick={toggleUpdate}>
+        Edit Accommodation
+      </Button>
     </div>
   )
 }
