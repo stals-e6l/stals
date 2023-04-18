@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { retrieveAccommodationById } from '../../store/accommodation/actions'
 import { Button } from '@mui/material'
-import UpdateAccomodation from './update/UpdateAccomodation'
+import UpdateAccomodation from './UpdateAccomodation'
 
 interface IProps {
   children?: React.ReactNode
