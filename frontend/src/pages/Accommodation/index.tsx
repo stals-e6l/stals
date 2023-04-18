@@ -12,15 +12,9 @@ interface IProps {
 }
 
 const AccommodationPage: React.FC<IProps> = () => {
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
-
   const accommodations = retrieveAccommodations()
   const navigate = useNavigate()
   const createAccommodationHandler = createAccommodation()
-
-  //console.log({ accommodations})
 
   return (
     <div>
@@ -64,17 +58,6 @@ const AccommodationPage: React.FC<IProps> = () => {
           >
             {accommodation.name}
           </li>
-        ))}
-        <Button variant="outlined" onClick={handleOpen}>
-          update
-        </Button>
-        {accommodations.map((accommodation, key: number) => (
-          <UpdateAccomodation
-            key={key}
-            open={open}
-            handleClose={handleClose}
-            accommodation={accommodation}
-          />
         ))}
       </ul>
     </div>
