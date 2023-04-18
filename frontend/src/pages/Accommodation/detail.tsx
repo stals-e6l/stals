@@ -1,206 +1,525 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { retrieveAccommodationById } from '../../store/accommodation/actions'
-import location from "../../assets/Ellens1.jpg";
-import check from "../../assets/Check Green.png"
-import pin from "../../assets/Map pin - Green.png"
-import { Button, Box, Container, Grid} from "@mui/material"
-import './detail.css'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import location from '../../assets/Ellens1.jpg'
+import check from '../../assets/Check Green.png'
+import pin from '../../assets/Map pin - Green.png'
+import { Button, Box, Container, Typography, Grid } from '@mui/material'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 interface IProps {
   children?: React.ReactNode
+}
+
+const boxStyle = {
+  width: '33%',
+  minReight: '50px',
+  borderRadius: '5px',
+  margin: '5px',
+  backgroundColor: '#f0f0f0',
+  boxShadow: '0px 3px 5px #888888',
+  padding: '0px 10px 20px 10px',
+  position: 'relative',
+  overflow: 'hidden',
+}
+
+const boxLabel = {
+  fontFamily: 'Source Sans Pro',
+  fontWeight: 'bold',
+  color: '#154360',
+  fontSize: 'large',
+  position: 'absolute',
+  bottom: '0',
+  paddingBottom: '2px',
+}
+
+const greenLine = {
+  width: '3px',
+  height: '20px',
+  margin: '5px',
+  backgroundColor: '#60ce80',
+}
+
+const title = { display: 'flex', alignItems: 'center', paddingTop: '10px' }
+
+const unshadedTable = {
+  width: '100%',
+  marginLeft: '15px',
+  marginRight: '15px',
+  paddingBottom: '5px',
+}
+
+const shadedTable = {
+  width: '100%',
+  borderRadius: '5px',
+  marginLeft: '10px',
+  marginRight: '10px',
+  backgroundColor: '#f0f0f0',
+  padding: '15px 30px',
 }
 
 const AccommodationDetailPage: React.FC<IProps> = () => {
   const params = useParams()
   const accommodation = retrieveAccommodationById(params.id as string)
 
-  return( <React.Fragment>
-    
+  return (
+    <React.Fragment>
+      <Box
+        component="img"
+        sx={{
+          width: '100%',
+          height: '300px',
+        }}
+        alt="location image"
+        src={location}
+      />
 
-    <body>
-      <img id="location" src={location} />
-      <div id="info">
-        <div id="NamePrice">
-          <p>{accommodation.name}</p>
-          <p>Php {accommodation.price}</p>
-        </div>
-        {accommodation.type}
+      <Container>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontFamily: 'Source Sans Pro',
+          }}
+        >
+          <Typography variant="h2">{accommodation.name}</Typography>
+          <Typography variant="h2">{accommodation.price}</Typography>
+        </Box>
 
-        <div id="boxes">
-          <div className="box">
-            <div id="rating">
-              <span id="numerator">4.7</span><span id="denominator">/5</span>
-              <div id="reviewNumbers">
+        <Typography variant="h5">{accommodation.type}</Typography>
+
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={boxStyle}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+              <Typography
+                sx={{
+                  fontSize: '40px',
+                  fontFamily: 'Source Sans Pro',
+                  color: '#60ce80',
+                }}
+              >
+                4
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: 'Source Sans Pro',
+                  color: '#154360',
+                  paddingBottom: '8px',
+                }}
+              >
+                /5
+              </Typography>
+              <Box sx={{ paddingBottom: '6px', paddingLeft: '5px' }}>
                 <div>Placeholder</div>
-                <div><a id="link" href='url'>1000+ reviews</a></div>
-              </div>
-            </div>
-            <div id="review">
-              <AccountCircleIcon id="userIcon"/>
-              <div id="userReview">
-                <div id="username">Rodge "Pogi" De Luna</div>
-                <div id="comment">It is a nice place. We enjoyed our stay.</div>
-              </div>
-            </div>
-            <div className="boxLabel">Reviews</div>
-          </div>
+                <Typography>1000+ reviews</Typography>
+              </Box>
+            </Box>
 
-          <div className="box">
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <AccountCircleIcon
+                id="userIcon"
+                sx={{ color: '#154360', width: '45px', height: '45px' }}
+              />
+              <Box>
+                <Typography sx={{ color: '#888888', fontWeight: 'bold' }}>
+                  Rodge "Pogi" De Luna
+                </Typography>
+                <Typography sx={{ fontSize: 'small' }}>
+                  It is a nice place. We enjoyed our stay.
+                </Typography>
+              </Box>
+            </Box>
+
+            <Typography sx={boxLabel}>Review</Typography>
+          </Box>
+
+          <Box sx={boxStyle}>
             {accommodation.amenities.map((value, index) => {
-              return <li><img id="check" src={check}/>{value}</li>
+              return (
+                <Box sx={{ display: 'flex' }}>
+                  <Box
+                    component="img"
+                    sx={{
+                      width: '25px',
+                      height: '25px',
+                    }}
+                    alt="check image"
+                    src={check}
+                  />
+                  <Typography>{value}</Typography>
+                </Box>
+              )
             })}
-            <div className="boxLabel">Facilities and Services</div>
-          </div>
+            <Typography sx={boxLabel}>Facilities and Services</Typography>
+          </Box>
 
-          <div className="box">
-            <div id="address"><img id="pin" src={pin}/>
-            {accommodation.address}</div>
-            <div id ="distance">about &nbsp;<span id="highlight">{accommodation.meters_from_uplb} meters</span>&nbsp;from UPLB</div>
-            <div className="boxLabel">Address</div>
-          </div>
-        </div>
+          <Box sx={boxStyle}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box
+                component="img"
+                sx={{
+                  width: '50px',
+                  height: '50px',
+                }}
+                alt="pin image"
+                src={pin}
+              />
+              <Typography>{accommodation.address}</Typography>
+            </Box>
 
-        <div className="title"><div className='greenline'></div>Description</div>
-        <div id="descriptiontext">{accommodation.description}</div>
-        
-        <div className="title"><div className='greenline'></div>Apartment and Room Details</div>
-        <table className='shadedTable'>
-          <tr>
-            <td className='firstCol'>Room Size</td>
-            <td>{accommodation.size_sqm} square meters</td>
-          </tr>
-          <tr>
-            <td>Minimum Capacity</td>
-            <td>{accommodation.min_pax}</td>
-          </tr>
-          <tr>
-            <td>Maximum Capacity</td>
-            <td>{accommodation.max_pax}</td>
-          </tr>
-          <tr>
-            <td>Number of Rooms</td>
-            <td>{accommodation.num_rooms} rooms</td>
-          </tr>
-          <tr>
-            <td>Number of Beds</td>
-            <td>{accommodation.num_beds} beds</td>
-          </tr>         
-          <tr>
-            <td>Furnishing</td>
-            <td>{accommodation.furnishing}</td>
-          </tr>
-        </table> 
+            <Typography sx={{ fontWeight: 'bold' }}>
+              about
+              <Typography
+                sx={{ display: 'inline', fontWeight: 'bold', color: '#60ce80' }}
+              >
+                &nbsp;{accommodation.meters_from_uplb} meters&nbsp;
+              </Typography>
+              from UPLB
+            </Typography>
+            <Typography sx={boxLabel}>Address</Typography>
+          </Box>
+        </Box>
 
-        <div className="title"><div className='greenline'></div>Facilities and Services</div>
-        <table className="unshadedTable">
-          <tr>
-            <td className='firstCol'>Amenities</td>
-            <td><ul>
+        <Box sx={title}>
+          <Box sx={greenLine} />
+          <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
+        </Box>
+        <Box sx={unshadedTable}>
+          <Typography>{accommodation.description}</Typography>
+        </Box>
+
+        <Box sx={title}>
+          <Box sx={greenLine} />
+          <Typography sx={{ fontWeight: 'bold' }}>
+            Apartment and Room Details
+          </Typography>
+        </Box>
+        <Box sx={shadedTable}>
+          <Grid container spacing={1}>
+            <Grid item xs={4}>
+              <Typography>Room Size</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography>{accommodation.size_sqm} square meters</Typography>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography>Minimum Capacity</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography>{accommodation.min_pax}</Typography>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography>Maximum Capacity</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography>{accommodation.max_pax}</Typography>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography>Number of Rooms</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography>{accommodation.num_rooms} rooms</Typography>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography>Number of Beds</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography>{accommodation.num_beds} beds</Typography>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Box sx={title}>
+          <Box sx={greenLine} />
+          <Typography sx={{ fontWeight: 'bold' }}>
+            Facilities and Services
+          </Typography>
+        </Box>
+        <Box sx={unshadedTable}>
+          <Grid container spacing={1}>
+            <Grid item xs={4}>
+              <Typography>Amenities</Typography>
+            </Grid>
+            <Grid item xs={8}>
               {accommodation.amenities.map((value, index) => {
-                  return <li><img id="check" src={check}/>{value}</li>
+                return (
+                  <Box sx={{ display: 'flex' }}>
+                    <Box
+                      component="img"
+                      sx={{
+                        width: '25px',
+                        height: '25px',
+                      }}
+                      alt="check image"
+                      src={check}
+                    />
+                    <Typography>{value}</Typography>
+                  </Box>
+                )
               })}
-            </ul></td>
-          </tr>
-          <tr>
-            <td>Appliances</td>
-            <td><ul>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography>Appliances</Typography>
+            </Grid>
+            <Grid item xs={8}>
               {accommodation.appliances.map((value, index) => {
-                  return <li><img id="check" src={check}/>{value}</li>
+                return (
+                  <Box sx={{ display: 'flex' }}>
+                    <Box
+                      component="img"
+                      sx={{
+                        width: '25px',
+                        height: '25px',
+                      }}
+                      alt="check image"
+                      src={check}
+                    />
+                    <Typography>{value}</Typography>
+                  </Box>
+                )
               })}
-            </ul></td>
-          </tr>
-          <tr>
-            <td>Safety and Security</td>
-            <td><ul>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography>Safety and Security</Typography>
+            </Grid>
+            <Grid item xs={8}>
               {accommodation.safety_and_security.map((value, index) => {
-                  return <li><img id="check" src={check}/>{value}</li>
+                return (
+                  <Box sx={{ display: 'flex' }}>
+                    <Box
+                      component="img"
+                      sx={{
+                        width: '25px',
+                        height: '25px',
+                      }}
+                      alt="check image"
+                      src={check}
+                    />
+                    <Typography>{value}</Typography>
+                  </Box>
+                )
               })}
-            </ul></td>
-          </tr>
-        </table> 
+            </Grid>
+          </Grid>
+        </Box>
 
-        <div className="title"><div className='greenline'></div>Landmark</div>
-        <table className='shadedTable'>
-          <tr>
-            <td className='firstCol'>UPLB Gate</td>
-            <td>{accommodation.meters_from_uplb} meters</td>
-          </tr>
-          <tr>
-            <td><ul>
+        <Box sx={title}>
+          <Box sx={greenLine} />
+          <Typography sx={{ fontWeight: 'bold' }}>Landmark</Typography>
+        </Box>
+        <Box sx={shadedTable}>
+          <Grid container spacing={1}>
+            <Grid item xs={4}>
+              <Typography>UPLB Gate</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              {accommodation.meters_from_uplb} meters
+            </Grid>
+            <Grid item xs={4}>
               {accommodation.landmarks.map((value, index) => {
-                return <li>{value}</li>
+                return <Typography>{value}</Typography>
               })}
-            </ul></td>
-          </tr>
+            </Grid>
+          </Grid>
+        </Box>
 
-        </table> 
-
-        <div className="title"><div className='greenline'></div>Policies</div>
-        <table className="unshadedTable">
-          <tr>
-            <td className='firstCol'>Cooking Rules</td>
-            <td><ul>
+        <Box sx={title}>
+          <Box sx={greenLine} />
+          <Typography sx={{ fontWeight: 'bold' }}>Policies</Typography>
+        </Box>
+        <Box sx={unshadedTable}>
+          <Grid container spacing={1}>
+            <Grid item xs={4}>
+              <Typography>Cooking Rules</Typography>
+            </Grid>
+            <Grid item xs={8}>
               {accommodation.cooking_rules.map((value, index) => {
-                  return <li><img id="check" src={check}/>{value}</li>
+                return (
+                  <Box sx={{ display: 'flex' }}>
+                    <Box
+                      component="img"
+                      sx={{
+                        width: '25px',
+                        height: '25px',
+                      }}
+                      alt="check image"
+                      src={check}
+                    />
+                    <Typography>{value}</Typography>
+                  </Box>
+                )
               })}
-            </ul></td>
-          </tr>
-          <tr>
-            <td>Pet Rules</td>
-            <td><ul>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography>Pet Rules</Typography>
+            </Grid>
+            <Grid item xs={8}>
               {accommodation.pet_rules.map((value, index) => {
-                  return <li><img id="check" src={check}/>{value}</li>
+                return (
+                  <Box sx={{ display: 'flex' }}>
+                    <Box
+                      component="img"
+                      sx={{
+                        width: '25px',
+                        height: '25px',
+                      }}
+                      alt="check image"
+                      src={check}
+                    />
+                    <Typography>{value}</Typography>
+                  </Box>
+                )
               })}
-            </ul></td>
-          </tr>
-          <tr>
-            <td>Other Rules</td>
-            <td><ul>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Typography>Other Rules</Typography>
+            </Grid>
+            <Grid item xs={8}>
               {accommodation.other_rules.map((value, index) => {
-                  return <li><img id="check" src={check}/>{value}</li>
+                return (
+                  <Box sx={{ display: 'flex' }}>
+                    <Box
+                      component="img"
+                      sx={{
+                        width: '25px',
+                        height: '25px',
+                      }}
+                      alt="check image"
+                      src={check}
+                    />
+                    <Typography>{value}</Typography>
+                  </Box>
+                )
               })}
-            </ul></td>
-          </tr>
-        </table> 
+            </Grid>
+          </Grid>
+        </Box>
 
-        <div className="title" id="reviewTitle"><div className='greenline' id="largerGreenLine"></div>Reviews</div>
-        <div id='reviewTable'>
-          <div id="ratingLarge">
-            <span id="numeratorLarge">4.7</span><span id="denominatorLarge">/5</span>
-            <div id="reviewNumbersLarge">
-              <div>Placeholder</div>
-              <div><a id="link" href='url'>1000+ reviews</a></div>
-            </div>
-          </div>
-          <button id="button">Add Review</button>
-        </div>
-        <div className="unshadedTable">
-          <div className='fullReview'>
-              <div className="reviewUsername">Von Arellano</div>
-              <div>Placeholder</div>
-              <div>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups</div>
-          </div>
-          
-          <div className='fullReview'>
-              <div className="reviewUsername">Von Arellano</div>
-              <div>Placeholder</div>
-              <div>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups</div>
-          </div>
+        <Box sx={title}>
+          <Box sx={greenLine} />
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+            Reviews
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            position: 'relative',
+            width: '100%',
+            borderRadius: '5px',
+            marginLeft: '10px',
+            marginRight: '10px',
+            backgroundColor: '#f0f0f0',
+            padding: '15px 30px',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-end',
+            }}
+          >
+            <Typography
+              sx={{
+                color: '#60ce80',
+                fontSize: '45px',
+                fontWeight: 'bold',
+              }}
+            >
+              4.7
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: '20px',
+                paddingBottom: '8px',
+                color: '#154360'
+              }}
+            >
+              /5
+            </Typography>
+            <Box
+              sx={{
+                paddingBottom: '10px',
+                paddingLeft: '5px',
+              }}
+            >
+              <Typography>Placeholder</Typography>
+              <Typography>1000+ reviews</Typography>
+            </Box>
+          </Box>
+          <Button sx={{
+            position: 'absolute',
+            right: '25px',
+            backgroundColor: '#154360',
+            color: 'white',
+            fontWeight: 'bold'
+          }}>Add Review</Button>
+        </Box>
 
-          <div className='fullReview'>
-              <div className="reviewUsername">Von Arellano</div>
-              <div>Placeholder</div>
-              <div>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups</div>
-          </div>
-        </div>
-      </div>
-    </body>
-  </React.Fragment>
+        <Box sx={unshadedTable}>
+          <Box sx={{ paddingBottom: '10px' }}>
+            <Typography
+              sx={{
+                fontWeight: 'bold',
+              }}
+            >
+              Von Arellano
+            </Typography>
+            <Typography>Placeholder</Typography>
+            <Typography>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ab
+              pariatur reiciendis rerum, laudantium suscipit rem natus ducimus
+              totam id facilis quibusdam vero modi dolores ipsam saepe
+              temporibus corporis fuga.
+            </Typography>
+          </Box>
 
-  );
+          <Box sx={{ paddingBottom: '10px' }}>
+            <Typography
+              sx={{
+                fontWeight: 'bold',
+              }}
+            >
+              Von Arellano
+            </Typography>
+            <Typography>Placeholder</Typography>
+            <Typography>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ab
+              pariatur reiciendis rerum, laudantium suscipit rem natus ducimus
+              totam id facilis quibusdam vero modi dolores ipsam saepe
+              temporibus corporis fuga.
+            </Typography>
+          </Box>
+
+          <Box sx={{ paddingBottom: '10px' }}>
+            <Typography
+              sx={{
+                fontWeight: 'bold',
+              }}
+            >
+              Von Arellano
+            </Typography>
+            <Typography>Placeholder</Typography>
+            <Typography>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ab
+              pariatur reiciendis rerum, laudantium suscipit rem natus ducimus
+              totam id facilis quibusdam vero modi dolores ipsam saepe
+              temporibus corporis fuga.
+            </Typography>
+          </Box>
+        </Box>
+      </Container>
+    </React.Fragment>
+  )
 }
 
 export default AccommodationDetailPage
-    
