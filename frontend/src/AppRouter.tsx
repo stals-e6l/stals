@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AccommodationPage from './pages/Accommodation'
 import AccommodationDetailPage from './pages/Accommodation/detail'
 import SamplePage from './pages/Sample'
+import CreateAccommodationPage from './pages/CreateAccommodation'
 
 interface IProps {
   children?: React.ReactNode
@@ -31,4 +32,9 @@ const router = createBrowserRouter([
     path: '/accommodations/:id',
     element: <AccommodationDetailPage />,
   },
+  {
+    path: '/createaccommodation/',
+    element: <CreateAccommodationPage />,
+  },
+
 ])
