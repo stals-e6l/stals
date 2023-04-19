@@ -4,6 +4,7 @@ import {
   createAccommodation,
   retrieveAccommodations,
 } from '../../store/accommodation/actions'
+import DeleteAccom from './deleteAccomodation'
 
 interface IProps {
   children?: React.ReactNode
@@ -55,6 +56,7 @@ const AccommodationPage: React.FC<IProps> = () => {
       <button onClick={() => handleSampleCreate()}>
         sample create accommodation
       </button>
+      < DeleteAccom />
     </div>
   )
 }
