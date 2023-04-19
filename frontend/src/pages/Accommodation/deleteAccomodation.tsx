@@ -10,7 +10,6 @@ interface AccomDetails extends IAcommodation {
 
 const DeleteAccomodation = (props: AccomDetails) => {
     return <>
-        <Button onClick={handleClickOpen}>Delete</Button>
         <Dialog 
         open={props.open}
         handleClose={props.handleClose}
