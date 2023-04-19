@@ -22,7 +22,6 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Switch from '@mui/material/Switch'
 import { useNavigate } from 'react-router-dom'
-import { retrieveAccommodations } from '../../store/accommodation/actions'
 import clsx from 'clsx'
 
 export function BasicInputFields(props: any) {
