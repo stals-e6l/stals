@@ -1,11 +1,15 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { retrieveAccommodationById } from '../../store/accommodation/actions'
-import { Box, Button, Container, Grid, Typography } from '@mui/material'
+import location from '../../assets/Images/Ellens.jpg'
+// import check from '../../assets/ImgaCheck Green.png'
+// import pin from '../../assets/Map pin - Green.png'
+import { Button, Box, Container, Typography, Grid } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import location from '../../assets/Ellens1.jpg'
-import check from '../../assets/Check Green.png'
-import pin from '../../assets/Map pin - Green.png'
+
+interface IProps {
+  children?: React.ReactNode
+}
 
 const boxStyle = {
   width: '33%',
@@ -54,17 +58,9 @@ const shadedTable = {
   padding: '15px 30px',
 }
 
-interface IProps {
-  children?: React.ReactNode
-}
-
 const AccommodationDetailPage: React.FC<IProps> = () => {
   const params = useParams()
   const accommodation = retrieveAccommodationById(params.id as string)
-
-  if (!accommodation) {
-    return <div>no accommodation found!</div>
-  }
 
   return (
     <React.Fragment>
@@ -126,7 +122,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               />
               <Box>
                 <Typography sx={{ color: '#888888', fontWeight: 'bold' }}>
-                  Rodge De Luna
+                  Rodge "Pogi" De Luna
                 </Typography>
                 <Typography sx={{ fontSize: 'small' }}>
                   It is a nice place. We enjoyed our stay.
@@ -140,7 +136,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
           <Box sx={boxStyle}>
             {accommodation.amenities.map((value, index) => {
               return (
-                <Box key={index} sx={{ display: 'flex' }}>
+                <Box sx={{ display: 'flex' }}>
                   <Box
                     component="img"
                     sx={{
@@ -166,7 +162,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                   height: '50px',
                 }}
                 alt="pin image"
-                src={pin}
+                src={""}
               />
               <Typography>{accommodation.address}</Typography>
             </Box>
@@ -251,7 +247,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.amenities.map((value, index) => {
                 return (
-                  <Box key={index} sx={{ display: 'flex' }}>
+                  <Box sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -273,7 +269,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.appliances.map((value, index) => {
                 return (
-                  <Box key={index} sx={{ display: 'flex' }}>
+                  <Box sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -295,7 +291,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.safety_and_security.map((value, index) => {
                 return (
-                  <Box key={index} sx={{ display: 'flex' }}>
+                  <Box sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -327,7 +323,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             </Grid>
             <Grid item xs={4}>
               {accommodation.landmarks.map((value, index) => {
-                return <Typography key={index}>{value}</Typography>
+                return <Typography>{value}</Typography>
               })}
             </Grid>
           </Grid>
@@ -345,7 +341,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.cooking_rules.map((value, index) => {
                 return (
-                  <Box key={index} sx={{ display: 'flex' }}>
+                  <Box sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -367,7 +363,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.pet_rules.map((value, index) => {
                 return (
-                  <Box key={index} sx={{ display: 'flex' }}>
+                  <Box sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -389,7 +385,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.other_rules.map((value, index) => {
                 return (
-                  <Box key={index} sx={{ display: 'flex' }}>
+                  <Box sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -445,7 +441,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               sx={{
                 fontSize: '20px',
                 paddingBottom: '8px',
-                color: '#154360',
+                color: '#154360'
               }}
             >
               /5
@@ -460,17 +456,13 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               <Typography>1000+ reviews</Typography>
             </Box>
           </Box>
-          <Button
-            sx={{
-              position: 'absolute',
-              right: '25px',
-              backgroundColor: '#154360',
-              color: 'white',
-              fontWeight: 'bold',
-            }}
-          >
-            Add Review
-          </Button>
+          <Button sx={{
+            position: 'absolute',
+            right: '25px',
+            backgroundColor: '#154360',
+            color: 'white',
+            fontWeight: 'bold'
+          }}>Add Review</Button>
         </Box>
 
         <Box sx={unshadedTable}>

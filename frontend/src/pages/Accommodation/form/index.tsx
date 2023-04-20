@@ -3,11 +3,13 @@ import {
   FormGroup,
   FormLabel,
   Grid,
+  Hidden,
   MenuItem,
   Select,
   TextField,
 } from '@mui/material'
 import React from 'react'
+import image from '../../../assets/Ellens.jpg'
 
 interface IProps {
   children?: React.ReactNode
@@ -15,20 +17,43 @@ interface IProps {
   setFieldValue: (key: string, val: string | number | string[]) => void
 }
 
+const boxImage= {
+  maxWidth: '50%',
+  maxHeight: '100%',
+  paddingRight: '20px'
+}
+
+const imageStyle= {
+  width: '100%',
+  height: '100%'
+}
+
+const mainBox= {
+  maxWidth: '100%',
+  maxHeight: '80%',
+  display: 'flex',
+  overflow: 'hidden'
+}
+
+const mainGrid= {
+  overflowY: 'scroll',
+  paddingTop: '20px'
+}
+
 const AccommodationForm: React.FC<IProps> = ({ values, setFieldValue }) => {
   return (
-    <Box
-      sx={{
-        padding: '50px',
-        width: '1000px',
-      }}
-    >
-      <Grid container>
-        <Grid item xs={6}>
-          {/* TODO: image goes here */}
-        </Grid>
-
-        <Grid item xs={6}>
+    <Box  sx={mainBox}>
+      <Box sx={boxImage}>
+        <Box
+          component="img"
+          alt="Ellens"
+          src={image}
+          className='image'
+          style={imageStyle}
+        />
+      </Box>
+      <Grid container sx={mainGrid}>
+        <Grid item xs={12}>
           <FormGroup>
             <FormLabel>Name</FormLabel>
             <TextField

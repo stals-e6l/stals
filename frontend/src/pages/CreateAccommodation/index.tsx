@@ -22,11 +22,12 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Switch from '@mui/material/Switch'
 import { useNavigate } from 'react-router-dom'
-import { retrieveAccommodations } from '../../store/accommodation/actions'
 import clsx from 'clsx'
 import '../../store/createAccommodation/styles.css'
+import { useAccommodationForm } from '../Accommodation/form/hooks'
+// import { createAccommodation } from '../Accommodation/actions'
 // import { BasicInputFields } from '../../store/createAccommodation/components'
-
+import { createAccommodation } from '../../store/accommodation/actions'
 interface IProps {
   children?: React.ReactNode
 }
@@ -46,10 +47,15 @@ const theme = createTheme({
   }
 })
 
-function BasicInputFields(props: any) {
+
+function BasicInputFields({values, setFieldValue}: any) {
+
+  console.log({ values})
   return (
     <div>
       <TextField
+        value={values.name}
+        onChange={e => setFieldValue('name', e.target.value)}
         margin="normal"
         required
         fullWidth
@@ -60,45 +66,114 @@ function BasicInputFields(props: any) {
         autoFocus
       />
       <TextField
+        value={values.address}
+        onChange={e => setFieldValue('address', e.target.value)}
+        margin="normal"
+        required
+        fullWidth
+        id="listingAddress"
+        label="Listing address"
+        name="listingAddress"
+        autoComplete="listingAddress"
+        autoFocus
+      />
+      <TextField
+        value={Number(values.size_sqm)}
+        onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
         margin="normal"
         required
         fullWidth
         id="unitSz"
         label="Unit size"
         name="unitSz"
+        type='number'
       />
       <TextField
+        value={Number(values.meters_from_uplb)}
+        onChange={e => setFieldValue('meters_from_uplb', Number(e.target.value))}
+        margin="normal"
+        required
+        fullWidth
+        id="metersFromUPLB"
+        label="Meters from UPLB"
+        name="metersFromUPLB"
+        type='number'
+      />
+      <TextField
+        value={Number(values.num_rooms)}
+        onChange={e => setFieldValue('num_rooms', Number(e.target.value))}
         margin="normal"
         required
         fullWidth
         id="numBedRm"
         label="Number of bedrooms"
         name="numberOfBedrooms"
+        type='number'
       />
       <TextField
+        value={Number(values.num_beds)}
+        onChange={e => setFieldValue('num_beds', Number(e.target.value))}
         margin="normal"
         required
         fullWidth
-        id="numBed"
+        id="numBeds"
         label="Number of Beds"
-        name="numBed"
+        name="numBeds"
+        type='number'
       />
       <TextField
+        value={Number(values.min_pax)}
+        onChange={e => setFieldValue('min_pax', Number(e.target.value))}
         margin="normal"
         required
         fullWidth
-        id="minCap"
+        id="minPax"
         label="Minimum capacity"
-        name="minCap"
+        name="minPax"
+        type='number'
       />
       <TextField
+        value={Number(values.max_pax)}
+        onChange={e => setFieldValue('max_pax', Number(e.target.value))}
         margin="normal"
         required
         fullWidth
-        id="maxCap"
+        id="maxPax"
         label="Maximum capacity"
-        name="maxCap"
+        name="maxPax"
+        type='number'
       />
+      
+      <TextField
+        value={Number(values.price)}
+        onChange={e => setFieldValue('price', e.target.value)}
+        margin="normal"
+        required
+        fullWidth
+        id="listingPrice"
+        label="Listing price"
+        name="listingPrice"
+        type='number'
+      />
+      <TextField
+        value={values.description}
+        onChange={e => setFieldValue('description', e.target.value)}
+        margin="normal"
+        required
+        fullWidth
+        multiline
+        id="desc"
+        label="Description"
+        name="desc"
+      />
+    </div>
+  )
+}
+
+function AdvancedInputFields(props: any) {
+  const {cookingRule, handleCookingRules, safetyAndSecurity, handleSafetyAndSecurity, isPetFriendly, handleIsPetFriendly} = props
+  return (
+    <div>
       {/*Furnishing*/}
       <Autocomplete
         multiple
@@ -129,39 +204,6 @@ function BasicInputFields(props: any) {
         )}
       />
       {/*Furnishing*/}
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        id="listingPrice"
-        label="Listing price"
-        name="listingPrice"
-      />
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        multiline
-        id="desc"
-        label="Description"
-        name="desc"
-      />
-    </div>
-  )
-}
-
-function AdvancedInputFields(props: any) {
-  const {cookingRule, handleCookingRules, safetyAndSecurity, handleSafetyAndSecurity, isPetFriendly, handleIsPetFriendly} = props
-  return (
-    <div>
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        id="distFromUPLB"
-        label="Distance from UPLB"
-        name="distFromUPLB"
-      />
 
       <Autocomplete
         multiple
@@ -353,13 +395,20 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
   // const accommodations = retrieveAccommodations()
   // const navigate = useNavigate()
 
+  const createAccommodationHandler = createAccommodation()
+  const navigate = useNavigate()
+  const {values, setFieldValue, submitForm } = useAccommodationForm(val => {
+    createAccommodationHandler(val)
+    navigate("/accommodations")
+  })
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    })
+    // const data = new FormData(event.currentTarget)
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // })
   }
 
   // Implement upload
@@ -475,7 +524,7 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
               sx={{ mt: 1 }}
             >
 
-              <BasicInputFields /> {/*Basic input*/}
+              <BasicInputFields values={values} setFieldValue={setFieldValue} /> {/*Basic input*/}
 
               <Box // Spacer
                 sx={{
@@ -493,6 +542,9 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
+                onClick={() => {
+                  submitForm()
+                }}
                 sx={{ mt: 3, mb: 2 }}
               >
                 Submit

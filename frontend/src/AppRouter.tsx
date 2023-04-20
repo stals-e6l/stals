@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import AccommodationPage from './pages/Accommodation'
-import AccommodationDetailPage from './pages/Accommodation/detail'
+import AccommodationPage from './pages/Accommodation/AccommodationPage'
+import AccommodationDetailPage from './pages/Accommodation/AccommodationDetailPage'
 import SamplePage from './pages/Sample'
 import CreateAccommodationPage from './pages/CreateAccommodation'
 
