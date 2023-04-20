@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import { retrieveAccommodationById } from '../../store/accommodation/actions'
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import UpdateAccomodation from './UpdateAccomodation'
 import location from '../../assets/Ellens1.jpg'
 import check from '../../assets/Check Green.png'
 import pin from '../../assets/Map pin - Green.png'
@@ -62,9 +61,6 @@ interface IProps {
 const AccommodationDetailPage: React.FC<IProps> = () => {
   const params = useParams()
   const accommodation = retrieveAccommodationById(params.id as string)
-  const [update, setUpdate] = React.useState<boolean>(false)
-
-  const toggleUpdate = () => setUpdate(prev => !prev)
 
   if (!accommodation) {
     return <div>no accommodation found!</div>
@@ -532,25 +528,6 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
       </Container>
     </React.Fragment>
   )
-
-  // return (
-  //   <div>
-  //     {/* details */}
-  //     {JSON.stringify(accommodation)}
-
-  //     {/* update */}
-  //     {update && (
-  //       <UpdateAccomodation
-  //         accommodation={accommodation}
-  //         open={update}
-  //         handleClose={toggleUpdate}
-  //       />
-  //     )}
-  //     <Button variant="contained" onClick={toggleUpdate}>
-  //       Edit Accommodation
-  //     </Button>
-  //   </div>
-  // )
 }
 
 export default AccommodationDetailPage
