@@ -11,6 +11,20 @@ interface IProps {
   accommodation: IAccommodation
 }
 
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  overflowX: 'hidden',
+  width: '80%',
+  height: '80%',
+  padding: 0,
+  display: 'flex',
+};
+
 const UpdateAccommodation: React.FC<IProps> = ({
   open,
   handleClose,
@@ -29,7 +43,7 @@ const UpdateAccommodation: React.FC<IProps> = ({
   }
 
   return (
-    <Dialog maxWidth={'xl'} open={open} onClose={handleClose}>
+    <Dialog maxWidth={'xl'} open={open} onClose={handleClose} sx={{style}}>
       <AccommodationForm values={values} setFieldValue={setFieldValue} />
 
       {/* <Grid container>

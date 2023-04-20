@@ -3,6 +3,7 @@ import {
   FormGroup,
   FormLabel,
   Grid,
+  Hidden,
   MenuItem,
   Select,
   TextField,
@@ -17,31 +18,42 @@ interface IProps {
 }
 
 const boxImage= {
+  maxWidth: '50%',
+  maxHeight: '100%',
+  paddingRight: '20px'
+}
 
+const imageStyle= {
+  width: '100%',
+  height: '100%'
 }
 
 const mainBox= {
   maxWidth: '100%',
-  maxHeight: '80vh',
+  maxHeight: '80%',
+  display: 'flex',
+  overflow: 'hidden'
+}
+
+const mainGrid= {
+  overflowY: 'scroll',
+  paddingTop: '20px'
 }
 
 const AccommodationForm: React.FC<IProps> = ({ values, setFieldValue }) => {
   return (
-    <Box
-      sx={mainBox}
-    >
-      <Grid container>
-        <Box>
-          <Box
-            component="img"
-            alt="Ellens"
-            src={image}
-            className='image'
-            style={{ maxWidth: '100%' }}
-          />
-        </Box>
-
-        <Grid item xs={6}>
+    <Box  sx={mainBox}>
+      <Box sx={boxImage}>
+        <Box
+          component="img"
+          alt="Ellens"
+          src={image}
+          className='image'
+          style={imageStyle}
+        />
+      </Box>
+      <Grid container sx={mainGrid}>
+        <Grid item xs={12}>
           <FormGroup>
             <FormLabel>Name</FormLabel>
             <TextField
