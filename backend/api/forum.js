@@ -214,7 +214,7 @@ forumRouter.delete('/:id', async function(req, res){
     } catch(err){
         if (String(err).includes("404")) {
             res.status(404).json({success: false, messages: ["Error 404: Accommodation not found"]});
-        } else {
+        } else { 
             res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
         }
     }
