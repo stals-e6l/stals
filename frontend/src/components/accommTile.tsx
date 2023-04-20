@@ -1,9 +1,7 @@
 import React from "react";
-import { Box, Typography, Button } from '@mui/material'
+import { Box, Typography, Button, Grid, Rating } from '@mui/material'
 import Image from "../assets/Images/Ellens.jpg"
-import StarRating from "./starRating";
 import { useNavigate } from "react-router-dom";
-import '../assets/design.css'
 
 interface AccommDetails {
     type: string;
@@ -16,6 +14,13 @@ interface AccommDetails {
 
 function AccommodationTile(props: AccommDetails) {
 
+    const blue = "#154360";
+    const green = "#60ce80";
+    const grey = "#f0f0f0";
+    const darkGrey = "#f5f5f7";
+    const quicksand = "Quicksand"
+    const sourceSansPro = "Source Sans Pro";
+
     const navigate = useNavigate()
     const accommType = (props.type).charAt(0).toUpperCase() + (props.type).slice(1)
     const formattedPrice = 'Php ' + props.price
@@ -27,26 +32,87 @@ function AccommodationTile(props: AccommDetails) {
 
 
     return (
-        <Button id='Accomm-Tile-Btn' onClick={() => navigate(link)}>
-            <Box id='Accomm-Tile-Box'>
+        <Button onClick={() => navigate(link)}
+            sx={{
+                textTransform: "none",
+                textAlign: "left",
+            }}>
+            <Box
+                sx={{
+                    backgroundColor: darkGrey,
+                    width: "300px",
+                    height: "350px",
+                    borderRadius: "20px",
+                    boxShadow: "0px 4px 4px #6e6e73",
+                    cursor: "pointer",
+                    ":hover": {
+                        boxShadow: "0px 4px 15px #6e6e73",
+                    },
+                    transition: '0.3s all',
+                }}>
 
-                <Box id="Accomm-Tile-Img" component='img' src={Image}/>
-
-                <Typography id='Accomm-Tile-Type'>
-                    {accommType}
-                </Typography>
-
-                <Typography id="Accomm-Tile-Name">
-                    {formattedName}
-                </Typography>
-
-                <Box id='Accomm-Tile-Box-Rating'>
-                    <StarRating rating={props.rating} />
-                    <Typography id='Accomm-Tile-Rating'> {props.rating} </Typography>
-                    <Typography id='Accomm-Tile-Num-Reviews'> ({props.review_num} reviews) </Typography>
-                </Box>
-
-                <Typography id='Accomm-Tile-Price'> {formattedPrice} </Typography>
+                <Box component='img' src={Image}
+                    sx={{
+                        width: "100%",
+                        height: "200px",
+                        borderRadius: "20px 20px 5px 5px",
+                    }}
+                />
+                <Grid container
+                    direction="column"
+                    sx={{ paddingLeft: "15px" }}
+                >
+                    <Grid item>
+                        <Typography
+                            sx={{
+                                fontFamily: quicksand,
+                                color: "black",
+                            }}>
+                            {accommType}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography
+                            sx={{
+                                fontFamily: sourceSansPro,
+                                fontSize: "x-large",
+                                fontWeight: "bold",
+                                color: blue,
+                                whiteSpace: "none",
+                            }}>
+                            {formattedName}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Box sx={{
+                            display: "flex",
+                            }}>
+                            <Rating value={props.rating} precision={0.5} readOnly sx={{
+                                color: green,
+                            }}/>
+                            <Typography sx={{
+                                fontFamily: quicksand,
+                                fontWeight: "bold",
+                                color: green,
+                            }}> {props.rating} </Typography>
+                            <Typography sx={{
+                                fontFamily: quicksand,
+                                color: "black",
+                                marginLeft: "1%",
+                            }}>
+                                 ({props.review_num} reviews) 
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid>
+                        <Typography sx={{
+                            fontFamily: sourceSansPro,
+                            color: blue,
+                            fontWeight: "bold",
+                            fontSize: "large",
+                        }}> {formattedPrice} </Typography>
+                    </Grid>
+                </Grid>
 
             </Box>
         </Button>

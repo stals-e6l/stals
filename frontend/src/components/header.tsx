@@ -4,29 +4,37 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logo from '../assets/images/Logo_White.png';
 import { useNavigate } from 'react-router-dom';
-import '../assets/design.css'
 
 
 function Header() {
     
     const tabs = ["Hotel", "Apartment", "Dormitory", "Transient Space", "Bed Space"]
     const accountOpt = ["Create Account", "Log in"]
+    const blue = "#154360";
+    const green = "#60ce80";
+    const grey = "#f0f0f0";
+    const darkGrey = "#f5f5f7";
+    const quicksand = "Quicksand"
+    const sourceSansPro = "Source Sans Pro";
 
     // Menu List for all accommodations types
     const MenuAccommList = tabs.map((tab) => 
-        <MenuItem id='Header-Accomm-MenuList' onClick={() => navigate('/')}>
+        <MenuItem onClick={() => navigate('/')}
+            sx={{fontFamily: sourceSansPro}}>
             {tab}
         </MenuItem>  
     );
 
     // Menu List for tabs
     const TabAccommList = tabs.map((tab) =>
-        <Tab id='Header-Accomm-Tab' label={tab} href='/'/>
+        <Tab label={tab} href='/'
+            sx={{color:grey, textTransform:"none", fontFamily:sourceSansPro}} />
     );
 
     // Menu List for Account Log in or Create Account
     const AccountOptions = accountOpt.map((acc) => 
-        <MenuItem id='Header-Acc-Opt' onClick={() => navigate('/')}>
+        <MenuItem onClick={() => navigate('/')}
+            sx={{fontFamily:sourceSansPro}}>
             {acc}
         </MenuItem>
     );
@@ -57,38 +65,84 @@ function Header() {
 
     return (
         <React.Fragment>
-            <AppBar id="Header">
+            <AppBar id="Header"
+                sx={{
+                    position:"sticky",
+                    backgroundColor:blue,
+                    display:'flex',
+                }}>
                 <Toolbar>
                     {isNonMobileDevice?
                         <>
-                            <Box id='Header-Logo' component="img" sx={{height:50,width:100}} alt="AirVnV Logo" src={Logo} onClick={() => navigate('/')} />
+                            <Box component="img" alt="AirVnV Logo" src={Logo} onClick={() => navigate('/')}
+                                sx={{height:50, width:100, marginLeft:"-10px",":hover":{cursor:"hover"}}} />
 
                             <Tabs>
                                 {TabAccommList}
                             </Tabs>
 
-                            <Button id='Header-Create-Acc-Btn'> Create Account </Button>
-                            <Button id='Header-Log-in-Btn'> Log in </Button>
+                            <Button sx={{
+                                fontFamily:sourceSansPro,
+                                marginLeft: "auto",
+                                color: grey,
+                                border: "solid",
+                                borderWidth: "2px",
+                                borderRadius: "10px",
+                                whiteSpace: "nowrap",
+                                fontWeight: "bold",
+                                textTransform: "none",
+                                ":hover": {
+                                    backgroundColor: 'hsl(202, 63%, 12%)',
+                                    
+                                }
+                            }}> Create Account </Button>
+
+                            <Button sx={{
+                                fontFamily:sourceSansPro,
+                                marginLeft: "10px",
+                                fontStyle: "bold",
+                                backgroundColor: grey,
+                                color: blue,
+                                borderRadius: "10px",
+                                fontWeight: "bold",
+                                textTransform: "none",
+                                ":hover": {
+                                    backgroundColor: blue,
+                                    color: grey,
+                                    fontWeight: "bold",
+                                }
+                            }}> Log in </Button>
                             
                         </>
                         : 
                         <>
-                            <IconButton id='Header-Accomm-Menu-Btn' onClick={handleClick}>
-                                <MenuIcon id='Header-MenuIcon'/>
+                            <IconButton onClick={handleClick}
+                                sx={{
+                                    size:"large",
+                                    color:grey,
+                                }}>
+                                <MenuIcon sx={{
+                                    fontSize:"inherit",
+                                }}/>
                             </IconButton>
 
-                            <Menu id='Header-Accomm-Menu' aria-labelledby='Header-Accomm-Menu-Btn' open={open} onClose={handleClose}
+                            <Menu aria-labelledby='Header-Accomm-Menu-Btn' open={open} onClose={handleClose}
                                 anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>                                                            
                                 {MenuAccommList}
                             </Menu>
                                
-                            <Box id="Header-Logo-Dynamic" component="img" sx={{height:50, width:100}} alt="AirVnV Logo" src={Logo} onClick={() => navigate('/')}/>
+                            <Box component="img" sx={{height:50, width:100, cursor:'pointer',marginLeft:"0px"}} alt="AirVnV Logo" src={Logo} onClick={() => navigate('/')}/>
                             
-                            <IconButton id='Header-Account-Menu-Btn' onClick={handleClickAcc}>
+                            <IconButton onClick={handleClickAcc}
+                                sx={{
+                                    size:"large",
+                                    color:grey,
+                                    marginLeft:"auto",
+                                }}>
                                 <AccountCircleIcon fontSize='inherit'/>
                             </IconButton>
 
-                            <Menu id='Header-Acc-Menu' aria-labelledby='Header-Account-Menu-Btn' open={openAcc} onClose={handleCloseAcc}
+                            <Menu aria-labelledby='Header-Account-Menu-Btn' open={openAcc} onClose={handleCloseAcc}
                                 anchorOrigin={{ vertical:'top', horizontal:'right' }}>
                                 {AccountOptions}
                             </Menu>

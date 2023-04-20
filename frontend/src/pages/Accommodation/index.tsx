@@ -1,17 +1,32 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { retrieveAccommodations } from '../../store/accommodation/actions'
+import { createAccommodation, retrieveAccommodations } from '../../store/accommodation/actions'
 import Header from '../../components/header'
-import Banner from '../../components/Banner/bannerElement'
+import Banner from '../../components/bannerElement'
 import AccommodationTile from '../../components/accommTile'
 import { CssBaseline, Box, Typography, Grid,  } from '@mui/material'
 interface IProps {
   children?: React.ReactNode
 }
 
+/*
+  Accomplished and updated components. (No longer using CSS)
+  Notes for Improvement:
+    - Fix responsiveness to different devices
+*/
+
 const AccommodationPage: React.FC<IProps> = () => {
+  const blue = "#154360";
+  const green = "#60ce80";
+  const grey = "#f0f0f0";
+  const darkGrey = "#f5f5f7";
+  const quicksand = "Quicksand"
+  const sourceSansPro = "Source Sans Pro";
+
+
   const accommodations = retrieveAccommodations()
   const navigate = useNavigate()
+  const createAccommodationHandler = createAccommodation( )
 
   // Edit here
   return (
@@ -19,25 +34,39 @@ const AccommodationPage: React.FC<IProps> = () => {
 
       <CssBaseline />
       <Header />
-
       <Banner />
-
-      
-      {
-        
-      
       <Box id='Retrieve-All-BoxGrid'>
-        <Typography id="Retrieve-All-Most-Viewed"> <span id="Vertical-Line">|</span> Most Viewed</Typography>
+        <Typography sx={{
+          color: 'black', 
+          fontFamily: sourceSansPro, 
+          fontWeight: "bold", 
+          fontSize: "25px",
+          display: "flex",
+          marginTop: "2%",
+          marginLeft: "10%"}}> <Typography sx={{
+            color: green,
+            fontFamily: 'inherit',
+            fontWeight: 'inherit',
+            fontSize: 'inherit',
+            marginRight: '0.25%'
+          }}>|</Typography> Most Viewed</Typography>
 
         <Grid container
           id='Retrieve-All-Grid'
-          columnGap={0}
-          padding={3}
-          columnSpacing={{ xs: 3, sm: 2, md: 3 }}
-          rowGap={2}>
+          rowGap={2}
+          columnGap={2} 
+          
+          sx={{
+            alignContent: "center",
+            justifyContent:"center",
+            paddingTop: "20px",
+            transition: '0.3s all',
+          }} >
 
           {accommodations.map((accommodation, key: number) => (
-            <Grid item id='Retrieve-All-GridItem'>
+            <Grid item lg={3} sx={{
+            }} 
+            >
               <AccommodationTile type={accommodation.type}
                 rating={4.5}
                 name={accommodation.name}
@@ -47,7 +76,7 @@ const AccommodationPage: React.FC<IProps> = () => {
             </Grid>
           ))}
         </Grid>
-          </Box>}
+          </Box>
     </div>
   )
 }
