@@ -22,7 +22,7 @@ const forumRouter = Router()
  * @openapi
  * /api/forum:
  *      post:
- *          description: Adds accommodation
+ *          description: Adds forum
  *          requestBody:
  *              required: true
  *              content:
@@ -36,11 +36,13 @@ const forumRouter = Router()
  *                          schema:
  *                              $ref: '#/components/schemas/Forum'
  *              404:
- *                  description: The accommodation was not created
+ *                  description: The forum was not created
  *              401:
  *                  description: Unauthorized access.
  *              500:
  *                  description: Internal Server error.
+ *          tags:
+ *              - Forum
  *              
  */
 forumRouter.post("/", async function(req, res){
@@ -74,7 +76,7 @@ forumRouter.post("/", async function(req, res){
  * @openapi
  * /api/forum/{id}:
  *      get:
- *          description: Get accommodation by id
+ *          description: Get forum by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -95,6 +97,8 @@ forumRouter.post("/", async function(req, res){
  *                  description: Internal server error
  *              404:
  *                  description: Not found
+ *          tags:
+ *              - Forum
  *              
  */
 forumRouter.get('/:id', async function(req, res){
@@ -102,11 +106,11 @@ forumRouter.get('/:id', async function(req, res){
         if(!req.params.id){
             throw 400;
         }
-        const accom = await Forum.findById(req.params.id);
-        if(!accom){
+        const forum = await Forum.findById(req.params.id);
+        if(!forum){
             throw 404;
         }
-        res.status(200).json({success: true, data: accom});
+        res.status(200).json({success: true, data: forum});
     } catch(err){
         switch(err) {
             case 404:
@@ -131,13 +135,13 @@ forumRouter.get('/:id', async function(req, res){
  * @openapi
  * /api/forum:
  *      get:
- *          description: Get all accommodations
+ *          description: Get all forums
  *          parameters:
  *              -   in: query
  *                  name: name
  *                  schema:
  *                      type: string
- *                  description: The name of accommodation
+ *                  description: The name of forum
  *          responses:
  *              200:
  *                  content:
@@ -152,6 +156,8 @@ forumRouter.get('/:id', async function(req, res){
  *                  description:  Unauthorize access
  *              500:
  *                  description: Internal Service error
+ *          tags:
+ *              - Forum
  *              
  *              
  */
@@ -161,9 +167,9 @@ forumRouter.get('/', async function(req, res){
         delete query["limit"];  //delete every query that's not part of the database model
 
         const limit = Number(req.query.limit) || 100;
-        const accommodations = await Forum.find(query).limit(limit);
+        const forums = await Forum.find(query).limit(limit);
         
-        res.status(200).json({success:true, data:accommodations});
+        res.status(200).json({success:true, data:forums});
     } catch(err){
         switch(err){
             case 400:
@@ -185,7 +191,7 @@ forumRouter.get('/', async function(req, res){
  * @openapi
  * /api/forum/{id}:
  *      delete:
- *          description: Delete accommodation by id
+ *          description: Delete forum by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -194,18 +200,20 @@ forumRouter.get('/', async function(req, res){
  *                  required: true
  *          responses:
  *              200:
- *                  description: Accommodation was deleted
+ *                  description: Forum was deleted
  *              404:
- *                  description: The accommodation was not found
+ *                  description: The forum was not found
  *              500:
  *                  description: Internal server error
+ *          tags:
+ *              - Forum
  *              
  */
 forumRouter.delete('/:id', async function(req, res){
     try{
-        const removedAccom = await Forum.findByIdAndRemove({_id: req.params.id});
+        const removedForum = await Forum.findByIdAndRemove({_id: req.params.id});
         
-        if (!removedAccom) {
+        if (!removedForum) {
             throw new Error("404");
         } else {
             res.status(200).json({success: true, data: null});
@@ -213,7 +221,7 @@ forumRouter.delete('/:id', async function(req, res){
         // TODO: Handle other errors (authentication)
     } catch(err){
         if (String(err).includes("404")) {
-            res.status(404).json({success: false, messages: ["Error 404: Accommodation not found"]});
+            res.status(404).json({success: false, messages: ["Error 404: Forum not found"]});
         } else {
             res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
         }
@@ -224,7 +232,7 @@ forumRouter.delete('/:id', async function(req, res){
  * @openapi
  * /api/forum/{id}:
  *      put:
- *          description: Edit accommodation by id
+ *          description: Edit forum by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -251,27 +259,26 @@ forumRouter.delete('/:id', async function(req, res){
  *                  description: Unauthorized access
  *              500:
  *                  description: Internal server error
+ *          tags:
+ *              - Forum
  *              
  */
 forumRouter.put('/:id', async function(req, res){
     try{
-        const editedAccom = await Forum.findOneAndUpdate(
+        if(!req.params.id){
+            throw 400;
+        }
+
+        const editedForum = await Forum.findOneAndUpdate(
             {_id: req.params.id},
             { ...req.body},
             {new: true});
 
-        if(!editedAccom){
+        if(!editedForum){
             throw 404;
         }
-        
-        if(!['unfurnished', 'semifurnished', 'fully_furnished'].includes(editedAccom.furnishing)){
-            throw 400;
-        }
-        
-        if(!['hotel', 'apartment', 'bedspace', 'dormitory', 'transient'].includes(editedAccom.type)){
-            throw 400;
-        }
-        res.status(200).json({ success: true, data: editedAccom })
+
+        res.status(200).json({ success: true, data: editedForum })
     } catch(err){
         switch(err) {
             case 404:
