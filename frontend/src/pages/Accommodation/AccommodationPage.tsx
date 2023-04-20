@@ -5,24 +5,15 @@ import { CssBaseline, Box, Typography, Grid } from '@mui/material'
 import AccommodationTile from '../../components/accommTile'
 import Banner from '../../components/bannerElement'
 import Header from '../../components/header'
+import { colors, fontFamily } from '../../theme'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const AccommodationPage: React.FC<IProps> = () => {
-  const blue = '#154360'
-  const green = '#60ce80'
-  const grey = '#f0f0f0'
-  const darkGrey = '#f5f5f7'
-  const quicksand = 'Quicksand'
-  const sourceSansPro = 'Source Sans Pro'
-
   const accommodations = retrieveAccommodations()
-  const navigate = useNavigate()
-  // const createAccommodationHandler = createAccommodation()
 
-  // Edit here
   return (
     <div id="retrieve-all">
       <CssBaseline />
@@ -32,7 +23,7 @@ const AccommodationPage: React.FC<IProps> = () => {
         <Typography
           sx={{
             color: 'black',
-            fontFamily: sourceSansPro,
+            fontFamily: fontFamily,
             fontWeight: 'bold',
             fontSize: '25px',
             display: 'flex',
@@ -43,7 +34,7 @@ const AccommodationPage: React.FC<IProps> = () => {
           {' '}
           <Typography
             sx={{
-              color: green,
+              color: colors.green,
               fontFamily: 'inherit',
               fontWeight: 'inherit',
               fontSize: 'inherit',
