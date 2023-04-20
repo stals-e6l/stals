@@ -29,10 +29,10 @@ const UpdateAccommodation: React.FC<IProps> = ({
   }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog maxWidth={'xl'} open={open} onClose={handleClose}>
       <AccommodationForm values={values} setFieldValue={setFieldValue} />
 
-      <Grid container>
+      {/* <Grid container>
         <Grid item>
           <Button onClick={handleClose}>Cancel</Button>
         </Grid>
@@ -41,7 +41,7 @@ const UpdateAccommodation: React.FC<IProps> = ({
             Confirm
           </Button>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Dialog>
   )
 }

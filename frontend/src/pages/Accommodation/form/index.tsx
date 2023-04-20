@@ -8,6 +8,7 @@ import {
   TextField,
 } from '@mui/material'
 import React from 'react'
+import image from '../../../assets/Ellens.jpg'
 
 interface IProps {
   children?: React.ReactNode
@@ -15,18 +16,30 @@ interface IProps {
   setFieldValue: (key: string, val: string | number | string[]) => void
 }
 
+const boxImage= {
+
+}
+
+const mainBox= {
+  maxWidth: '100%',
+  maxHeight: '80vh',
+}
+
 const AccommodationForm: React.FC<IProps> = ({ values, setFieldValue }) => {
   return (
     <Box
-      sx={{
-        padding: '50px',
-        width: '1000px',
-      }}
+      sx={mainBox}
     >
       <Grid container>
-        <Grid item xs={6}>
-          {/* TODO: image goes here */}
-        </Grid>
+        <Box>
+          <Box
+            component="img"
+            alt="Ellens"
+            src={image}
+            className='image'
+            style={{ maxWidth: '100%' }}
+          />
+        </Box>
 
         <Grid item xs={6}>
           <FormGroup>
