@@ -122,7 +122,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               />
               <Box>
                 <Typography sx={{ color: '#888888', fontWeight: 'bold' }}>
-                  Rodge "Pogi" De Luna
+                  Rodge De Luna
                 </Typography>
                 <Typography sx={{ fontSize: 'small' }}>
                   It is a nice place. We enjoyed our stay.
@@ -136,7 +136,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
           <Box sx={boxStyle}>
             {accommodation.amenities.map((value, index) => {
               return (
-                <Box sx={{ display: 'flex' }}>
+                <Box key={index} sx={{ display: 'flex' }}>
                   <Box
                     component="img"
                     sx={{
@@ -247,7 +247,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.amenities.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -269,7 +269,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.appliances.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -291,7 +291,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.safety_and_security.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -323,7 +323,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             </Grid>
             <Grid item xs={4}>
               {accommodation.landmarks.map((value, index) => {
-                return <Typography>{value}</Typography>
+                return <Typography key={index}>{value}</Typography>
               })}
             </Grid>
           </Grid>
@@ -341,7 +341,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.cooking_rules.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -363,7 +363,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.pet_rules.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -385,7 +385,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.other_rules.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -441,7 +441,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               sx={{
                 fontSize: '20px',
                 paddingBottom: '8px',
-                color: '#154360'
+                color: '#154360',
               }}
             >
               /5
@@ -456,13 +456,17 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               <Typography>1000+ reviews</Typography>
             </Box>
           </Box>
-          <Button sx={{
-            position: 'absolute',
-            right: '25px',
-            backgroundColor: '#154360',
-            color: 'white',
-            fontWeight: 'bold'
-          }}>Add Review</Button>
+          <Button
+            sx={{
+              position: 'absolute',
+              right: '25px',
+              backgroundColor: '#154360',
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          >
+            Add Review
+          </Button>
         </Box>
 
         <Box sx={unshadedTable}>
