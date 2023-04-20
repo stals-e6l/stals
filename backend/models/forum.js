@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 
 const forumSchema = new mongoose.Schema({
     content: { // array ng comments/chats ng isang user
