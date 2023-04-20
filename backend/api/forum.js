@@ -185,7 +185,7 @@ forumRouter.get('/', async function(req, res){
  * @openapi
  * /api/forum/{id}:
  *      delete:
- *          description: Delete accommodation by id
+ *          description: Delete forum by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -194,18 +194,18 @@ forumRouter.get('/', async function(req, res){
  *                  required: true
  *          responses:
  *              200:
- *                  description: Accommodation was deleted
+ *                  description: Forum was deleted
  *              404:
- *                  description: The accommodation was not found
+ *                  description: The forum was not found
  *              500:
  *                  description: Internal server error
  *              
  */
 forumRouter.delete('/:id', async function(req, res){
     try{
-        const removedAccom = await Forum.findByIdAndRemove({_id: req.params.id});
+        const removedForum = await Forum.findByIdAndRemove({_id: req.params.id});
         
-        if (!removedAccom) {
+        if (!removedForum) {
             throw new Error("404");
         } else {
             res.status(200).json({success: true, data: null});
