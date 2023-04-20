@@ -1,8 +1,9 @@
 import React from 'react'
-import { Button, Dialog, Grid } from '@mui/material'
+import { Button, Dialog, Grid, SxProps } from '@mui/material'
 import { updateAccommodation } from '../../store/accommodation/actions'
 import AccommodationForm from './form'
 import { useAccommodationForm } from './form/hooks'
+import { Height } from '@mui/icons-material'
 
 interface IProps {
   children?: React.ReactNode
@@ -11,18 +12,28 @@ interface IProps {
   accommodation: IAccommodation
 }
 
+const sampleStyle: SxProps = {
+  "& .MuiDialog-container": {
+    alignItems: "flex-start",
+    backdropFilter: "blur(1px)",
+    // justifyContent: "center",
+    // alignContent: "flex-start",
+    // direction: 'column',
+  }
+};
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
+  //transform: 'translate(-50%, -50%)',
   overflowX: 'hidden',
   width: '80%',
   height: '80%',
   padding: 0,
   display: 'flex',
+  //borderRadius: '20px',
+  backdropFilter: 'blur(50px)'
 };
 
 const UpdateAccommodation: React.FC<IProps> = ({
@@ -43,7 +54,17 @@ const UpdateAccommodation: React.FC<IProps> = ({
   }
 
   return (
-    <Dialog maxWidth={'xl'} open={open} onClose={handleClose} sx={{style}}>
+    <Dialog maxWidth={'xl'} open={open} onClose={handleClose} sx={sampleStyle}
+      PaperProps={{
+          style:{
+              margin: 'auto',
+              width: '80%',
+              maxHeight: '80%',
+              display: 'flex',
+              borderRadius: 15
+          }
+      }}
+    >
       <AccommodationForm values={values} setFieldValue={setFieldValue} />
 
       {/* <Grid container>

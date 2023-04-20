@@ -3,10 +3,11 @@ import {
   FormGroup,
   FormLabel,
   Grid,
-  Hidden,
   MenuItem,
   Select,
   TextField,
+  InputAdornment,
+  Typography
 } from '@mui/material'
 import React from 'react'
 import image from '../../../assets/Ellens.jpg'
@@ -17,93 +18,306 @@ interface IProps {
   setFieldValue: (key: string, val: string | number | string[]) => void
 }
 
+const currencies = [
+  {
+    value: 'USD',
+    label: '$',
+  },
+  {
+    value: 'EUR',
+    label: '€',
+  },
+  {
+    value: 'BTC',
+    label: '฿',
+  },
+  {
+    value: 'JPY',
+    label: '¥',
+  },
+];
+
 const boxImage= {
+  minHeight: '100%',
   maxWidth: '50%',
   maxHeight: '100%',
-  paddingRight: '20px'
+  paddingRight: '10px',
+  position: 'absolute',
+  margin: 'auto',
+  display: 'flex'
+
 }
 
 const imageStyle= {
-  width: '100%',
-  height: '100%'
+  minWidth: '100%',
+  minHeight: '100%',
+  maxWidth: '100%',
+  maxHeight: '100%',
+  objectFit: 'cover'
 }
 
 const mainBox= {
+  width: '100%',
+  height: '100%',
   maxWidth: '100%',
   maxHeight: '80%',
   display: 'flex',
-  overflow: 'hidden'
+  overflow: 'hidden',
 }
 
 const mainGrid= {
   overflowY: 'scroll',
-  paddingTop: '20px'
 }
 
 const AccommodationForm: React.FC<IProps> = ({ values, setFieldValue }) => {
   return (
     <Box  sx={mainBox}>
-      <Box sx={boxImage}>
-        <Box
-          component="img"
-          alt="Ellens"
-          src={image}
-          className='image'
-          style={imageStyle}
-        />
-      </Box>
+      
       <Grid container sx={mainGrid}>
-        <Grid item xs={12}>
-          <FormGroup>
-            <FormLabel>Name</FormLabel>
+        <Grid item xs={6}>
+          <Box sx={boxImage}>
+            <Box
+              component="img"
+              alt="Ellens"
+              src={image}
+              className='image'
+              sx={imageStyle}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography></Typography>
+          <FormGroup sx={{padding: '10px', marginTop: '10px'}}>
             <TextField
-              value={values.name}
+              variant='outlined'
+              label='Listing Name'
+              defaultValue={values.name}
               onChange={e => setFieldValue('name', e.target.value)}
+              
             />
           </FormGroup>
-          <FormGroup>
-            <FormLabel>Description</FormLabel>
+          <FormGroup sx={{padding:'10px'}}>
             <TextField
-              value={values.description}
+              variant='outlined'
+              label='Listing Description'
+              defaultValue={values.description}
               onChange={e => setFieldValue('description', e.target.value)}
             />
           </FormGroup>
-          <FormGroup>
-            <FormLabel>Address</FormLabel>
+          <FormGroup sx={{padding:'10px'}}>
             <TextField
-              value={values.address}
+              variant='outlined'
+              label='Listing Address'
+              defaultValue={values.address}
               onChange={e => setFieldValue('address', e.target.value)}
             />
           </FormGroup>
-          <FormGroup>
-            <FormLabel>Type</FormLabel>
-            <Select
-              value={values.type}
-              onChange={e => setFieldValue('type', e.target.value)}
-            >
-              <MenuItem value="hotel">hotel</MenuItem>
-              <MenuItem value="apartment">apartment</MenuItem>
-              <MenuItem value="bedspace">bedspace</MenuItem>
-              <MenuItem value="dormitory">dormitory</MenuItem>
-              <MenuItem value="transient">transient</MenuItem>
-            </Select>
-          </FormGroup>
-          <FormGroup>
-            <FormLabel>Price</FormLabel>
+          <FormGroup sx={{padding:'10px'}}>
             <TextField
-              type="number"
-              value={values.price}
+              variant='outlined'
+              label='Listing Price'
+              defaultValue={values.price}
               onChange={e => setFieldValue('price', Number(e.target.value))}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">₱</InputAdornment>
+                ),
+              }}
             />
           </FormGroup>
-          <FormGroup>
-            <FormLabel>Size sqm</FormLabel>
-            <TextField
-              type="number"
-              value={values.size_sqm}
-              onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
-            />
-          </FormGroup>
+
+
+
+
+
+
+          <Box sx={{display:'flex', flexDirection:'row', padding:'10px', justifyContent: 'space-between'}}>
+            <FormGroup>
+              <FormLabel>Type</FormLabel>
+              <Select
+                value={values.type}
+                onChange={e => setFieldValue('type', e.target.value)}
+              >
+                <MenuItem value="hotel">hotel</MenuItem>
+                <MenuItem value="apartment">apartment</MenuItem>
+                <MenuItem value="bedspace">bedspace</MenuItem>
+                <MenuItem value="dormitory">dormitory</MenuItem>
+                <MenuItem value="transient">transient</MenuItem>
+              </Select>
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Price</FormLabel>
+              <TextField
+                type="number"
+                value={values.price}
+                onChange={e => setFieldValue('price', Number(e.target.value))}
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Size sqm</FormLabel>
+              <TextField
+                type="number"
+                value={values.size_sqm}
+                onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
+              />
+            </FormGroup>
+          </Box>
+          <Box sx={{display:'flex', flexDirection:'row', padding:'10px', justifyContent: 'space-between'}}>
+            <FormGroup>
+              <FormLabel>Type</FormLabel>
+              <Select
+                value={values.type}
+                onChange={e => setFieldValue('type', e.target.value)}
+              >
+                <MenuItem value="hotel">hotel</MenuItem>
+                <MenuItem value="apartment">apartment</MenuItem>
+                <MenuItem value="bedspace">bedspace</MenuItem>
+                <MenuItem value="dormitory">dormitory</MenuItem>
+                <MenuItem value="transient">transient</MenuItem>
+              </Select>
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Price</FormLabel>
+              <TextField
+                type="number"
+                value={values.price}
+                onChange={e => setFieldValue('price', Number(e.target.value))}
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Size sqm</FormLabel>
+              <TextField
+                type="number"
+                value={values.size_sqm}
+                onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
+              />
+            </FormGroup>
+          </Box>
+          <Box sx={{display:'flex', flexDirection:'row', padding:'10px', justifyContent: 'space-between'}}>
+            <FormGroup>
+              <FormLabel>Type</FormLabel>
+              <Select
+                value={values.type}
+                onChange={e => setFieldValue('type', e.target.value)}
+              >
+                <MenuItem value="hotel">hotel</MenuItem>
+                <MenuItem value="apartment">apartment</MenuItem>
+                <MenuItem value="bedspace">bedspace</MenuItem>
+                <MenuItem value="dormitory">dormitory</MenuItem>
+                <MenuItem value="transient">transient</MenuItem>
+              </Select>
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Price</FormLabel>
+              <TextField
+                type="number"
+                value={values.price}
+                onChange={e => setFieldValue('price', Number(e.target.value))}
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Size sqm</FormLabel>
+              <TextField
+                type="number"
+                value={values.size_sqm}
+                onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
+              />
+            </FormGroup>
+          </Box>
+          <Box sx={{display:'flex', flexDirection:'row', padding:'10px', justifyContent: 'space-between'}}>
+            <FormGroup>
+              <FormLabel>Type</FormLabel>
+              <Select
+                value={values.type}
+                onChange={e => setFieldValue('type', e.target.value)}
+              >
+                <MenuItem value="hotel">hotel</MenuItem>
+                <MenuItem value="apartment">apartment</MenuItem>
+                <MenuItem value="bedspace">bedspace</MenuItem>
+                <MenuItem value="dormitory">dormitory</MenuItem>
+                <MenuItem value="transient">transient</MenuItem>
+              </Select>
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Price</FormLabel>
+              <TextField
+                type="number"
+                value={values.price}
+                onChange={e => setFieldValue('price', Number(e.target.value))}
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Size sqm</FormLabel>
+              <TextField
+                type="number"
+                value={values.size_sqm}
+                onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
+              />
+            </FormGroup>
+          </Box>
+          <Box sx={{display:'flex', flexDirection:'row', padding:'10px', justifyContent: 'space-between'}}>
+            <FormGroup>
+              <FormLabel>Type</FormLabel>
+              <Select
+                value={values.type}
+                onChange={e => setFieldValue('type', e.target.value)}
+              >
+                <MenuItem value="hotel">hotel</MenuItem>
+                <MenuItem value="apartment">apartment</MenuItem>
+                <MenuItem value="bedspace">bedspace</MenuItem>
+                <MenuItem value="dormitory">dormitory</MenuItem>
+                <MenuItem value="transient">transient</MenuItem>
+              </Select>
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Price</FormLabel>
+              <TextField
+                type="number"
+                value={values.price}
+                onChange={e => setFieldValue('price', Number(e.target.value))}
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Size sqm</FormLabel>
+              <TextField
+                type="number"
+                value={values.size_sqm}
+                onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
+              />
+            </FormGroup>
+          </Box>
+          <Box sx={{display:'flex', flexDirection:'row', padding:'10px', justifyContent: 'space-between'}}>
+            <FormGroup>
+              <FormLabel>Type</FormLabel>
+              <Select
+                value={values.type}
+                onChange={e => setFieldValue('type', e.target.value)}
+              >
+                <MenuItem value="hotel">hotel</MenuItem>
+                <MenuItem value="apartment">apartment</MenuItem>
+                <MenuItem value="bedspace">bedspace</MenuItem>
+                <MenuItem value="dormitory">dormitory</MenuItem>
+                <MenuItem value="transient">transient</MenuItem>
+              </Select>
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Price</FormLabel>
+              <TextField
+                type="number"
+                value={values.price}
+                onChange={e => setFieldValue('price', Number(e.target.value))}
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormLabel>Size sqm</FormLabel>
+              <TextField
+                type="number"
+                value={values.size_sqm}
+                onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
+              />
+            </FormGroup>
+          </Box>
+          {/*
           <FormGroup>
             <FormLabel>Meters from UPLB</FormLabel>
             <TextField
@@ -215,7 +429,7 @@ const AccommodationForm: React.FC<IProps> = ({ values, setFieldValue }) => {
               value={values.amenities[0]}
               onChange={e => setFieldValue('amenities', [e.target.value])}
             />
-          </FormGroup>
+          </FormGroup> */}
         </Grid>
       </Grid>
     </Box>
