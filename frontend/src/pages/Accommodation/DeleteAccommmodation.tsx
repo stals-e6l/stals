@@ -35,7 +35,7 @@ const DeleteAccommodation: React.FC<IProps> = ({ accommodation }) => {
           setState(true)
         }}
       >
-        Open
+        Delete
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true}>
         <Grid sx={{ flexGrow: 1 }} container spacing={0}>
