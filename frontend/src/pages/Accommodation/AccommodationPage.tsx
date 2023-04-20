@@ -1,7 +1,6 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 import { retrieveAccommodations } from '../../store/accommodation/actions'
-import { CssBaseline, Box, Typography, Grid } from '@mui/material'
+import { Box, Typography, Grid } from '@mui/material'
 import AccommodationTile from '../../components/accommTile'
 import Banner from '../../components/bannerElement'
 import Header from '../../components/header'
@@ -16,7 +15,6 @@ const AccommodationPage: React.FC<IProps> = () => {
 
   return (
     <div id="retrieve-all">
-      <CssBaseline />
       <Header />
       <Banner />
       <Box id="Retrieve-All-BoxGrid">
