@@ -21,13 +21,13 @@ interface IAccommodation {
   price: number
   size_sqm: number
   meters_from_uplb: number
-  landmarks: string[]
   min_pax: number
   max_pax: number
   num_rooms: number
   num_beds: number //string // e.g. 2-3 beds
   num_views: number
   furnishing: TAccommodationFurnishing
+  landmarks: string[]
   cooking_rules: string[]
   pet_rules: string[]
   other_rules: string[]

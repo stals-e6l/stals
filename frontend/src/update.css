@@ -1,0 +1,19 @@
+.main{
+    display: flex;
+    height: 100%;
+}
+
+.title{
+    font-family: 'Source Sans Pro';
+    margin-bottom: 17px;
+    margin-top: 20px;
+}
+
+.image{
+    /* background-color: red; */
+    width: 50%;
+    height: 100%;
+    display: flex;
+    padding-right: 15px;
+    border-radius: 5px;
+}
