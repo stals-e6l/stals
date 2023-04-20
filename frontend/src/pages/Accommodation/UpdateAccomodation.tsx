@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -23,7 +23,7 @@ const style = {
   height: '80%',
   padding: 0,
   display: 'flex',
-};
+}
 
 const UpdateAccommodation: React.FC<IProps> = ({
   open,
@@ -43,10 +43,10 @@ const UpdateAccommodation: React.FC<IProps> = ({
   }
 
   return (
-    <Dialog maxWidth={'xl'} open={open} onClose={handleClose} sx={{style}}>
+    <Dialog maxWidth={'xl'} open={open} onClose={handleClose} sx={{ style }}>
       <AccommodationForm values={values} setFieldValue={setFieldValue} />
 
-      {/* <Grid container>
+      <Grid container>
         <Grid item>
           <Button onClick={handleClose}>Cancel</Button>
         </Grid>
@@ -55,7 +55,7 @@ const UpdateAccommodation: React.FC<IProps> = ({
             Confirm
           </Button>
         </Grid>
-      </Grid> */}
+      </Grid>
     </Dialog>
   )
 }
