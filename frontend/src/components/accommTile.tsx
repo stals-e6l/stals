@@ -3,6 +3,7 @@ import { Box, Typography, Button, Grid, Rating } from '@mui/material'
 import Image from '../assets/Images/Ellens.jpg'
 import { useNavigate } from 'react-router-dom'
 import DeleteAccommodation from '../pages/Accommodation/DeleteAccommmodation'
+import UpdateAccommodation from '../pages/Accommodation/UpdateAccomodation'
 
 interface AccommDetails {
   accommodation: IAccommodation
@@ -21,6 +22,8 @@ function AccommodationTile({ accommodation }: AccommDetails) {
     accommodation.type.charAt(0).toUpperCase() + accommodation.type.slice(1)
   const formattedPrice = 'Php ' + accommodation.price
   let formattedName = accommodation.name
+
+  const [update, setUpdate] = React.useState<boolean>(false)
 
   // Name text display will adjust depending on the size of the string
   if (formattedName.length > 25)
@@ -129,8 +132,20 @@ function AccommodationTile({ accommodation }: AccommDetails) {
               {formattedPrice}{' '}
             </Typography>
           </Grid>
-          <Grid item>
-            <DeleteAccommodation accommodation={accommodation} />
+          <Grid container>
+            <Grid item>
+              <Button variant="contained" onClick={() => setUpdate(true)}>
+                Update
+              </Button>
+              <UpdateAccommodation
+                open={update}
+                handleClose={() => setUpdate(false)}
+                accommodation={accommodation}
+              />
+            </Grid>
+            <Grid item>
+              <DeleteAccommodation accommodation={accommodation} />
+            </Grid>
           </Grid>
         </Grid>
       </Box>
