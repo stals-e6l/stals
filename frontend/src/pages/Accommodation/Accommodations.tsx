@@ -53,14 +53,7 @@ const Accommodations: React.FC<IProps> = () => {
       >
         {accommodations.map((accommodation, key: number) => (
           <Grid item lg={3} sx={{}} key={key}>
-            <AccommodationTile
-              type={accommodation.type}
-              rating={4.5}
-              name={accommodation.name}
-              price={accommodation.price}
-              review_num={20}
-              link={`/accommodations/${accommodation._id}`}
-            />
+            <AccommodationTile accommodation={accommodation} />
           </Grid>
         ))}
       </Grid>
