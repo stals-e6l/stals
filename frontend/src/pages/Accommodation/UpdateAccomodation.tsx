@@ -23,7 +23,7 @@ const sampleStyle: SxProps = {
 };
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   //transform: 'translate(-50%, -50%)',
@@ -67,7 +67,7 @@ const UpdateAccommodation: React.FC<IProps> = ({
     >
       <AccommodationForm values={values} setFieldValue={setFieldValue} />
 
-      {/* <Grid container>
+      <Grid container>
         <Grid item>
           <Button onClick={handleClose}>Cancel</Button>
         </Grid>
@@ -76,7 +76,7 @@ const UpdateAccommodation: React.FC<IProps> = ({
             Confirm
           </Button>
         </Grid>
-      </Grid> */}
+      </Grid>
     </Dialog>
   )
 }

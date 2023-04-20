@@ -39,6 +39,7 @@ server.use(bodyParser.json());
 /** INSERT API BELOW */
 server.use('/api/ping', require('./api/ping'))
 server.use('/api/accommodation', require('./api/accommodation'))
+server.use('/api/forum', require('./api/forum'))
 
 /** END API */
 
