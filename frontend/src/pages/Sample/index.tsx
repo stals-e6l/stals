@@ -19,7 +19,7 @@ const SamplePage: React.FC<IProps> = () => {
           })
         }
       >
-        click me
+      click me
       </button>
     </div>
   )
