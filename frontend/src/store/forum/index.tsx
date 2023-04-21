@@ -1,4 +1,5 @@
 import React from 'react'
+import { mockForums } from './mock'
 
 interface IProps {
   children?: React.ReactNode
@@ -14,6 +15,12 @@ const ForumProvider: React.FC<IProps> = ({ children }) => {
 
   // immediates
   const { forums, current_accommodation } = state
+
+  // side fx
+  React.useEffect(() => {
+    // TODO: maybe call the api
+    dispatch({ type: 'FR_INIT', payload: mockForums })
+  }, [])
 
   return (
     <forumContext.Provider
