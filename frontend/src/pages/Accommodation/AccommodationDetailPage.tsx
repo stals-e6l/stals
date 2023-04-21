@@ -6,6 +6,7 @@ import location from '../../assets/Images/Ellens.jpg'
 // import pin from '../../assets/Map pin - Green.png'
 import { Button, Box, Container, Typography, Grid } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import RetrieveForums from './RetrieveForums'
 
 interface IProps {
   children?: React.ReactNode
@@ -131,6 +132,8 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             </Box>
 
             <Typography sx={boxLabel}>Review</Typography>
+
+            <RetrieveForums />
           </Box>
 
           <Box sx={boxStyle}>
@@ -162,7 +165,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                   height: '50px',
                 }}
                 alt="pin image"
-                src={""}
+                src={''}
               />
               <Typography>{accommodation.address}</Typography>
             </Box>
@@ -441,7 +444,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               sx={{
                 fontSize: '20px',
                 paddingBottom: '8px',
-                color: '#154360'
+                color: '#154360',
               }}
             >
               /5
@@ -456,13 +459,17 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               <Typography>1000+ reviews</Typography>
             </Box>
           </Box>
-          <Button sx={{
-            position: 'absolute',
-            right: '25px',
-            backgroundColor: '#154360',
-            color: 'white',
-            fontWeight: 'bold'
-          }}>Add Review</Button>
+          <Button
+            sx={{
+              position: 'absolute',
+              right: '25px',
+              backgroundColor: '#154360',
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          >
+            Add Review
+          </Button>
         </Box>
 
         <Box sx={unshadedTable}>
