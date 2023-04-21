@@ -9,9 +9,11 @@ export const retrieveForums = () => {
   return forums
 }
 
-export const setCurrentAccommodation = (id: string | undefined) => {
+export const setCurrentAccommodation = () => {
   const { dispatch } = useForum()
-  dispatch({ type: 'FR_SET_CURRENT_AC', payload: id })
+
+  return (id: string | undefined) =>
+    dispatch({ type: 'FR_SET_CURRENT_AC', payload: id })
 }
 
 export const retrieveForumByCurrentAccommodation = () => {

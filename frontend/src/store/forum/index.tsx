@@ -22,6 +22,8 @@ const ForumProvider: React.FC<IProps> = ({ children }) => {
     dispatch({ type: 'FR_INIT', payload: mockForums })
   }, [])
 
+  console.log({ forumState: state })
+
   return (
     <forumContext.Provider
       value={{
