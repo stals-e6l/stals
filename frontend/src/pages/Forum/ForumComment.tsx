@@ -11,6 +11,7 @@ interface IProps {
 
 const ForumComment: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
   return (
+    // TODO: everything is setup for you, maybe add the styling for it
     <li>
       <p>{comment}</p>
       <DeleteCommentFromForum forumId={forumId} comment={comment} />

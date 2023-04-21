@@ -32,8 +32,11 @@ const UpdateCommentFromForum: React.FC<IProps> = ({
       <Button
         variant="contained"
         onClick={() => {
+          // first it sets the UI to editable mode
           if (!editable) setEditable(true)
+          // then when the user 'Saves'...
           else {
+            // use this function update comment in the forum
             updateCommentFromForumHandler(forumId, comment, commentIndex)
             setEditable(false)
           }

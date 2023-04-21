@@ -27,6 +27,7 @@ const AddCommentToForum: React.FC<IProps> = ({ forumId }) => {
       <Button
         variant="contained"
         onClick={() => {
+          // use this function add comment in the forum
           addCommentToForumHandler(forumId, comment)
           setComment('')
         }}

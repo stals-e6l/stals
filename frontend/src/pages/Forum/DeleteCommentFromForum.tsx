@@ -16,6 +16,7 @@ const DeleteCommentFromForum: React.FC<IProps> = ({ forumId, comment }) => {
     <Button
       variant="contained"
       onClick={() => {
+        // use this function delete comment in the forum
         deleteCommentFromForumHandler(forumId, comment)
       }}
     >
