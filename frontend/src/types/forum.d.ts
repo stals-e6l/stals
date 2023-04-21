@@ -6,3 +6,8 @@ interface IForum {
   status: TForumStatus // the status of the forum, by default it is active
   content: string[] // the array of forum content/comments
 }
+
+interface IForumState {
+  // TODO:
+  test: any
+}
