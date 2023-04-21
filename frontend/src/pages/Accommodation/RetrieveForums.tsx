@@ -1,19 +1,21 @@
 import React from 'react'
-import { retrieveForums } from '../../store/forum/actions'
+import { retrieveForumByCurrentAccommodation } from '../../store/forum/actions'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const RetrieveForums: React.FC<IProps> = () => {
-  const forums = retrieveForums()
+  const forum = retrieveForumByCurrentAccommodation()
 
   // TODO: handle the ui when the forum is empty!
-  if (forums.length === 0) {
+  if (!forum) {
     return <div>empty forum!</div>
   }
 
-  return <div>{JSON.stringify(forums)}</div>
+  // TODO: create the ui of the forum
+  // TODO: please see forum.d.ts to know its contents
+  return <div>{JSON.stringify(forum)}</div>
 }
 
 export default RetrieveForums
