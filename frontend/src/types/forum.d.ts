@@ -10,4 +10,8 @@ interface IForum {
 interface IForumState {
   forums: IForum[] // this changes when current_accommodation changes
   current_accommodation?: string // loads the forums of the current_accommodation, undefined means no accommodation has been selected
+  dispatch: React.Dispatch<IReducerAction<TForumActionType, TForumPayload>> // the dispatch function to manipulate forum state
 }
+
+type TForumActionType = 'FR_INIT' // TODO: add more actions
+type TForumPayload = IForum[] // TODO: add more payload types

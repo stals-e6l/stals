@@ -5,17 +5,22 @@ interface IProps {
 }
 
 const ForumProvider: React.FC<IProps> = ({ children }) => {
-  // states
-  const [forums, setForums] = React.useState<IForum[]>([])
-  const [current_accommodation, setCurrentAccommodation] = React.useState<
-    string | undefined
-  >()
+  // state
+  const [state, dispatch] = React.useReducer(forumStateReducer, {
+    forums: [],
+    current_accommodation: undefined,
+    dispatch: () => undefined,
+  })
+
+  // immediates
+  const { forums, current_accommodation } = state
 
   return (
     <forumContext.Provider
       value={{
         forums,
         current_accommodation,
+        dispatch,
       }}
     >
       {children}
@@ -27,4 +32,21 @@ export default ForumProvider
 
 const forumContext = React.createContext<IForumState>({
   forums: [],
+  dispatch: () => undefined,
 })
+
+const forumStateReducer = (
+  state: IForumState,
+  action: IReducerAction<TForumActionType, TForumPayload>
+): IForumState => {
+  switch (action.type) {
+    // initialize the state
+    case 'FR_INIT':
+      return {
+        ...state,
+        forums: action.payload as IForum[],
+      }
+    default:
+      return { ...state }
+  }
+}
