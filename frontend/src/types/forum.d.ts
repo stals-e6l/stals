@@ -13,5 +13,5 @@ interface IForumState {
   dispatch: React.Dispatch<IReducerAction<TForumActionType, TForumPayload>> // the dispatch function to manipulate forum state
 }
 
-type TForumActionType = 'FR_INIT' // TODO: add more actions
-type TForumPayload = IForum[] // TODO: add more payload types
+type TForumActionType = 'FR_INIT' | 'FR_RETRIEVE' | 'FR_SET_CURRENT_AC' // TODO: add more actions
+type TForumPayload = IForum[] | string | undefined // TODO: add more payload types

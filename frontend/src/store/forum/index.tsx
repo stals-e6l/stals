@@ -53,6 +53,11 @@ const forumStateReducer = (
         ...state,
         forums: action.payload as IForum[],
       }
+    case 'FR_SET_CURRENT_AC':
+      return {
+        ...state,
+        current_accommodation: action.payload as string | undefined,
+      }
     default:
       return { ...state }
   }
