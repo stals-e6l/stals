@@ -63,6 +63,11 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
   const params = useParams()
   const accommodation = retrieveAccommodationById(params.id as string)
 
+  // TODO: add ui/logic to handle non-existent accommodation
+  if (!accommodation) {
+    return <div>accommodation does not exits!</div>
+  }
+
   return (
     <React.Fragment>
       <Box
@@ -123,7 +128,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               />
               <Box>
                 <Typography sx={{ color: '#888888', fontWeight: 'bold' }}>
-                  Rodge "Pogi" De Luna
+                  Rodge De Luna
                 </Typography>
                 <Typography sx={{ fontSize: 'small' }}>
                   It is a nice place. We enjoyed our stay.
@@ -139,7 +144,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
           <Box sx={boxStyle}>
             {accommodation.amenities.map((value, index) => {
               return (
-                <Box sx={{ display: 'flex' }}>
+                <Box key={index} sx={{ display: 'flex' }}>
                   <Box
                     component="img"
                     sx={{
@@ -147,7 +152,8 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                       height: '25px',
                     }}
                     alt="check image"
-                    src={check}
+                    // src={check}
+                    src={''}
                   />
                   <Typography>{value}</Typography>
                 </Box>
@@ -250,7 +256,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.amenities.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -258,7 +264,8 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                         height: '25px',
                       }}
                       alt="check image"
-                      src={check}
+                      // src={check}
+                      src=""
                     />
                     <Typography>{value}</Typography>
                   </Box>
@@ -272,7 +279,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.appliances.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -280,7 +287,8 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                         height: '25px',
                       }}
                       alt="check image"
-                      src={check}
+                      // src={check}
+                      src=""
                     />
                     <Typography>{value}</Typography>
                   </Box>
@@ -294,7 +302,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.safety_and_security.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -302,7 +310,8 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                         height: '25px',
                       }}
                       alt="check image"
-                      src={check}
+                      // src={check}
+                      src=""
                     />
                     <Typography>{value}</Typography>
                   </Box>
@@ -326,7 +335,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             </Grid>
             <Grid item xs={4}>
               {accommodation.landmarks.map((value, index) => {
-                return <Typography>{value}</Typography>
+                return <Typography key={index}>{value}</Typography>
               })}
             </Grid>
           </Grid>
@@ -344,7 +353,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.cooking_rules.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -352,7 +361,8 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                         height: '25px',
                       }}
                       alt="check image"
-                      src={check}
+                      // src={check}
+                      src=""
                     />
                     <Typography>{value}</Typography>
                   </Box>
@@ -366,7 +376,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.pet_rules.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -374,7 +384,8 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                         height: '25px',
                       }}
                       alt="check image"
-                      src={check}
+                      // src={check}
+                      src=""
                     />
                     <Typography>{value}</Typography>
                   </Box>
@@ -388,7 +399,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             <Grid item xs={8}>
               {accommodation.other_rules.map((value, index) => {
                 return (
-                  <Box sx={{ display: 'flex' }}>
+                  <Box key={index} sx={{ display: 'flex' }}>
                     <Box
                       component="img"
                       sx={{
@@ -396,7 +407,8 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                         height: '25px',
                       }}
                       alt="check image"
-                      src={check}
+                      // src={check}
+                      src=""
                     />
                     <Typography>{value}</Typography>
                   </Box>
