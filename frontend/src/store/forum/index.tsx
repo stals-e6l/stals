@@ -60,6 +60,18 @@ const forumStateReducer = (
         ...state,
         current_accommodation: action.payload as string | undefined,
       }
+    case 'FR_UPDATE':
+      return {
+        ...state,
+        forums: [
+          action.payload as IForum,
+          ...state.forums.filter(
+            val =>
+              val.accommodation_id !==
+              (action.payload as IForum).accommodation_id
+          ),
+        ],
+      }
     default:
       return { ...state }
   }

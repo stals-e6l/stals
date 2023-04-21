@@ -5,4 +5,5 @@ export const mockForums: IForum[] = Array.from(Array(5)).map(() => ({
   is_public: true,
   status: 'active',
   content: Array.from(Array(5)).map(() => faker.lorem.lines(3)),
+  _id: faker.database.mongodbObjectId(),
 }))

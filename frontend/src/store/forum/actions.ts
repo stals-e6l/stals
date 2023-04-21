@@ -27,3 +27,19 @@ export const retrieveForumByCurrentAccommodation = () => {
   //   if (filteredForums.length === 0) return undefined
   return forums[0]
 }
+
+export const addCommentToForum = () => {
+  const { dispatch, forums } = useForum()
+
+  return (forumId: string, comment: string) => {
+    if (!forumId || !comment) return
+
+    const forum = forums.find(forum => forum._id === forumId)
+
+    if (!forum) return
+
+    forum.content.push(comment)
+
+    dispatch({ type: 'FR_UPDATE', payload: forum })
+  }
+}
