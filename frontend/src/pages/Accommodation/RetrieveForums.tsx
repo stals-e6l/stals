@@ -2,6 +2,7 @@ import React from 'react'
 import { retrieveForumByCurrentAccommodation } from '../../store/forum/actions'
 import AddCommentToForum from '../Forum/AddCommentToForum'
 import DeleteCommentFromForum from '../Forum/DeleteCommentFromForum'
+import ForumComment from '../Forum/ForumComment'
 
 interface IProps {
   children?: React.ReactNode
@@ -22,13 +23,12 @@ const RetrieveForums: React.FC<IProps> = () => {
       <div>below are the forum comments</div>
       <ul>
         {forum.content.map((comment, key: number) => (
-          <li key={key}>
-            <p>{comment}</p>
-            <DeleteCommentFromForum
-              forumId={forum._id as string}
-              comment={comment}
-            />
-          </li>
+          <ForumComment
+            key={key}
+            forumId={forum._id as string}
+            comment={comment}
+            commentIndex={key}
+          />
         ))}
       </ul>
       <div>

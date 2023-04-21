@@ -59,3 +59,26 @@ export const deleteCommentFromForum = () => {
     dispatch({ type: 'FR_UPDATE', payload: { ...forum, content: newContent } })
   }
 }
+
+export const updateCommentFromForum = () => {
+  const { dispatch, forums } = useForum()
+
+  return (forumId: string, comment: string, commentIndex: number) => {
+    if (!forumId || !comment) return
+
+    const forum = forums.find(forum => forum._id === forumId)
+
+    if (!forum) return
+
+    const newContent = []
+    for (let i = 0; i < forum.content.length; i++) {
+      if (commentIndex === i) {
+        newContent.push(comment)
+      } else {
+        newContent.push(forum.content[i])
+      }
+    }
+
+    dispatch({ type: 'FR_UPDATE', payload: { ...forum, content: newContent } })
+  }
+}
