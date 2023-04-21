@@ -8,6 +8,6 @@ interface IForum {
 }
 
 interface IForumState {
-  // TODO:
-  test: any
+  forums: IForum[] // this changes when current_accommodation changes
+  current_accommodation?: string // loads the forums of the current_accommodation, undefined means no accommodation has been selected
 }

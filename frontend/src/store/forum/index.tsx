@@ -5,10 +5,17 @@ interface IProps {
 }
 
 const ForumProvider: React.FC<IProps> = ({ children }) => {
+  // states
+  const [forums, setForums] = React.useState<IForum[]>([])
+  const [current_accommodation, setCurrentAccommodation] = React.useState<
+    string | undefined
+  >()
+
   return (
     <forumContext.Provider
       value={{
-        test: 'test',
+        forums,
+        current_accommodation,
       }}
     >
       {children}
@@ -19,6 +26,5 @@ const ForumProvider: React.FC<IProps> = ({ children }) => {
 export default ForumProvider
 
 const forumContext = React.createContext<IForumState>({
-  // TODO:
-  test: 'test',
+  forums: [],
 })
