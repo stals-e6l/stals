@@ -37,7 +37,7 @@ const ForumProvider: React.FC<IProps> = ({ children }) => {
 
 export default ForumProvider
 
-const forumContext = React.createContext<IForumState>({
+export const forumContext = React.createContext<IForumState>({
   forums: [],
   dispatch: () => undefined,
 })
