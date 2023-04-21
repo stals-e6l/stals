@@ -1,14 +1,13 @@
 import React from 'react'
 import { retrieveForumByCurrentAccommodation } from '../../store/forum/actions'
-import AddCommentToForum from '../Forum/AddCommentToForum'
-import DeleteCommentFromForum from '../Forum/DeleteCommentFromForum'
-import ForumComment from '../Forum/ForumComment'
+import AddCommentToForum from './AddCommentToForum'
+import ForumComment from './ForumComment'
 
 interface IProps {
   children?: React.ReactNode
 }
 
-const RetrieveForums: React.FC<IProps> = () => {
+const Forum: React.FC<IProps> = () => {
   const forum = retrieveForumByCurrentAccommodation()
 
   // TODO: handle the ui when the forum is empty!
@@ -38,4 +37,4 @@ const RetrieveForums: React.FC<IProps> = () => {
   )
 }
 
-export default RetrieveForums
+export default Forum

@@ -6,7 +6,7 @@ import location from '../../assets/Images/Ellens.jpg'
 // import pin from '../../assets/Map pin - Green.png'
 import { Button, Box, Container, Typography, Grid } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import RetrieveForums from './RetrieveForums'
+import Forum from '../Forum/Forum'
 
 interface IProps {
   children?: React.ReactNode
@@ -138,7 +138,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
 
             <Typography sx={boxLabel}>Review</Typography>
 
-            <RetrieveForums />
+            <Forum />
           </Box>
 
           <Box sx={boxStyle}>
