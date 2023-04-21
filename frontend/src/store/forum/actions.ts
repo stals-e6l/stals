@@ -43,3 +43,19 @@ export const addCommentToForum = () => {
     dispatch({ type: 'FR_UPDATE', payload: forum })
   }
 }
+
+export const deleteCommentFromForum = () => {
+  const { dispatch, forums } = useForum()
+
+  return (forumId: string, comment: string) => {
+    if (!forumId || !comment) return
+
+    const forum = forums.find(forum => forum._id === forumId)
+
+    if (!forum) return
+
+    const newContent = forum.content.filter(val => val !== comment)
+
+    dispatch({ type: 'FR_UPDATE', payload: { ...forum, content: newContent } })
+  }
+}
