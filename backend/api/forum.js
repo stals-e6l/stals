@@ -11,18 +11,34 @@ const forumRouter = Router()
  *      Forum:
  *          type: object
  *          required:
- *              - name
+ *              - content
+ *              - status
+ *              - is_public
+ *              - accommodation_id
  *          properties:
- *              name:
+ *              content:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Array of comments/chats of users
+ *              status:
  *                  type: string
- *                  description: Forum name
+ *                  pattern: '^((active)|(archived)|(deleted))$'
+ *                  description: Status of the forum/chat conversation
+ *              is_public:
+ *                  type: boolean
+ *                  description: Either public forum or private chat
+ *              accommodation_id:
+ *                  type: string
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation reference
  */
 
 /**
  * @openapi
  * /api/forum:
  *      post:
- *          description: Adds accommodation
+ *          description: Create forum
  *          requestBody:
  *              required: true
  *              content:
@@ -30,13 +46,13 @@ const forumRouter = Router()
  *                      schema:
  *                          $ref: '#/components/schemas/Forum'
  *          responses:
- *              200:
+ *              201:
  *                  content:
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Forum'
- *              404:
- *                  description: The accommodation was not created
+ *              400:
+ *                  description: Bad request.
  *              401:
  *                  description: Unauthorized access.
  *              500:
@@ -44,28 +60,23 @@ const forumRouter = Router()
  *              
  */
 forumRouter.post("/", async function(req, res){
-    try{
-        const savedAccom = await Forum.create({ ...req.body });
-        if(!savedAccom){
+    try {
+        const savedForum = await Forum.create({ ...req.body });
+        if (!savedForum) {
             throw new Error(400);
-        }else{
-            res.status(201).json({ status: true, data: savedAccom });
+        } else {
+            res.status(201).json({ success: true, data: savedForum });
         }
-    } catch(err){
+    } catch(err) {
         switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
             case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
+                res.status(400).json({ success: false, messages: ["Error: Bad request"]});
               break;
             case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
+                res.status(401).json({ success: false, messages: ["Error: Unauthorized access"]});
               break;
             default:
-                res.json({success: false, messages: [String(err)]});
+                res.status(500).json({ success: false, messages: ["Error: Internal server error"]});
         }
     }
 })
