@@ -137,8 +137,6 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             </Box>
 
             <Typography sx={boxLabel}>Review</Typography>
-
-            <Forum />
           </Box>
 
           <Box sx={boxStyle}>
@@ -484,7 +482,9 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
           </Button>
         </Box>
 
-        <Box sx={unshadedTable}>
+        <Forum />
+
+        {/* <Box sx={unshadedTable}>
           <Box sx={{ paddingBottom: '10px' }}>
             <Typography
               sx={{
@@ -535,7 +535,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               temporibus corporis fuga.
             </Typography>
           </Box>
-        </Box>
+        </Box> */}
       </Container>
     </React.Fragment>
   )
