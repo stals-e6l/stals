@@ -1,6 +1,7 @@
 const { Router } = require('express')
 
 var Forum = require("../models/forum");
+var Accommodation = require("../models/accommodation");
 
 const forumRouter = Router()
 
@@ -55,29 +56,54 @@ const forumRouter = Router()
  *                  description: Bad request.
  *              401:
  *                  description: Unauthorized access.
+ *              404:
+ *                  description: Not found (for accommodation id).
  *              500:
  *                  description: Internal Server error.
  *              
  */
 forumRouter.post("/", async function(req, res){
     try {
+        // TODO: Check if user is authenticated
+        // if (user is not authenticated){
+        //     const error = new Error("Permission denied");
+        //     error.name = "AuthError";
+        //     throw error;
+        // }
+
+        // Check if accommodation exists
+        const refAccom = await Accommodation.findById(req.body.accommodation_id);
+        if (!refAccom) {
+            const error = new Error("Accommodation does not exist");
+            error.name = "NullError";
+            throw error;
+        }
+
         const savedForum = await Forum.create({ ...req.body });
-        if (!savedForum) {
-            throw new Error(400);
-        } else {
-            res.status(201).json({ success: true, data: savedForum });
-        }
+
+        res.status(201).json({ success: true, data: savedForum });
+
     } catch(err) {
-        switch(err) {
-            case 400:
-                res.status(400).json({ success: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ success: false, messages: ["Error: Unauthorized access"]});
-              break;
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
+                break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
+                break;
             default:
-                res.status(500).json({ success: false, messages: ["Error: Internal server error"]});
+                code = 500;
         }
+
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 })
 
