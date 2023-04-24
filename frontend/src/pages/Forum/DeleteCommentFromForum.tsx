@@ -1,6 +1,7 @@
 import React from 'react'
 import { deleteCommentFromForum } from '../../store/forum/actions'
-import { Button } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import { Button, Dialog, DialogActions, DialogTitle, Typography, Grid } from '@mui/material'
 
 interface IProps {
   children?: React.ReactNode
@@ -12,16 +13,39 @@ const DeleteCommentFromForum: React.FC<IProps> = ({ forumId, comment }) => {
   // hook
   const deleteCommentFromForumHandler = deleteCommentFromForum()
 
+  const [open, setState] = React.useState(false)
+
+// original code
+//    <Button
+//      variant="contained"
+//      onClick={() => {
+//        // use this function delete comment in the forum
+//        deleteCommentFromForumHandler(forumId, comment)
+//      }}
+//    >
+//      Delete
+//    </Button>
+
   return (
-    <Button
-      variant="contained"
-      onClick={() => {
-        // use this function delete comment in the forum
-        deleteCommentFromForumHandler(forumId, comment)
-      }}
-    >
-      Delete
-    </Button>
+    <>
+        <Button onClick={ () => {setState(true)} }>Delete</Button>
+        <Dialog open={open} onClose={ () => {setState(false)} } fullWidth={true} maxWidth={'xs'}>
+            <DialogTitle>
+                <Grid sx={{ flexGrow: 1 }} container spacing={0}>
+
+                </Grid>
+            </DialogTitle>
+            <Grid sx={{ flexGrow: 1 }} container spacing={1}>
+                <Grid item xs sx={{}}>
+                    <Typography sx={{ p: 1, textAlign: 'center' }}>Are you sure you want to delete your comment?</Typography>
+                </Grid>
+            </Grid>
+            <DialogActions>
+                <Button onClick={ () => {setState(false)} }>Cancel</Button>
+                <Button onClick={ () => {deleteCommentFromForumHandler(forumId, comment) }}>Delete</Button>
+            </DialogActions>
+        </Dialog> 
+    </>
   )
 }
 
