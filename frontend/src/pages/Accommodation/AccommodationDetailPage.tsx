@@ -4,8 +4,10 @@ import { retrieveAccommodationById } from '../../store/accommodation/actions'
 import location from '../../assets/Images/Ellens.jpg'
 // import check from '../../assets/ImgaCheck Green.png'
 // import pin from '../../assets/Map pin - Green.png'
-import { Button, Box, Container, Typography, Grid } from '@mui/material'
+import { Button, Box, Container, Typography, Grid, Rating } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import Header from '../../components/header'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
 
 interface IProps {
   children?: React.ReactNode
@@ -64,6 +66,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
 
   return (
     <React.Fragment>
+      <Header />
       <Box
         component="img"
         sx={{
@@ -79,11 +82,17 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            fontFamily: 'Source Sans Pro',
           }}
         >
-          <Typography variant="h2">{accommodation.name}</Typography>
-          <Typography variant="h2">{accommodation.price}</Typography>
+          <Typography
+            variant="h2"
+            sx={{
+              fontFamily: 'Source Sans Pro',
+            }}
+          >
+            {accommodation.name}
+          </Typography>
+          <Typography variant="h2">₱{accommodation.price}</Typography>
         </Box>
 
         <Typography variant="h5">{accommodation.type}</Typography>
@@ -110,8 +119,21 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
                 /5
               </Typography>
               <Box sx={{ paddingBottom: '6px', paddingLeft: '5px' }}>
-                <div>Placeholder</div>
-                <Typography>1000+ reviews</Typography>
+                <Rating
+                  sx={{
+                    fontSize: 'medium',
+                    color: '#60ce80',
+                  }}
+                  readOnly
+                />
+                <Typography
+                  sx={{
+                    marginTop: '-10px',
+                    marginBottom: '5px',
+                  }}
+                >
+                  1000+ reviews
+                </Typography>
               </Box>
             </Box>
 
@@ -155,14 +177,15 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
 
           <Box sx={boxStyle}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Box
-                component="img"
+              <LocationOnIcon
                 sx={{
-                  width: '50px',
-                  height: '50px',
+                  // maxWidth: "100px",
+                  // maxHeight: "100px",
+                  // minWidth: "50px",
+                  // minHeigth: "50px",
+                  color: '#60ce80',
+                  fontSize: 'xxx-large',
                 }}
-                alt="pin image"
-                src={""}
               />
               <Typography>{accommodation.address}</Typography>
             </Box>
@@ -441,7 +464,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               sx={{
                 fontSize: '20px',
                 paddingBottom: '8px',
-                color: '#154360'
+                color: '#154360',
               }}
             >
               /5
@@ -456,13 +479,17 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               <Typography>1000+ reviews</Typography>
             </Box>
           </Box>
-          <Button sx={{
-            position: 'absolute',
-            right: '25px',
-            backgroundColor: '#154360',
-            color: 'white',
-            fontWeight: 'bold'
-          }}>Add Review</Button>
+          <Button
+            sx={{
+              position: 'absolute',
+              right: '25px',
+              backgroundColor: '#154360',
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          >
+            Add Review
+          </Button>
         </Box>
 
         <Box sx={unshadedTable}>
