@@ -74,7 +74,7 @@ forumRouter.post("/", async function(req, res){
  * @openapi
  * /api/forum/{id}:
  *      get:
- *          description: Get accommodation by id
+ *          description: Get forum by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -94,7 +94,7 @@ forumRouter.post("/", async function(req, res){
  *              500:
  *                  description: Internal server error
  *              404:
- *                  description: Not found
+ *                  description: Forum could not be found
  *              
  */
 forumRouter.get('/:id', async function(req, res){
@@ -102,15 +102,15 @@ forumRouter.get('/:id', async function(req, res){
         if(!req.params.id){
             throw 400;
         }
-        const accom = await Forum.findById(req.params.id);
-        if(!accom){
+        const forum = await Forum.findById(req.params.id);
+        if(!forum){
             throw 404;
         }
-        res.status(200).json({success: true, data: accom});
+        res.status(200).json({success: true, data: forum});
     } catch(err){
         switch(err) {
             case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+                res.status(404).json({ status: false, messages: ["Error: Forum could not be found"]});
                 break;
             case 400:
                 res.status(400).json({ status: false, messages: ["Error: Bad request"]});
