@@ -2,8 +2,9 @@ import React from 'react';
 import { AppBar,Button, Box, Toolbar, Tabs, Tab, useMediaQuery, IconButton, Menu, MenuItem } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
-import Logo from '../assets/images/Logo_White.png';
+import Logo from '../assets/Images/Logo_White.png';
 import { useNavigate } from 'react-router-dom';
+import QuickCreateAccommodation from '../pages/Accommodation/dev/QuickCreateAccommodation';
 
 
 function Header() {
@@ -81,7 +82,7 @@ function Header() {
                                 {TabAccommList}
                             </Tabs>
 
-                            <Button sx={{
+                            {/* <Button sx={{
                                 fontFamily:sourceSansPro,
                                 marginLeft: "auto",
                                 color: grey,
@@ -95,7 +96,9 @@ function Header() {
                                     backgroundColor: 'hsl(202, 63%, 12%)',
                                     
                                 }
-                            }}> Create Account </Button>
+                            }}> Create Account </Button> */}
+
+                            <QuickCreateAccommodation />
 
                             <Button sx={{
                                 fontFamily:sourceSansPro,

@@ -9,7 +9,7 @@ export const useAccommodationForm = (
     initialValues: {
       description: initVal?.description || '',
       // required
-      _id: initVal?._id || '',
+      _id: initVal?._id ,
       name: initVal?.name || '',
       address: initVal?.address || '',
       type: initVal?.type || 'hotel',

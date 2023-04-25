@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 const schema = Yup.object<IAccommodation>({
   description: Yup.string(),
   // required
-  _id: Yup.string().required(),
+  _id: Yup.string(),
   name: Yup.string().required(),
   address: Yup.string().required(),
   type: Yup.string().required(),
