@@ -26,36 +26,12 @@ const UpdateCommentFromForum: React.FC<IProps> = ({
     setOpen(false);
   };
 
-  const [editable, setEditable] = React.useState<boolean>(false)
   const [comment, setComment] = React.useState<string>(initComment)
 
   return (
     <ThemeProvider theme={theme}>
       <div>
-        {/* {editable && (
-          <TextField
-            value={comment}
-            onChange={e => setComment(e.target.value)}
-            placeholder="Enter comment..."
-          />
-        )} */}
-        <Button
-          variant="contained"
-          onClick={/*</div>*() => {
-            // first it sets the UI to editable mode
-            if (!editable) setEditable(true)
-            // then when the user 'Saves'...
-            else {
-              // use this function update comment in the forum
-              updateCommentFromForumHandler(forumId, comment, commentIndex)
-              setEditable(false)
-            }
-          }*/
-          handleClickOpen
-        }
-        >
-          Update
-        </Button>
+        <Button variant="contained" onClick={handleClickOpen}>Update</Button>
 
         <Dialog fullWidth maxWidth='sm' open={open} sx={mainDialog}>
 
@@ -72,7 +48,10 @@ const UpdateCommentFromForum: React.FC<IProps> = ({
               <Button variant="contained" onClick={handleClose} sx={buttonStyle}>Cancel</Button>
             </Grid>
             <Grid item xs={2} textAlign={'center'}>
-              <Button variant="contained" onClick={handleClose} sx={buttonStyle}>Confirm</Button>
+              <Button variant="contained" onClick={()=>{
+                updateCommentFromForumHandler(forumId, comment, commentIndex)
+                handleClose()
+              }} sx={buttonStyle}>Confirm</Button>
             </Grid>
           </Grid>
 
@@ -85,9 +64,6 @@ const UpdateCommentFromForum: React.FC<IProps> = ({
 export default UpdateCommentFromForum
 
 const theme = createTheme({
-  components:{
-
-  },
   typography: {
     fontFamily: 'Source Sans Pro, Quicksand, Roboto, Arial',
     h5 : {
