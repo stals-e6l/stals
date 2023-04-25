@@ -2,8 +2,10 @@ import React from 'react'
 import { retrieveForumByCurrentAccommodation } from '../../store/forum/actions'
 import AddCommentToForum from './AddCommentToForum'
 import ForumComment from './ForumComment'
-import { Box, Button, Drawer, Grid, IconButton, Rating, Typography } from '@mui/material'
+import { AppBar, Box, Button, Drawer, Grid, IconButton, Rating, Tooltip, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
+import ForumIcon from '@mui/icons-material/Forum';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 
 interface IProps {
   children?: React.ReactNode
@@ -29,6 +31,47 @@ const Forum: React.FC<IProps> = () => {
     right: false,
   });
 
+  // Rating Text
+  const RatingText = (() =>
+    <Typography sx={{
+      fontFamily: sourceSansPro,
+      fontSize: '3rem',
+      fontWeight: 'bold',
+      color: green,
+      display: 'flex',
+      alignItems: 'center'
+    }}>
+      {rating}
+      <Typography sx={{
+        color: blue,
+        fontFamily: quicksand,
+        fontSize: '1.75rem',
+        marginLeft: '5px'
+      }}>
+        /5
+      </Typography>
+    </Typography>
+  )
+
+  // Add Review Button
+  const AddReviewButton = (() =>
+    <Button
+      sx={{
+        backgroundColor: blue,
+        color: 'white',
+        fontWeight: 'bold',
+        fontFamily: sourceSansPro,
+        fontSize: '1rem',
+        textTransform: 'none',
+        ':hover': {
+          backgroundColor: grey,
+          color: blue,
+        }
+      }}
+    >
+      Add Review
+    </Button>
+  )
 
 
   const toggleDrawer =
@@ -47,29 +90,148 @@ const Forum: React.FC<IProps> = () => {
 
   // TODO: handle the ui when the forum is empty!
   if (!forum) {
-    return <div>empty forum!</div>
+    return (
+      <Box>
+        <Grid container
+          direction="row"
+          display="flex"
+          alignItems="center"
+          sx={{
+            backgroundColor: grey,
+            marginLeft: '10px',
+            padding: '15px 30px',
+          }}>
+          
+          {/* No reviews icon. */}
+          <Grid item>
+            <ForumIcon sx={{
+              color: green,
+              fontSize: "50px"
+            }}/>
+          </Grid>
+
+          {/* Message: No reviews yet. */}
+          <Grid item xs={2}>
+            <Typography sx={{
+              fontFamily: quicksand,
+              fontSize: "1.25rem",
+              marginLeft: '10%',
+            }}>
+              No reviews yet.
+            </Typography>
+          </Grid>
+
+          <Grid item xs={9} >
+            <Box display="flex" justifyContent="flex-end">
+              <AddReviewButton />
+            </Box>
+            
+          </Grid>
+
+        </Grid>
+      </Box>
+    )
   }
 
   // TODO: create the ui of the forum
   // TODO: please see forum.d.ts to know its contents
   return (
     <Box>
-      {/* {<div>below are the forum comments</div>
-      <ul>
-        {forum.content.map((comment, key: number) => (
-          <ForumComment
-            key={key}
-            forumId={forum._id as string}
-            comment={comment}
-            commentIndex={key}
-          />
-        ))}
-      </ul>
-      <div>
-        <AddCommentToForum forumId={forum._id as string} />
-      </div>} */}
+      <Grid container >
+        <Grid item xs={12}>
 
-      <Button onClick={toggleDrawer("right", true)}>{"right"}</Button>
+          {/* Grey background */}
+          <Grid container
+            direction="row"
+            sx={{
+              backgroundColor: grey,
+              marginLeft: '10px',
+              padding: '15px 30px',
+              alignContent: "center"
+            }}>
+
+            {/* Rating text */}
+            <Grid item>
+              <RatingText />
+            </Grid>
+
+            {/* Star rating and drawer button */}
+            <Grid item>
+              <Grid container
+                direction="column"
+                justifyContent='center'
+                alignItems='flex-start'
+                sx={{
+                  marginLeft: '10px'
+                }}>
+
+                {/* Star Rating */}
+                <Grid item>
+                  <Rating
+                    value={rating}
+                    precision={0.5}
+                    sx={{
+                      color: green,
+                      marginTop: '15px'
+                    }}
+                    readOnly />
+                </Grid>
+
+                {/* Number of reviews */}
+                <Tooltip title="See more reviews" placement='bottom'>
+                  <Button
+                    variant='text'
+                    disableRipple
+                    sx={{
+                      textTransform: 'none',
+                      padding: '0px 3px',
+                      marginTop: '-10px',
+                      ':hover': {
+                        backgroundColor: grey,
+                        color: 'black',
+                      }
+                    }}
+                    onClick={toggleDrawer("right", true)}>
+                    <Typography sx={{
+                      fontFamily: quicksand,
+                      textDecoration: 'underline',
+                      color: 'black'
+                    }}>{numReviews} reviews</Typography>
+                  </Button>
+                </Tooltip>
+
+
+              </Grid>
+
+            </Grid>
+
+            <Grid item xs={9}>
+
+              {/* Add review button */}
+              <Box display="flex" justifyContent="flex-end" marginTop="20px">
+                <AddReviewButton />
+              </Box>
+
+            </Grid>
+
+          </Grid>
+
+        </Grid>
+
+        <Grid item>
+          {forum.content.map((comment, key: number) => (
+            <ForumComment
+              key={key}
+              forumId={forum._id as string}
+              comment={comment}
+              commentIndex={key}
+            />
+          ))}
+        </Grid>
+
+      </Grid>
+
+      {/* Drawer */}
       <Drawer
         anchor={"right"}
         open={state["right"]}
@@ -77,7 +239,6 @@ const Forum: React.FC<IProps> = () => {
       >
         <Box sx={{
           width: 600,
-          padding: "3%",
           paddingLeft: "5%",
         }}>
 
@@ -87,10 +248,12 @@ const Forum: React.FC<IProps> = () => {
             <CloseIcon />
           </IconButton >
 
+
           <Grid container sx={{
             paddingLeft: '2%',
           }}>
             <Grid item xs={12}>
+
               {/* This is where review header is enclosed */}
               <Box >
                 <Typography sx={{
@@ -110,31 +273,20 @@ const Forum: React.FC<IProps> = () => {
               </Box>
             </Grid>
             <Grid item xs={12}>
+
               {/* This is where Ratings are enclosed */}
               <Grid container sx={{}}
                 direction="row"
                 justifyContent="flex-start"
                 alignItems="center">
+
+                {/* Rating text */}
                 <Grid item>
-                  <Typography sx={{
-                    fontFamily: quicksand,
-                    fontSize: '3rem',
-                    fontWeight: 'bolder',
-                    color: green,
-                    display: 'flex'
-                  }}>
-                    {rating}
-                  </Typography>
+                  <RatingText />
                 </Grid>
+
                 <Grid item>
-                  <Typography sx={{
-                    color: 'black',
-                    fontSize: '1.1rem',
-                  }}>
-                    /5
-                  </Typography>
-                </Grid>
-                <Grid item>
+
                   {/* This is where star rating and number of reviews are contained */}
                   <Grid container direction="column"
                     justifyContent='center'
@@ -142,25 +294,43 @@ const Forum: React.FC<IProps> = () => {
                     sx={{
                       paddingLeft: '5%',
                     }}>
+
+                    {/* Star Rating */}
                     <Grid item>
                       <Rating
                         value={rating}
                         precision={0.5}
-                        sx={{ color: green }}
+                        sx={{
+                          color: green,
+                          marginTop: '15px'
+                        }}
                         readOnly />
                     </Grid>
+
+                    {/* Number of reviews */}
                     <Grid item>
                       <Typography sx={{
                         fontFamily: quicksand,
-
+                        marginTop: '-10px',
+                        textDecoration: 'underline',
                       }}>
-                        ({numReviews} reviews)
+                        {numReviews} reviews
                       </Typography>
                     </Grid>
+
                   </Grid>
                   {/* End of grid container for star rating and number of reviews */}
                 </Grid>
+
+                {/* Grid component for add review button */}
+                <Grid item xs={6}>
+                  <Box display="flex" justifyContent="flex-end">
+                    <AddReviewButton />
+                  </Box>
+                </Grid>
+
               </Grid>
+
             </Grid>
             {/* End of grid container for ratings */}
 
