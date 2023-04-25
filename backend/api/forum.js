@@ -11,11 +11,27 @@ const forumRouter = Router()
  *      Forum:
  *          type: object
  *          required:
- *              - name
+ *              - content
+ *              - status
+ *              - is_public
+ *              - accommodation_id
  *          properties:
- *              name:
+ *              content:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Array of comments/chats of users
+ *              status:
  *                  type: string
- *                  description: Forum name
+ *                  pattern: '^((active)|(archived)|(deleted))$'
+ *                  description: Status of the forum/chat conversation
+ *              is_public:
+ *                  type: boolean
+ *                  description: Either public forum or private chat
+ *              accommodation_id:
+ *                  type: string
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation reference
  */
 
 /**
@@ -251,22 +267,32 @@ forumRouter.delete('/:id', async function(req, res){
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Forum'
- *              404:
- *                  description: Not found
  *              400:
- *                  description: Bad request
+ *                  description: Bad request.
  *              401:
- *                  description: Unauthorized access
+ *                  description: Unauthorized access.
+ *              404:
+ *                  description: Not found (For accommodation and forum).
  *              500:
- *                  description: Internal server error
+ *                  description: Internal Server error.
  *          tags:
  *              - Forum
  *              
  */
 forumRouter.put('/:id', async function(req, res){
     try{
-        if(!req.params.id){
-            throw 400;
+
+        const refAccom = await Accommodation.findById(req.body.accommodation_id);
+        if (!refAccom) {
+            const error = new Error("Accommodation does not exist");
+            error.name = "NullError";
+            throw error;
+        }
+
+        if(!['active', 'archived', 'deleted'].includes(req.body.status)){
+            const error = new Error("Status is incorrect");
+            error.name = "ValidationError";
+            throw error;
         }
 
         const editedForum = await Forum.findOneAndUpdate(
@@ -275,27 +301,37 @@ forumRouter.put('/:id', async function(req, res){
             {new: true});
 
         if(!editedForum){
-            throw 404;
+            const error = new Error("Forum does not exist");
+            error.name = "NullError";
+            throw error;
         }
 
         res.status(200).json({ success: true, data: editedForum })
-    } catch(err){
-        switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+
+    } catch(err) {
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
                 break;
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-              break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;  
+            case "NullError":
+                code = 404;
+                break;
+            case "NullError":
+                code = 404;
+                break;
             default:
-                res.json({success: false, messages: [String(err)]});
+                code = 500;
         }
+
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 
 });
