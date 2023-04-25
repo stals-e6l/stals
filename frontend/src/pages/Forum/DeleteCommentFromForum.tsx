@@ -13,7 +13,7 @@ const DeleteCommentFromForum: React.FC<IProps> = ({ forumId, comment }) => {
   // hook
   const deleteCommentFromForumHandler = deleteCommentFromForum()
 
-  const [open, setState] = React.useState(false)
+  const [open, setOpen] = React.useState(false)
 
 // original code
 //    <Button
@@ -28,8 +28,8 @@ const DeleteCommentFromForum: React.FC<IProps> = ({ forumId, comment }) => {
 
   return (
     <>
-        <Button onClick={ () => {setState(true)} }>Delete</Button>
-        <Dialog open={open} onClose={ () => {setState(false)} } fullWidth={true} maxWidth={'xs'}>
+        <Button onClick={ () => {setOpen(true)} }>Delete</Button>
+        <Dialog open={open} onClose={ () => {setOpen(false)} } fullWidth={true} maxWidth={'xs'}>
             <DialogTitle>
                 <Grid sx={{ flexGrow: 1 }} container spacing={0}>
 
@@ -41,8 +41,8 @@ const DeleteCommentFromForum: React.FC<IProps> = ({ forumId, comment }) => {
                 </Grid>
             </Grid>
             <DialogActions>
-                <Button onClick={ () => {setState(false)} }>Cancel</Button>
-                <Button onClick={ () => {deleteCommentFromForumHandler(forumId, comment) }}>Delete</Button>
+                <Button onClick={ () => {setOpen(false)} }>Cancel</Button>
+                <Button onClick={ () => {deleteCommentFromForumHandler(forumId, comment)}}>Delete</Button>
             </DialogActions>
         </Dialog> 
     </>
