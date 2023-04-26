@@ -132,7 +132,7 @@ const accommodationRouter = Router()
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Accomodation
+ *              - Accommodation
  *              
  */
 accommodationRouter.post("/", async function(req, res){
@@ -188,7 +188,7 @@ accommodationRouter.post("/", async function(req, res){
  *              404:
  *                  description: Not found
  *          tags:
- *              - Accomodation
+ *              - Accommodation
  *              
  */
 accommodationRouter.get('/:id', async function(req, res){
@@ -382,7 +382,7 @@ accommodationRouter.get('/:id', async function(req, res){
  *              500:
  *                  description: Internal Service error
  *          tags:
- *              - Accomodation
+ *              - Accommodation
  *              
  *              
  */
@@ -431,7 +431,7 @@ accommodationRouter.get('/', async function(req, res){
  *              500:
  *                  description: Internal server error
  *          tags:
- *              - Accomodation
+ *              - Accommodation
  *              
  */
 accommodationRouter.delete('/:id', async function(req, res){
@@ -485,7 +485,7 @@ accommodationRouter.delete('/:id', async function(req, res){
  *              500:
  *                  description: Internal server error
  *          tags:
- *              - Accomodation
+ *              - Accommodation
  *              
  */
 accommodationRouter.put('/:id', async function(req, res){
