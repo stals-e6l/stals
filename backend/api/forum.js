@@ -251,17 +251,35 @@ forumRouter.delete('/:id', async function(req, res){
         const removedForum = await Forum.findByIdAndRemove({_id: req.params.id});
         
         if (!removedForum) {
-            throw new Error("404");
+            const error= new Error("Forum does not exist");
+            error.name="NullError";
+            throw error;
         } else {
             res.status(200).json({success: true, data: null});
         }
         // TODO: Handle other errors (authentication)
     } catch(err){
-        if (String(err).includes("404")) {
-            res.status(404).json({success: false, messages: ["Error 404: Forum not found"]});
-        } else {
-            res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
+                break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
+                break;
+            default:
+                code = 500;
         }
+        
+        res.status(code).json({success: false, messages: [String(err)]});
+       
     }
 });
 
