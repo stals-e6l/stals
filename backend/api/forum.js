@@ -1,6 +1,7 @@
 const { Router } = require('express')
 
 var Forum = require("../models/forum");
+var Accommodation = require("../models/accommodation");
 
 const forumRouter = Router()
 
@@ -11,18 +12,34 @@ const forumRouter = Router()
  *      Forum:
  *          type: object
  *          required:
- *              - name
+ *              - content
+ *              - status
+ *              - is_public
+ *              - accommodation_id
  *          properties:
- *              name:
+ *              content:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Array of comments/chats of users
+ *              status:
  *                  type: string
- *                  description: Forum name
+ *                  pattern: '^((active)|(archived)|(deleted))$'
+ *                  description: Status of the forum/chat conversation
+ *              is_public:
+ *                  type: boolean
+ *                  description: Either public forum or private chat
+ *              accommodation_id:
+ *                  type: string
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation reference
  */
 
 /**
  * @openapi
  * /api/forum:
  *      post:
- *          description: Adds accommodation
+ *          description: Create forum
  *          requestBody:
  *              required: true
  *              content:
@@ -30,43 +47,63 @@ const forumRouter = Router()
  *                      schema:
  *                          $ref: '#/components/schemas/Forum'
  *          responses:
- *              200:
+ *              201:
  *                  content:
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Forum'
- *              404:
- *                  description: The accommodation was not created
+ *              400:
+ *                  description: Bad request.
  *              401:
  *                  description: Unauthorized access.
+ *              404:
+ *                  description: Not found (for accommodation id).
  *              500:
  *                  description: Internal Server error.
  *              
  */
 forumRouter.post("/", async function(req, res){
-    try{
-        const savedAccom = await Forum.create({ ...req.body });
-        if(!savedAccom){
-            throw new Error(400);
-        }else{
-            res.status(201).json({ status: true, data: savedAccom });
+    try {
+        // TODO: Check if user is authenticated
+        // if (user is not authenticated){
+        //     const error = new Error("Permission denied");
+        //     error.name = "AuthError";
+        //     throw error;
+        // }
+
+        // Check if accommodation exists
+        const refAccom = await Accommodation.findById(req.body.accommodation_id);
+        if (!refAccom) {
+            const error = new Error("Accommodation does not exist");
+            error.name = "NullError";
+            throw error;
         }
-    } catch(err){
-        switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-              break;
+
+        const savedForum = await Forum.create({ ...req.body });
+
+        res.status(201).json({ success: true, data: savedForum });
+
+    } catch(err) {
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
+                break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
+                break;
             default:
-                res.json({success: false, messages: [String(err)]});
+                code = 500;
         }
+
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 })
 
