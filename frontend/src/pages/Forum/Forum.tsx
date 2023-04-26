@@ -2,10 +2,9 @@ import React from 'react'
 import { retrieveForumByCurrentAccommodation } from '../../store/forum/actions'
 import AddCommentToForum from './AddCommentToForum'
 import ForumComment from './ForumComment'
-import { AppBar, Box, Button, Drawer, Grid, IconButton, Rating, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Drawer, Grid, IconButton, Rating, Tooltip, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import ForumIcon from '@mui/icons-material/Forum';
-import ReviewsIcon from '@mui/icons-material/Reviews';
 
 interface IProps {
   children?: React.ReactNode
@@ -15,12 +14,10 @@ const Forum: React.FC<IProps> = () => {
   const forum = retrieveForumByCurrentAccommodation()
 
   type Anchor = "right"
-  var anchor = "right"
   const blue = "#154360";
   const green = "#60ce80";
   const grey = "#f0f0f0";
-  const darkGrey = "#f5f5f7";
-  const quicksand = "Quicksand"
+  const quicksand = "Quicksand";
   const sourceSansPro = "Source Sans Pro";
 
   //Temporary static data
@@ -200,7 +197,6 @@ const Forum: React.FC<IProps> = () => {
                   </Button>
                 </Tooltip>
 
-
               </Grid>
 
             </Grid>
@@ -344,16 +340,8 @@ const Forum: React.FC<IProps> = () => {
                 />
               ))}
             </Grid>
-
-
           </Grid>
-
-
-
-
         </Box>
-
-
       </Drawer >
     </Box >
   )
