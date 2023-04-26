@@ -4,6 +4,7 @@ import AccommodationPage from './pages/Accommodation/AccommodationPage'
 import AccommodationDetailPage from './pages/Accommodation/AccommodationDetailPage'
 import SamplePage from './pages/Sample'
 import CreateAccommodationPage from './pages/CreateAccommodation'
+import AddCommentToForum from './pages/Forum/AddCommentToForum'
 
 interface IProps {
   children?: React.ReactNode
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: '/createaccommodation/',
     element: <CreateAccommodationPage />,
+  },
+  {
+    path: '/addcomment/',
+    element: <AddCommentToForum />,
   },
 
 ])

@@ -7,6 +7,7 @@ import location from '../../assets/Images/Ellens.jpg'
 import { Button, Box, Container, Typography, Grid } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Forum from '../Forum/Forum'
+import AddCommentToForum from '../Forum/AddCommentToForum'
 
 interface IProps {
   children?: React.ReactNode
@@ -469,17 +470,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
               <Typography>1000+ reviews</Typography>
             </Box>
           </Box>
-          <Button
-            sx={{
-              position: 'absolute',
-              right: '25px',
-              backgroundColor: '#154360',
-              color: 'white',
-              fontWeight: 'bold',
-            }}
-          >
-            Add Review
-          </Button>
+          <AddCommentToForum/>
         </Box>
 
         <Forum />
