@@ -257,7 +257,7 @@ forumRouter.delete('/:id', async function(req, res){
         } else {
             res.status(200).json({success: true, data: null});
         }
-        // TODO: Handle other errors (authentication)
+        
     } catch(err){
         let code;
 
