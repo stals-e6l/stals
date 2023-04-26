@@ -131,6 +131,8 @@ const accommodationRouter = Router()
  *                  description: Unauthorized access.
  *              500:
  *                  description: Internal Server error.
+ *          tags:
+ *              - Accomodation
  *              
  */
 accommodationRouter.post("/", async function(req, res){
@@ -185,6 +187,8 @@ accommodationRouter.post("/", async function(req, res){
  *                  description: Internal server error
  *              404:
  *                  description: Not found
+ *          tags:
+ *              - Accomodation
  *              
  */
 accommodationRouter.get('/:id', async function(req, res){
@@ -377,6 +381,8 @@ accommodationRouter.get('/:id', async function(req, res){
  *                  description:  Unauthorize access
  *              500:
  *                  description: Internal Service error
+ *          tags:
+ *              - Accomodation
  *              
  *              
  */
@@ -424,6 +430,8 @@ accommodationRouter.get('/', async function(req, res){
  *                  description: The accommodation was not found
  *              500:
  *                  description: Internal server error
+ *          tags:
+ *              - Accomodation
  *              
  */
 accommodationRouter.delete('/:id', async function(req, res){
@@ -476,6 +484,8 @@ accommodationRouter.delete('/:id', async function(req, res){
  *                  description: Unauthorized access
  *              500:
  *                  description: Internal server error
+ *          tags:
+ *              - Accomodation
  *              
  */
 accommodationRouter.put('/:id', async function(req, res){

@@ -4,6 +4,7 @@ import Image from '../assets/Images/Ellens.jpg'
 import { useNavigate } from 'react-router-dom'
 import DeleteAccommodation from '../pages/Accommodation/DeleteAccommmodation'
 import UpdateAccommodation from '../pages/Accommodation/UpdateAccomodation'
+import { setCurrentAccommodation } from '../store/forum/actions'
 
 interface AccommDetails {
   accommodation: IAccommodation
@@ -24,6 +25,8 @@ function AccommodationTile({ accommodation }: AccommDetails) {
   let formattedName = accommodation.name
 
   const [update, setUpdate] = React.useState<boolean>(false)
+
+  const setCurrentAccommodationHandler = setCurrentAccommodation()
 
   // Name text display will adjust depending on the size of the string
   if (formattedName.length > 25)
@@ -51,7 +54,10 @@ function AccommodationTile({ accommodation }: AccommDetails) {
         }}
       >
         <Box
-          onClick={() => navigate(`${accommodation._id as string}`)}
+          onClick={() => {
+            setCurrentAccommodationHandler(accommodation._id)
+            navigate(`${accommodation._id as string}`)
+          }}
           component="img"
           src={Image}
           sx={{
