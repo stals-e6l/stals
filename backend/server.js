@@ -41,6 +41,10 @@ server.use('/api/ping', require('./api/ping'))
 server.use('/api/accommodation', require('./api/accommodation'))
 server.use('/api/forum', require('./api/forum'))
 server.use('/api/report', require('./api/report'))
+server.use('/api/sign-up', require('./api/auth'))
+server.use('/api/sign-in', require('./api/auth'))
+server.use('/api/sign-out', require('./api/auth'))
+server.use('/api/me', require('./api/auth'))
 
 /** END API */
 
