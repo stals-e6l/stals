@@ -33,7 +33,6 @@ const ForumComment: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
     <React.Fragment>
       <Box
         sx={{
-          //   background: '#f0f0f0',
           borderTop: '1px solid gray',
           borderBottom: '1px solid gray',
           marginTop: '-1px',
