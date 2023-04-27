@@ -1,8 +1,11 @@
 const { Router } = require('express')
+const bcrypt = require('bcryptjs')
 
 var User = require("../models/user");
 
 const authRouter = Router()
+
+const saltRounds = 10;
 
 /**
  * @openapi
@@ -16,6 +19,9 @@ const authRouter = Router()
  *              name:
  *                  type: string
  *                  description: Name of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
  */
 
 /**
@@ -45,10 +51,21 @@ const authRouter = Router()
  */
 authRouter.post("/", async function(req, res){
     try {
-        const savedUser = await User.create({ ...req.body });
+        bcrypt.hash(req.body.password, saltRounds, function(err, hashedPass){
+            if(err){
+                throw 500;
+            }
 
-        res.status(201).json({ success: true, data: savedUser });
-
+            let user = new User({
+                name: req.body.name,
+                password: hashedPass
+            });
+    
+            user.save()
+                .then(user => {
+                    res.status(201).json({ success: true, data: user });
+                })
+        })
     } catch(err) {
         let code;
 
