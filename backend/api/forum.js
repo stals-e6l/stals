@@ -145,7 +145,7 @@ forumRouter.get('/:id', async function(req, res){
         }
         const forum = await Forum.findById(req.params.id);
         if(!forum){
-            const error = new Error("Accomodation does not exist");
+            const error = new Error("Forum does not exist");
             error.name = "NullError";
             throw error;
         }
