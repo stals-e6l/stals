@@ -1,6 +1,6 @@
 import React from 'react'
 import { forumContext } from '.'
-import { apiPost, apiPut, apiDelete } from '../../api'
+import { apiPost, apiPut } from '../../api'
 
 const useForum = () => React.useContext<IForumState>(forumContext)
 
