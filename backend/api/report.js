@@ -11,11 +11,15 @@ const reportRouter = Router()
  *      Report:
  *          type: object
  *          required:
- *              - name
+ *              - user_id
+ *              - pdf_url
  *          properties:
- *              name:
+ *              user_id:
  *                  type: string
- *                  description: Name of report
+ *                  description: User id that created report
+ *              pdf_url:
+ *                  type: string
+ *                  description: URL of pdf
  */
 
 /**
