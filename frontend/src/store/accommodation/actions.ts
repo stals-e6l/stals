@@ -1,7 +1,7 @@
 import React from 'react'
 import { accommodationContext } from '.'
 import { apiDelete, apiPost, apiPut } from '../../api'
-import { createForum } from '../forum/actions'
+import { createForum, useForum } from '../forum/actions'
 
 const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
@@ -32,6 +32,7 @@ const useAccommodation = () =>
  */
 export const createAccommodation = () => {
   const { dispatch } = useAccommodation()
+  const { dispatch: dispatchForum } = useForum()
 
   const createAccommodationHandler = async (data: IAccommodation) => {
     const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
@@ -47,10 +48,14 @@ export const createAccommodation = () => {
         content: [],
         is_public: true,
         status: 'active',
-      }).then(() => {
+      }).then(forum => {
         dispatch({
           type: 'AC_CREATE',
           payload: res.data as IAccommodation,
+        })
+        dispatchForum({
+          type: 'FR_ADD',
+          payload: forum,
         })
       })
     }

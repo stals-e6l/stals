@@ -2,7 +2,7 @@ import React from 'react'
 import { forumContext } from '.'
 import { apiPost, apiPut } from '../../api'
 
-const useForum = () => React.useContext<IForumState>(forumContext)
+export const useForum = () => React.useContext<IForumState>(forumContext)
 
 export const retrieveForums = () => {
   const { forums } = useForum()
@@ -109,12 +109,14 @@ export const updateCommentFromForum = () => {
 
 export const createForum = () => {
   return async (forum: IForum) => {
-    const res = await apiPost('forum', {
+    const res = await apiPost<IForum, IForum>('forum', {
       payload: forum,
     })
 
     if (!res.success && res.messages) {
       throw new Error(res.messages[0])
     }
+
+    return res.data
   }
 }

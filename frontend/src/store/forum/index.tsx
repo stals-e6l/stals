@@ -80,6 +80,11 @@ const forumStateReducer = (
           ),
         ],
       }
+    case 'FR_ADD':
+      return {
+        ...state,
+        forums: [...state.forums, action.payload as IForum],
+      }
     default:
       return { ...state }
   }
