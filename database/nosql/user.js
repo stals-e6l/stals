@@ -1,4 +1,6 @@
-const mongoose = require("mongoose")
+/* Subject to review */
+/* Followed the format in report.js*/
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     userName: {
@@ -32,5 +34,6 @@ const userSchema = new mongoose.Schema({
     /*                               */
 }, {timestamps: true});
 
-
 module.exports = mongoose.model("User", userSchema);
+
+
