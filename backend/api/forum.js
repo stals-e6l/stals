@@ -197,8 +197,14 @@ forumRouter.get('/:id', async function(req, res){
  *              -   in: query
  *                  name: accommodation_id
  *                  schema:
- *                      type: mongoose.Schema.Types.ObjectID
+ *                      type: string
+ *                      pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: Accommodation reference
+ *              -   in: query
+ *                  name: limit
+ *                  schema:
+ *                      type: number
+ *                  description: Number of forums to return
  * 
  *          responses:
  *              200:
@@ -223,7 +229,7 @@ forumRouter.get('/', async function(req, res){
     try{
         let query = {...req.query}
         delete query["limit"];  //delete every query that's not part of the database model
-
+        
         const limit = Number(req.query.limit) || 100;
         const forums = await Forum.find(query).limit(limit);
         
