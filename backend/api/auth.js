@@ -16,12 +16,15 @@ const saltRounds = 10;
  *          required:
  *              - name
  *          properties:
- *              name:
+ *              userName:
  *                  type: string
- *                  description: Name of user
- *              password:
+ *                  description: Username of user
+ *              passwordHash:
  *                  type: string
  *                  description: Password of user
+ *              email:
+ *                  type: string
+ *                  description: Email of user
  */
 
 /**
