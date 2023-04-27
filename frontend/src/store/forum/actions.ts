@@ -1,6 +1,6 @@
 import React from 'react'
 import { forumContext } from '.'
-import { apiPost } from '../../api'
+import { apiPost, apiPut } from '../../api'
 
 const useForum = () => React.useContext<IForumState>(forumContext)
 
@@ -63,14 +63,14 @@ export const deleteCommentFromForum = () => {
 export const updateCommentFromForum = () => {
   const { dispatch, forums } = useForum()
 
-  return (forumId: string, comment: string, commentIndex: number) => {
+  return async (forumId: string, comment: string, commentIndex: number) => {
     if (!forumId || !comment) return
 
     const forum = forums.find(forum => forum._id === forumId)
 
     if (!forum) return
 
-    const newContent = []
+    const newContent: string[] = []
     for (let i = 0; i < forum.content.length; i++) {
       if (commentIndex === i) {
         newContent.push(comment)
@@ -79,7 +79,17 @@ export const updateCommentFromForum = () => {
       }
     }
 
-    dispatch({ type: 'FR_UPDATE', payload: { ...forum, content: newContent } })
+    apiPut(`forum/${forumId}`, {
+      payload: {
+        ...forum,
+        content: newContent,
+      },
+    }).then(() => {
+      dispatch({
+        type: 'FR_UPDATE',
+        payload: { ...forum, content: newContent },
+      })
+    })
   }
 }
 
