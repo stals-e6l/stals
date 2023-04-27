@@ -40,7 +40,11 @@ export const addCommentToForum = () => {
 
     forum.content.push(comment)
 
-    dispatch({ type: 'FR_UPDATE', payload: forum })
+    apiPut(`forum/${forum._id}`, {
+      payload: forum,
+    }).then(() => {
+      dispatch({ type: 'FR_UPDATE', payload: forum })
+    })
   }
 }
 
