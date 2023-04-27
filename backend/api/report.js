@@ -141,10 +141,16 @@ reportRouter.get('/:id', async function(req, res){
  *          description: Get all reports
  *          parameters:
  *              -   in: query
- *                  name: name
+ *                  name: user_id
  *                  schema:
  *                      type: string
- *                  description: The name of report
+ *                  description: User that generated the report
+ *              -   in: query
+ *                  name: pdf_url
+ *                  schema:
+ *                      type: string
+ *                      pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: URL of the PDF generated
  *              -   in: query
  *                  name: limit
  *                  schema:
