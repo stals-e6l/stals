@@ -114,23 +114,27 @@ reportRouter.get('/:id', async function(req, res){
             throw 404;
         }
         res.status(200).json({success: true, data: forum});
-    } catch(err){
-        switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+    } catch(err) {
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
                 break;
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-              break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
+                break;
             default:
-                res.json({success: false, messages: [String(err)]});
+                code = 500;
         }
+
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 })
 
@@ -233,13 +237,28 @@ reportRouter.delete('/:id', async function(req, res){
         } else {
             res.status(200).json({success: true, data: null});
         }
-        // TODO: Handle other errors (authentication)
-    } catch(err){
-        if (String(err).includes("404")) {
-            res.status(404).json({success: false, messages: ["Error 404: Forum not found"]});
-        } else {
-            res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
+        
+    } catch(err) {
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
+                break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
+                break;
+            default:
+                code = 500;
         }
+
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 });
 
