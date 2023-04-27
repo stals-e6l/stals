@@ -1,89 +1,55 @@
 const { Router } = require('express')
 
-var Forum = require("../models/forum");
-var Accommodation = require("../models/accommodation");
+var Report = require("../models/report");
 
-const forumRouter = Router()
+const reportRouter = Router()
 
 /**
  * @openapi
  * components:
  *  schemas:
- *      Forum:
+ *      Report:
  *          type: object
  *          required:
- *              - content
- *              - status
- *              - is_public
- *              - accommodation_id
+ *              - name
  *          properties:
- *              content:
- *                  type: array
- *                  items:
- *                      type: string
- *                  description: Array of comments/chats of users
- *              status:
+ *              name:
  *                  type: string
- *                  pattern: '^((active)|(archived)|(deleted))$'
- *                  description: Status of the forum/chat conversation
- *              is_public:
- *                  type: boolean
- *                  description: Either public forum or private chat
- *              accommodation_id:
- *                  type: string
- *                  pattern: '^[0-9A-Fa-f]{24}$'
- *                  description: Accommodation reference
+ *                  description: Name of report
  */
 
 /**
  * @openapi
- * /api/forum:
+ * /api/report:
  *      post:
- *          description: Create forum
+ *          description: Create report
  *          requestBody:
  *              required: true
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Forum'
+ *                          $ref: '#/components/schemas/Report'
  *          responses:
  *              201:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Forum'
+ *                              $ref: '#/components/schemas/Report'
  *              400:
  *                  description: Bad request.
  *              401:
  *                  description: Unauthorized access.
- *              404:
- *                  description: Not found (for accommodation id).
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Forum
+ *              - Report
  *              
  */
-forumRouter.post("/", async function(req, res){
+reportRouter.post("/", async function(req, res){
     try {
-        // TODO: Check if user is authenticated
-        // if (user is not authenticated){
-        //     const error = new Error("Permission denied");
-        //     error.name = "AuthError";
-        //     throw error;
-        // }
+        const savedReport = await Report.create({ ...req.body });
 
-        // Check if accommodation exists
-        const refAccom = await Accommodation.findById(req.body.accommodation_id);
-        if (!refAccom) {
-            const error = new Error("Accommodation does not exist");
-            error.name = "NullError";
-            throw error;
-        }
-
-        const savedForum = await Forum.create({ ...req.body });
-
-        res.status(201).json({ success: true, data: savedForum });
+        res.status(201).json({ success: true, data: savedReport });
 
     } catch(err) {
         let code;
@@ -111,7 +77,7 @@ forumRouter.post("/", async function(req, res){
 
 /**
  * @openapi
- * /api/forum/{id}:
+ * /api/report/{id}:
  *      get:
  *          description: Get forum by id
  *          parameters:
@@ -125,7 +91,7 @@ forumRouter.post("/", async function(req, res){
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Forum'
+ *                              $ref: '#/components/schemas/Report'
  *              400:
  *                  description: Bad request
  *              401:
@@ -133,24 +99,86 @@ forumRouter.post("/", async function(req, res){
  *              500:
  *                  description: Internal server error
  *              404:
- *                  description: Forum could not be found
+ *                  description: Not found
  *          tags:
- *              - Forum
+ *              - Report
  *              
  */
-forumRouter.get('/:id', async function(req, res){
+reportRouter.get('/:id', async function(req, res){
     try{
         if(!req.params.id){
             throw 400;
         }
-        const forum = await Forum.findById(req.params.id);
+        const forum = await Report.findById(req.params.id);
         if(!forum){
-            const error = new Error("Forum does not exist");
-            error.name = "NullError";
-            throw error;
+            throw 404;
         }
         res.status(200).json({success: true, data: forum});
     } catch(err){
+        switch(err) {
+            case 404:
+                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+                break;
+            case 400:
+                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
+              break;
+            case 401:
+                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
+              break;
+            case 500:
+                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
+              break;
+            default:
+                res.json({success: false, messages: [String(err)]});
+        }
+    }
+})
+
+/**
+ * @openapi
+ * /api/report:
+ *      get:
+ *          description: Get all reports
+ *          parameters:
+ *              -   in: query
+ *                  name: name
+ *                  schema:
+ *                      type: string
+ *                  description: The name of report
+ *              -   in: query
+ *                  name: limit
+ *                  schema:
+ *                      type: number
+ *                  description: Number of reports to return
+ *          responses:
+ *              200:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/Report'
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description:  Unauthorize access
+ *              500:
+ *                  description: Internal Service error
+ *          tags:
+ *              - Report
+ *              
+ *              
+ */
+reportRouter.get('/', async function(req, res){
+    try{
+        let query = {...req.query}
+        delete query["limit"];  //delete every query that's not part of the database model
+
+        const limit = Number(req.query.limit) || 100;
+        const forums = await Report.find(query).limit(limit);
+        
+        res.status(200).json({success:true, data:forums});
+    } catch(err) {
         let code;
 
         switch (err.name) {
@@ -169,101 +197,14 @@ forumRouter.get('/:id', async function(req, res){
             default:
                 code = 500;
         }
-        res.status(code).json({success: false, messages: [String(err)]});
-    }
-})
 
-/**
- * @openapi
- * /api/forum:
- *      get:
- *          description: Get all forums
- *          parameters:
- *              -   in: query
- *                  name: content
- *                  schema:
- *                      type: array
- *                      collectionFormat: csv
- *                      items:
- *                          type: string
- *                      example: ["string"]
- *                  description: The collection of comments of a user in the forum
- *              -   in: query
- *                  name: status
- *                  schema:
- *                      type: string
- *                      enum: ["active", "archived", "deleted"]
- *                  description: The status of the Forum
- *              -   in: query
- *                  name: is_public
- *                  schema:
- *                      type: boolean
- *                  description: Type of Forum either public or private.
- *              -   in: query
- *                  name: accommodation_id
- *                  schema:
- *                      type: string
- *                      pattern: '^[0-9A-Fa-f]{24}$'
- *                  description: Accommodation reference
- *              -   in: query
- *                  name: limit
- *                  schema:
- *                      type: number
- *                  description: Number of forums to return
- * 
- *          responses:
- *              200:
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: array
- *                              items:
- *                                  $ref: '#/components/schemas/Forum'
- *              400:
- *                  description: Bad request
- *              401:
- *                  description:  Unauthorize access
- *              500:
- *                  description: Internal Service error
- *          tags:
- *              - Forum
- *              
- *              
- */
-forumRouter.get('/', async function(req, res){
-    try{
-        let query = {...req.query}
-        delete query["limit"];  //delete every query that's not part of the database model
-        
-        const limit = Number(req.query.limit) || 100;
-        const forums = await Forum.find(query).limit(limit);
-        
-        res.status(200).json({success:true, data:forums});
-    } catch(err){
-        let code;
-        switch(err.name){
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "AuthError":
-                code = 401;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
         res.status(code).json({success: false, messages: [String(err)]});
     }
 });
 
 /**
  * @openapi
- * /api/forum/{id}:
+ * /api/report/{id}:
  *      delete:
  *          description: Delete forum by id
  *          parameters:
@@ -280,49 +221,31 @@ forumRouter.get('/', async function(req, res){
  *              500:
  *                  description: Internal server error
  *          tags:
- *              - Forum
+ *              - Report
  *              
  */
-forumRouter.delete('/:id', async function(req, res){
+reportRouter.delete('/:id', async function(req, res){
     try{
-        const removedForum = await Forum.findByIdAndRemove({_id: req.params.id});
+        const removedForum = await Report.findByIdAndRemove({_id: req.params.id});
         
         if (!removedForum) {
-            const error= new Error("Forum does not exist");
-            error.name="NullError";
-            throw error;
+            throw new Error("404");
         } else {
             res.status(200).json({success: true, data: null});
         }
-        
+        // TODO: Handle other errors (authentication)
     } catch(err){
-        let code;
-
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "AuthError":
-                code = 401;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
+        if (String(err).includes("404")) {
+            res.status(404).json({success: false, messages: ["Error 404: Forum not found"]});
+        } else {
+            res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
         }
-        
-        res.status(code).json({success: false, messages: [String(err)]});
-       
     }
 });
 
 /**
  * @openapi
- * /api/forum/{id}:
+ * /api/report/{id}:
  *      put:
  *          description: Edit forum by id
  *          parameters:
@@ -336,13 +259,13 @@ forumRouter.delete('/:id', async function(req, res){
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Forum'
+ *                          $ref: '#/components/schemas/Report'
  *          responses:
  *              200:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Forum'
+ *                              $ref: '#/components/schemas/Report'
  *              400:
  *                  description: Bad request.
  *              401:
@@ -352,10 +275,10 @@ forumRouter.delete('/:id', async function(req, res){
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Forum
+ *              - Report
  *              
  */
-forumRouter.put('/:id', async function(req, res){
+reportRouter.put('/:id', async function(req, res){
     try{
 
         const refAccom = await Accommodation.findById(req.body.accommodation_id);
@@ -371,7 +294,7 @@ forumRouter.put('/:id', async function(req, res){
             throw error;
         }
 
-        const editedForum = await Forum.findOneAndUpdate(
+        const editedForum = await Report.findOneAndUpdate(
             {_id: req.params.id},
             { ...req.body},
             {new: true});
@@ -412,4 +335,4 @@ forumRouter.put('/:id', async function(req, res){
 
 });
 
-module.exports = forumRouter;
+module.exports = reportRouter;
