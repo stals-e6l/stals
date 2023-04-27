@@ -18,15 +18,14 @@ export const setCurrentAccommodation = () => {
 }
 
 export const retrieveForumByCurrentAccommodation = () => {
-  const { forums /*current_accommodation*/ } = useForum()
+  const { forums, current_accommodation } = useForum()
 
-  // TODO: uncomment this one if ready to integrate with api
-  //   const filteredForums = forums.filter(
-  //     forum => forum.accommodation_id === current_accommodation
-  //   )
+  const filteredForums = forums.filter(
+    forum => forum.accommodation_id === current_accommodation
+  )
 
-  //   if (filteredForums.length === 0) return undefined
-  return forums[0]
+  if (filteredForums.length === 0) return undefined
+  return filteredForums[0]
 }
 
 export const addCommentToForum = () => {
