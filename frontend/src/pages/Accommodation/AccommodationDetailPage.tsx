@@ -4,7 +4,7 @@ import { retrieveAccommodationById } from '../../store/accommodation/actions'
 import location from '../../assets/Images/Ellens.jpg'
 // import check from '../../assets/ImgaCheck Green.png'
 // import pin from '../../assets/Map pin - Green.png'
-import { Button, Box, Container, Typography, Grid } from '@mui/material'
+import { Box, Container, Typography, Grid } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Forum from '../Forum/Forum'
 import AddCommentToForum from '../Forum/AddCommentToForum'
@@ -476,59 +476,6 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
         </Box>
 
         <Forum />
-
-        {/* <Box sx={unshadedTable}>
-          <Box sx={{ paddingBottom: '10px' }}>
-            <Typography
-              sx={{
-                fontWeight: 'bold',
-              }}
-            >
-              Von Arellano
-            </Typography>
-            <Typography>Placeholder</Typography>
-            <Typography>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ab
-              pariatur reiciendis rerum, laudantium suscipit rem natus ducimus
-              totam id facilis quibusdam vero modi dolores ipsam saepe
-              temporibus corporis fuga.
-            </Typography>
-          </Box>
-
-          <Box sx={{ paddingBottom: '10px' }}>
-            <Typography
-              sx={{
-                fontWeight: 'bold',
-              }}
-            >
-              Von Arellano
-            </Typography>
-            <Typography>Placeholder</Typography>
-            <Typography>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ab
-              pariatur reiciendis rerum, laudantium suscipit rem natus ducimus
-              totam id facilis quibusdam vero modi dolores ipsam saepe
-              temporibus corporis fuga.
-            </Typography>
-          </Box>
-
-          <Box sx={{ paddingBottom: '10px' }}>
-            <Typography
-              sx={{
-                fontWeight: 'bold',
-              }}
-            >
-              Von Arellano
-            </Typography>
-            <Typography>Placeholder</Typography>
-            <Typography>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ab
-              pariatur reiciendis rerum, laudantium suscipit rem natus ducimus
-              totam id facilis quibusdam vero modi dolores ipsam saepe
-              temporibus corporis fuga.
-            </Typography>
-          </Box>
-        </Box> */}
       </Container>
     </React.Fragment>
   )

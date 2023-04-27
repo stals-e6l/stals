@@ -1,31 +1,13 @@
 import React from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Paper from '@mui/material/Paper'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton/IconButton'
-import { PhotoCamera } from '@mui/icons-material'
-import Card from '@mui/material/Card'
-import CardActionArea from '@mui/material/CardActionArea'
-import CardContent from '@mui/material/CardContent'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import Autocomplete from '@mui/material/Autocomplete'
-import Chip from '@mui/material/Chip'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Switch from '@mui/material/Switch'
 import CloseIcon from '@mui/icons-material/Close'
 import Rating from '@mui/material/Rating'
 import { styled } from '@mui/material/styles'
-import { Box, Button, TextField, Dialog, Typography, Grid } from '@mui/material'
-
-import { useNavigate } from 'react-router-dom'
-import clsx from 'clsx'
-
+import { Box, Button, TextField, Dialog, Typography } from '@mui/material'
 import { addCommentToForum } from '../../store/forum/actions'
-import { FormGroup, FormLabel } from '@mui/material'
+import { FormGroup } from '@mui/material'
 
 interface IProps {
   children?: React.ReactNode
@@ -48,9 +30,6 @@ const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
     color: '#60CE80',
   },
-  // '& .MuiRating-iconHover': {
-  //   color: '#ff3d47',
-  // },
 })
 
 const AddCommentToForum: React.FC<IProps> = ({ forumId }) => {
@@ -68,23 +47,8 @@ const AddCommentToForum: React.FC<IProps> = ({ forumId }) => {
     setState(false)
   }
 
-  const handleOpen = () => {
-    setState(false)
-  }
-
   return (
     <ThemeProvider theme={theme}>
-      {/* <Paper
-        component="main"
-        sx={{
-          height: '600px',
-          width: '500px',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      > */}
       <Button
         sx={{
           position: 'absolute',
@@ -102,7 +66,6 @@ const AddCommentToForum: React.FC<IProps> = ({ forumId }) => {
       <Dialog open={open} onClose={handleClose} fullWidth={true}>
         <CssBaseline />
         <FormGroup sx={{}}>
-          {/* // <FormLabel>Add comment</FormLabel> */}
           <Box
             sx={{
               marginTop: '20px',

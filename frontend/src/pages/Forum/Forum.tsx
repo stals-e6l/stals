@@ -1,6 +1,5 @@
 import React from 'react'
 import { retrieveForumByCurrentAccommodation } from '../../store/forum/actions'
-import AddCommentToForum from './AddCommentToForum'
 import ForumComment from './ForumComment'
 
 interface IProps {
