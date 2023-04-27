@@ -1,6 +1,6 @@
 import React from 'react'
 import { forumContext } from '.'
-import { apiPost, apiPut } from '../../api'
+import { apiPost, apiPut, apiDelete } from '../../api'
 
 const useForum = () => React.useContext<IForumState>(forumContext)
 
@@ -56,7 +56,17 @@ export const deleteCommentFromForum = () => {
 
     const newContent = forum.content.filter(val => val !== comment)
 
-    dispatch({ type: 'FR_UPDATE', payload: { ...forum, content: newContent } })
+    apiPut(`forum/${forumId}`, {
+      payload: {
+        ...forum,
+        content: newContent,
+      },
+    }).then(() => {
+      dispatch({
+        type: 'FR_UPDATE',
+        payload: { ...forum, content: newContent },
+      })
+    })
   }
 }
 
