@@ -133,7 +133,7 @@ forumRouter.post("/", async function(req, res){
  *              500:
  *                  description: Internal server error
  *              404:
- *                  description: Not found
+ *                  description: Forum could not be found
  *          tags:
  *              - Forum
  *              
@@ -145,26 +145,31 @@ forumRouter.get('/:id', async function(req, res){
         }
         const forum = await Forum.findById(req.params.id);
         if(!forum){
-            throw 404;
+            const error = new Error("Accomodation does not exist");
+            error.name = "NullError";
+            throw error;
         }
         res.status(200).json({success: true, data: forum});
     } catch(err){
-        switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
                 break;
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-              break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
+                break;
             default:
-                res.json({success: false, messages: [String(err)]});
+                code = 500;
         }
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 })
 
