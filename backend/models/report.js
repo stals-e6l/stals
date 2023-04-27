@@ -1,8 +1,7 @@
-/* Updated schema */
+/* Updated schema 04-27-2023 4:30pm */
 const mongoose = require("mongoose");
 
 const reportSchema = new mongoose.Schema({ 
-    timestamps: true, 
     user_id: { // Sort of like a foreign key, user._id
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -12,6 +11,6 @@ const reportSchema = new mongoose.Schema({
         type: String, 
         required: true
     }, 
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model("Report", reportSchema);
