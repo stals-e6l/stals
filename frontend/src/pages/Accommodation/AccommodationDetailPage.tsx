@@ -422,66 +422,6 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
             Reviews
           </Typography>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            position: 'relative',
-            width: '100%',
-            borderRadius: '5px',
-            marginLeft: '10px',
-            marginRight: '10px',
-            backgroundColor: '#f0f0f0',
-            padding: '15px 30px',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'flex-end',
-            }}
-          >
-            <Typography
-              sx={{
-                color: '#60ce80',
-                fontSize: '45px',
-                fontWeight: 'bold',
-              }}
-            >
-              4.7
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: '20px',
-                paddingBottom: '8px',
-                color: '#154360',
-              }}
-            >
-              /5
-            </Typography>
-            <Box
-              sx={{
-                paddingBottom: '10px',
-                paddingLeft: '5px',
-              }}
-            >
-              <Typography>Placeholder</Typography>
-              <Typography>1000+ reviews</Typography>
-            </Box>
-          </Box>
-          <Button
-            sx={{
-              position: 'absolute',
-              right: '25px',
-              backgroundColor: '#154360',
-              color: 'white',
-              fontWeight: 'bold',
-            }}
-          >
-            Add Review
-          </Button>
-        </Box>
-
         <Forum />
 
         {/* <Box sx={unshadedTable}>
