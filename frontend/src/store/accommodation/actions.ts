@@ -1,6 +1,7 @@
 import React from 'react'
 import { accommodationContext } from '.'
 import { apiDelete, apiPost, apiPut } from '../../api'
+import { createForum } from '../forum/actions'
 
 const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
@@ -39,10 +40,18 @@ export const createAccommodation = () => {
     if (!res.success && res.messages) {
       throw new Error(res.messages[0])
     }
+    const createForumHandler = createForum()
     if (res.data) {
-      dispatch({
-        type: 'AC_CREATE',
-        payload: res.data,
+      createForumHandler({
+        accommodation_id: res.data._id as string,
+        content: [],
+        is_public: true,
+        status: 'active',
+      }).then(() => {
+        dispatch({
+          type: 'AC_CREATE',
+          payload: res.data as IAccommodation,
+        })
       })
     }
   }

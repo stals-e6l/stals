@@ -1,5 +1,6 @@
 import React from 'react'
 import { forumContext } from '.'
+import { apiPost } from '../../api'
 
 const useForum = () => React.useContext<IForumState>(forumContext)
 
@@ -80,5 +81,17 @@ export const updateCommentFromForum = () => {
     }
 
     dispatch({ type: 'FR_UPDATE', payload: { ...forum, content: newContent } })
+  }
+}
+
+export const createForum = () => {
+  return async (forum: IForum) => {
+    const res = await apiPost('forum', {
+      payload: forum,
+    })
+
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
   }
 }
