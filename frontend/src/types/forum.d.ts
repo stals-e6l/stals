@@ -19,5 +19,6 @@ type TForumActionType =
   | 'FR_RETRIEVE'
   | 'FR_SET_CURRENT_AC'
   | 'FR_UPDATE'
+  | 'FR_ADD'
 // TODO: add more actions
 type TForumPayload = IForum[] | string | undefined | IForum // TODO: add more payload types

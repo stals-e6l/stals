@@ -26,8 +26,6 @@ function AccommodationTile({ accommodation }: AccommDetails) {
 
   const [update, setUpdate] = React.useState<boolean>(false)
 
-  const setCurrentAccommodationHandler = setCurrentAccommodation()
-
   // Name text display will adjust depending on the size of the string
   if (formattedName.length > 25)
     formattedName = formattedName.slice(0, 21) + '...'
@@ -55,7 +53,6 @@ function AccommodationTile({ accommodation }: AccommDetails) {
       >
         <Box
           onClick={() => {
-            setCurrentAccommodationHandler(accommodation._id)
             navigate(`${accommodation._id as string}`)
           }}
           component="img"
