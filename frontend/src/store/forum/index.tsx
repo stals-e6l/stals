@@ -1,5 +1,4 @@
 import React from 'react'
-import { mockForums } from './mock'
 import { apiGet } from '../../api'
 
 interface IProps {
