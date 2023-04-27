@@ -99,11 +99,7 @@ const AddCommentToForum: React.FC<IProps> = ({ forumId }) => {
       >
         Add Review
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        fullWidth={true}
-      >
+      <Dialog open={open} onClose={handleClose} fullWidth={true}>
         <CssBaseline />
         <FormGroup sx={{}}>
           {/* // <FormLabel>Add comment</FormLabel> */}
@@ -166,8 +162,9 @@ const AddCommentToForum: React.FC<IProps> = ({ forumId }) => {
               // use this function add comment in the forum
               addCommentToForumHandler(forumId, comment)
               setComment('')
+              handleClose()
             }}
-            sx={{ marginX: '20px', marginBottom:'20px' }}
+            sx={{ marginX: '20px', marginBottom: '20px' }}
           >
             Add
           </Button>

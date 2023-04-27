@@ -30,9 +30,6 @@ const Forum: React.FC<IProps> = () => {
           />
         ))}
       </ul>
-      <div>
-        <AddCommentToForum forumId={forum._id as string} />
-      </div>
     </div>
   )
 }
