@@ -180,10 +180,37 @@ forumRouter.get('/:id', async function(req, res){
  *          description: Get all forums
  *          parameters:
  *              -   in: query
- *                  name: name
+ *                  name: content
+ *                  schema:
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
+ *                  description: The collection of comments of a user in the forum
+ *              -   in: query
+ *                  name: status
  *                  schema:
  *                      type: string
- *                  description: The name of forum
+ *                      enum: ["active", "archived", "deleted"]
+ *                  description: The status of the Forum
+ *              -   in: query
+ *                  name: is_public
+ *                  schema:
+ *                      type: boolean
+ *                  description: Type of Forum either public or private.
+ *              -   in: query
+ *                  name: accommodation_id
+ *                  schema:
+ *                      type: string
+ *                      pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation reference
+ *              -   in: query
+ *                  name: limit
+ *                  schema:
+ *                      type: number
+ *                  description: Number of forums to return
+ * 
  *          responses:
  *              200:
  *                  content:
@@ -207,25 +234,30 @@ forumRouter.get('/', async function(req, res){
     try{
         let query = {...req.query}
         delete query["limit"];  //delete every query that's not part of the database model
-
+        
         const limit = Number(req.query.limit) || 100;
         const forums = await Forum.find(query).limit(limit);
         
         res.status(200).json({success:true, data:forums});
     } catch(err){
-        switch(err){
-            case 400:
-                res.status(400).json({success:false, messages: ["Error: Bad request"]});
+        let code;
+        switch(err.name){
+            case "ValidationError":
+                code = 400;
                 break;
-            case 401:
-                res.status(401).json({success:false, messages: ["Error: Unauthorized access"]});
+            case "CastError":
+                code = 400;
                 break;
-            case 500:
-                res.status(500).json({success:false, messages: ["Error: Internal service error"]});
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
                 break;
             default:
-                res.json({success:false, messages: [err]});
+                code = 500;
         }
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 });
 
