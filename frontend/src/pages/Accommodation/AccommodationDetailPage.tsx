@@ -7,8 +7,6 @@ import location from '../../assets/Images/Ellens.jpg'
 import { Box, Container, Typography, Grid } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Forum from '../Forum/Forum'
-import AddCommentToForum from '../Forum/AddCommentToForum'
-import { retrieveForumByCurrentAccommodation } from '../../store/forum/actions'
 
 interface IProps {
   children?: React.ReactNode
@@ -64,7 +62,6 @@ const shadedTable = {
 const AccommodationDetailPage: React.FC<IProps> = () => {
   const params = useParams()
   const accommodation = retrieveAccommodationById(params.id as string)
-  const forum = retrieveForumByCurrentAccommodation()
 
   // TODO: add ui/logic to handle non-existent accommodation
   if (!accommodation) {

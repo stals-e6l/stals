@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import ForumIcon from '@mui/icons-material/Forum'
+import AddCommentToForum from './AddCommentToForum'
 
 interface IProps {
   children?: React.ReactNode
@@ -223,7 +224,7 @@ const Forum: React.FC<IProps> = () => {
             <Grid item xs={9}>
               {/* Add review button */}
               <Box display="flex" justifyContent="flex-end" marginTop="20px">
-                <AddReviewButton />
+                <AddCommentToForum forumId={forum._id as string} />
               </Box>
             </Grid>
           </Grid>
