@@ -183,6 +183,12 @@ authRouter.post("/", async function(req, res){
  * /api/me:
  *      post:
  *          description: Me
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
  *          responses:
  *              200:
  *                  description: Success.
@@ -196,7 +202,8 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.get('/:id', async function(req, res){
+
+authRouter.get('/', async function(req, res){
     try{
 
         if (req.headers.authorization &&  req.headers.authorization.startsWith('Bearer')){
