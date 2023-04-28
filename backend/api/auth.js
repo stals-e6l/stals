@@ -183,12 +183,6 @@ authRouter.post("/", async function(req, res){
  * /api/me:
  *      post:
  *          description: Me
- *          requestBody:
- *              required: true
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/User'
  *          responses:
  *              200:
  *                  description: Success.
