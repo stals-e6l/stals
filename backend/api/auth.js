@@ -1,5 +1,5 @@
 const { Router } = require('express')
-
+var jwt = require('jsonwebtoken');
 var User = require("../models/user");
 
 const authRouter = Router()
@@ -129,12 +129,6 @@ authRouter.post("/", async function(req, res){
  * /api/sign-out:
  *      post:
  *          description: Sign out
- *          requestBody:
- *              required: true
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/User'
  *          responses:
  *              201:
  *                  content:
@@ -149,9 +143,31 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
-    try {
-        //insert sign out here
+authRouter.get('/', async function(req, res){
+    try{
+
+        if (req.headers.authorization &&  req.headers.authorization.startsWith('Bearer')){
+            token = req.headers.authorization.split(' ')[1];
+        } else if (req.cookies.token){
+            token = req.cookies.token
+        }
+
+        if (!token){
+            const error = new Error("Token doesn't exist");
+            error.name = "AuthError";
+            throw error;
+        }
+
+        const decoded = jwt.verify(token, secretkey);
+        const savedUser = await User.findById(decoded.id);
+        
+        if (!savedUser){
+            const error = new Error("User doesn't exist");
+            error.name = "AuthError";
+            throw error;
+        }
+        
+        res.status(200).json({ success: true, messages: ['Success'] });
 
     } catch(err) {
         let code;
@@ -162,6 +178,9 @@ authRouter.post("/", async function(req, res){
                 break;
             case "CastError":
                 code = 400;
+                break;
+            case "AuthError":
+                code = 401;
                 break;
             case "NullError":
                 code = 404;
