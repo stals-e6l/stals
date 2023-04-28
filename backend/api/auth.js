@@ -1,5 +1,5 @@
-const { Router } = require('express')
-
+const { Router } = require('express');
+var jwt = require('jsonwebtoken');
 var User = require("../models/user");
 
 const authRouter = Router()
@@ -151,7 +151,8 @@ authRouter.post("/", async function(req, res){
  */
 authRouter.post("/", async function(req, res){
     try {
-        //insert sign out here
+
+
 
     } catch(err) {
         let code;
@@ -162,6 +163,9 @@ authRouter.post("/", async function(req, res){
                 break;
             case "CastError":
                 code = 400;
+                break;
+            case "AuthError":
+                code = 401;
                 break;
             case "NullError":
                 code = 404;
@@ -177,42 +181,56 @@ authRouter.post("/", async function(req, res){
 /**
  * @openapi
  * /api/me:
- *      get:
- *          description: Get forum by id
- *          parameters:
- *              -   in: path
- *                  name: id
- *                  schema:
- *                      type: string
- *                  required: true
+ *      post:
+ *          description: Me
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
  *          responses:
  *              200:
- *                  content:
- *                      application/json:
- *                          schema:
- *                              $ref: '#/components/schemas/User'
+ *                  description: Success.
  *              400:
- *                  description: Bad request
+ *                  description: Bad request.
  *              401:
- *                  description: Unauthorized access
+ *                  description: Authentication Error.
  *              500:
- *                  description: Internal server error
- *              404:
- *                  description: Not found
+ *                  description: Internal Server error.
  *          tags:
  *              - User
  *              
  */
 authRouter.get('/:id', async function(req, res){
     try{
-        if(!req.params.id){
-            throw 400;
+
+        if (req.headers.authorization &&  req.headers.authorization.startsWith('Bearer')){
+            token = req.headers.authorization.split(' ')[1];
+            
+        } else {
+            const error = new Error("Header is incorrect");
+            error.name = "AuthError";
+            throw error;
         }
-        const forum = await User.findById(req.params.id);
-        if(!forum){
-            throw 404;
+
+        if (!token){
+            const error = new Error("Token doesn't exist");
+            error.name = "AuthError";
+            throw error;
         }
-        res.status(200).json({success: true, data: forum});
+
+        const decoded = jwt.verify(token, secretkey);
+        const savedUser = await User.findById(decoded.id);
+
+        if (!savedUser){
+            const error = new Error("User doesn't exist");
+            error.name = "AuthError";
+            throw error;
+        }
+
+        res.status(200).json({ success: true, messages: ['Success'] });
+
     } catch(err) {
         let code;
 
