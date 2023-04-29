@@ -1,7 +1,7 @@
 const { Router } = require('express')
 
-var Report = require("../models/report");
-var User = require("../models/user")
+const Report = require("../models/report");
+const User = require("../models/user")
 
 const reportRouter = Router()
 
