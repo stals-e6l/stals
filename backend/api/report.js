@@ -210,7 +210,7 @@ reportRouter.get('/', async function(req, res){
  * @openapi
  * /api/report/{id}:
  *      delete:
- *          description: Delete forum by id
+ *          description: Delete report by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -219,9 +219,9 @@ reportRouter.get('/', async function(req, res){
  *                  required: true
  *          responses:
  *              200:
- *                  description: Forum was deleted
+ *                  description: Report was deleted
  *              404:
- *                  description: The forum was not found
+ *                  description: The report was not found
  *              500:
  *                  description: Internal server error
  *          tags:
@@ -230,10 +230,12 @@ reportRouter.get('/', async function(req, res){
  */
 reportRouter.delete('/:id', async function(req, res){
     try{
-        const removedForum = await Report.findByIdAndRemove({_id: req.params.id});
+        const removedReport = await Report.findByIdAndRemove({_id: req.params.id});
         
-        if (!removedForum) {
-            throw new Error("404");
+        if (!removedReport) {
+            const error = new Error("Report does not exist");
+            error.name = "NullError";
+            throw error;
         } else {
             res.status(200).json({success: true, data: null});
         }
