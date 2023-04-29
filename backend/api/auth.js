@@ -1,11 +1,13 @@
 const { Router } = require('express')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const User = require("../models/user");
 
 const authRouter = Router()
 
 const saltRounds = 10;
+let blacklist = {};
 
 /**
  * @openapi
@@ -25,6 +27,19 @@ const saltRounds = 10;
  *              email:
  *                  type: string
  *                  description: Email of user
+ * 
+ *      Login:
+ *          type: object
+ *          required:
+ *              - userName
+ *              - password
+ *          properties:
+ *              userName:
+ *                  type: string
+ *                  description: Username of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
  */
 
 /**
@@ -113,13 +128,13 @@ authRouter.post("/sign-up", async function(req, res){
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/User'
+ *                          $ref: '#/components/schemas/Login'
  *          responses:
  *              201:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/User'
+ *                              $ref: '#/components/schemas/Login'
  *              400:
  *                  description: Bad request.
  *              404:
@@ -134,7 +149,35 @@ authRouter.post("/sign-up", async function(req, res){
  */
 authRouter.post("/sign-in", async function(req, res){
     try {
-        //insert sign in here
+        // first, extract the req payload
+        const userName = req.body.userName;
+        const password = req.body.password;
+
+        // second, validate if user indeed exists
+        const user = await User.findOne({ userName: userName });
+        if(!user) throw new Error("No User Found")
+
+        // third, check if password is correct
+        bcrypt.compare(password, user.password, function(err, result) {
+            if (!err){
+                if (result) {
+                    // fourth, generate token
+                    // TODO: change secret string
+                    const token = jwt.sign({id: user.id, userName: user.userName, type: user.type}, 'SECRET_STRING');
+
+                    // fifth, remove token in blacklist if existing
+                    if(blacklist[token]) delete blacklist[token];
+
+                    // last, return success
+                    res.status(200).json({ success: true, token: token});
+
+                } else {
+                    // TODO: Revise this, throwing errors here does not work since it is inside callback
+                    res.json({success: false, messages: ["Wrong Password"]})
+                }
+            }
+        })
+
     } catch(err) {
         let code;
 
