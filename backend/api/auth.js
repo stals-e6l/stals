@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const bcrypt = require('bcryptjs')
 
-var User = require("../models/user");
+const User = require("../models/user");
 
 const authRouter = Router()
 
@@ -19,7 +19,7 @@ const saltRounds = 10;
  *              userName:
  *                  type: string
  *                  description: Username of user
- *              passwordHash:
+ *              password:
  *                  type: string
  *                  description: Password of user
  *              email:
@@ -54,14 +54,27 @@ const saltRounds = 10;
  */
 authRouter.post("/", async function(req, res){
     try {
+        if(!req.body.password){
+            throw 404;
+        }
+
+        if(!req.body.userName){
+            throw 404;
+        }
+
+        if(!req.body.email){
+            throw 404;
+        }
+
         bcrypt.hash(req.body.password, saltRounds, function(err, hashedPass){
             if(err){
                 throw 500;
             }
 
             let user = new User({
-                name: req.body.name,
-                password: hashedPass
+                userName: req.body.userName,
+                password: hashedPass,
+                email: req.body.email,
             });
     
             user.save()
