@@ -172,6 +172,11 @@ export const deleteAccommodation = () => {
   return deleteAccommodationHandler
 }
 
+export const retrieveAccommodationResults = () => {
+  const { results } = useAccommodation()
+  return results
+}
+
 export const searchAccommodations = () => {
   const { dispatch } = useAccommodation()
 
