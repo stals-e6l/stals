@@ -16,7 +16,7 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
   const searchParams = useSearchParams()
   const filterAccommodationsHandler = filterAccommodations()
   const [filter, setFilter] = React.useState<IAccommodationFilter>({
-    name: undefined,
+    name: searchParams[0].get('name') as string,
     type: undefined,
     price: undefined,
     size_sqm: undefined,
@@ -34,10 +34,7 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
   }
 
   React.useEffect(() => {
-    setFilter(prev => ({
-      ...prev,
-      name: searchParams[0].get('name') as string,
-    }))
+    handleFilter()
   }, [])
 
   return (

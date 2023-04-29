@@ -3,7 +3,6 @@ import { Box, Input, Typography, Button, Grid, useTheme } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import BannerPhoto from '../assets/Images/BannerFlipped2.jpg'
-import { searchAccommodations } from '../store/accommodation/actions'
 import { useNavigate } from 'react-router-dom'
 
 const blue = '#154360'
@@ -16,14 +15,10 @@ const sourceSansPro = 'Source Sans Pro'
 const Banner = (props: any) => {
   const theme = useTheme()
 
-  const searchAccommodationsHandler = searchAccommodations()
   const navigate = useNavigate()
   const [name, setName] = React.useState<string>('')
   const handleSearch = () => {
-    searchAccommodationsHandler(name).then(() => {
-      setName('')
-      navigate(`/accommodations/results?name=${name}`)
-    })
+    navigate(`/accommodations/results?name=${name}`)
   }
 
   return (
