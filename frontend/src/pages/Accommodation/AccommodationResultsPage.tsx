@@ -6,6 +6,7 @@ import {
 import { Button, Grid, TextField, Typography } from '@mui/material'
 import AccommodationTile from '../../components/accommTile'
 import { useSearchParams } from 'react-router-dom'
+import PreviewAccommodations from './PreviewAccommodations'
 
 interface IProps {
   children?: React.ReactNode
@@ -27,6 +28,7 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
     num_beds: undefined,
     furnishing: undefined,
   })
+  const [showPreview, setShowPreview] = React.useState<boolean>(false)
 
   // console.log(filter)
   const handleFilter = () => {
@@ -56,6 +58,7 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
           value={filter.price}
         />
         <Button onClick={handleFilter}>Filter it yow</Button>
+        <Button onClick={() => setShowPreview(true)}>Download</Button>
       </Grid>
 
       {/* results */}
@@ -67,6 +70,14 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
           />
         ))}
       </Grid>
+
+      {showPreview && (
+        <PreviewAccommodations
+          show={showPreview}
+          onClose={() => setShowPreview(false)}
+          accommodations={accommodationResults}
+        />
+      )}
     </Grid>
   )
 }
