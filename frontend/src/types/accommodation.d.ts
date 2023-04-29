@@ -40,7 +40,8 @@ interface IAccommodation {
 }
 
 interface IAccommodationState {
-  accommodations: IAccommodation[] // why nullable? nullable during fetching/init
+  accommodations: IAccommodation[]
+  results: IAccommodation[]
   dispatch: React.Dispatch<
     IReducerAction<TAccommodationActionType, TAccommodationPayload>
   >
@@ -55,5 +56,6 @@ type TAccommodationActionType =
   | 'AC_RETRIEVE_BY_ID'
   | 'AC_UPDATE'
   | 'AC_DELETE'
+  | 'AC_SEARCH'
 
 type TAccommodationPayload = IAccommodation | IAccommodation[] | string

@@ -1,6 +1,6 @@
 import React from 'react'
 import { accommodationContext } from '.'
-import { apiDelete, apiPost, apiPut } from '../../api'
+import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
 import { createForum, useForum } from '../forum/actions'
 
 const useAccommodation = () =>
@@ -173,8 +173,14 @@ export const deleteAccommodation = () => {
 }
 
 export const searchAccommodations = () => {
+  const { dispatch } = useAccommodation()
+
   return async (name: string) => {
-    // TODO: handle filtering of accommodations
+    const res = await apiGet<IAccommodation[]>(`accommodation?name=${name}`)
+
+    if (res.data && res.success) {
+      dispatch({ type: 'AC_SEARCH', payload: res.data })
+    }
   }
 }
 
