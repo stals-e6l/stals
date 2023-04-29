@@ -171,3 +171,16 @@ export const deleteAccommodation = () => {
 
   return deleteAccommodationHandler
 }
+
+export const searchAccommodations = () => {
+  return async (name: string) => {
+    // TODO: handle filtering of accommodations
+  }
+}
+
+export const filterAccommodations = () => {
+  // TODO: add param schema
+  return async (filter: any) => {
+    // TODO: handle filtering
+  }
+}
