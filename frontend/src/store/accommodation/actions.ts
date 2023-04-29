@@ -190,8 +190,28 @@ export const searchAccommodations = () => {
 }
 
 export const filterAccommodations = () => {
-  // TODO: add param schema
-  return async (filter: any) => {
-    // TODO: handle filtering
+  const { dispatch } = useAccommodation()
+  return async (filter: IAccommodationFilter) => {
+    let qs = ''
+    if (filter.name) qs = qs + `name=${filter.name}`
+    if (filter.type) qs = qs + `&type=${filter.type}`
+    if (filter.price) qs = qs + `&price=${filter.price}`
+    if (filter.size_sqm) qs = qs + `&size_sqm=${filter.size_sqm}`
+    if (filter.meters_from_uplb)
+      qs = qs + `&meters_from_uplb=${filter.meters_from_uplb}`
+    if (filter.min_pax) qs = qs + `&min_pax=${filter.min_pax}`
+    if (filter.max_pax) qs = qs + `&max_pax=${filter.max_pax}`
+    if (filter.num_rooms) qs = qs + `&num_rooms=${filter.num_rooms}`
+    if (filter.num_beds) qs = qs + `&num_beds=${filter.num_beds}`
+    if (filter.furnishing) qs = qs + `&furnishing=${filter.furnishing}`
+
+    // const queryString = encodeURIComponent(qs)
+    const queryString = qs
+
+    const res = await apiGet<IAccommodation[]>(`accommodation?${queryString}`)
+
+    if (res.data && res.success) {
+      dispatch({ type: 'AC_SEARCH', payload: res.data })
+    }
   }
 }

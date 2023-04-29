@@ -22,7 +22,7 @@ const Banner = (props: any) => {
   const handleSearch = () => {
     searchAccommodationsHandler(name).then(() => {
       setName('')
-      navigate('/accommodations/results')
+      navigate(`/accommodations/results?name=${name}`)
     })
   }
 

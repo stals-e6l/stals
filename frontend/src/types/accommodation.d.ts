@@ -39,6 +39,19 @@ interface IAccommodation {
   is_soft_deleted: boolean
 }
 
+interface IAccommodationFilter {
+  name?: string
+  type?: TAccommodationType
+  price?: number
+  size_sqm?: number
+  meters_from_uplb?: number
+  min_pax?: number
+  max_pax?: number
+  num_rooms?: number
+  num_beds?: number //string // e.g. 2-3 beds
+  furnishing?: TAccommodationFurnishing
+}
+
 interface IAccommodationState {
   accommodations: IAccommodation[]
   results: IAccommodation[]
