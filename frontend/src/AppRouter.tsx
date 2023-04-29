@@ -7,6 +7,7 @@ import CreateAccommodationPage from './pages/CreateAccommodation'
 import AccomodationResultsPage from './pages/Accommodation/AccommodationResultsPage'
 import SignUp from './pages/Auth/SignUp'
 import SignIn from './pages/Auth/SignIn'
+import Profile from './pages/Auth/Profile'
 
 interface IProps {
   children?: React.ReactNode
@@ -50,5 +51,9 @@ const router = createBrowserRouter([
   {
     path: '/signin',
     element: <SignIn />,
+  },
+  {
+    path: '/profile',
+    element: <Profile />,
   },
 ])
