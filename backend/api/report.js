@@ -79,7 +79,7 @@ reportRouter.post("/", async function(req, res){
  * @openapi
  * /api/report/{id}:
  *      get:
- *          description: Get forum by id
+ *          description: Get report by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -109,11 +109,13 @@ reportRouter.get('/:id', async function(req, res){
         if(!req.params.id){
             throw 400;
         }
-        const forum = await Report.findById(req.params.id);
-        if(!forum){
-            throw 404;
+        const report= await Report.findById(req.params.id);
+        if(!report){
+            const error = new Error("Report does not exist");
+            error.name = "NullError";
+            throw error;
         }
-        res.status(200).json({success: true, data: forum});
+        res.status(200).json({success: true, data: report});
     } catch(err) {
         let code;
 
