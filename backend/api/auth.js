@@ -66,10 +66,26 @@ const saltRounds = 10;
 authRouter.post("/", async function(req, res){
     try {
 
-        const existingUser = await User.findOne({email: req.body.email});
-        if(existingUser){
-            console.log(existingUser)
-            res.status(422).json({success:false, message: "Email already Taken"});
+        const existingEmail = await User.findOne({email: req.body.email});
+        const existingUsername= await User.findOne({username: req.body.username});
+        let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+
+        if(!regex.test(req.body.email)){
+            console.log(req.body.email);
+            return res.status(422).json({success:false, message: "Not a valid Email"});
+        }
+        
+        if(existingUsername && existingEmail){
+            console.log(existingEmail)
+            return res.status(422).json({success:false, message: "Username and Email already Taken"});
+        }else{
+            if(existingUsername){
+                console.log(existingUsername)
+                return res.status(422).json({success:false, message: "Username already Taken"});
+            }else if(existingEmail){
+                console.log(existingEmail)
+                return res.status(422).json({success:false, message: "Email already Taken"});
+            }
         }
 
         console.log(req.body)
@@ -88,7 +104,7 @@ authRouter.post("/", async function(req, res){
             throw error;
         }
     
-        res.status(201).json({ success: true, data: user});
+        return res.status(201).json({ success: true, data: {username:user.username, email: user.email, role: user.role }});
     } catch(err) {
         let code;
         console.log(err.name)
