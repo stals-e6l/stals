@@ -14,9 +14,12 @@ const saltRounds = 10;
  *      User:
  *          type: object
  *          required:
- *              - name
+ *              - username
+ *              - password
+ *              - email
+ *              - role
  *          properties:
- *              userName:
+ *              username:
  *                  type: string
  *                  description: Username of user
  *              password:
@@ -25,6 +28,10 @@ const saltRounds = 10;
  *              email:
  *                  type: string
  *                  description: Email of user
+ *              role:
+ *                  type: string
+ *                  pattern: '^((admin)|(owner)|(tenant))$'
+ *                  description: Role of the user
  */
 
 /**
@@ -58,11 +65,14 @@ authRouter.post("/", async function(req, res){
             throw 404;
         }
 
-        if(!req.body.userName){
+        if(!req.body.username){
             throw 404;
         }
 
         if(!req.body.email){
+            throw 404;
+        }
+        if(!req.body.role){
             throw 404;
         }
 
@@ -72,14 +82,15 @@ authRouter.post("/", async function(req, res){
             }
 
             let user = new User({
-                userName: req.body.userName,
+                username: req.body.username,
                 password: hashedPass,
                 email: req.body.email,
+                role: req.body.role
             });
     
             user.save()
                 .then(user => {
-                    res.status(201).json({ success: true, data: user });
+                    res.status(201).json({ success: true, data: user});
                 })
         })
     } catch(err) {
