@@ -6,6 +6,8 @@ const User = require("../models/user");
 
 const authRouter = Router()
 
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
 const saltRounds = 10;
 let blacklist = {};
 
@@ -162,8 +164,7 @@ authRouter.post("/sign-in", async function(req, res){
             if (!err){
                 if (result) {
                     // fourth, generate token
-                    // TODO: change secret string
-                    const token = jwt.sign({id: user.id, userName: user.userName, type: user.type}, 'SECRET_STRING');
+                    const token = jwt.sign({id: user.id, userName: user.userName, type: user.type}, PRIVATE_KEY);
 
                     // fifth, remove token in blacklist if existing
                     if(blacklist[token]) delete blacklist[token];
@@ -173,7 +174,7 @@ authRouter.post("/sign-in", async function(req, res){
 
                 } else {
                     // TODO: Revise this, throwing errors here does not work since it is inside callback
-                    res.json({success: false, messages: ["Wrong Password"]})
+                    res.json({success: false, messages: ["Error: Wrong Password"]})
                 }
             }
         })
