@@ -66,44 +66,29 @@ const saltRounds = 10;
 authRouter.post("/", async function(req, res){
     try {
 
-        const existingUser= await User.findOne({email: req.body.email});
+        const existingUser = await User.findOne({email: req.body.email});
         if(existingUser){
             console.log(existingUser)
             res.status(422).json({success:false, message: "Email already Taken"});
         }
+
+        console.log(req.body)
+
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
         
-        if(!req.body.password){
-            throw 404;
+        if(!hashedPassword){
+            const error = new Error("Internal server error");
+            throw error;
         }
 
-        if(!req.body.username){
-            throw 404;
-        }
+        const user = await User.create({  ...req.body, password: hashedPassword })
 
-        if(!req.body.email){
-            throw 404;
+        if(!user){
+            const error = new Error("Internal server error");
+            throw error;
         }
-        if(!req.body.role){
-            throw 404;
-        }
-
-        bcrypt.hash(req.body.password, saltRounds, function(err, hashedPass){
-            if(err){
-                throw 500;
-            }
-
-            let user = new User({
-                username: req.body.username,
-                password: hashedPass,
-                email: req.body.email,
-                role: req.body.role
-            });
     
-            user.save()
-                .then(user => {
-                    res.status(201).json({ success: true, data: user});
-                })
-        })
+        res.status(201).json({ success: true, data: user});
     } catch(err) {
         let code;
         console.log(err.name)
