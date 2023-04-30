@@ -53,6 +53,10 @@ const saltRounds = 10;
  *                              $ref: '#/components/schemas/User'
  *              400:
  *                  description: Bad request.
+ *              404:
+ *                  description: Null Error
+ *              422:
+ *                  description: Unprocessable Entity
  *              500:
  *                  description: Internal Server error.
  *          tags:
@@ -61,6 +65,13 @@ const saltRounds = 10;
  */
 authRouter.post("/", async function(req, res){
     try {
+
+        const existingUser= await User.findOne({email: req.body.email});
+        if(existingUser){
+            console.log(existingUser)
+            res.status(422).json({success:false, message: "Email already Taken"});
+        }
+        
         if(!req.body.password){
             throw 404;
         }
@@ -95,6 +106,7 @@ authRouter.post("/", async function(req, res){
         })
     } catch(err) {
         let code;
+        console.log(err.name)
 
         switch (err.name) {
             case "ValidationError":
@@ -106,9 +118,13 @@ authRouter.post("/", async function(req, res){
             case "NullError":
                 code = 404;
                 break;
+            case "UnprocessableContent":
+                code= 422;
+                break;
             default:
                 code = 500;
         }
+        console.log(err)
 
         res.status(code).json({success: false, messages: [String(err)]});
     }
