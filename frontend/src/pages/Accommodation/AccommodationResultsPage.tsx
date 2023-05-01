@@ -7,6 +7,7 @@ import { Button, Grid, TextField, Typography } from '@mui/material'
 import AccommodationTile from '../../components/accommTile'
 import { useSearchParams } from 'react-router-dom'
 import PreviewAccommodations from './PreviewAccommodations'
+import FilterAccommodation from '../../components/filterAccommodation'
 
 interface IProps {
   children?: React.ReactNode
@@ -46,10 +47,12 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
         item
         xs={3}
         sx={{
-          background: 'orange',
+          padding: '25px',
+          // backgroundColor: 'orange',
         }}
       >
-        <Typography>Filters</Typography>
+        <FilterAccommodation />
+        {/* <Typography>Filters</Typography>
         <TextField
           type="number"
           onChange={e => {
@@ -58,7 +61,7 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
           value={filter.price}
         />
         <Button onClick={handleFilter}>Filter it yow</Button>
-        <Button onClick={() => setShowPreview(true)}>Download</Button>
+        <Button onClick={() => setShowPreview(true)}>Download</Button> */}
       </Grid>
 
       {/* results */}
