@@ -268,7 +268,7 @@ reportRouter.delete('/:id', async function(req, res){
  * @openapi
  * /api/report/{id}:
  *      put:
- *          description: Edit forum by id
+ *          description: Edit report by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -301,27 +301,20 @@ reportRouter.delete('/:id', async function(req, res){
  */
 reportRouter.put('/:id', async function(req, res){
     try{
-
-        const refAccom = await Accommodation.findById(req.body.accommodation_id);
-        if (!refAccom) {
-            const error = new Error("Accommodation does not exist");
+        const refUser = await User.findById(req.body.user_id);
+        if (!refUser) {
+            const error = new Error("User does not exist");
             error.name = "NullError";
             throw error;
         }
 
-        if(!['active', 'archived', 'deleted'].includes(req.body.status)){
-            const error = new Error("Status is incorrect");
-            error.name = "ValidationError";
-            throw error;
-        }
-
-        const editedForum = await Report.findOneAndUpdate(
+        const editedReport = await Report.findOneAndUpdate(
             {_id: req.params.id},
             { ...req.body},
             {new: true});
 
-        if(!editedForum){
-            const error = new Error("Forum does not exist");
+        if(!editedReport){
+            const error = new Error("Report does not exist");
             error.name = "NullError";
             throw error;
         }
