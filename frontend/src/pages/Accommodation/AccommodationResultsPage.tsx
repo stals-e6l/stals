@@ -16,7 +16,7 @@ interface IProps {
 const AccomodationResultsPage: React.FC<IProps> = () => {
   const accommodationResults = retrieveAccommodationResults()
   const searchParams = useSearchParams()
-  const filterAccommodationsHandler = filterAccommodations()
+  // const filterAccommodationsHandler = filterAccommodations()
   const [filter, setFilter] = React.useState<IAccommodationFilter>({
     name: searchParams[0].get('name') as string,
     type: undefined,
@@ -32,13 +32,13 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
   const [showPreview, setShowPreview] = React.useState<boolean>(false)
 
   // console.log(filter)
-  const handleFilter = () => {
-    filterAccommodationsHandler(filter)
-  }
+  // const handleFilter = () => {
+  //   filterAccommodationsHandler(filter)
+  // }
 
-  React.useEffect(() => {
-    handleFilter()
-  }, [])
+  // React.useEffect(() => {
+  //   handleFilter()
+  // }, [])
 
   return (
     <Grid container>

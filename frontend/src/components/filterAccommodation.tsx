@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    Box,
     Input,
     Typography,
     Grid,
@@ -10,13 +9,15 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
+    Button,
     InputAdornment,
+    Checkbox,
+    Rating,
+    FormGroup,
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
-
-interface IProps {
-    children?: React.ReactNode
-}
+import { filterAccommodations } from '../store/accommodation/actions';
+import { useSearchParams } from 'react-router-dom';
 
 const blue = '#154360'
 const green = '#60ce80'
@@ -28,6 +29,10 @@ const sourceSansPro = 'Source Sans Pro'
 const minDistance = 0;
 
 function FilterAccommodation() {
+
+    // hooks
+    const filterAccommodationsHandler = filterAccommodations()
+    const searchParams = useSearchParams()
 
     // Set the maximum value
     // TODO: Must be based on the highest possible maximum value present in the database
@@ -44,7 +49,7 @@ function FilterAccommodation() {
         color: 'black',
         fontFamily: sourceSansPro,
         fontSize: '20px',
-        marginTop: '10px',
+        marginTop: '7px',
     }
 
     const CustomCaptionStyle = {
@@ -81,8 +86,25 @@ function FilterAccommodation() {
         },
     }
 
+    const CustomChecboxStyle = {
+        '&.Mui-checked': {
+            color: green,
+        },
+    }
+
+    const CustomRatingStyle = {
+        color: blue,
+    }
+
+    // Handler for event in type
+    const [type, setType] = React.useState<string>("hotel");
+
+    const handleType = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setType((event.target as HTMLInputElement).value);
+    }
+
     // Handlers for event in price range 
-    const [price, setPrice] = React.useState<number[]>([2000, 4000]);
+    const [price, setPrice] = React.useState<number[]>([0, 1000]);
 
     const handlePriceChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
         if (!Array.isArray(newValue)) {
@@ -94,24 +116,25 @@ function FilterAccommodation() {
         } else {
             setPrice([price[0], Math.max(newValue[1], price[0] + minDistance)]);
         }
+        // setPrice([newValue[0], newValue[1]])
     };
 
     // Handler for event in room size
-    const [roomSize, setRoomSize] = React.useState<number>(50);
+    const [roomSize, setRoomSize] = React.useState<number>(0);
 
     const handleRoomSizeChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
         setRoomSize(newValue as number);
     }
 
     // Handler for change in meters from UPLB
-    const [meters_from_uplb, setMetersFromUPLB] = React.useState<number>(50);
+    const [meters_from_uplb, setMetersFromUPLB] = React.useState<number>(0);
 
     const handleMetersFromUPLBChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
         setMetersFromUPLB(newValue as number);
     }
 
     // Handlers for event in price range 
-    const [pax, setPax] = React.useState<number[]>([2, 4]);
+    const [pax, setPax] = React.useState<number[]>([0, 2]);
 
     const handlePaxChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
         if (!Array.isArray(newValue)) {
@@ -127,14 +150,14 @@ function FilterAccommodation() {
     };
 
     // Handler for change in num of rooms
-    const [num_room, setNumOfRooms] = React.useState<number>(50);
+    const [num_room, setNumOfRooms] = React.useState<number>(0);
 
     const handleRoomNumChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
         setNumOfRooms(newValue as number);
     }
 
     // Handlers for event in num of bed 
-    const [num_beds, setBed] = React.useState<number[]>([2, 4]);
+    const [num_beds, setBed] = React.useState<number[]>([0, 2]);
 
     const handleBed = (event: Event, newValue: number | number[], activeThumb: number,) => {
         if (!Array.isArray(newValue)) {
@@ -149,6 +172,35 @@ function FilterAccommodation() {
 
     };
 
+    // Handler for event in furnishing
+    const [furnishing, setFurnishing] = React.useState<string>("unfurnished");
+
+    const handleFurnishing = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFurnishing((event.target as HTMLInputElement).value);
+    }
+
+    // Handler for event in filter button
+    const handleFilter = () => {
+        filterAccommodationsHandler({
+            name: searchParams[0].get("name") as string,
+            price: price[0] === 0 ? undefined : price[0],//
+            size_sqm: roomSize === 0 ? undefined : roomSize,
+            meters_from_uplb: meters_from_uplb === 0 ? undefined : meters_from_uplb,
+            min_pax: pax[0] === 0 ? undefined : pax[0],
+            max_pax: pax[1] === 1 ? undefined : pax[1],
+            num_rooms: num_room,
+            num_beds: num_beds[0]//
+        })
+    }
+
+    console.log({
+        price, roomSize, meters_from_uplb,pax,num_room, num_beds, type,furnishing,
+    })
+
+    React.useEffect(() => {
+        handleFilter()
+    }, [])
+
     return (
         <>
             <Grid container>
@@ -160,12 +212,12 @@ function FilterAccommodation() {
                         borderRadius: '25px',
                         padding: '3px 25px',
                         fontFamily: quicksand,
-                    }} 
-                    startAdornment={
-                        <InputAdornment position="start">
-                            <SearchIcon sx={{color: green}}/>
-                        </InputAdornment>
-                    }
+                    }}
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <SearchIcon sx={{ color: green }} />
+                            </InputAdornment>
+                        }
                     />
                 </Grid>
 
@@ -209,7 +261,9 @@ function FilterAccommodation() {
                                 {/* Radio Group: Type Values */}
                                 <RadioGroup
                                     aria-labelledby="hotel"
-                                    defaultValue="apartment"
+                                    defaultValue={undefined}
+                                    value={type}
+                                    onChange={handleType}
                                     name="type-group"
                                 >
                                     <FormControlLabel
@@ -247,6 +301,24 @@ function FilterAccommodation() {
                         </Grid>
 
 
+                        {/* Label: Ratings */}
+                        <Grid item xs={12}>
+                            <Typography sx={CustomLabelStyle}>
+                                Ratings
+                            </Typography>
+                        </Grid>
+
+                        {/* Checkbox: 5 Stars to 0 Star */}
+                        <FormGroup>
+                            <FormControlLabel control={<Checkbox sx={CustomChecboxStyle} />} label={<Rating value={5} readOnly sx={CustomRatingStyle} />} />
+                            <FormControlLabel control={<Checkbox sx={CustomChecboxStyle} />} label={<Rating value={4} readOnly sx={CustomRatingStyle} />} />
+                            <FormControlLabel control={<Checkbox sx={CustomChecboxStyle} />} label={<Rating value={3} readOnly sx={CustomRatingStyle} />} />
+                            <FormControlLabel control={<Checkbox sx={CustomChecboxStyle} />} label={<Rating value={2} readOnly sx={CustomRatingStyle} />} />
+                            <FormControlLabel control={<Checkbox sx={CustomChecboxStyle} />} label={<Rating value={1} readOnly sx={CustomRatingStyle} />} />
+                            <FormControlLabel control={<Checkbox sx={CustomChecboxStyle} />} label={<Rating value={0} readOnly sx={CustomRatingStyle} />} />
+                        </FormGroup>
+
+
                         {/* Label: Price Range */}
                         <Grid item xs={12}>
                             <Typography sx={CustomLabelStyle}>
@@ -260,6 +332,7 @@ function FilterAccommodation() {
                                 sx={CustomSliderStyles}
                                 max={maxPrice}
                                 value={price}
+                                defaultValue={0}
                                 onChange={handlePriceChange}
                                 disableSwap
                             />
@@ -286,6 +359,7 @@ function FilterAccommodation() {
                                 sx={CustomSliderStyles}
                                 max={maxRoomSize}
                                 value={roomSize}
+                                defaultValue={0}
                                 onChange={handleRoomSizeChange}
                             />
                         </Grid>
@@ -310,6 +384,7 @@ function FilterAccommodation() {
                             <Slider
                                 max={maxMetersFromUPLB}
                                 value={meters_from_uplb}
+                                defaultValue={0}
                                 onChange={handleMetersFromUPLBChange}
                                 sx={CustomSliderStyles}
                             />
@@ -334,8 +409,9 @@ function FilterAccommodation() {
                         <Grid item >
                             <Slider
                                 sx={CustomSliderStyles}
-                                min={1}
+                                min={0}
                                 max={maxPax}
+                                defaultValue={0}
                                 value={pax}
                                 onChange={handlePaxChange}
                                 disableSwap
@@ -367,7 +443,7 @@ function FilterAccommodation() {
                         {/* Label: Number of Room */}
                         <Grid item xs={12}>
                             <Typography sx={CustomLabelStyle}>
-                                Number of Room
+                                Number of Rooms
                             </Typography>
                         </Grid>
 
@@ -375,8 +451,8 @@ function FilterAccommodation() {
                         <Grid item>
                             <Slider
                                 max={maxRoom}
-                                min={1}
-                                defaultValue={2}
+                                min={0}
+                                defaultValue={0}
                                 value={num_room}
                                 onChange={handleRoomNumChange}
                                 sx={CustomSliderStyles}
@@ -414,24 +490,25 @@ function FilterAccommodation() {
                         <Grid item >
                             <Slider
                                 sx={CustomSliderStyles}
-                                min={1}
+                                min={0}
                                 max={maxBed}
+                                defaultValue={0}
                                 value={num_beds}
                                 onChange={handleBed}
                                 disableSwap
                             />
                         </Grid>
 
-                        {/* Caption: X - Y person/s */}
+                        {/* Caption: X - Y Bed/s */}
                         <Grid item>
                             {
                                 // if both minimum and maximum are equal
-                                (num_beds[0] === pax[1] && num_beds[0] != 1) ?
+                                (num_beds[0] == pax[1] && num_beds[0] != 1) ?
                                     <>
                                         <Typography sx={CustomCaptionStyle}>{num_beds[0]} beds</Typography>
                                     </>
                                     // if both min and max bed are equal and both 1
-                                    : (num_beds[0] === num_beds[1] && num_beds[0] == 1) ?
+                                    : (num_beds[0] == num_beds[1] && num_beds[0] == 1) ?
                                         <>
                                             <Typography sx={CustomCaptionStyle}>{num_beds[0]} bed</Typography>
                                         </>
@@ -443,7 +520,6 @@ function FilterAccommodation() {
                             }
                         </Grid>
 
-
                         <Grid item>
                             <FormControl>
                                 {/* Label: Furnishing */}
@@ -452,7 +528,9 @@ function FilterAccommodation() {
                                 {/* Radio Group: Furnishing Values */}
                                 <RadioGroup
                                     aria-labelledby="furnishing"
-                                    defaultValue="semifurnished"
+                                    defaultValue={"unfurnished"}
+                                    value={furnishing}
+                                    onChange={handleFurnishing}
                                     name="furnishing-group"
                                 >
                                     <FormControlLabel
@@ -476,9 +554,27 @@ function FilterAccommodation() {
                                 </RadioGroup>
                             </FormControl>
                         </Grid>
-
                     </Grid> {/* End of Grid Container for Filter Fields */}
                 </Grid> {/* End of Grid Item for Filter Fields */}
+
+                {/* Filter Button */}
+                <Grid item xs={12}>
+                    <Button onClick={handleFilter} variant='contained' fullWidth sx={{
+                        backgroundColor: green,
+                        fontFamily: sourceSansPro,
+                        fontWeight: 'bold',
+                        borderRadius: '10px',
+                        ':hover': {
+                            backgroundColor: grey,
+                            border: '2px solid',
+                            borderColor: green,
+                            color: 'black',
+                        }
+                    }}>
+                        Filter Search
+                    </Button>
+                </Grid>
+
             </Grid>
         </>
     )
