@@ -160,24 +160,18 @@ authRouter.post("/sign-in", async function(req, res){
         if(!user) throw new Error("No User Found")
 
         // third, check if password is correct
-        bcrypt.compare(password, user.password, function(err, result) {
-            if (!err){
-                if (result) {
-                    // fourth, generate token
-                    const token = jwt.sign({id: user.id, userName: user.userName, type: user.type}, PRIVATE_KEY);
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch) throw new Error("Wrong password")
+        
+        // fourth, generate token
+        const token = jwt.sign({id: user.id, userName: user.userName, type: user.type});
+        
+        // fifth, remove token in blacklist if existing
+        if(blacklist[token]) delete blacklist[token];
 
-                    // fifth, remove token in blacklist if existing
-                    if(blacklist[token]) delete blacklist[token];
+        // last, return success
+        res.status(200).json({ success: true, token: token});
 
-                    // last, return success
-                    res.status(200).json({ success: true, token: token});
-
-                } else {
-                    // TODO: Revise this, throwing errors here does not work since it is inside callback
-                    res.json({success: false, messages: ["Error: Wrong Password"]})
-                }
-            }
-        })
 
     } catch(err) {
         let code;
