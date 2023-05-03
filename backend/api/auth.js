@@ -1,8 +1,15 @@
 const { Router } = require('express')
-var jwt = require('jsonwebtoken');
-var User = require("../models/user");
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
+const User = require("../models/user");
 
 const authRouter = Router()
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
+const saltRounds = 10;
+let blacklist = {};
 
 /**
  * @openapi
@@ -130,13 +137,17 @@ authRouter.post("/", async function(req, res){
  *      post:
  *          description: Sign out
  *          responses:
- *              201:
+ *              200:
  *                  content:
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/User'
  *              400:
  *                  description: Bad request.
+ *              401:
+ *                  description: Authentication error.
+ *              404:
+ *                  description: Null error.
  *              500:
  *                  description: Internal Server error.
  *          tags:
@@ -146,26 +157,17 @@ authRouter.post("/", async function(req, res){
 authRouter.get('/', async function(req, res){
     try{
 
-        if (req.headers.authorization &&  req.headers.authorization.startsWith('Bearer')){
-            token = req.headers.authorization.split(' ')[1];
-        } else if (req.cookies.token){
-            token = req.cookies.token
-        }
+        // Extract the auth header
+        const authHeader = req.headers["Authorization"]
+        if(!authHeader) throw new Error("No auth header!")
 
-        if (!token){
-            const error = new Error("Token doesn't exist");
-            error.name = "AuthError";
-            throw error;
-        }
-
-        const decoded = jwt.verify(token, secretkey);
-        const savedUser = await User.findById(decoded.id);
+        // Extract token
+        const [authMethod, token] = authHeader.split(" ")
+        if(authMethod !== "Bearer") throw new Error("Auth method should be \"Bearer\"!")
+        if(!token) throw new Error("No token!")
         
-        if (!savedUser){
-            const error = new Error("User doesn't exist");
-            error.name = "AuthError";
-            throw error;
-        }
+        // Add token to blacklist
+        if(!blacklist[token]) blacklist[token] = token;
         
         res.status(200).json({ success: true, messages: ['Success'] });
 
@@ -192,6 +194,7 @@ authRouter.get('/', async function(req, res){
         res.status(code).json({success: false, messages: [String(err)]});
     }
 })
+
 
 /**
  * @openapi
