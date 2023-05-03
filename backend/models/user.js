@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
         enum: ['admin', 'owner', 'tenant'],
         default: "admin",
         required: true
-    },
+    }
     // generatedReports: { // This will be the list of generated reports by this user 
     //     type: Array, default : []
     // },
