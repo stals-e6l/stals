@@ -190,9 +190,11 @@ authRouter.post("/sign-in", async function(req, res){
         
         // fourth, generate token
         const token = jwt.sign({id: user.id, userName: user.userName, role: user.role}, PRIVATE_KEY);
+        console.log(blacklist);
         
         // fifth, remove token in blacklist if existing
         if(blacklist[token]) delete blacklist[token];
+        console.log(blacklist);
 
         // last, return success
         res.status(200).json({ success: true, token: token});
@@ -224,6 +226,8 @@ authRouter.post("/sign-in", async function(req, res){
  * /api/sign-out:
  *      post:
  *          description: Sign out
+ *          security:
+ *              -   bearerAuth: []
  *          responses:
  *              200:
  *                  content:
@@ -246,7 +250,7 @@ authRouter.post('/sign-out', async function(req, res){
     try{
 
         // Extract the auth header
-        const authHeader = req.headers["Authorization"]
+        const authHeader = req.headers.authorization
         if(!authHeader) throw new Error("No auth header!")
 
         // Extract token
