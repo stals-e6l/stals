@@ -67,7 +67,7 @@ reportRouter.post("/", async function(req, res){
             const pdf_url = new URL(req.body.pdf_url);
         } catch(err){
             const error = new Error("URL does not exist");
-            error.name = "TypeError";
+            error.name = "ValidationError";
             throw error;
         }
 
@@ -81,9 +81,6 @@ reportRouter.post("/", async function(req, res){
                 code = 400;
                 break;
             case "CastError":
-                code = 400;
-                break;
-            case "TypeError":
                 code = 400;
                 break;
             case "AuthError":
