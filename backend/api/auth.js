@@ -6,7 +6,7 @@ const User = require("../models/user");
 const authRouter = Router();
 const saltRounds = 10;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const blacklist = []
+const blacklist = {}
 
 /**
  * @openapi
@@ -91,21 +91,17 @@ authRouter.post("/sign-up", async function(req, res){
         const existingEmail = await User.findOne({email: req.body.email});
         const existingUsername= await User.findOne({username: req.body.userName});
         let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
-        
+
         if(!regex.test(req.body.email)){
-            console.log(req.body.email);
             return res.status(422).json({success:false, message: "Not a valid Email"});
         }
         
         if(existingUsername && existingEmail){
-            console.log(existingEmail)
             return res.status(422).json({success:false, message: "Username and Email already Taken"});
         }else{
             if(existingUsername){
-                console.log(existingUsername)
                 return res.status(422).json({success:false, message: "Username already Taken"});
             }else if(existingEmail){
-                console.log(existingEmail)
                 return res.status(422).json({success:false, message: "Email already Taken"});
             }
         }
@@ -127,7 +123,6 @@ authRouter.post("/sign-up", async function(req, res){
         return res.status(201).json({ success: true, data: {userName: user.userName, email: user.email, role: user.role }});
     } catch(err) {
         let code;
-        console.log(err.name)
 
         switch (err.name) {
             case "ValidationError":
@@ -145,7 +140,6 @@ authRouter.post("/sign-up", async function(req, res){
             default:
                 code = 500;
         }
-        console.log(err)
 
         res.status(code).json({success: false, messages: [String(err)]});
     }
@@ -250,7 +244,7 @@ authRouter.post("/sign-in", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-out", async function(req, res){
     try {
 
 
@@ -328,7 +322,6 @@ authRouter.head('/me', async function(req, res){
         }
 
         const decoded = jwt.verify(token, PRIVATE_KEY);
-        console.log(decoded)
         const dbUser = await User.findById(decoded.id);
         
         if (!dbUser){
