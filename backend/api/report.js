@@ -107,7 +107,9 @@ reportRouter.post("/", async function(req, res){
 reportRouter.get('/:id', async function(req, res){
     try{
         if(!req.params.id){
-            throw 400;
+            const error = new Error("Report does not exist");
+            error.name = "NullError";
+            throw error;
         }
         const report= await Report.findById(req.params.id);
         if(!report){
