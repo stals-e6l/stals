@@ -183,7 +183,10 @@ const PreviewAccommodations: React.FC<IProps> = ({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={savePDF}>Save PDF</Button>
+        <Button onClick={()=>{
+          savePDF()
+          onClose()
+        }}>Save PDF</Button>
         <Button onClick={onClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
