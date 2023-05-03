@@ -1,6 +1,7 @@
 const { Router } = require('express')
 
-var Report = require("../models/report");
+const Report = require("../models/report");
+const User = require("../models/user")
 
 const reportRouter = Router()
 
@@ -11,11 +12,16 @@ const reportRouter = Router()
  *      Report:
  *          type: object
  *          required:
- *              - name
+ *              - user_id
+ *              - pdf_url
  *          properties:
- *              name:
+ *              user_id:
  *                  type: string
- *                  description: Name of report
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: User id that created report
+ *              pdf_url:
+ *                  type: string
+ *                  description: URL of pdf
  */
 
 /**
@@ -47,6 +53,22 @@ const reportRouter = Router()
  */
 reportRouter.post("/", async function(req, res){
     try {
+        const refUser = await User.findById(req.body.user_id)
+
+        if(!refUser){
+            const error = new Error("User does not exist");
+            error.name = "NullError";
+            throw error;
+        }
+        
+        try{
+            const pdf_url = new URL(req.body.pdf_url);
+        } catch(err){
+            const error = new Error("URL does not exist");
+            error.name = "ValidationError";
+            throw error;
+        }
+
         const savedReport = await Report.create({ ...req.body });
 
         res.status(201).json({ success: true, data: savedReport });
