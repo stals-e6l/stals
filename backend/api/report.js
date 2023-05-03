@@ -292,7 +292,7 @@ reportRouter.delete('/:id', async function(req, res){
  *              401:
  *                  description: Unauthorized access.
  *              404:
- *                  description: Not found (For accommodation and forum).
+ *                  description: Not found (For user and forum).
  *              500:
  *                  description: Internal Server error.
  *          tags:
@@ -308,6 +308,14 @@ reportRouter.put('/:id', async function(req, res){
             throw error;
         }
 
+        try{
+            const pdf_url = new URL(req.body.pdf_url);
+        } catch(err){
+            const error = new Error("URL does not exist");
+            error.name = "ValidationError";
+            throw error;
+        }
+
         const editedReport = await Report.findOneAndUpdate(
             {_id: req.params.id},
             { ...req.body},
@@ -319,7 +327,7 @@ reportRouter.put('/:id', async function(req, res){
             throw error;
         }
 
-        res.status(200).json({ success: true, data: editedForum })
+        res.status(200).json({ success: true, data: editedReport })
 
     } catch(err) {
         let code;
@@ -334,9 +342,6 @@ reportRouter.put('/:id', async function(req, res){
             case "AuthError":
                 code = 401;
                 break;  
-            case "NullError":
-                code = 404;
-                break;
             case "NullError":
                 code = 404;
                 break;
