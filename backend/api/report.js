@@ -53,8 +53,6 @@ const reportRouter = Router()
  */
 reportRouter.post("/", async function(req, res){
     try {
-        const savedReport = await Report.create({ ...req.body });
-
         const refUser = await User.findById(req.body.user_id)
 
         if(!refUser){
@@ -70,6 +68,8 @@ reportRouter.post("/", async function(req, res){
             error.name = "ValidationError";
             throw error;
         }
+
+        const savedReport = await Report.create({ ...req.body });
 
         res.status(201).json({ success: true, data: savedReport });
 
