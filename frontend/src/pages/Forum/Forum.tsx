@@ -350,7 +350,7 @@ const Forum: React.FC<IProps> = () => {
                 {/* Grid component for add review button */}
                 <Grid item xs={6}>
                   <Box display="flex" justifyContent="flex-end">
-                    <AddReviewButton />
+                    <AddCommentToForum forumId={forum._id as string} />
                   </Box>
                 </Grid>
               </Grid>

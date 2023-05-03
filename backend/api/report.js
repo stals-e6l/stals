@@ -136,23 +136,27 @@ reportRouter.get('/:id', async function(req, res){
             throw 404;
         }
         res.status(200).json({success: true, data: forum});
-    } catch(err){
-        switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
+    } catch(err) {
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
                 break;
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-              break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
+                break;
             default:
-                res.json({success: false, messages: [String(err)]});
+                code = 500;
         }
+
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 })
 
@@ -228,7 +232,7 @@ reportRouter.get('/', async function(req, res){
  * @openapi
  * /api/report/{id}:
  *      delete:
- *          description: Delete forum by id
+ *          description: Delete report by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -237,9 +241,9 @@ reportRouter.get('/', async function(req, res){
  *                  required: true
  *          responses:
  *              200:
- *                  description: Forum was deleted
+ *                  description: Report was deleted
  *              404:
- *                  description: The forum was not found
+ *                  description: The report was not found
  *              500:
  *                  description: Internal server error
  *          tags:
@@ -248,20 +252,37 @@ reportRouter.get('/', async function(req, res){
  */
 reportRouter.delete('/:id', async function(req, res){
     try{
-        const removedForum = await Report.findByIdAndRemove({_id: req.params.id});
+        const removedReport = await Report.findByIdAndRemove({_id: req.params.id});
         
-        if (!removedForum) {
-            throw new Error("404");
+        if (!removedReport) {
+            const error = new Error("Report does not exist");
+            error.name = "NullError";
+            throw error;
         } else {
             res.status(200).json({success: true, data: null});
         }
-        // TODO: Handle other errors (authentication)
-    } catch(err){
-        if (String(err).includes("404")) {
-            res.status(404).json({success: false, messages: ["Error 404: Forum not found"]});
-        } else {
-            res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
+        
+    } catch(err) {
+        let code;
+
+        switch (err.name) {
+            case "ValidationError":
+                code = 400;
+                break;
+            case "CastError":
+                code = 400;
+                break;
+            case "AuthError":
+                code = 401;
+                break;
+            case "NullError":
+                code = 404;
+                break;
+            default:
+                code = 500;
         }
+
+        res.status(code).json({success: false, messages: [String(err)]});
     }
 });
 
