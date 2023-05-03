@@ -1,8 +1,15 @@
 const { Router } = require('express')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
-var User = require("../models/user");
+const User = require("../models/user");
 
 const authRouter = Router()
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
+const saltRounds = 10;
+let blacklist = {};
 
 /**
  * @openapi
@@ -11,11 +18,37 @@ const authRouter = Router()
  *      User:
  *          type: object
  *          required:
- *              - name
+ *              - username
+ *              - password
+ *              - email
+ *              - role
  *          properties:
- *              name:
+ *              username:
  *                  type: string
- *                  description: Name of user
+ *                  description: Username of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
+ *              email:
+ *                  type: string
+ *                  description: Email of user
+ *              role:
+ *                  type: string
+ *                  pattern: '^((admin)|(owner)|(tenant))$'
+ *                  description: Role of the user
+ * 
+ *      Login:
+ *          type: object
+ *          required:
+ *              - username
+ *              - password
+ *          properties:
+ *              username:
+ *                  type: string
+ *                  description: Username of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
  */
 
 /**
@@ -37,6 +70,8 @@ const authRouter = Router()
  *                              $ref: '#/components/schemas/User'
  *              400:
  *                  description: Bad request.
+ *              404:
+ *                  description: Null Error
  *              500:
  *                  description: Internal Server error.
  *          tags:
@@ -45,7 +80,30 @@ const authRouter = Router()
  */
 authRouter.post("/sign-up", async function(req, res){
     try {
-        //insert sign up here
+
+        let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+
+        if(!regex.test(req.body.email)){
+            const error = new Error("Not a valid email");
+            error.name = "ValidationError";
+            throw error;
+        }
+        
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+        
+        if(!hashedPassword){
+            const error = new Error("Internal server error");
+            throw error;
+        }
+
+        const user = await User.create({  ...req.body, password: hashedPassword })
+
+        if(!user){
+            const error = new Error("Internal server error");
+            throw error;
+        }
+    
+        return res.status(201).json({ success: true, data: {username:user.username, email: user.email, role: user.role }});
     } catch(err) {
         let code;
 
@@ -77,13 +135,13 @@ authRouter.post("/sign-up", async function(req, res){
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/User'
+ *                          $ref: '#/components/schemas/Login'
  *          responses:
  *              201:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/User'
+ *                              $ref: '#/components/schemas/Login'
  *              400:
  *                  description: Bad request.
  *              404:
@@ -98,7 +156,28 @@ authRouter.post("/sign-up", async function(req, res){
  */
 authRouter.post("/sign-in", async function(req, res){
     try {
-        //insert sign in here
+        // first, extract the req payload
+        const username = req.body.username;
+        const password = req.body.password;
+
+        // second, validate if user indeed exists
+        const user = await User.findOne({ username: username });
+        if(!user) throw new Error("No User Found")
+
+        // third, check if password is correct
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch) throw new Error("Wrong password")
+        
+        // fourth, generate token
+        const token = jwt.sign({id: user.id, username: user.username, role: user.role}, PRIVATE_KEY);
+        
+        // fifth, remove token in blacklist if existing
+        if(blacklist[token]) delete blacklist[token];
+
+        // last, return success
+        res.status(200).json({ success: true, token: token});
+
+
     } catch(err) {
         let code;
 
