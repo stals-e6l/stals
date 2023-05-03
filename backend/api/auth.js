@@ -1,21 +1,58 @@
 const { Router } = require('express');
-var jwt = require('jsonwebtoken');
-var User = require("../models/user");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require("../models/user");
 
-const authRouter = Router()
+const authRouter = Router();
+const saltRounds = 10;
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const blacklist = []
 
 /**
  * @openapi
  * components:
+ *  securitySchemes:
+ *      bearerAuth:
+ *          type: http
+ *          scheme: bearer
+ *          bearerFormat: JWT
  *  schemas:
  *      User:
  *          type: object
  *          required:
- *              - name
+ *              - userName
+ *              - password
+ *              - email
+ *              - role
  *          properties:
- *              name:
+ *              userName:
  *                  type: string
- *                  description: Name of user
+ *                  description: Username of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
+ *              email:
+ *                  type: string
+ *                  description: Email of user
+ *              role:
+ *                  type: string
+ *                  pattern: '^((admin)|(owner)|(tenant))$'
+ *                  description: Role of the user
+ *      Login:
+ *          type: object
+ *          required:
+ *              - userName
+ *              - password
+ *          properties:
+ *              userName:
+ *                  type: string
+ *                  description: Username of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
+ * security:
+ *      - bearerAuth: []
+ * 
  */
 
 /**
@@ -37,17 +74,60 @@ const authRouter = Router()
  *                              $ref: '#/components/schemas/User'
  *              400:
  *                  description: Bad request.
+ *              404:
+ *                  description: Null Error
+ *              422:
+ *                  description: Unprocessable Entity
  *              500:
  *                  description: Internal Server error.
  *          tags:
  *              - User
  *              
  */
+
 authRouter.post("/sign-up", async function(req, res){
     try {
-        //insert sign up here
+
+        const existingEmail = await User.findOne({email: req.body.email});
+        const existingUsername= await User.findOne({username: req.body.userName});
+        let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+        
+        if(!regex.test(req.body.email)){
+            console.log(req.body.email);
+            return res.status(422).json({success:false, message: "Not a valid Email"});
+        }
+        
+        if(existingUsername && existingEmail){
+            console.log(existingEmail)
+            return res.status(422).json({success:false, message: "Username and Email already Taken"});
+        }else{
+            if(existingUsername){
+                console.log(existingUsername)
+                return res.status(422).json({success:false, message: "Username already Taken"});
+            }else if(existingEmail){
+                console.log(existingEmail)
+                return res.status(422).json({success:false, message: "Email already Taken"});
+            }
+        }
+
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+        
+        if(!hashedPassword){
+            const error = new Error("Internal server error");
+            throw error;
+        }
+
+        const user = await User.create({  ...req.body, passwordHash: hashedPassword })
+
+        if(!user){
+            const error = new Error("Internal server error");
+            throw error;
+        }
+    
+        return res.status(201).json({ success: true, data: {userName: user.userName, email: user.email, role: user.role }});
     } catch(err) {
         let code;
+        console.log(err.name)
 
         switch (err.name) {
             case "ValidationError":
@@ -59,9 +139,13 @@ authRouter.post("/sign-up", async function(req, res){
             case "NullError":
                 code = 404;
                 break;
+            case "UnprocessableContent":
+                code= 422;
+                break;
             default:
                 code = 500;
         }
+        console.log(err)
 
         res.status(code).json({success: false, messages: [String(err)]});
     }
@@ -77,13 +161,13 @@ authRouter.post("/sign-up", async function(req, res){
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/User'
+ *                          $ref: '#/components/schemas/Login'
  *          responses:
  *              201:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/User'
+ *                              $ref: '#/components/schemas/Login'
  *              400:
  *                  description: Bad request.
  *              404:
@@ -96,9 +180,30 @@ authRouter.post("/sign-up", async function(req, res){
  *              - User
  *              
  */
+
 authRouter.post("/sign-in", async function(req, res){
     try {
-        //insert sign in here
+        // first, extract the req payload
+        const userName = req.body.userName;
+        const password = req.body.password;
+
+        // second, validate if user indeed exists
+        const user = await User.findOne({ userName: userName });
+        if(!user) throw new Error("No User Found");
+        // third, check if password is correct
+        const isMatch = await bcrypt.compare(password, user.passwordHash);
+        if(!isMatch) throw new Error("Wrong password");
+        
+        // fourth, generate token
+        const token = jwt.sign({id: user.id, userName: user.userName, role: user.role}, PRIVATE_KEY);
+        
+        // fifth, remove token in blacklist if existing
+        if(blacklist[token]) delete blacklist[token];
+
+        // last, return success
+        res.status(200).json({ success: true, token: token});
+
+
     } catch(err) {
         let code;
 
@@ -145,7 +250,7 @@ authRouter.post("/sign-in", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/sign-out", async function(req, res){
+authRouter.post("/", async function(req, res){
     try {
 
 
@@ -176,36 +281,32 @@ authRouter.post("/sign-out", async function(req, res){
 /**
  * @openapi
  * /api/me:
- *      description: Get user endpoint
- *      parameters:
- *          -   in: header
- *              name: auth
- *              schema:
- *                  type: string
- *              required: true
- *      responses:
- *          200:
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/User'
- *          400:
- *              description: Bad request.
- *          401:
- *              description: Authentication Error.
- *          500:
- *              description: Internal Server error.
- *          404:
- *              description: User does not exist.
- *      tags:
- *          - User
+ *      head:
+ *          description: Get user endpoint
+ *          security:
+ *              -   bearerAuth: []
+ *          responses:
+ *              200:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/User'
+ *              400:
+ *                  description: Bad request.
+ *              401:
+ *                  description: Authentication Error.
+ *              500:
+ *                  description: Internal Server error.
+ *              404:
+ *                  description: User does not exist.
+ *          tags:
+ *              - User
  *              
  */
-authRouter.route('/me', async function(req, res){
+authRouter.head('/me', async function(req, res){
     try{
+        const authHeader = req.headers.authorization;
 
-        const authHeader = req.headers["Authorization"];
-    
         if(!authHeader){
             const error = new Error("Header doesn't exist");
             error.name = "AuthError";
@@ -226,9 +327,10 @@ authRouter.route('/me', async function(req, res){
             throw error;
         }
 
-        const decoded = jwt.verify(token, secretkey);
-        const dbUser = await User.findById({ id: decoded.id });
-
+        const decoded = jwt.verify(token, PRIVATE_KEY);
+        console.log(decoded)
+        const dbUser = await User.findById(decoded.id);
+        
         if (!dbUser){
             const error = new Error("User doesn't exist");
             error.name = "NullError";
