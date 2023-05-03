@@ -18,9 +18,12 @@ let blacklist = {};
  *      User:
  *          type: object
  *          required:
- *              - name
+ *              - username
+ *              - password
+ *              - email
+ *              - role
  *          properties:
- *              userName:
+ *              username:
  *                  type: string
  *                  description: Username of user
  *              password:
@@ -29,14 +32,18 @@ let blacklist = {};
  *              email:
  *                  type: string
  *                  description: Email of user
+ *              role:
+ *                  type: string
+ *                  pattern: '^((admin)|(owner)|(tenant))$'
+ *                  description: Role of the user
  * 
  *      Login:
  *          type: object
  *          required:
- *              - userName
+ *              - username
  *              - password
  *          properties:
- *              userName:
+ *              username:
  *                  type: string
  *                  description: Username of user
  *              password:
@@ -63,6 +70,8 @@ let blacklist = {};
  *                              $ref: '#/components/schemas/User'
  *              400:
  *                  description: Bad request.
+ *              404:
+ *                  description: Null Error
  *              500:
  *                  description: Internal Server error.
  *          tags:
@@ -71,34 +80,30 @@ let blacklist = {};
  */
 authRouter.post("/sign-up", async function(req, res){
     try {
-        if(!req.body.password){
-            throw 404;
+
+        let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+
+        if(!regex.test(req.body.email)){
+            const error = new Error("Not a valid email");
+            error.name = "ValidationError";
+            throw error;
+        }
+        
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+        
+        if(!hashedPassword){
+            const error = new Error("Internal server error");
+            throw error;
         }
 
-        if(!req.body.userName){
-            throw 404;
+        const user = await User.create({  ...req.body, password: hashedPassword })
+
+        if(!user){
+            const error = new Error("Internal server error");
+            throw error;
         }
-
-        if(!req.body.email){
-            throw 404;
-        }
-
-        bcrypt.hash(req.body.password, saltRounds, function(err, hashedPass){
-            if(err){
-                throw 500;
-            }
-
-            let user = new User({
-                userName: req.body.userName,
-                password: hashedPass,
-                email: req.body.email,
-            });
     
-            user.save()
-                .then(user => {
-                    res.status(201).json({ success: true, data: user });
-                })
-        })
+        return res.status(201).json({ success: true, data: {username:user.username, email: user.email, role: user.role }});
     } catch(err) {
         let code;
 
@@ -152,11 +157,11 @@ authRouter.post("/sign-up", async function(req, res){
 authRouter.post("/sign-in", async function(req, res){
     try {
         // first, extract the req payload
-        const userName = req.body.userName;
+        const username = req.body.username;
         const password = req.body.password;
 
         // second, validate if user indeed exists
-        const user = await User.findOne({ userName: userName });
+        const user = await User.findOne({ username: username });
         if(!user) throw new Error("No User Found")
 
         // third, check if password is correct
@@ -164,7 +169,7 @@ authRouter.post("/sign-in", async function(req, res){
         if(!isMatch) throw new Error("Wrong password")
         
         // fourth, generate token
-        const token = jwt.sign({id: user.id, userName: user.userName, type: user.type});
+        const token = jwt.sign({id: user.id, username: user.username, role: user.role}, PRIVATE_KEY);
         
         // fifth, remove token in blacklist if existing
         if(blacklist[token]) delete blacklist[token];
