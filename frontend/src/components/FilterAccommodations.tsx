@@ -28,7 +28,7 @@ const sourceSansPro = 'Source Sans Pro'
 
 const minDistance = 0;
 
-function FilterAccommodation() {
+function FilterAccommodations() {
 
     // hooks
     const filterAccommodationsHandler = filterAccommodations()
@@ -100,7 +100,7 @@ function FilterAccommodation() {
     const [type, setType] = React.useState<string>("hotel");
 
     const handleType = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setType((event.target as HTMLInputElement).value);
+        setType(event.target.value as TAccommodationActionType);
     }
 
     // Handlers for event in price range 
@@ -116,11 +116,10 @@ function FilterAccommodation() {
         } else {
             setPrice([price[0], Math.max(newValue[1], price[0] + minDistance)]);
         }
-        // setPrice([newValue[0], newValue[1]])
     };
 
     // Handler for event in room size
-    const [roomSize, setRoomSize] = React.useState<number>(0);
+    const [size_sqm, setRoomSize] = React.useState<number>(0);
 
     const handleRoomSizeChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
         setRoomSize(newValue as number);
@@ -150,7 +149,7 @@ function FilterAccommodation() {
     };
 
     // Handler for change in num of rooms
-    const [num_room, setNumOfRooms] = React.useState<number>(0);
+    const [num_rooms, setNumOfRooms] = React.useState<number>(0);
 
     const handleRoomNumChange = (event: Event, newValue: number | number[], activeThumb: number,) => {
         setNumOfRooms(newValue as number);
@@ -176,26 +175,24 @@ function FilterAccommodation() {
     const [furnishing, setFurnishing] = React.useState<string>("unfurnished");
 
     const handleFurnishing = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFurnishing((event.target as HTMLInputElement).value);
+        setFurnishing(event.target.value as TAccommodationFurnishing);
     }
 
     // Handler for event in filter button
     const handleFilter = () => {
         filterAccommodationsHandler({
             name: searchParams[0].get("name") as string,
+            type: type as TAccommodationType,
             price: price[0] === 0 ? undefined : price[0],//
-            size_sqm: roomSize === 0 ? undefined : roomSize,
+            size_sqm: size_sqm === 0 ? undefined : size_sqm,
             meters_from_uplb: meters_from_uplb === 0 ? undefined : meters_from_uplb,
             min_pax: pax[0] === 0 ? undefined : pax[0],
-            max_pax: pax[1] === 1 ? undefined : pax[1],
-            num_rooms: num_room,
-            num_beds: num_beds[0]//
+            max_pax: pax[1] === 0 ? undefined : pax[1],
+            num_rooms: num_rooms === 0 ? undefined : num_rooms,
+            num_beds: num_beds[0] === 0 ? undefined : num_beds[0],//
+            furnishing: furnishing as TAccommodationFurnishing,
         })
     }
-
-    console.log({
-        price, roomSize, meters_from_uplb,pax,num_room, num_beds, type,furnishing,
-    })
 
     React.useEffect(() => {
         handleFilter()
@@ -358,7 +355,7 @@ function FilterAccommodation() {
                             <Slider
                                 sx={CustomSliderStyles}
                                 max={maxRoomSize}
-                                value={roomSize}
+                                value={size_sqm}
                                 defaultValue={0}
                                 onChange={handleRoomSizeChange}
                             />
@@ -367,7 +364,7 @@ function FilterAccommodation() {
                         {/* Caption: X square meters */}
                         <Grid item>
                             <Typography sx={CustomCaptionStyle}>
-                                {roomSize} square meters
+                                {size_sqm} square meters
                             </Typography>
                         </Grid>
 
@@ -453,7 +450,7 @@ function FilterAccommodation() {
                                 max={maxRoom}
                                 min={0}
                                 defaultValue={0}
-                                value={num_room}
+                                value={num_rooms}
                                 onChange={handleRoomNumChange}
                                 sx={CustomSliderStyles}
                             />
@@ -462,16 +459,16 @@ function FilterAccommodation() {
                         {/* Caption: X rooms */}
                         <Grid item>
                             {
-                                (num_room == 1) ?
+                                (num_rooms == 1) ?
                                     <>
                                         <Typography sx={CustomCaptionStyle}>
-                                            {num_room} room
+                                            {num_rooms} room
                                         </Typography>
                                     </>
                                     :
                                     <>
                                         <Typography sx={CustomCaptionStyle}>
-                                            {num_room} rooms
+                                            {num_rooms} rooms
                                         </Typography>
                                     </>
                             }
@@ -580,4 +577,4 @@ function FilterAccommodation() {
     )
 }
 
-export default FilterAccommodation
+export default FilterAccommodations

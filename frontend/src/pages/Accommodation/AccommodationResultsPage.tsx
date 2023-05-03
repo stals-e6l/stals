@@ -7,7 +7,7 @@ import { Button, Grid, TextField, Typography } from '@mui/material'
 import AccommodationTile from '../../components/accommTile'
 import { useSearchParams } from 'react-router-dom'
 import PreviewAccommodations from './PreviewAccommodations'
-import FilterAccommodation from '../../components/filterAccommodation'
+import FilterAccommodation from '../../components/FilterAccommodations'
 
 interface IProps {
   children?: React.ReactNode
@@ -15,30 +15,8 @@ interface IProps {
 
 const AccomodationResultsPage: React.FC<IProps> = () => {
   const accommodationResults = retrieveAccommodationResults()
-  const searchParams = useSearchParams()
-  // const filterAccommodationsHandler = filterAccommodations()
-  const [filter, setFilter] = React.useState<IAccommodationFilter>({
-    name: searchParams[0].get('name') as string,
-    type: undefined,
-    price: undefined,
-    size_sqm: undefined,
-    meters_from_uplb: undefined,
-    min_pax: undefined,
-    max_pax: undefined,
-    num_rooms: undefined,
-    num_beds: undefined,
-    furnishing: undefined,
-  })
+  const searchParams = useSearchParams()  
   const [showPreview, setShowPreview] = React.useState<boolean>(false)
-
-  // console.log(filter)
-  // const handleFilter = () => {
-  //   filterAccommodationsHandler(filter)
-  // }
-
-  // React.useEffect(() => {
-  //   handleFilter()
-  // }, [])
 
   return (
     <Grid container>
@@ -48,20 +26,10 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
         xs={3}
         sx={{
           padding: '25px',
-          // backgroundColor: 'orange',
         }}
       >
         <FilterAccommodation />
-        {/* <Typography>Filters</Typography>
-        <TextField
-          type="number"
-          onChange={e => {
-            setFilter(prev => ({ ...prev, price: Number(e.target.value) }))
-          }}
-          value={filter.price}
-        />
-        <Button onClick={handleFilter}>Filter it yow</Button>
-        <Button onClick={() => setShowPreview(true)}>Download</Button> */}
+        
       </Grid>
 
       {/* results */}
