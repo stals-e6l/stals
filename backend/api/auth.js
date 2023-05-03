@@ -69,11 +69,10 @@ authRouter.post("/", async function(req, res){
         let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
 
         if(!regex.test(req.body.email)){
-            console.log(req.body.email);
-            return res.status(422).json({success:false, message: "Not a valid Email"});
+            const error = new Error("Not a valid email");
+            throw error;
         }
         
-
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
         
         if(!hashedPassword){
@@ -91,7 +90,6 @@ authRouter.post("/", async function(req, res){
         return res.status(201).json({ success: true, data: {username:user.username, email: user.email, role: user.role }});
     } catch(err) {
         let code;
-        console.log(err.name)
 
         switch (err.name) {
             case "ValidationError":
@@ -103,13 +101,9 @@ authRouter.post("/", async function(req, res){
             case "NullError":
                 code = 404;
                 break;
-            case "UnprocessableContent":
-                code= 422;
-                break;
             default:
                 code = 500;
         }
-        console.log(err)
 
         res.status(code).json({success: false, messages: [String(err)]});
     }
