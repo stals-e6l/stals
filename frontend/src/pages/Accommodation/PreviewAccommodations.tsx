@@ -17,11 +17,15 @@ import {
   Typography,
   Button,
   DialogContent,
-  Divider
+  Divider,
+  FormControlLabel,
+  DialogActions
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import React from 'react'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 interface IProps {
   children?: React.ReactNode
@@ -45,6 +49,13 @@ const PreviewAccommodations: React.FC<IProps> = ({
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const savePDF = () => {
+    const doc = new jsPDF('l')
+    doc.text('Accommodation Details', doc.internal.pageSize.getWidth()/2, 10, {align:'center'})
+    autoTable(doc, {html: '#accomm-table'})
+    doc.save('AccommodationDetails.pdf')
+  }
 
   const [fields, setFields] = React.useState<any>({
     name: true,
@@ -107,25 +118,27 @@ const PreviewAccommodations: React.FC<IProps> = ({
           </div>
           <Divider />
           {/* show which fields to preview */}
-          <div >
+          <div style={filterListStyle}>
             {allFields.map(field => (
               <div key={field}>
-                <InputLabel>{field}</InputLabel>
-                <Checkbox
-                  checked={fields[field]}
-                  onChange={(e, checked) => {
-                    const newFields = { ...fields }
-                    newFields[field] = checked
-                    setFields(newFields)
-                  }}
-                />
+                <FormControlLabel label={field} control={
+                  <Checkbox
+                    checked={fields[field]}
+                    sx={{individualFilterStyle}}
+                    onChange={(e, checked) => {
+                      const newFields = { ...fields }
+                      newFields[field] = checked
+                      setFields(newFields)
+                    }}
+                  />
+                }/>
               </div>
             ))}
           </div>
         </Drawer>
         {/* actual preview */}
         <TableContainer>
-          <Table>
+          <Table id="accomm-table">
             <TableHead>
               <TableRow>
                 {Object.entries(fields as object)
@@ -168,6 +181,11 @@ const PreviewAccommodations: React.FC<IProps> = ({
           </Table>
         </TableContainer>
       </DialogContent>
+
+      <DialogActions>
+        <Button onClick={savePDF}>Save PDF</Button>
+        <Button onClick={onClose}>Cancel</Button>
+      </DialogActions>
     </Dialog>
   )
 }
@@ -178,6 +196,7 @@ const mainDialog={
   "& .MuiPaper-root": {
     maxWidth: '100%',
     width: '100%',
+    height: '100%'
   },
 }
 
@@ -187,5 +206,16 @@ const drawerStyle={
   '& .MuiDrawer-paper': {
     width: '20%',
     boxSizing: 'border-box',
+  },
+}
+
+const filterListStyle={
+  padding: '10px',
+  flexGrow: '1'
+}
+
+const individualFilterStyle={
+  "& .MuiCheckbox-root": {
+    paddingBottom: '5px',
   },
 }
