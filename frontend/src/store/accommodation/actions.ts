@@ -1,6 +1,7 @@
 import React from 'react'
 import { accommodationContext } from '.'
-import { apiDelete, apiPost, apiPut } from '../../api'
+import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
+import { createForum, useForum } from '../forum/actions'
 
 const useAccommodation = () =>
   React.useContext<IAccommodationState>(accommodationContext)
@@ -31,6 +32,7 @@ const useAccommodation = () =>
  */
 export const createAccommodation = () => {
   const { dispatch } = useAccommodation()
+  const { dispatch: dispatchForum } = useForum()
 
   const createAccommodationHandler = async (data: IAccommodation) => {
     const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
@@ -39,10 +41,22 @@ export const createAccommodation = () => {
     if (!res.success && res.messages) {
       throw new Error(res.messages[0])
     }
+    const createForumHandler = createForum()
     if (res.data) {
-      dispatch({
-        type: 'AC_CREATE',
-        payload: res.data,
+      createForumHandler({
+        accommodation_id: res.data._id as string,
+        content: [],
+        is_public: true,
+        status: 'active',
+      }).then(forum => {
+        dispatch({
+          type: 'AC_CREATE',
+          payload: res.data as IAccommodation,
+        })
+        dispatchForum({
+          type: 'FR_ADD',
+          payload: forum,
+        })
       })
     }
   }
@@ -156,4 +170,48 @@ export const deleteAccommodation = () => {
   }
 
   return deleteAccommodationHandler
+}
+
+export const retrieveAccommodationResults = () => {
+  const { results } = useAccommodation()
+  return results
+}
+
+export const searchAccommodations = () => {
+  const { dispatch } = useAccommodation()
+
+  return async (name: string) => {
+    const res = await apiGet<IAccommodation[]>(`accommodation?name=${name}`)
+
+    if (res.data && res.success) {
+      dispatch({ type: 'AC_SEARCH', payload: res.data })
+    }
+  }
+}
+
+export const filterAccommodations = () => {
+  const { dispatch } = useAccommodation()
+  return async (filter: IAccommodationFilter) => {
+    let qs = ''
+    if (filter.name) qs = qs + `name=${filter.name}`
+    if (filter.type) qs = qs + `&type=${filter.type}`
+    if (filter.price) qs = qs + `&price=${filter.price}`
+    if (filter.size_sqm) qs = qs + `&size_sqm=${filter.size_sqm}`
+    if (filter.meters_from_uplb)
+      qs = qs + `&meters_from_uplb=${filter.meters_from_uplb}`
+    if (filter.min_pax) qs = qs + `&min_pax=${filter.min_pax}`
+    if (filter.max_pax) qs = qs + `&max_pax=${filter.max_pax}`
+    if (filter.num_rooms) qs = qs + `&num_rooms=${filter.num_rooms}`
+    if (filter.num_beds) qs = qs + `&num_beds=${filter.num_beds}`
+    if (filter.furnishing) qs = qs + `&furnishing=${filter.furnishing}`
+
+    // const queryString = encodeURIComponent(qs)
+    const queryString = qs
+
+    const res = await apiGet<IAccommodation[]>(`accommodation?${queryString}`)
+
+    if (res.data && res.success) {
+      dispatch({ type: 'AC_SEARCH', payload: res.data })
+    }
+  }
 }

@@ -43,12 +43,9 @@ const authRouter = Router()
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-up", async function(req, res){
     try {
-        const savedUser = await User.create({ ...req.body });
-
-        res.status(201).json({ success: true, data: savedUser });
-
+        //insert sign up here
     } catch(err) {
         let code;
 
@@ -99,10 +96,9 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-in", async function(req, res){
     try {
         //insert sign in here
-
     } catch(err) {
         let code;
 
@@ -149,10 +145,9 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-out", async function(req, res){
     try {
         //insert sign out here
-
     } catch(err) {
         let code;
 
@@ -179,12 +174,6 @@ authRouter.post("/", async function(req, res){
  * /api/me:
  *      get:
  *          description: Get forum by id
- *          parameters:
- *              -   in: path
- *                  name: id
- *                  schema:
- *                      type: string
- *                  required: true
  *          responses:
  *              200:
  *                  content:
@@ -203,16 +192,9 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.get('/:id', async function(req, res){
+authRouter.get('/me', async function(req, res){
     try{
-        if(!req.params.id){
-            throw 400;
-        }
-        const forum = await User.findById(req.params.id);
-        if(!forum){
-            throw 404;
-        }
-        res.status(200).json({success: true, data: forum});
+        //insert me here
     } catch(err) {
         let code;
 

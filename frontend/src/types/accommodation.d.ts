@@ -39,8 +39,22 @@ interface IAccommodation {
   is_soft_deleted: boolean
 }
 
+interface IAccommodationFilter {
+  name?: string
+  type?: TAccommodationType
+  price?: number
+  size_sqm?: number
+  meters_from_uplb?: number
+  min_pax?: number
+  max_pax?: number
+  num_rooms?: number
+  num_beds?: number //string // e.g. 2-3 beds
+  furnishing?: TAccommodationFurnishing
+}
+
 interface IAccommodationState {
-  accommodations: IAccommodation[] // why nullable? nullable during fetching/init
+  accommodations: IAccommodation[]
+  results: IAccommodation[]
   dispatch: React.Dispatch<
     IReducerAction<TAccommodationActionType, TAccommodationPayload>
   >
@@ -55,5 +69,6 @@ type TAccommodationActionType =
   | 'AC_RETRIEVE_BY_ID'
   | 'AC_UPDATE'
   | 'AC_DELETE'
+  | 'AC_SEARCH'
 
 type TAccommodationPayload = IAccommodation | IAccommodation[] | string

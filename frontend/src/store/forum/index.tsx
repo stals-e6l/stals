@@ -1,5 +1,5 @@
 import React from 'react'
-import { mockForums } from './mock'
+import { apiGet } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -13,14 +13,22 @@ const ForumProvider: React.FC<IProps> = ({ children }) => {
     dispatch: () => undefined,
   })
 
-  // immediates
-  const { forums, current_accommodation } = state
+  // eventes
+  const initForum = async () => {
+    const res = await apiGet<IForum[]>('forum')
+
+    if (res.data && res.success) {
+      dispatch({ type: 'FR_INIT', payload: res.data })
+    }
+  }
 
   // side fx
   React.useEffect(() => {
-    // TODO: maybe call the api
-    dispatch({ type: 'FR_INIT', payload: mockForums })
+    initForum()
   }, [])
+
+  // immediates
+  const { forums, current_accommodation } = state
 
   console.log({ forumState: state })
 
@@ -71,6 +79,11 @@ const forumStateReducer = (
               (action.payload as IForum).accommodation_id
           ),
         ],
+      }
+    case 'FR_ADD':
+      return {
+        ...state,
+        forums: [...state.forums, action.payload as IForum],
       }
     default:
       return { ...state }
