@@ -70,6 +70,7 @@ authRouter.post("/", async function(req, res){
 
         if(!regex.test(req.body.email)){
             const error = new Error("Not a valid email");
+            error.name = "ValidationError";
             throw error;
         }
         
