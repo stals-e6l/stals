@@ -66,8 +66,6 @@ const saltRounds = 10;
 authRouter.post("/", async function(req, res){
     try {
 
-        const existingEmail = await User.findOne({email: req.body.email});
-        const existingUsername= await User.findOne({username: req.body.username});
         let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
 
         if(!regex.test(req.body.email)){
@@ -75,20 +73,6 @@ authRouter.post("/", async function(req, res){
             return res.status(422).json({success:false, message: "Not a valid Email"});
         }
         
-        if(existingUsername && existingEmail){
-            console.log(existingEmail)
-            return res.status(422).json({success:false, message: "Username and Email already Taken"});
-        }else{
-            if(existingUsername){
-                console.log(existingUsername)
-                return res.status(422).json({success:false, message: "Username already Taken"});
-            }else if(existingEmail){
-                console.log(existingEmail)
-                return res.status(422).json({success:false, message: "Email already Taken"});
-            }
-        }
-
-        console.log(req.body)
 
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
         
