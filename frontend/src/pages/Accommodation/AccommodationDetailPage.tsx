@@ -68,7 +68,7 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
   // side effects
   React.useEffect(() => {
     setCurrentAccomHandler(params.id)
-  })
+  }, [])
 
   // TODO: add ui/logic to handle non-existent accommodation
   if (!accommodation) {

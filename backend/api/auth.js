@@ -43,12 +43,9 @@ const authRouter = Router()
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-up", async function(req, res){
     try {
-        const savedUser = await User.create({ ...req.body });
-
-        res.status(201).json({ success: true, data: savedUser });
-
+        //insert sign up here
     } catch(err) {
         let code;
 
@@ -99,10 +96,9 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-in", async function(req, res){
     try {
         //insert sign in here
-
     } catch(err) {
         let code;
 
@@ -149,9 +145,8 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-out", async function(req, res){
     try {
-
 
 
     } catch(err) {
@@ -181,14 +176,8 @@ authRouter.post("/", async function(req, res){
 /**
  * @openapi
  * /api/me:
- *      post:
- *          description: Me
- *          requestBody:
- *              required: true
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/User'
+ *      get:
+ *          description: Get forum by id
  *          responses:
  *              200:
  *                  description: Success.
@@ -202,8 +191,7 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-
-authRouter.get('/', async function(req, res){
+authRouter.get('/me', async function(req, res){
     try{
 
         if (req.headers.authorization &&  req.headers.authorization.startsWith('Bearer')){

@@ -8,8 +8,10 @@
     "test:windows": "set NODE_ENV=development&&jest",
     "start:dev": "NODE_ENV=development node .",
     "start:dev:windows": "set NODE_ENV=development&&node .",
-    "dev": "nodemon --exec npm run start:dev",
-    "dev:windows": "nodemon --exec npm run start:dev:windows"
+    "dev": "npm run seed && nodemon --exec npm run start:dev",
+    "dev:windows": "nodemon --exec npm run start:dev:windows",
+    "seed": "NODE_ENV=development node seeder",
+    "seed:windows": "set NODE_ENV=development&&node seeder"
   },
   "keywords": [],
   "author": "",
