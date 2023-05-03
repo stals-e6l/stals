@@ -64,7 +64,7 @@ const SignIn: React.FC<IProps> = () => {
           <Box
             sx={{
               backgroundColor: '#f0f0f0',
-              width: '60%',
+              width: '45%',
               marginRight: '50px',
               padding: '30px',
               borderRadius: '5px',
