@@ -1,28 +1,58 @@
-const { Router } = require('express')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-
+const { Router } = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require("../models/user");
 
-const authRouter = Router()
-
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
-
+const authRouter = Router();
 const saltRounds = 10;
-let blacklist = {};
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const blacklist = {}
 
 /**
  * @openapi
  * components:
+ *  securitySchemes:
+ *      bearerAuth:
+ *          type: http
+ *          scheme: bearer
+ *          bearerFormat: JWT
  *  schemas:
  *      User:
  *          type: object
  *          required:
- *              - name
+ *              - userName
+ *              - password
+ *              - email
+ *              - role
  *          properties:
- *              name:
+ *              userName:
  *                  type: string
- *                  description: Name of user
+ *                  description: Username of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
+ *              email:
+ *                  type: string
+ *                  description: Email of user
+ *              role:
+ *                  type: string
+ *                  pattern: '^((admin)|(owner)|(tenant))$'
+ *                  description: Role of the user
+ *      Login:
+ *          type: object
+ *          required:
+ *              - userName
+ *              - password
+ *          properties:
+ *              userName:
+ *                  type: string
+ *                  description: Username of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
+ * security:
+ *      - bearerAuth: []
+ * 
  */
 
 /**
@@ -44,18 +74,53 @@ let blacklist = {};
  *                              $ref: '#/components/schemas/User'
  *              400:
  *                  description: Bad request.
+ *              404:
+ *                  description: Null Error
+ *              422:
+ *                  description: Unprocessable Entity
  *              500:
  *                  description: Internal Server error.
  *          tags:
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+
+authRouter.post("/sign-up", async function(req, res){
     try {
-        const savedUser = await User.create({ ...req.body });
 
-        res.status(201).json({ success: true, data: savedUser });
+        const existingEmail = await User.findOne({email: req.body.email});
+        const existingUsername= await User.findOne({username: req.body.userName});
+        let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
 
+        if(!regex.test(req.body.email)){
+            return res.status(422).json({success:false, message: "Not a valid Email"});
+        }
+        
+        if(existingUsername && existingEmail){
+            return res.status(422).json({success:false, message: "Username and Email already Taken"});
+        }else{
+            if(existingUsername){
+                return res.status(422).json({success:false, message: "Username already Taken"});
+            }else if(existingEmail){
+                return res.status(422).json({success:false, message: "Email already Taken"});
+            }
+        }
+
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+        
+        if(!hashedPassword){
+            const error = new Error("Internal server error");
+            throw error;
+        }
+
+        const user = await User.create({  ...req.body, passwordHash: hashedPassword })
+
+        if(!user){
+            const error = new Error("Internal server error");
+            throw error;
+        }
+    
+        return res.status(201).json({ success: true, data: {userName: user.userName, email: user.email, role: user.role }});
     } catch(err) {
         let code;
 
@@ -68,6 +133,9 @@ authRouter.post("/", async function(req, res){
                 break;
             case "NullError":
                 code = 404;
+                break;
+            case "UnprocessableContent":
+                code= 422;
                 break;
             default:
                 code = 500;
@@ -87,13 +155,13 @@ authRouter.post("/", async function(req, res){
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/User'
+ *                          $ref: '#/components/schemas/Login'
  *          responses:
  *              201:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/User'
+ *                              $ref: '#/components/schemas/Login'
  *              400:
  *                  description: Bad request.
  *              404:
@@ -106,9 +174,29 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+
+authRouter.post("/sign-in", async function(req, res){
     try {
-        //insert sign in here
+        // first, extract the req payload
+        const userName = req.body.userName;
+        const password = req.body.password;
+
+        // second, validate if user indeed exists
+        const user = await User.findOne({ userName: userName });
+        if(!user) throw new Error("No User Found");
+        // third, check if password is correct
+        const isMatch = await bcrypt.compare(password, user.passwordHash);
+        if(!isMatch) throw new Error("Wrong password");
+        
+        // fourth, generate token
+        const token = jwt.sign({id: user.id, userName: user.userName, role: user.role}, PRIVATE_KEY);
+        
+        // fifth, remove token in blacklist if existing
+        if(blacklist[token]) delete blacklist[token];
+
+        // last, return success
+        res.status(200).json({ success: true, token: token});
+
 
     } catch(err) {
         let code;
@@ -154,7 +242,7 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.get('/', async function(req, res){
+authRouter.post('/sign-out', async function(req, res){
     try{
 
         // Extract the auth header
@@ -169,8 +257,8 @@ authRouter.get('/', async function(req, res){
         // Add token to blacklist
         if(!blacklist[token]) blacklist[token] = token;
         
-        res.status(200).json({ success: true, messages: ['Success'] });
-
+        res.status(200).json({ success: true, data: "You are successfully logged out!" });
+        
     } catch(err) {
         let code;
 
@@ -195,18 +283,13 @@ authRouter.get('/', async function(req, res){
     }
 })
 
-
 /**
  * @openapi
  * /api/me:
- *      get:
- *          description: Get forum by id
- *          parameters:
- *              -   in: path
- *                  name: id
- *                  schema:
- *                      type: string
- *                  required: true
+ *      head:
+ *          description: Get user endpoint
+ *          security:
+ *              -   bearerAuth: []
  *          responses:
  *              200:
  *                  content:
@@ -214,27 +297,52 @@ authRouter.get('/', async function(req, res){
  *                          schema:
  *                              $ref: '#/components/schemas/User'
  *              400:
- *                  description: Bad request
+ *                  description: Bad request.
  *              401:
- *                  description: Unauthorized access
+ *                  description: Authentication Error.
  *              500:
- *                  description: Internal server error
+ *                  description: Internal Server error.
  *              404:
- *                  description: Not found
+ *                  description: User does not exist.
  *          tags:
  *              - User
  *              
  */
-authRouter.get('/:id', async function(req, res){
+authRouter.head('/me', async function(req, res){
     try{
-        if(!req.params.id){
-            throw 400;
+        const authHeader = req.headers.authorization;
+
+        if(!authHeader){
+            const error = new Error("Header doesn't exist");
+            error.name = "AuthError";
+            throw error;
         }
-        const forum = await User.findById(req.params.id);
-        if(!forum){
-            throw 404;
+        
+        const [authMethod, token] = authHeader.split(" ");
+
+        if(authMethod !== "Bearer") {
+            const error = new Error("Auth method is not bearer");
+            error.name = "AuthError";
+            throw error;
         }
-        res.status(200).json({success: true, data: forum});
+
+        if (!token){
+            const error = new Error("Token doesn't exist");
+            error.name = "AuthError";
+            throw error;
+        }
+
+        const decoded = jwt.verify(token, PRIVATE_KEY);
+        const dbUser = await User.findById(decoded.id);
+        
+        if (!dbUser){
+            const error = new Error("User doesn't exist");
+            error.name = "NullError";
+            throw error;
+        }
+
+        res.status(200).json({ success: true, data: dbUser })
+
     } catch(err) {
         let code;
 

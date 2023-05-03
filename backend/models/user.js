@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema({
     },
     messages: { // This will be the list of messages by this user 
         type: Array, default : []
-    },
-    /* */
+    }
+    /* 
     isOnline: { // 
         type: Boolean, required: true
     },
