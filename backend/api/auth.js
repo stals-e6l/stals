@@ -1,11 +1,15 @@
 const { Router } = require('express')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const User = require("../models/user");
 
 const authRouter = Router()
 
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
 const saltRounds = 10;
+let blacklist = {};
 
 /**
  * @openapi
@@ -32,6 +36,19 @@ const saltRounds = 10;
  *                  type: string
  *                  pattern: '^((admin)|(owner)|(tenant))$'
  *                  description: Role of the user
+ * 
+ *      Login:
+ *          type: object
+ *          required:
+ *              - username
+ *              - password
+ *          properties:
+ *              username:
+ *                  type: string
+ *                  description: Username of user
+ *              password:
+ *                  type: string
+ *                  description: Password of user
  */
 
 /**
@@ -55,15 +72,13 @@ const saltRounds = 10;
  *                  description: Bad request.
  *              404:
  *                  description: Null Error
- *              422:
- *                  description: Unprocessable Entity
  *              500:
  *                  description: Internal Server error.
  *          tags:
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-up", async function(req, res){
     try {
 
         let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
@@ -120,13 +135,13 @@ authRouter.post("/", async function(req, res){
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/User'
+ *                          $ref: '#/components/schemas/Login'
  *          responses:
  *              201:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/User'
+ *                              $ref: '#/components/schemas/Login'
  *              400:
  *                  description: Bad request.
  *              404:
@@ -139,9 +154,29 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-in", async function(req, res){
     try {
-        //insert sign in here
+        // first, extract the req payload
+        const username = req.body.username;
+        const password = req.body.password;
+
+        // second, validate if user indeed exists
+        const user = await User.findOne({ username: username });
+        if(!user) throw new Error("No User Found")
+
+        // third, check if password is correct
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch) throw new Error("Wrong password")
+        
+        // fourth, generate token
+        const token = jwt.sign({id: user.id, username: user.username, role: user.role}, PRIVATE_KEY);
+        
+        // fifth, remove token in blacklist if existing
+        if(blacklist[token]) delete blacklist[token];
+
+        // last, return success
+        res.status(200).json({ success: true, token: token});
+
 
     } catch(err) {
         let code;
@@ -189,10 +224,9 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.post("/", async function(req, res){
+authRouter.post("/sign-out", async function(req, res){
     try {
         //insert sign out here
-
     } catch(err) {
         let code;
 
@@ -219,12 +253,6 @@ authRouter.post("/", async function(req, res){
  * /api/me:
  *      get:
  *          description: Get forum by id
- *          parameters:
- *              -   in: path
- *                  name: id
- *                  schema:
- *                      type: string
- *                  required: true
  *          responses:
  *              200:
  *                  content:
@@ -243,16 +271,9 @@ authRouter.post("/", async function(req, res){
  *              - User
  *              
  */
-authRouter.get('/:id', async function(req, res){
+authRouter.get('/me', async function(req, res){
     try{
-        if(!req.params.id){
-            throw 400;
-        }
-        const forum = await User.findById(req.params.id);
-        if(!forum){
-            throw 404;
-        }
-        res.status(200).json({success: true, data: forum});
+        //insert me here
     } catch(err) {
         let code;
 
