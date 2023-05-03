@@ -176,29 +176,46 @@ authRouter.post("/sign-out", async function(req, res){
 /**
  * @openapi
  * /api/me:
- *      get:
- *          description: Get forum by id
- *          responses:
- *              200:
- *                  description: Success.
- *              400:
- *                  description: Bad request.
- *              401:
- *                  description: Authentication Error.
- *              500:
- *                  description: Internal Server error.
- *          tags:
- *              - User
+ *      description: Get user endpoint
+ *      parameters:
+ *          -   in: header
+ *              name: auth
+ *              schema:
+ *                  type: string
+ *              required: true
+ *      responses:
+ *          200:
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *          400:
+ *              description: Bad request.
+ *          401:
+ *              description: Authentication Error.
+ *          500:
+ *              description: Internal Server error.
+ *          404:
+ *              description: User does not exist.
+ *      tags:
+ *          - User
  *              
  */
-authRouter.get('/me', async function(req, res){
+authRouter.route('/me', async function(req, res){
     try{
 
-        if (req.headers.authorization &&  req.headers.authorization.startsWith('Bearer')){
-            token = req.headers.authorization.split(' ')[1];
-            
-        } else {
-            const error = new Error("Header is incorrect");
+        const authHeader = req.headers["Authorization"];
+    
+        if(!authHeader){
+            const error = new Error("Header doesn't exist");
+            error.name = "AuthError";
+            throw error;
+        }
+        
+        const [authMethod, token] = authHeader.split(" ");
+
+        if(authMethod !== "Bearer") {
+            const error = new Error("Auth method is not bearer");
             error.name = "AuthError";
             throw error;
         }
@@ -210,15 +227,15 @@ authRouter.get('/me', async function(req, res){
         }
 
         const decoded = jwt.verify(token, secretkey);
-        const savedUser = await User.findById(decoded.id);
+        const dbUser = await User.findById({ id: decoded.id });
 
-        if (!savedUser){
+        if (!dbUser){
             const error = new Error("User doesn't exist");
-            error.name = "AuthError";
+            error.name = "NullError";
             throw error;
         }
 
-        res.status(200).json({ success: true, messages: ['Success'] });
+        res.status(200).json({ success: true, data: dbUser })
 
     } catch(err) {
         let code;
