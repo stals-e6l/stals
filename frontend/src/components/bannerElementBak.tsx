@@ -4,9 +4,6 @@ import SearchIcon from '@mui/icons-material/Search'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import BannerPhoto from '../assets/Images/BannerFlipped2.jpg'
 import { useNavigate } from 'react-router-dom'
-import SearchBar from './searchBar'
-import SearchBarFilters from './searchBarFilters'
-import SearchBarButton from './searchBarButton'
 
 const blue = '#154360'
 const green = '#60ce80'
@@ -20,7 +17,9 @@ const Banner = (props: any) => {
 
   const navigate = useNavigate()
   const [name, setName] = React.useState<string>('')
-  
+  const handleSearch = () => {
+    navigate(`/accommodations/results?name=${name}`)
+  }
 
   return (
     <Grid
@@ -101,12 +100,92 @@ const Banner = (props: any) => {
             transition: '0.3s all',
           }}
         >
-          <SearchBar setName={setName} name={name} id='search'/>
+          <Input
+            placeholder="Search Accommodation"
+            onChange={e => setName(e.target.value.trim())}
+            disableUnderline
+            fullWidth
+            sx={{
+              backgroundColor: grey,
+              padding: '1% 2%',
+              fontFamily: quicksand,
+              color: 'black',
+              borderRadius: '5px',
+              fontSize: '16px',
+              [theme.breakpoints.down(800)]: {
+                color: '14px',
+              },
+              [theme.breakpoints.down('sm')]: {
+                color: '12px',
+              },
+              [theme.breakpoints.down('xs')]: {
+                color: '10px',
+              },
+            }}
+          />
 
-          <SearchBarFilters />
+          <Button
+            sx={{
+              height: '100%',
+              textTransform: 'none',
+              backgroundColor: grey,
+              padding: '1% 3%',
+            }}
+          >
+            <FilterListIcon
+              sx={{
+                color: green,
+                fontSize: 'xx-large',
+              }}
+            />
+            <Typography
+              sx={{
+                fontFamily: sourceSansPro,
+                fontSize: '1rem',
+                color: green,
+                fontWeight: 'bold',
+                [theme.breakpoints.down(800)]: {
+                  display: 'none',
+                },
+              }}
+            >
+              Filters
+            </Typography>
+          </Button>
 
-          <SearchBarButton />
-          
+          <Button
+            onClick={handleSearch}
+            sx={{
+              height: '100%',
+              textTransform: 'none',
+              backgroundColor: green,
+              padding: '1% 3%',
+              color: grey,
+              ':hover': {
+                color: green,
+              },
+            }}
+          >
+            <SearchIcon
+              sx={{
+                color: 'inherit',
+                fontSize: 'xx-large',
+              }}
+            />
+            <Typography
+              sx={{
+                fontFamily: sourceSansPro,
+                fontSize: '1rem',
+                color: 'inherit',
+                fontWeight: 'bold',
+                [theme.breakpoints.down(800)]: {
+                  display: 'none',
+                },
+              }}
+            >
+              Search
+            </Typography>
+          </Button>
         </Box>
       </Grid>
     </Grid>
