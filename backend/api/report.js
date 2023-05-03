@@ -300,7 +300,7 @@ reportRouter.delete('/:id', async function(req, res){
  * @openapi
  * /api/report/{id}:
  *      put:
- *          description: Edit forum by id
+ *          description: Edit report by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -324,7 +324,7 @@ reportRouter.delete('/:id', async function(req, res){
  *              401:
  *                  description: Unauthorized access.
  *              404:
- *                  description: Not found (For accommodation and forum).
+ *                  description: Not found (For user and forum).
  *              500:
  *                  description: Internal Server error.
  *          tags:
@@ -333,32 +333,33 @@ reportRouter.delete('/:id', async function(req, res){
  */
 reportRouter.put('/:id', async function(req, res){
     try{
-
-        const refAccom = await Accommodation.findById(req.body.accommodation_id);
-        if (!refAccom) {
-            const error = new Error("Accommodation does not exist");
+        const refUser = await User.findById(req.body.user_id);
+        if (!refUser) {
+            const error = new Error("User does not exist");
             error.name = "NullError";
             throw error;
         }
 
-        if(!['active', 'archived', 'deleted'].includes(req.body.status)){
-            const error = new Error("Status is incorrect");
+        try{
+            const pdf_url = new URL(req.body.pdf_url);
+        } catch(err){
+            const error = new Error("URL does not exist");
             error.name = "ValidationError";
             throw error;
         }
 
-        const editedForum = await Report.findOneAndUpdate(
+        const editedReport = await Report.findOneAndUpdate(
             {_id: req.params.id},
             { ...req.body},
             {new: true});
 
-        if(!editedForum){
-            const error = new Error("Forum does not exist");
+        if(!editedReport){
+            const error = new Error("Report does not exist");
             error.name = "NullError";
             throw error;
         }
 
-        res.status(200).json({ success: true, data: editedForum })
+        res.status(200).json({ success: true, data: editedReport })
 
     } catch(err) {
         let code;
@@ -373,9 +374,6 @@ reportRouter.put('/:id', async function(req, res){
             case "AuthError":
                 code = 401;
                 break;  
-            case "NullError":
-                code = 404;
-                break;
             case "NullError":
                 code = 404;
                 break;
