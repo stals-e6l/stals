@@ -14,12 +14,12 @@ import {
   Divider,
   FormControlLabel,
   DialogActions,
+  Button,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import React from 'react'
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+import { downloadPdf } from '../../store/report/actions'
 
 interface IProps {
   children?: React.ReactNode
@@ -41,18 +41,6 @@ const PreviewAccommodations: React.FC<IProps> = ({
 
   const handleDrawerClose = () => {
     setOpen(false)
-  }
-
-  const savePDF = () => {
-    const doc = new jsPDF('l')
-    doc.text(
-      'Accommodation Details',
-      doc.internal.pageSize.getWidth() / 2,
-      10,
-      { align: 'center' }
-    )
-    autoTable(doc, { html: '#accomm-table' })
-    doc.save('AccommodationDetails.pdf')
   }
 
   const [fields, setFields] = React.useState<any>({
@@ -186,8 +174,13 @@ const PreviewAccommodations: React.FC<IProps> = ({
       <DialogActions>
         <Button
           onClick={() => {
-            savePDF()
-            onClose()
+            downloadPdf('#accomm-table', {
+              user_id: '6453200028b4aa4d1f5fe2bc',
+              pdf_url:
+                'http://github.com/stals-e6l/stals/pull/131#pullrequestreview-1412151891l',
+            }).then(() => {
+              onClose()
+            })
           }}
         >
           Save PDF
