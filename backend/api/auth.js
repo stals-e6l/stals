@@ -328,16 +328,12 @@ authRouter.get('/me', async function (req, res) {
     }
 
 	try {
-
-    		const decoded = jwt.verify(token, PRIVATE_KEY)
+    const decoded = jwt.verify(token, PRIVATE_KEY)
 	} catch(err) {
-
-      		const error = new Error("Invalid token")
-      		error.name = 'AuthError'
-      		throw error
-
+    const error = new Error("Verification error")
+    error.name = 'AuthError'
+    throw error
 	}
-
 
     const dbUser = await User.findById(decoded.id)
 
