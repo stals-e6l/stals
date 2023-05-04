@@ -7,8 +7,8 @@ interface IProps {
 const SignIn: React.FC<IProps> = () => {
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
-    userName: '',
-    passwordHash: '',
+    username: '',
+    password: '',
   })
 
   const handleSignIn = () => {
@@ -20,7 +20,7 @@ const SignIn: React.FC<IProps> = () => {
       <div>
         <label>Username</label>
         <input
-          value={form.userName}
+          value={form.username}
           type="text"
           placeholder="username"
           onChange={e =>
@@ -31,11 +31,11 @@ const SignIn: React.FC<IProps> = () => {
       <div>
         <label>Password</label>
         <input
-          value={form.passwordHash}
+          value={form.password}
           type="password"
           placeholder="password"
           onChange={e =>
-            setForm(prev => ({ ...prev, passwordHash: e.target.value }))
+            setForm(prev => ({ ...prev, password: e.target.value }))
           }
         />
       </div>
