@@ -29,6 +29,10 @@ export const getUser = () => {
   const { user } = useAuth()
   return user
 }
+export const getLoaded = () => {
+  const { loaded } = useAuth()
+  return loaded
+}
 
 export const signUp = () => {
   //

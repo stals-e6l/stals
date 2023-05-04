@@ -9,6 +9,7 @@ interface IProps {
 const SignIn: React.FC<IProps> = () => {
   // hooks
   const signInHandler = signIn()
+  const navigate = useNavigate()
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
     username: '',
@@ -17,7 +18,7 @@ const SignIn: React.FC<IProps> = () => {
 
   const handleSignIn = () => {
     signInHandler(form).then(() => {
-      window.location.pathname = '/accommodations'
+      navigate('/accommodations')
     })
   }
 
