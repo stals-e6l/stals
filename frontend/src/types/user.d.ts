@@ -1,6 +1,6 @@
 interface IUserSignIn {
-  userName: string
-  passwordHash: string
+  username: string
+  password: string
 }
 
 interface IUserSignUp extends IUserSignIn {
