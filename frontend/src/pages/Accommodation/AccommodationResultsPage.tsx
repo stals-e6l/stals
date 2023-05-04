@@ -1,11 +1,7 @@
 import React from 'react'
-import {
-  filterAccommodations,
-  retrieveAccommodationResults,
-} from '../../store/accommodation/actions'
-import { Button, Grid, TextField, Typography } from '@mui/material'
+import { retrieveAccommodationResults } from '../../store/accommodation/actions'
+import { Button, Grid } from '@mui/material'
 import AccommodationTile from '../../components/accommTile'
-import { useSearchParams } from 'react-router-dom'
 import PreviewAccommodations from './PreviewAccommodations'
 import FilterAccommodation from '../../components/FilterAccommodations'
 
@@ -15,7 +11,6 @@ interface IProps {
 
 const AccomodationResultsPage: React.FC<IProps> = () => {
   const accommodationResults = retrieveAccommodationResults()
-  const searchParams = useSearchParams()
   const [showPreview, setShowPreview] = React.useState<boolean>(false)
 
   return (
