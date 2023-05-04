@@ -243,11 +243,11 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
               component="h1"
               variant="h4"
               fontWeight="bold"
-              sx={{ color: 'white' }}
+              sx={{ color: 'white', paddingTop: '20px', paddingBottom: '10px' }}
             >
               Filters
             </Typography>
-            <Grid container paddingX={'5%'}>
+            <Grid container paddingX={'7.5%'}>
               <Filters setFilter={setFilter} filter={filter} />
             </Grid>
             <Button onClick={handleFilter}>Filter it yow</Button>
@@ -261,6 +261,7 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
             justifyContent="center"
             alignItems={'center'}
             marginX={'10%'}
+            height={'150px'}
           >
             <Box
               sx={{

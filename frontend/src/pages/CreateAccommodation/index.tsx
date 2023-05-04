@@ -32,23 +32,19 @@ interface IProps {
   children?: React.ReactNode
 }
 
-
 const theme = createTheme({
-  components:{
-
-  },
+  components: {},
   typography: {
     fontFamily: 'Source Sans Pro, Quicksand, Roboto, Arial',
   },
-  palette:{
+  palette: {
     primary: {
-      main: '#60CE80'
-    }
-  }
+      main: '#60CE80',
+    },
+  },
 })
 
-
-function BasicInputFields({values, setFieldValue}: any) {
+function BasicInputFields({ values, setFieldValue }: any) {
   return (
     <div>
       <TextField
@@ -84,18 +80,20 @@ function BasicInputFields({values, setFieldValue}: any) {
         id="unitSz"
         label="Unit size"
         name="unitSz"
-        type='number'
+        type="number"
       />
       <TextField
         value={Number(values.meters_from_uplb)}
-        onChange={e => setFieldValue('meters_from_uplb', Number(e.target.value))}
+        onChange={e =>
+          setFieldValue('meters_from_uplb', Number(e.target.value))
+        }
         margin="normal"
         required
         fullWidth
         id="metersFromUPLB"
         label="Meters from UPLB"
         name="metersFromUPLB"
-        type='number'
+        type="number"
       />
       <TextField
         value={Number(values.num_rooms)}
@@ -106,7 +104,7 @@ function BasicInputFields({values, setFieldValue}: any) {
         id="numBedRm"
         label="Number of bedrooms"
         name="numberOfBedrooms"
-        type='number'
+        type="number"
       />
       <TextField
         value={Number(values.num_beds)}
@@ -117,7 +115,7 @@ function BasicInputFields({values, setFieldValue}: any) {
         id="numBeds"
         label="Number of Beds"
         name="numBeds"
-        type='number'
+        type="number"
       />
       <TextField
         value={Number(values.min_pax)}
@@ -128,7 +126,7 @@ function BasicInputFields({values, setFieldValue}: any) {
         id="minPax"
         label="Minimum capacity"
         name="minPax"
-        type='number'
+        type="number"
       />
       <TextField
         value={Number(values.max_pax)}
@@ -139,9 +137,9 @@ function BasicInputFields({values, setFieldValue}: any) {
         id="maxPax"
         label="Maximum capacity"
         name="maxPax"
-        type='number'
+        type="number"
       />
-      
+
       <TextField
         value={Number(values.price)}
         onChange={e => setFieldValue('price', e.target.value)}
@@ -151,7 +149,7 @@ function BasicInputFields({values, setFieldValue}: any) {
         id="listingPrice"
         label="Listing price"
         name="listingPrice"
-        type='number'
+        type="number"
       />
       <TextField
         value={values.description}
@@ -169,7 +167,14 @@ function BasicInputFields({values, setFieldValue}: any) {
 }
 
 function AdvancedInputFields(props: any) {
-  const {cookingRule, handleCookingRules, safetyAndSecurity, handleSafetyAndSecurity, isPetFriendly, handleIsPetFriendly} = props
+  const {
+    cookingRule,
+    handleCookingRules,
+    safetyAndSecurity,
+    handleSafetyAndSecurity,
+    isPetFriendly,
+    handleIsPetFriendly,
+  } = props
   return (
     <div>
       {/*Furnishing*/}
@@ -395,7 +400,7 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
 
   const createAccommodationHandler = createAccommodation()
   const navigate = useNavigate()
-  const {values, setFieldValue, submitForm } = useAccommodationForm(val => {
+  const { values, setFieldValue, submitForm } = useAccommodationForm(val => {
     createAccommodationHandler(val)
     navigate('/accommodations')
   })
@@ -449,7 +454,7 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
           component={Paper}
           elevation={6}
           square
-          sx={{ maxHeight: '100vh', overflow: 'auto'}}
+          sx={{ maxHeight: '100vh', overflow: 'auto' }}
         >
           <Box // BOX WRAPPER
             sx={{
@@ -466,7 +471,6 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
               justifyContent="flex-start"
               alignItems="baseline"
             >
-
               <IconButton onClick={() => window.history.back()}>
                 <ArrowBackIcon />
               </IconButton>
@@ -480,15 +484,13 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
               <Typography component="h1" variant="h4" fontWeight="bold">
                 New listing
               </Typography>
-
-            </Grid> {/* HEADER END */}
-
+            </Grid>{' '}
+            {/* HEADER END */}
             <Box
               sx={{
                 height: 10,
               }}
             />
-
             <Card // UPLOAD MEDIA
               sx={{
                 minWidth: '100%',
@@ -514,28 +516,23 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
               </CardActionArea>
               <input hidden accept="image/*" type="file" />
             </Card>
-
             <Box // FORM START
               component="form"
               noValidate
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
-
-              <BasicInputFields values={values} setFieldValue={setFieldValue} /> {/*Basic input*/}
-
+              <BasicInputFields values={values} setFieldValue={setFieldValue} />{' '}
+              {/*Basic input*/}
               <Box // Spacer
                 sx={{
                   height: 30,
                 }}
               />
-
               <Typography component="h1" variant="h5" fontWeight="bold">
                 Advanced details
               </Typography>
-
               <AdvancedInputFields /> {/*Advanced input*/}
-
               <Button // SUBMIT BUTTON
                 type="submit"
                 fullWidth
@@ -547,9 +544,12 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
               >
                 Submit
               </Button>
-            </Box> {/* FORM END */}
-          </Box> {/* BOX WRAPPER END */}
-        </Grid> {/* LEFT COLUMN END */}
+            </Box>{' '}
+            {/* FORM END */}
+          </Box>{' '}
+          {/* BOX WRAPPER END */}
+        </Grid>{' '}
+        {/* LEFT COLUMN END */}
         <Grid // RIGHT COLUMN
           item
           xs={false}
