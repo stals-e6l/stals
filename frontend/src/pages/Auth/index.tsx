@@ -17,7 +17,7 @@ const AuthWrapper: React.FC<IProps> = () => {
     //   navigate('/signin')
     // }
     if (!localStorage.getItem('token')) {
-      navigate('/signin')
+      navigate('/sign-in')
     }
   }, [user])
 
