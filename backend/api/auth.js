@@ -1,19 +1,22 @@
 const { Router } = require('express')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-
-const User = require("../models/user");
+const User = require('../models/user')
 
 const authRouter = Router()
+const saltRounds = 10
+const PRIVATE_KEY = process.env.PRIVATE_KEY
 
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
-
-const saltRounds = 10;
-let blacklist = {};
+let blacklist = {}
 
 /**
  * @openapi
  * components:
+ *  securitySchemes:
+ *      bearerAuth:
+ *          type: http
+ *          scheme: bearer
+ *          bearerFormat: JWT
  *  schemas:
  *      User:
  *          type: object
@@ -36,7 +39,7 @@ let blacklist = {};
  *                  type: string
  *                  pattern: '^((admin)|(owner)|(tenant))$'
  *                  description: Role of the user
- * 
+ *
  *      Login:
  *          type: object
  *          required:
@@ -49,6 +52,9 @@ let blacklist = {};
  *              password:
  *                  type: string
  *                  description: Password of user
+ * security:
+ *      - bearerAuth: []
+ *
  */
 
 /**
@@ -72,57 +78,65 @@ let blacklist = {};
  *                  description: Bad request.
  *              404:
  *                  description: Null Error
+ *              422:
+ *                  description: Unprocessable Entity
  *              500:
  *                  description: Internal Server error.
  *          tags:
  *              - User
- *              
+ *
  */
-authRouter.post("/sign-up", async function(req, res){
-    try {
 
-        let regex= new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+authRouter.post('/sign-up', async function (req, res) {
+  try {
+    let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
 
-        if(!regex.test(req.body.email)){
-            const error = new Error("Not a valid email");
-            error.name = "ValidationError";
-            throw error;
-        }
-        
-        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
-        
-        if(!hashedPassword){
-            const error = new Error("Internal server error");
-            throw error;
-        }
-
-        const user = await User.create({  ...req.body, password: hashedPassword })
-
-        if(!user){
-            const error = new Error("Internal server error");
-            throw error;
-        }
-    
-        return res.status(201).json({ success: true, data: {username:user.username, email: user.email, role: user.role }});
-    } catch(err) {
-        let code;
-
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
-
-        res.status(code).json({success: false, messages: [String(err)]});
+    if (!regex.test(req.body.email)) {
+      const error = new Error('Not a valid email')
+      error.name = 'ValidationError'
+      throw error
     }
+
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+
+    if (!hashedPassword) {
+      const error = new Error('Internal server error')
+      throw error
+    }
+
+    const user = await User.create({ ...req.body, password: hashedPassword })
+
+    if (!user) {
+      const error = new Error('Internal server error')
+      throw error
+    }
+
+    return res.status(201).json({
+      success: true,
+      data: { username: user.username, email: user.email, role: user.role },
+    })
+  } catch (err) {
+    let code
+
+    switch (err.name) {
+      case 'ValidationError':
+        code = 400
+        break
+      case 'CastError':
+        code = 400
+        break
+      case 'NullError':
+        code = 404
+        break
+      case 'UnprocessableContent':
+        code = 422
+        break
+      default:
+        code = 500
+    }
+
+    res.status(code).json({ success: false, messages: [String(err)] })
+  }
 })
 
 /**
@@ -152,51 +166,53 @@ authRouter.post("/sign-up", async function(req, res){
  *                  description: Internal Server error.
  *          tags:
  *              - User
- *              
+ *
  */
-authRouter.post("/sign-in", async function(req, res){
-    try {
-        // first, extract the req payload
-        const username = req.body.username;
-        const password = req.body.password;
 
-        // second, validate if user indeed exists
-        const user = await User.findOne({ username: username });
-        if(!user) throw new Error("No User Found")
+authRouter.post('/sign-in', async function (req, res) {
+  try {
+    // first, extract the req payload
+    const username = req.body.username
+    const password = req.body.password
 
-        // third, check if password is correct
-        const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch) throw new Error("Wrong password")
-        
-        // fourth, generate token
-        const token = jwt.sign({id: user.id, username: user.username, role: user.role}, PRIVATE_KEY);
-        
-        // fifth, remove token in blacklist if existing
-        if(blacklist[token]) delete blacklist[token];
+    // second, validate if user indeed exists
+    const user = await User.findOne({ username: username })
+    if (!user) throw new Error('No User Found')
 
-        // last, return success
-        res.status(200).json({ success: true, token: token});
+    // third, check if password is correct
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) throw new Error('Wrong password')
 
+    // fourth, generate token
+    const token = jwt.sign(
+      { id: user.id, username: user.username, role: user.role },
+      PRIVATE_KEY
+    )
 
-    } catch(err) {
-        let code;
+    // fifth, remove token in blacklist if existing
+    if (blacklist[token]) delete blacklist[token]
 
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
+    // last, return success
+    res.status(200).json({ success: true, token: token })
+  } catch (err) {
+    let code
 
-        res.status(code).json({success: false, messages: [String(err)]});
+    switch (err.name) {
+      case 'ValidationError':
+        code = 400
+        break
+      case 'CastError':
+        code = 400
+        break
+      case 'NullError':
+        code = 404
+        break
+      default:
+        code = 500
     }
+
+    res.status(code).json({ success: false, messages: [String(err)] })
+  }
 })
 
 /**
@@ -222,37 +238,41 @@ authRouter.post("/sign-in", async function(req, res){
  *                  description: Internal Server error.
  *          tags:
  *              - User
- *              
+ *
  */
-authRouter.post("/sign-out", async function(req, res){
-    try {
-        //insert sign out here
-    } catch(err) {
-        let code;
+authRouter.post('/sign-out', async function (req, res) {
+  try {
+  } catch (err) {
+    let code
 
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
-
-        res.status(code).json({success: false, messages: [String(err)]});
+    switch (err.name) {
+      case 'ValidationError':
+        code = 400
+        break
+      case 'CastError':
+        code = 400
+        break
+      case 'AuthError':
+        code = 401
+        break
+      case 'NullError':
+        code = 404
+        break
+      default:
+        code = 500
     }
+
+    res.status(code).json({ success: false, messages: [String(err)] })
+  }
 })
 
 /**
  * @openapi
  * /api/me:
- *      get:
- *          description: Get forum by id
+ *      head:
+ *          description: Get user endpoint
+ *          security:
+ *              -   bearerAuth: []
  *          responses:
  *              200:
  *                  content:
@@ -260,42 +280,73 @@ authRouter.post("/sign-out", async function(req, res){
  *                          schema:
  *                              $ref: '#/components/schemas/User'
  *              400:
- *                  description: Bad request
+ *                  description: Bad request.
  *              401:
- *                  description: Unauthorized access
+ *                  description: Authentication Error.
  *              500:
- *                  description: Internal server error
+ *                  description: Internal Server error.
  *              404:
- *                  description: Not found
+ *                  description: User does not exist.
  *          tags:
  *              - User
- *              
+ *
  */
-authRouter.get('/me', async function(req, res){
-    try{
-        //insert me here
-    } catch(err) {
-        let code;
+authRouter.head('/me', async function (req, res) {
+  try {
+    const authHeader = req.headers.authorization
 
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "AuthError":
-                code = 401;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
-
-        res.status(code).json({success: false, messages: [String(err)]});
+    if (!authHeader) {
+      const error = new Error("Header doesn't exist")
+      error.name = 'AuthError'
+      throw error
     }
+
+    const [authMethod, token] = authHeader.split(' ')
+
+    if (authMethod !== 'Bearer') {
+      const error = new Error('Auth method is not bearer')
+      error.name = 'AuthError'
+      throw error
+    }
+
+    if (!token) {
+      const error = new Error("Token doesn't exist")
+      error.name = 'AuthError'
+      throw error
+    }
+
+    const decoded = jwt.verify(token, PRIVATE_KEY)
+    const dbUser = await User.findById(decoded.id)
+
+    if (!dbUser) {
+      const error = new Error("User doesn't exist")
+      error.name = 'NullError'
+      throw error
+    }
+
+    res.status(200).json({ success: true, data: dbUser })
+  } catch (err) {
+    let code
+
+    switch (err.name) {
+      case 'ValidationError':
+        code = 400
+        break
+      case 'CastError':
+        code = 400
+        break
+      case 'AuthError':
+        code = 401
+        break
+      case 'NullError':
+        code = 404
+        break
+      default:
+        code = 500
+    }
+
+    res.status(code).json({ success: false, messages: [String(err)] })
+  }
 })
 
-module.exports = authRouter;
+module.exports = authRouter
