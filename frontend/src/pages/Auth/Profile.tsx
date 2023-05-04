@@ -44,11 +44,6 @@ const Profile: React.FC<IProps> = () => {
 
       </Box>
     </React.Fragment>
-    // <div>
-    //   <p>username: {sampleUser.userName}</p>
-    //   <p>email: {sampleUser.email}</p>
-    //   <p>role: {sampleUser.role}</p>
-    // </div>
   )
 }
 

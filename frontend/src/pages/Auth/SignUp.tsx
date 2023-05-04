@@ -35,7 +35,6 @@ const SignUp: React.FC<IProps> = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        // height: '100vh',
         width: '100%',
         backdropFilter: 'blur(5px)',
       }}
@@ -45,7 +44,6 @@ const SignUp: React.FC<IProps> = () => {
           backgroundColor: '#f0f0f0',
           width: '100%',
           height: '100%',
-        //   marginRight: '50px',
           padding: '30px',
           borderRadius: '5px',
           boxShadow: '0px 3px 5px #888888',
@@ -152,60 +150,6 @@ const SignUp: React.FC<IProps> = () => {
         </Button>
       </Box>
     </Box>
-
-    // <div>
-    //   <div>
-    //     <label>Email</label>
-    //     <input
-    //       value={form.email}
-    //       type="email"
-    //       placeholder="email"
-    //       onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
-    //     />
-    //   </div>
-    //   <div>
-    //     <label>Role</label>
-    //     <select
-    //       value={form.role}
-    //       onChange={e => setForm(prev => ({ ...prev, role: e.target.value }))}
-    //     >
-    //       <option value="admin">Admin</option>
-    //       <option value="owner">Owner</option>
-    //       <option value="tenant">Tenant</option>
-    //     </select>
-    //     {/* <input
-    //       value={form.passwordHash}
-    //       type="email"
-    //       placeholder="email"
-    //       onChange={e =>
-    //         setForm(prev => ({ ...prev, email: e.target.value }))
-    //       }
-    //     /> */}
-    //   </div>
-    //   <div>
-    //     <label>Username</label>
-    //     <input
-    //       value={form.userName}
-    //       type="text"
-    //       placeholder="username"
-    //       onChange={e =>
-    //         setForm(prev => ({ ...prev, username: e.target.value }))
-    //       }
-    //     />
-    //   </div>
-    //   <div>
-    //     <label>Password</label>
-    //     <input
-    //       value={form.passwordHash}
-    //       type="password"
-    //       placeholder="password"
-    //       onChange={e =>
-    //         setForm(prev => ({ ...prev, passwordHash: e.target.value }))
-    //       }
-    //     />
-    //   </div>
-    //   <button onClick={handleSignUp}>Sign Up</button>
-    // </div>
   )
 }
 
