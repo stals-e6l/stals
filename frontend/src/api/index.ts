@@ -2,8 +2,12 @@ import axios from 'axios'
 
 export const API_URL = 'http://localhost:5000/api'
 
-export async function apiGet<D>(resource: string) {
-  const res = await axios.get(`${API_URL}/${resource}`)
+export async function apiGet<D>(resource: string, authToken?: string) {
+  const res = await axios.get(`${API_URL}/${resource}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token') || authToken}`,
+    },
+  })
 
   return res.data as IResponse<D>
 }

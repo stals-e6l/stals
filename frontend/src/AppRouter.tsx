@@ -8,6 +8,7 @@ import AccomodationResultsPage from './pages/Accommodation/AccommodationResultsP
 import SignUp from './pages/Auth/SignUp'
 import SignIn from './pages/Auth/SignIn'
 import Profile from './pages/Auth/Profile'
+import AuthWrapper from './pages/Auth'
 
 interface IProps {
   children?: React.ReactNode
@@ -22,38 +23,36 @@ export default AppRouter
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <>root</>,
+    element: <AuthWrapper />,
+    children: [
+      {
+        path: '/accommodations',
+        element: <AccommodationPage />,
+      },
+      {
+        path: '/accommodations/:id',
+        element: <AccommodationDetailPage />,
+      },
+      {
+        path: '/createaccommodation/',
+        element: <CreateAccommodationPage />,
+      },
+      {
+        path: '/accommodations/results',
+        element: <AccomodationResultsPage />,
+      },
+      {
+        path: '/sign-in',
+        element: <SignIn />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
+      },
+    ],
   },
   {
     path: '/sample',
     element: <SamplePage />,
-  },
-  {
-    path: '/accommodations',
-    element: <AccommodationPage />,
-  },
-  {
-    path: '/accommodations/:id',
-    element: <AccommodationDetailPage />,
-  },
-  {
-    path: '/createaccommodation/',
-    element: <CreateAccommodationPage />,
-  },
-  {
-    path: '/accommodations/results',
-    element: <AccomodationResultsPage />,
-  },
-  {
-    path: '/signup',
-    element: <SignUp />,
-  },
-  {
-    path: '/signin',
-    element: <SignIn />,
-  },
-  {
-    path: '/profile',
-    element: <Profile />,
   },
 ])
