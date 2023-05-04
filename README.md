@@ -4,11 +4,11 @@ Student Accommodation and Lodging System
 
 ## Getting started
 
-1. Install ```nvm``` to manage Node.js versions. Refer to this [link](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/) to download.
-
-2. To verify that you have downloaded ```nvm```, type ```nvm --version```. This should print your version.
-
-4. Inside the ```stals``` directory, type the command ```nvm use```. You should see the result ```Now using node v18.15.0 (npm v9.5.0)```.
+1. Install ```volta``` Node.js version manager using this [link](https://docs.volta.sh/guide/getting-started).
+2. Verify successful installation using the command ```volta --version```.
+3. Inside the ```stals``` directory, run ```volta install node```. This will install the stable version of Node.js.
+4. Verify Node.js using the command ```volta list```. You should see ```Node: v18.16.0 (default)```. 
+5. You are good to go!
 
 3. You are now good to go!
 
