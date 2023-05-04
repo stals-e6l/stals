@@ -8,12 +8,18 @@ import AccomodationResultsPage from './pages/Accommodation/AccommodationResultsP
 import SignUp from './pages/Auth/SignUp'
 import SignIn from './pages/Auth/SignIn'
 import Profile from './pages/Auth/Profile'
+import { getMe } from './store/auth/action'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const AppRouter: React.FC<IProps> = () => {
+  const getMeHandler = getMe()
+
+  React.useEffect(() => {
+    getMeHandler()
+  }, [])
   return <RouterProvider router={router} />
 }
 
