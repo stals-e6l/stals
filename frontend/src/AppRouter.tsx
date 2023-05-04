@@ -42,11 +42,7 @@ const router = createBrowserRouter([
         element: <AccomodationResultsPage />,
       },
       {
-        path: '/signup',
-        element: <SignUp />,
-      },
-      {
-        path: '/signin',
+        path: '/sign-in',
         element: <SignIn />,
       },
       {

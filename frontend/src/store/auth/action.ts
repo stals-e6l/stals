@@ -14,6 +14,14 @@ export const signIn = () => {
   }
 }
 
+export const signUp = () => {
+  return async (user: IUserSignUp) => {
+    await apiPost<IUserSignUp, string>('sign-up', {
+      payload: user,
+    })
+  }
+}
+
 export const getMe = () => {
   const { dispatch } = useAuth()
   return async () => {
@@ -32,8 +40,4 @@ export const getUser = () => {
 export const getLoaded = () => {
   const { loaded } = useAuth()
   return loaded
-}
-
-export const signUp = () => {
-  //
 }

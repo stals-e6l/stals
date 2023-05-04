@@ -96,6 +96,7 @@ const SignIn: React.FC<IProps> = () => {
               variant="outlined"
               size="small"
               fullWidth
+              type="password"
               sx={{ backgroundColor: '#ffffff' }}
               value={form.password}
               onChange={e =>
@@ -144,7 +145,7 @@ const SignIn: React.FC<IProps> = () => {
               onClose={handleClose}
               sx={{ width: '30%', margin: '0 auto' }}
             >
-              <SignUp />
+              <SignUp onClose={handleClose} />
             </Dialog>
           </Box>
         </Box>

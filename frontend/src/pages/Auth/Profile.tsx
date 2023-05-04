@@ -3,20 +3,18 @@ import Header from '../../components/header'
 import { Box, Typography, IconButton } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { getUser } from '../../store/auth/action'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const Profile: React.FC<IProps> = () => {
-  const sampleUser: IUser = {
-    username: 'vonzz',
-    email: 'vfdivino@up.edu.ph',
-    password: 'asdfsadfasdfasdfsadfasdfasdf', // this should not be displayed
-    role: 'admin',
+  const user = getUser()
+
+  if (!user) {
+    return <div>no user</div>
   }
-  const role = sampleUser.role
-  const role2 = role.charAt(0).toUpperCase() + role.slice(1)
 
   return (
     <React.Fragment>
@@ -37,9 +35,9 @@ const Profile: React.FC<IProps> = () => {
             <AccountCircleIcon sx={{ fontSize: '10vh' }} />
           </Box>
           <Typography variant="h3">Greetings,</Typography>
-          <Typography variant="h3">{sampleUser.userName}</Typography>
-          <Typography variant="h5">{sampleUser.email}</Typography>
-          <Typography variant="h5">{role2}</Typography>
+          <Typography variant="h3">{user.username}</Typography>
+          <Typography variant="h5">{user.email}</Typography>
+          <Typography variant="h5">{user.role}</Typography>
         </Box>
       </Box>
     </React.Fragment>
