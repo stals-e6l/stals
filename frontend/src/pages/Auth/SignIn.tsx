@@ -1,10 +1,14 @@
 import React from 'react'
+import { signIn } from '../../store/auth/action'
+import { useNavigate } from 'react-router-dom'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const SignIn: React.FC<IProps> = () => {
+  // hooks
+  const signInHandler = signIn()
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
     username: '',
@@ -12,7 +16,9 @@ const SignIn: React.FC<IProps> = () => {
   })
 
   const handleSignIn = () => {
-    // TODO: handle sign in (PM's job)
+    signInHandler(form).then(() => {
+      window.location.pathname = '/accommodations'
+    })
   }
 
   return (
