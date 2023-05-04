@@ -8,7 +8,9 @@ interface IUserSignUp extends IUserSignIn {
   role: string
 }
 
-type IUser = IUserSignUp
+interface IUser extends IUserSignUp {
+  _id: string
+}
 
 interface IAuthState {
   user?: IUser

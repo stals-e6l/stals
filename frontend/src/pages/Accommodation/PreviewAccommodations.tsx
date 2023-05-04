@@ -20,6 +20,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import React from 'react'
 import { downloadPdf } from '../../store/report/actions'
+import { getUser } from '../../store/auth/action'
 
 interface IProps {
   children?: React.ReactNode
@@ -34,6 +35,7 @@ const PreviewAccommodations: React.FC<IProps> = ({
   onClose,
 }) => {
   const [open, setOpen] = React.useState(false)
+  const user = getUser()
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -175,9 +177,9 @@ const PreviewAccommodations: React.FC<IProps> = ({
         <Button
           onClick={() => {
             downloadPdf('#accomm-table', {
-              user_id: '6453200028b4aa4d1f5fe2bc',
+              user_id: (user && user._id) || '',
               pdf_url:
-                'http://github.com/stals-e6l/stals/pull/131#pullrequestreview-1412151891l',
+                'http://github.com/stals-e6l/stals/pull/131#pullrequestreview-1412151891l', // TODO file upload first
             }).then(() => {
               onClose()
             })
