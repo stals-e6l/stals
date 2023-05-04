@@ -281,7 +281,7 @@ authRouter.post('/sign-out', async function (req, res) {
 /**
  * @openapi
  * /api/me:
- *      head:
+ *      get:
  *          description: Get user endpoint
  *          security:
  *              -   bearerAuth: []
@@ -303,7 +303,7 @@ authRouter.post('/sign-out', async function (req, res) {
  *              - User
  *
  */
-authRouter.head('/me', async function (req, res) {
+authRouter.get('/me', async function (req, res) {
   try {
     const authHeader = req.headers.authorization
 

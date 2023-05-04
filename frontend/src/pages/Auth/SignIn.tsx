@@ -1,4 +1,6 @@
 import React from 'react'
+import { signIn } from '../../store/auth/action'
+import { useNavigate } from 'react-router-dom'
 import Header from '../../components/header'
 import { Box, Typography, TextField, Button, Link, Dialog } from '@mui/material'
 import logo from '../../assets/Images/Logo_Green.png'
@@ -9,17 +11,22 @@ interface IProps {
 }
 
 const SignIn: React.FC<IProps> = () => {
+  // hooks
+  const signInHandler = signIn()
+  const navigate = useNavigate()
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
-    userName: '',
-    passwordHash: '',
+    username: '',
+    password: '',
   })
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
   const handleSignIn = () => {
-    // TODO: handle sign in (PM's job)
+    signInHandler(form).then(() => {
+      navigate('/accommodations')
+    })
   }
   const boxStyle = {
     height: '90vh',
@@ -71,13 +78,17 @@ const SignIn: React.FC<IProps> = () => {
               boxShadow: '0px 3px 5px #888888',
             }}
           >
-            <Typography>Email</Typography>
+            <Typography>Username</Typography>
             <TextField
               id="outlined-basic"
               variant="outlined"
               size="small"
               fullWidth
               sx={{ backgroundColor: '#ffffff' }}
+              onChange={e =>
+                setForm(prev => ({ ...prev, username: e.target.value }))
+              }
+              value={form.username}
             />
             <Typography>Password</Typography>
             <TextField
@@ -85,7 +96,12 @@ const SignIn: React.FC<IProps> = () => {
               variant="outlined"
               size="small"
               fullWidth
+              type="password"
               sx={{ backgroundColor: '#ffffff' }}
+              value={form.password}
+              onChange={e =>
+                setForm(prev => ({ ...prev, password: e.target.value }))
+              }
             />
             <Button
               variant="contained"
@@ -95,6 +111,7 @@ const SignIn: React.FC<IProps> = () => {
                 marginTop: '20px',
                 marginBottom: '10px',
               }}
+              onClick={handleSignIn}
             >
               Log in
             </Button>
@@ -123,8 +140,12 @@ const SignIn: React.FC<IProps> = () => {
             >
               Create new account
             </Button>
-            <Dialog open={open} onClose={handleClose} sx={{width:'30%', margin:'0 auto'}}>
-              <SignUp />
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              sx={{ width: '30%', margin: '0 auto' }}
+            >
+              <SignUp onClose={handleClose} />
             </Dialog>
           </Box>
         </Box>

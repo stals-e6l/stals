@@ -1,6 +1,6 @@
 interface IUserSignIn {
-  userName: string
-  passwordHash: string
+  username: string
+  password: string
 }
 
 interface IUserSignUp extends IUserSignIn {
@@ -8,4 +8,15 @@ interface IUserSignUp extends IUserSignIn {
   role: string
 }
 
-type IUser = IUserSignUp
+interface IUser extends IUserSignUp {
+  _id: string
+}
+
+interface IAuthState {
+  loaded: boolean
+  user?: IUser
+  dispatch: React.Dispatch<IReducerAction<TAuthActionType, TAuthActionPayload>>
+}
+
+type TAuthActionType = 'SIGN_IN' | 'SIGN_UP' | 'SIGN_OUT' | 'ME'
+type TAuthActionPayload = IUserSignIn | IUserSignUp | IUser | undefined

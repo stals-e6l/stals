@@ -2,8 +2,6 @@ import {
   Checkbox,
   Dialog,
   Drawer,
-  Grid,
-  InputLabel,
   Table,
   TableBody,
   TableCell,
@@ -11,21 +9,18 @@ import {
   TableHead,
   TableRow,
   DialogTitle,
-  AppBar,
-  Toolbar,
   IconButton,
-  Typography,
-  Button,
   DialogContent,
   Divider,
   FormControlLabel,
-  DialogActions
+  DialogActions,
+  Button,
 } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import React from 'react'
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+import { downloadPdf } from '../../store/report/actions'
+import { getUser } from '../../store/auth/action'
 
 interface IProps {
   children?: React.ReactNode
@@ -39,22 +34,15 @@ const PreviewAccommodations: React.FC<IProps> = ({
   show,
   onClose,
 }) => {
-
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
+  const user = getUser()
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  const savePDF = () => {
-    const doc = new jsPDF('l')
-    doc.text('Accommodation Details', doc.internal.pageSize.getWidth()/2, 10, {align:'center'})
-    autoTable(doc, {html: '#accomm-table'})
-    doc.save('AccommodationDetails.pdf')
+    setOpen(false)
   }
 
   const [fields, setFields] = React.useState<any>({
@@ -104,8 +92,8 @@ const PreviewAccommodations: React.FC<IProps> = ({
           sx={drawerStyle}
           PaperProps={{
             style: {
-              position: "absolute"
-            }
+              position: 'absolute',
+            },
           }}
           variant="persistent"
           anchor="left"
@@ -121,17 +109,20 @@ const PreviewAccommodations: React.FC<IProps> = ({
           <div style={filterListStyle}>
             {allFields.map(field => (
               <div key={field}>
-                <FormControlLabel label={field} control={
-                  <Checkbox
-                    checked={fields[field]}
-                    sx={{individualFilterStyle}}
-                    onChange={(e, checked) => {
-                      const newFields = { ...fields }
-                      newFields[field] = checked
-                      setFields(newFields)
-                    }}
-                  />
-                }/>
+                <FormControlLabel
+                  label={field}
+                  control={
+                    <Checkbox
+                      checked={fields[field]}
+                      sx={{ individualFilterStyle }}
+                      onChange={(e, checked) => {
+                        const newFields = { ...fields }
+                        newFields[field] = checked
+                        setFields(newFields)
+                      }}
+                    />
+                  }
+                />
               </div>
             ))}
           </div>
@@ -183,10 +174,19 @@ const PreviewAccommodations: React.FC<IProps> = ({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={()=>{
-          savePDF()
-          onClose()
-        }}>Save PDF</Button>
+        <Button
+          onClick={() => {
+            downloadPdf('#accomm-table', {
+              user_id: (user && user._id) || '',
+              pdf_url:
+                'http://github.com/stals-e6l/stals/pull/131#pullrequestreview-1412151891l', // TODO file upload first
+            }).then(() => {
+              onClose()
+            })
+          }}
+        >
+          Save PDF
+        </Button>
         <Button onClick={onClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
@@ -195,15 +195,15 @@ const PreviewAccommodations: React.FC<IProps> = ({
 
 export default PreviewAccommodations
 
-const mainDialog={
-  "& .MuiPaper-root": {
+const mainDialog = {
+  '& .MuiPaper-root': {
     maxWidth: '100%',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
 }
 
-const drawerStyle={
+const drawerStyle = {
   width: '20%',
   flexShrink: 0,
   '& .MuiDrawer-paper': {
@@ -212,13 +212,13 @@ const drawerStyle={
   },
 }
 
-const filterListStyle={
+const filterListStyle = {
   padding: '10px',
-  flexGrow: '1'
+  flexGrow: '1',
 }
 
-const individualFilterStyle={
-  "& .MuiCheckbox-root": {
+const individualFilterStyle = {
+  '& .MuiCheckbox-root': {
     paddingBottom: '5px',
   },
 }
