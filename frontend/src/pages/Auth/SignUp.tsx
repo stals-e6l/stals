@@ -38,14 +38,6 @@ const SignUp: React.FC<IProps> = () => {
           <option value="owner">Owner</option>
           <option value="tenant">Tenant</option>
         </select>
-        {/* <input
-          value={form.passwordHash}
-          type="email"
-          placeholder="email"
-          onChange={e =>
-            setForm(prev => ({ ...prev, email: e.target.value }))
-          }
-        /> */}
       </div>
       <div>
         <label>Username</label>
