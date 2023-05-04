@@ -15,7 +15,7 @@ interface IProps {
 
 const AccomodationResultsPage: React.FC<IProps> = () => {
   const accommodationResults = retrieveAccommodationResults()
-  const searchParams = useSearchParams()  
+  const searchParams = useSearchParams()
   const [showPreview, setShowPreview] = React.useState<boolean>(false)
 
   return (
@@ -29,7 +29,12 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
         }}
       >
         <FilterAccommodation />
-        
+        <Button
+          variant="contained"
+          onClick={() => setShowPreview(prev => !prev)}
+        >
+          Download
+        </Button>
       </Grid>
 
       {/* results */}
