@@ -193,7 +193,7 @@ authRouter.post('/sign-in', async function (req, res) {
     if (blacklist[token]) delete blacklist[token]
 
     // last, return success
-    res.status(200).json({ success: true, token: token })
+    res.status(200).json({ success: true, data: token })
   } catch (err) {
     let code
 
@@ -220,6 +220,8 @@ authRouter.post('/sign-in', async function (req, res) {
  * /api/sign-out:
  *      post:
  *          description: Sign out
+ *          security:
+ *              -   bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
@@ -242,6 +244,22 @@ authRouter.post('/sign-in', async function (req, res) {
  */
 authRouter.post('/sign-out', async function (req, res) {
   try {
+    // Extract the auth header
+    const authHeader = req.headers.authorization
+    if (!authHeader) throw new Error('No auth header!')
+
+    // Extract token
+    const [authMethod, token] = authHeader.split(' ')
+    if (authMethod !== 'Bearer')
+      throw new Error('Auth method should be "Bearer"!')
+    if (!token) throw new Error('No token!')
+
+    // Add token to blacklist
+    if (!blacklist[token]) blacklist[token] = token
+
+    res
+      .status(200)
+      .json({ success: true, data: 'You are successfully logged out!' })
   } catch (err) {
     let code
 
