@@ -48,16 +48,6 @@ const AccomodationResultsPage: React.FC<IProps> = () => {
     handleFilter()
   }, [])
 
-/*
-      <TextField
-          type="number"
-          onChange={e => {
-            setFilter(prev => ({ ...prev, price: Number(e.target.value) }))
-          }}
-          value={filter.price}
-        />
-*/
-
   return (
     <Grid container sx={{ flexDirection: 'column' }}>
     <Grid item>
