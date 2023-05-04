@@ -327,8 +327,10 @@ authRouter.get('/me', async function (req, res) {
       throw error
     }
 
+  let decoded;
+
 	try {
-    const decoded = jwt.verify(token, PRIVATE_KEY)
+    decoded = jwt.verify(token, PRIVATE_KEY)
 	} catch(err) {
     const error = new Error("Verification error")
     error.name = 'AuthError'
