@@ -1,5 +1,6 @@
-import * as React from 'react'
-import { useTheme, styled } from '@mui/material/styles'
+import React from 'react'
+import { Box, Input, Typography, Button, Grid, useTheme, Slider } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import Popper from '@mui/material/Popper'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import SettingsIcon from '@mui/icons-material/Settings'
@@ -12,10 +13,9 @@ import Autocomplete, {
 import ButtonBase from '@mui/material/ButtonBase'
 import InputBase from '@mui/material/InputBase'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import SearchBar from './searchBar'
 import { useNavigate } from 'react-router-dom'
-import { Button, Slider, Typography } from '@mui/material'
-import Box from '@mui/material/Box'
+import SearchIcon from '@mui/icons-material/Search'
+import BannerPhoto from '../assets/Images/BannerFlipped2.jpg'
 
 const green = '#60ce80'
 const grey = '#f0f0f0'
@@ -23,10 +23,41 @@ const darkGrey = '#f5f5f7'
 const quicksand = 'Quicksand'
 const sourceSansPro = 'Source Sans Pro'
 
+
 interface PopperComponentProps {
   anchorEl?: any
   disablePortal?: boolean
   open: boolean
+}
+
+export const SearchBar = (props: any) => {
+  const theme = useTheme()
+
+  const { onSearchInputChange } = props
+
+  const handleInputChange = (event: {
+    target: { value: React.SetStateAction<string> }
+  }) => {
+    onSearchInputChange(event.target.value)
+  }
+  const [name, setName] = React.useState<string>('')
+  return (
+    <Input
+      placeholder="Search Accommodation"
+      onChange={handleInputChange}
+      // onChange={e => setName(e.target.value.trim())}
+      disableUnderline
+      fullWidth
+      sx={{
+        '& .MuiInputBase-input': {
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        },
+        padding: '4px',
+        paddingX: '10px',
+      }}
+    />
+  )
 }
 
 const StyledAutocompletePopper = styled('div')(({ theme }) => ({
@@ -114,9 +145,7 @@ function valuetext(value: number) {
   return `₱ ${value}`
 }
 
-const minDistance = 10
-
-const SearchBarFilters = (props: any) => {
+export const SearchBarFilters = (props: any) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [value, setValue] = React.useState<LabelType[]>([labels[1], labels[11]])
   const [pendingValue, setPendingValue] = React.useState<LabelType[]>([])
@@ -230,7 +259,7 @@ const SearchBarFilters = (props: any) => {
               open
               multiple
               onClose={(
-                event: React.ChangeEvent<{}>,
+                event: React.ChangeEvent<object>,
                 reason: AutocompleteCloseReason
               ) => {
                 if (reason === 'escape') {
@@ -328,7 +357,7 @@ interface LabelType {
   description?: string
 }
 
-// From https://github.com/abdonrd/github-labels
+// From https://github.com/abdonrd/github-labels //TODO: CHANGE
 const labels = [
   {
     name: 'good first issue',
@@ -422,4 +451,49 @@ const labels = [
   },
 ]
 
-export default SearchBarFilters
+export const SearchBarButton = (props: any) => {
+  const name = props
+  const theme = useTheme()
+
+  const navigate = useNavigate()
+  const handleSearch = () => {
+    console.log(name)
+    navigate(`/accommodations/results?name=${name}`)
+  }
+
+  return (
+    <Button
+      onClick={handleSearch}
+      sx={{
+        height: '100%',
+        textTransform: 'none',
+        backgroundColor: green,
+        padding: '1% 3%',
+        color: grey,
+        ':hover': {
+          color: green,
+        },
+      }}
+    >
+      <SearchIcon
+        sx={{
+          color: 'inherit',
+          fontSize: 'xx-large',
+        }}
+      />
+      <Typography
+        sx={{
+          fontFamily: sourceSansPro,
+          fontSize: '1rem',
+          color: 'inherit',
+          fontWeight: 'bold',
+          [theme.breakpoints.down(800)]: {
+            display: 'none',
+          },
+        }}
+      >
+        Search
+      </Typography>
+    </Button>
+  )
+}

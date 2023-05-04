@@ -11,17 +11,7 @@ import Autocomplete, {
 } from '@mui/material/Autocomplete'
 import ButtonBase from '@mui/material/ButtonBase'
 import InputBase from '@mui/material/InputBase'
-import FilterListIcon from '@mui/icons-material/FilterList'
-import SearchBar from './searchBar'
-import { useNavigate } from 'react-router-dom'
-import { Button, Slider, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
-
-const green = '#60ce80'
-const grey = '#f0f0f0'
-const darkGrey = '#f5f5f7'
-const quicksand = 'Quicksand'
-const sourceSansPro = 'Source Sans Pro'
 
 interface PopperComponentProps {
   anchorEl?: any
@@ -58,9 +48,6 @@ const StyledAutocompletePopper = styled('div')(({ theme }) => ({
   [`&.${autocompleteClasses.popperDisablePortal}`]: {
     position: 'relative',
   },
-  [theme.breakpoints.down(500)]: {
-    width: 200,
-  },
 }))
 
 function PopperComponent(props: PopperComponentProps) {
@@ -79,9 +66,6 @@ const StyledPopper = styled(Popper)(({ theme }) => ({
   fontSize: 13,
   color: theme.palette.mode === 'light' ? '#24292e' : '#c9d1d9',
   backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128',
-  [theme.breakpoints.down(500)]: {
-    width: 200,
-  },
 }))
 
 const StyledInput = styled(InputBase)(({ theme }) => ({
@@ -110,22 +94,29 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-function valuetext(value: number) {
-  return `₱ ${value}`
-}
+const Button = styled(ButtonBase)(({ theme }) => ({
+  fontSize: 13,
+  width: '100%',
+  textAlign: 'left',
+  paddingBottom: 8,
+  color: theme.palette.mode === 'light' ? '#586069' : '#8b949e',
+  fontWeight: 600,
+  '&:hover,&:focus': {
+    color: theme.palette.mode === 'light' ? '#0366d6' : '#58a6ff',
+  },
+  '& span': {
+    width: '100%',
+  },
+  '& svg': {
+    width: 16,
+    height: 16,
+  },
+}))
 
-const minDistance = 10
-
-const SearchBarFilters = (props: any) => {
+export default function GitHubLabel() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [value, setValue] = React.useState<LabelType[]>([labels[1], labels[11]])
   const [pendingValue, setPendingValue] = React.useState<LabelType[]>([])
-
-  const [sliderValue, setSliderValue] = React.useState<number[]>([20, 37])
-
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setSliderValue(newValue as number[])
-  }
   const theme = useTheme()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -146,36 +137,12 @@ const SearchBarFilters = (props: any) => {
 
   return (
     <React.Fragment>
-      <Button
-        onClick={handleClick}
-        sx={{
-          height: '100%',
-          textTransform: 'none',
-          backgroundColor: grey,
-          padding: '1% 3%',
-        }}
-      >
-        <FilterListIcon
-          sx={{
-            color: green,
-            fontSize: 'xx-large',
-          }}
-        />
-        <Typography
-          sx={{
-            fontFamily: sourceSansPro,
-            fontSize: '1rem',
-            color: green,
-            fontWeight: 'bold',
-            [theme.breakpoints.down(800)]: {
-              display: 'none',
-            },
-          }}
-        >
-          Filters
-        </Typography>
-      </Button>
-
+      <Box sx={{ width: 221, fontSize: 13 }}>
+        <Button disableRipple aria-describedby={id} onClick={handleClick}>
+          <span>Labels</span>
+          <SettingsIcon />
+        </Button>
+      </Box>
       <StyledPopper
         id={id}
         open={open}
@@ -193,39 +160,8 @@ const SearchBarFilters = (props: any) => {
                 fontWeight: 600,
               }}
             >
-              <Typography
-                sx={{
-                  fontFamily: sourceSansPro,
-                  fontSize: '1rem',
-                  // color: green,
-                  fontWeight: 'bold',
-                }}
-              >
-                Select filters
-              </Typography>
+              Apply labels to this pull request
             </Box>
-
-            <Box marginX={'15px'}>
-              <Typography
-                marginTop={'5px'}
-                sx={{
-                  fontFamily: sourceSansPro,
-                  fontSize: '1rem',
-                  fontWeight: 'bold',
-                }}
-              >
-                Price range: ₱ {sliderValue[0]} - ₱ {sliderValue[1]}
-              </Typography>
-              <Slider
-                getAriaLabel={() => 'Temperature range'}
-                value={sliderValue}
-                onChange={handleChange}
-                valueLabelDisplay="auto"
-                getAriaValueText={valuetext}
-                disableSwap
-              />
-            </Box>
-
             <Autocomplete
               open
               multiple
@@ -421,5 +357,3 @@ const labels = [
     description: 'Further information is requested',
   },
 ]
-
-export default SearchBarFilters

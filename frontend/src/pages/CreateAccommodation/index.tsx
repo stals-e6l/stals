@@ -49,8 +49,6 @@ const theme = createTheme({
 
 
 function BasicInputFields({values, setFieldValue}: any) {
-
-  console.log({ values})
   return (
     <div>
       <TextField
@@ -399,7 +397,7 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
   const navigate = useNavigate()
   const {values, setFieldValue, submitForm } = useAccommodationForm(val => {
     createAccommodationHandler(val)
-    navigate("/accommodations")
+    navigate('/accommodations')
   })
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
