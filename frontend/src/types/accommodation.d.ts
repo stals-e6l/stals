@@ -39,7 +39,7 @@ interface IAccommodation {
   is_soft_deleted: boolean
 }
 
-interface IAccommodationFilter {
+interface IAccommodationsFilter {
   name?: string
   type?: TAccommodationType
   price?: number

@@ -63,3 +63,22 @@ export const retrieveAccommodations = () => {
     React.useContext<IAccommodationsState>(accommodationContext)
   return accommodations
 }
+
+export const filterAccommodations = () => {
+  const { dispatch } =
+    React.useContext<IAccommodationsState>(accommodationContext)
+
+  if (!dispatch) return
+
+  return async (filter: IAccommodationsFilter) => {
+    // get filters
+
+    // call api
+
+    // dispatch
+    dispatch({
+      type: 'INIT_ACCOMMODATIONS',
+      payload: [],
+    })
+  }
+}
