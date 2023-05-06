@@ -4,8 +4,8 @@ interface IProps {
   children?: React.ReactNode
 }
 
-const DeleteAccommodationModal: React.FC<IProps> = () => {
+const DeleteAccommodationFormModal: React.FC<IProps> = () => {
   return <div>hello</div>
 }
 
-export default DeleteAccommodationModal
+export default DeleteAccommodationFormModal
