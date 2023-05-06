@@ -35,7 +35,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   const accommodations = retrieveAccommodations()
 
   // state
-  const [fields, setFields] = React.useState<IDownloadAccommodation>({
+  const [fields, setFields] = React.useState<IDownloadAccommodations>({
     name: true,
     type: true,
     price: true,
@@ -50,7 +50,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   // immediates
   const tableId = 'accommodations-table'
-  const downloadFields: IDownloadAccommodationField[] = [
+  const downloadFields: IDownloadAccommodationsField[] = [
     'name',
     'type',
     'price',

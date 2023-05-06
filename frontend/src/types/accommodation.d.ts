@@ -52,7 +52,7 @@ interface IAccommodationFilter {
   furnishing?: TAccommodationFurnishing
 }
 
-interface IDownloadAccommodation {
+interface IDownloadAccommodations {
   name: boolean
   type: boolean
   price: boolean
@@ -65,7 +65,7 @@ interface IDownloadAccommodation {
   furnishing: boolean
 }
 
-type IDownloadAccommodationField = keyof IDownloadAccommodation
+type IDownloadAccommodationsField = keyof IDownloadAccommodations
 
 interface IAccommodationsState {
   accommodations: IAccommodation[] | null
