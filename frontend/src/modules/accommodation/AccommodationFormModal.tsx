@@ -7,6 +7,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import AccommodationForm from './AccommodationForm'
+import useDialog from '../../hooks/useDialog'
 
 interface IProps {
   children?: React.ReactNode
@@ -14,11 +15,10 @@ interface IProps {
 }
 
 const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
-  // state
-  const [open, setOpen] = React.useState<boolean>(false)
+  // hooks
+  const { open, toggleDialog } = useDialog()
 
   // events
-  const toggleDialog = () => setOpen(prev => !prev)
   const handleSubmit = () => {
     // TODO: PM's job
   }
