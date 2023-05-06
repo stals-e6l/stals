@@ -14,7 +14,7 @@ const quicksand = 'Quicksand'
 const sourceSansPro = 'Source Sans Pro'
 
 const SearchBarButton = (props: any) => {
-  const name = props
+  const { name } = props
   const theme = useTheme()
 
   const navigate = useNavigate()
