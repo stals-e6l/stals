@@ -67,23 +67,13 @@ interface IDownloadAccommodation {
 
 type IDownloadAccommodationField = keyof IDownloadAccommodation
 
-interface IAccommodationState {
-  accommodations: IAccommodation[]
-  results: IAccommodation[]
+interface IAccommodationsState {
+  accommodations: IAccommodation[] | null
   dispatch: React.Dispatch<
     IReducerAction<TAccommodationActionType, TAccommodationPayload>
-  >
+  > | null
 }
 
-// ACTIONS
+type TAccommodationActionType = 'INIT_ACCOMMODATIONS'
 
-type TAccommodationActionType =
-  | 'AC_INIT'
-  | 'AC_CREATE'
-  | 'AC_RETRIEVE_ALL'
-  | 'AC_RETRIEVE_BY_ID'
-  | 'AC_UPDATE'
-  | 'AC_DELETE'
-  | 'AC_SEARCH'
-
-type TAccommodationPayload = IAccommodation | IAccommodation[] | string
+type TAccommodationPayload = IAccommodation[]

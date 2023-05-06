@@ -21,8 +21,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import useDrawer from '../../hooks/useDrawer'
-import { mockAccommodations } from '../../store/accommodation/mock'
 import { downloadPdf } from '../../store/report/actions'
+import { retrieveAccommodations } from './AccommodationsProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -32,7 +32,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   // hooks
   const { open: openDialog, toggleDialog } = useDialog()
   const { open: openDrawer, toggleDrawer } = useDrawer()
-  const accommodations: IAccommodation[] = mockAccommodations // TODO: PM'S job (use provider)
+  const accommodations = retrieveAccommodations()
 
   // state
   const [fields, setFields] = React.useState<IDownloadAccommodation>({
@@ -77,121 +77,131 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   return (
     <React.Fragment>
-      <Button variant="contained" onClick={toggleDialog}>
+      <Button
+        disabled={!accommodations}
+        variant="contained"
+        onClick={toggleDialog}
+      >
         Download
       </Button>
-      <Dialog open={openDialog} onClose={toggleDialog} sx={mainDialog}>
-        <DialogTitle>
-          {/* Button to open Drawer */}
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer}
-          >
-            <MenuIcon />
-          </IconButton>
-          PDF Preview
-        </DialogTitle>
+      {openDialog && accommodations && (
+        <Dialog open={openDialog} onClose={toggleDialog} sx={mainDialog}>
+          <DialogTitle>
+            {/* Button to open Drawer */}
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={toggleDrawer}
+            >
+              <MenuIcon />
+            </IconButton>
+            PDF Preview
+          </DialogTitle>
 
-        <DialogContent>
-          {/* Which fields to include */}
-          <Drawer
-            sx={drawerStyle}
-            PaperProps={{
-              style: {
-                position: 'absolute',
-              },
-            }}
-            variant="persistent"
-            anchor="left"
-            open={openDrawer}
-          >
-            <div>
-              <IconButton onClick={toggleDrawer}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <Divider />
-            {/* show which fields to preview */}
-            <div style={filterListStyle}>
-              {downloadFields.map(field => (
-                <div key={field}>
-                  <FormControlLabel
-                    label={field}
-                    control={
-                      <Checkbox
-                        checked={fields[field]}
-                        sx={{ individualFilterStyle }}
-                        onChange={(e, checked) => {
-                          const newFields = { ...fields }
-                          newFields[field] = checked
-                          setFields(newFields)
-                        }}
-                      />
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          </Drawer>
-
-          {/* Preview table */}
-          <TableContainer>
-            <Table id={tableId}>
-              <TableHead>
-                <TableRow>
-                  {Object.entries(fields as object)
-                    .filter(field => field[1])
-                    .map(field => (
-                      <TableCell key={field[0]}>{field[0]}</TableCell>
-                    ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {accommodations.map(accommodation => (
-                  <TableRow key={accommodation._id}>
-                    {fields.name && <TableCell>{accommodation.name}</TableCell>}
-                    {fields.type && <TableCell>{accommodation.type}</TableCell>}
-                    {fields.price && (
-                      <TableCell>{accommodation.price}</TableCell>
-                    )}
-                    {fields.size_sqm && (
-                      <TableCell>{accommodation.size_sqm}</TableCell>
-                    )}
-                    {fields.meters_from_uplb && (
-                      <TableCell>{accommodation.meters_from_uplb}</TableCell>
-                    )}
-                    {fields.min_pax && (
-                      <TableCell>{accommodation.min_pax}</TableCell>
-                    )}
-                    {fields.max_pax && (
-                      <TableCell>{accommodation.max_pax}</TableCell>
-                    )}
-                    {fields.num_rooms && (
-                      <TableCell>{accommodation.num_rooms}</TableCell>
-                    )}
-                    {fields.num_beds && (
-                      <TableCell>{accommodation.num_beds}</TableCell>
-                    )}
-                    {fields.furnishing && (
-                      <TableCell>{accommodation.furnishing}</TableCell>
-                    )}
-                  </TableRow>
+          <DialogContent>
+            {/* Which fields to include */}
+            <Drawer
+              sx={drawerStyle}
+              PaperProps={{
+                style: {
+                  position: 'absolute',
+                },
+              }}
+              variant="persistent"
+              anchor="left"
+              open={openDrawer}
+            >
+              <div>
+                <IconButton onClick={toggleDrawer}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </div>
+              <Divider />
+              {/* show which fields to preview */}
+              <div style={filterListStyle}>
+                {downloadFields.map(field => (
+                  <div key={field}>
+                    <FormControlLabel
+                      label={field}
+                      control={
+                        <Checkbox
+                          checked={fields[field]}
+                          sx={{ individualFilterStyle }}
+                          onChange={(e, checked) => {
+                            const newFields = { ...fields }
+                            newFields[field] = checked
+                            setFields(newFields)
+                          }}
+                        />
+                      }
+                    />
+                  </div>
                 ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </DialogContent>
+              </div>
+            </Drawer>
 
-        <DialogActions>
-          {/* Action buttons */}
-          <Button onClick={handleDownload}>Save PDF</Button>
-          <Button onClick={toggleDialog}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
+            {/* Preview table */}
+            <TableContainer>
+              <Table id={tableId}>
+                <TableHead>
+                  <TableRow>
+                    {Object.entries(fields as object)
+                      .filter(field => field[1])
+                      .map(field => (
+                        <TableCell key={field[0]}>{field[0]}</TableCell>
+                      ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {accommodations.map(accommodation => (
+                    <TableRow key={accommodation._id}>
+                      {fields.name && (
+                        <TableCell>{accommodation.name}</TableCell>
+                      )}
+                      {fields.type && (
+                        <TableCell>{accommodation.type}</TableCell>
+                      )}
+                      {fields.price && (
+                        <TableCell>{accommodation.price}</TableCell>
+                      )}
+                      {fields.size_sqm && (
+                        <TableCell>{accommodation.size_sqm}</TableCell>
+                      )}
+                      {fields.meters_from_uplb && (
+                        <TableCell>{accommodation.meters_from_uplb}</TableCell>
+                      )}
+                      {fields.min_pax && (
+                        <TableCell>{accommodation.min_pax}</TableCell>
+                      )}
+                      {fields.max_pax && (
+                        <TableCell>{accommodation.max_pax}</TableCell>
+                      )}
+                      {fields.num_rooms && (
+                        <TableCell>{accommodation.num_rooms}</TableCell>
+                      )}
+                      {fields.num_beds && (
+                        <TableCell>{accommodation.num_beds}</TableCell>
+                      )}
+                      {fields.furnishing && (
+                        <TableCell>{accommodation.furnishing}</TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </DialogContent>
+
+          <DialogActions>
+            {/* Action buttons */}
+            <Button onClick={handleDownload}>Save PDF</Button>
+            <Button onClick={toggleDialog}>Cancel</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </React.Fragment>
   )
 }
