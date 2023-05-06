@@ -20,6 +20,7 @@ import FilterAccommodations from './components/FilterAccommodations'
 import SearchAccommodations from './modules/accommodation/SearchAccommodations'
 import SignInForm from './modules/accommodation/SignInForm'
 import SignUpForm from './modules/accommodation/SignUpForm'
+import ModulesViewer from './modules'
 
 interface IProps {
   children?: React.ReactNode
@@ -33,7 +34,8 @@ export default AppRouter
 
 const router = createBrowserRouter([
   {
-    path: '/modules',
+    path: '/',
+    element: <ModulesViewer />,
     children: [
       {
         path: '/AccommodationCard',
