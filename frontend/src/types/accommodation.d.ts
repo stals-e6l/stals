@@ -52,6 +52,21 @@ interface IAccommodationFilter {
   furnishing?: TAccommodationFurnishing
 }
 
+interface IDownloadAccommodation {
+  name: boolean
+  type: boolean
+  price: boolean
+  size_sqm: boolean
+  meters_from_uplb: boolean
+  min_pax: boolean
+  max_pax: boolean
+  num_rooms: boolean
+  num_beds: boolean
+  furnishing: boolean
+}
+
+type IDownloadAccommodationField = keyof IDownloadAccommodation
+
 interface IAccommodationState {
   accommodations: IAccommodation[]
   results: IAccommodation[]
