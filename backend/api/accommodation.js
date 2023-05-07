@@ -1,8 +1,7 @@
 const { Router } = require('express')
 
-var Accommodation = require("../models/accommodation");
-
-const accommodationRouter = Router()
+const Accommodation = require("../models/accommodation");
+const { RESTRouter } = require("../handler/rest_router");
 
 /**
  * @openapi
@@ -40,6 +39,7 @@ const accommodationRouter = Router()
  *                  description: Accommodation address
  *              type:
  *                  type: string
+ *                  pattern: '^((hotel)|(apartment)|(bedspace)|(dormitory)|(transient))$'
  *                  description: Accommodation type
  *              price:
  *                  type: number
@@ -72,6 +72,7 @@ const accommodationRouter = Router()
  *                  description: Accommodation number of views
  *              furnishing:
  *                  type: string
+ *                  pattern: '^((fully_furnished)|(semifurnished)|(unfurnished))$'
  *                  description: Accommodation type of furnishing
  *              cooking_rules:
  *                  type: array
@@ -135,32 +136,7 @@ const accommodationRouter = Router()
  *              - Accommodation
  *              
  */
-accommodationRouter.post("/", async function(req, res){
-    try{
-        const savedAccom = await Accommodation.create({ ...req.body });
-        if(!savedAccom){
-            throw new Error(400);
-        }else{
-            res.status(201).json({ status: true, data: savedAccom });
-        }
-    } catch(err){
-        switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-              break;
-            default:
-                res.json({success: false, messages: [String(err)]});
-        }
-    }
-})
+const accommodationRouter = RESTRouter("/", Accommodation);
 
 /**
  * @openapi
@@ -191,35 +167,6 @@ accommodationRouter.post("/", async function(req, res){
  *              - Accommodation
  *              
  */
-accommodationRouter.get('/:id', async function(req, res){
-    try{
-        if(!req.params.id){
-            throw 400;
-        }
-        const accom = await Accommodation.findById(req.params.id);
-        if(!accom){
-            throw 404;
-        }
-        res.status(200).json({success: true, data: accom});
-    } catch(err){
-        switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
-                break;
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-              break;
-            default:
-                res.json({success: false, messages: [String(err)]});
-        }
-    }
-})
 
 /**
  * @openapi
@@ -386,31 +333,7 @@ accommodationRouter.get('/:id', async function(req, res){
  *              
  *              
  */
-accommodationRouter.get('/', async function(req, res){
-    try{
-        let query = {...req.query}
-        delete query["limit"];  //delete every query that's not part of the database model
 
-        const limit = Number(req.query.limit) || 100;
-        const accommodations = await Accommodation.find(query).limit(limit);
-        
-        res.status(200).json({success:true, data:accommodations});
-    } catch(err){
-        switch(err){
-            case 400:
-                res.status(400).json({success:false, messages: ["Error: Bad request"]});
-                break;
-            case 401:
-                res.status(401).json({success:false, messages: ["Error: Unauthorized access"]});
-                break;
-            case 500:
-                res.status(500).json({success:false, messages: ["Error: Internal service error"]});
-                break;
-            default:
-                res.json({success:false, messages: [err]});
-        }
-    }
-});
 
 /**
  * @openapi
@@ -434,24 +357,7 @@ accommodationRouter.get('/', async function(req, res){
  *              - Accommodation
  *              
  */
-accommodationRouter.delete('/:id', async function(req, res){
-    try{
-        const removedAccom = await Accommodation.findByIdAndRemove({_id: req.params.id});
-        
-        if (!removedAccom) {
-            throw new Error("404");
-        } else {
-            res.status(200).json({success: true, data: null});
-        }
-        // TODO: Handle other errors (authentication)
-    } catch(err){
-        if (String(err).includes("404")) {
-            res.status(404).json({success: false, messages: ["Error 404: Accommodation not found"]});
-        } else {
-            res.status(500).json({success: false, messages: ["Error 500: Internal server error", err]});
-        }
-    }
-});
+
 
 /**
  * @openapi
@@ -488,44 +394,5 @@ accommodationRouter.delete('/:id', async function(req, res){
  *              - Accommodation
  *              
  */
-accommodationRouter.put('/:id', async function(req, res){
-    try{
-        const editedAccom = await Accommodation.findOneAndUpdate(
-            {_id: req.params.id},
-            { ...req.body},
-            {new: true});
-
-        if(!editedAccom){
-            throw 404;
-        }
-        
-        if(!['unfurnished', 'semifurnished', 'fully_furnished'].includes(editedAccom.furnishing)){
-            throw 400;
-        }
-        
-        if(!['hotel', 'apartment', 'bedspace', 'dormitory', 'transient'].includes(editedAccom.type)){
-            throw 400;
-        }
-        res.status(200).json({ success: true, data: editedAccom })
-    } catch(err){
-        switch(err) {
-            case 404:
-                res.status(404).json({ status: false, messages: ["Error: Not found"]});
-                break;
-            case 400:
-                res.status(400).json({ status: false, messages: ["Error: Bad request"]});
-              break;
-            case 401:
-                res.status(401).json({ status: false, messages: ["Error: Unauthorized access"]});
-              break;
-            case 500:
-                res.status(500).json({ status: false, messages: ["Error: Internal server error"]});
-              break;
-            default:
-                res.json({success: false, messages: [String(err)]});
-        }
-    }
-
-});
 
 module.exports = accommodationRouter;
