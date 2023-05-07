@@ -38,7 +38,7 @@ server.use(bodyParser.json());
 
 /** INSERT API BELOW */
 server.use('/api/ping', require('./api/ping'))
-server.use('/api/accommodation', require('./api/accommodation'))
+server.use('/api', require('./api/accommodation'))
 server.use('/api/forum', require('./api/forum'))
 server.use('/api/report', require('./api/report'))
 server.use('/api', require('./api/auth'))

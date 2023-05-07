@@ -40,7 +40,7 @@ const RESTRouter = function(name, model){
         }
     })
 
-    router.get(name + ":id", async(req, res) => {
+    router.get(`${name}/:id`, async(req, res) => {
         try{
             const data = await model.findById(req.params.id);
 
@@ -58,7 +58,7 @@ const RESTRouter = function(name, model){
         }
     })
 
-    router.delete(name + ":id", async(req, res) => {
+    router.delete(`${name}/:id`, async(req, res) => {
         try{
             const data = await model.findByIdAndRemove({_id: req.params.id});
             
@@ -76,7 +76,7 @@ const RESTRouter = function(name, model){
         }
     })
 
-    router.put(name + ":id", async(req, res) => {
+    router.put(`${name}/:id`, async(req, res) => {
         try{
             const data = await model.findOneAndUpdate(
                 {_id: req.params.id},

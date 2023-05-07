@@ -1,7 +1,7 @@
-const { Router } = require('express')
+const { RESTRouter } = require("../handler/rest_router");
 
 const Accommodation = require("../models/accommodation");
-const { RESTRouter } = require("../handler/rest_router");
+const accommodationRouter = RESTRouter("/accommodation", Accommodation);
 
 /**
  * @openapi
@@ -121,13 +121,15 @@ const { RESTRouter } = require("../handler/rest_router");
  *                      schema:
  *                          $ref: '#/components/schemas/Accommodation'
  *          responses:
- *              200:
+ *              201:
  *                  content:
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Accommodation'
+ *              400:
+ *                  description: Bad request.
  *              404:
- *                  description: The accommodation was not created
+ *                  description: Not found.
  *              401:
  *                  description: Unauthorized access.
  *              500:
@@ -136,7 +138,6 @@ const { RESTRouter } = require("../handler/rest_router");
  *              - Accommodation
  *              
  */
-const accommodationRouter = RESTRouter("/", Accommodation);
 
 /**
  * @openapi
@@ -156,16 +157,15 @@ const accommodationRouter = RESTRouter("/", Accommodation);
  *                          schema:
  *                              $ref: '#/components/schemas/Accommodation'
  *              400:
- *                  description: Bad request
- *              401:
- *                  description: Unauthorized access
- *              500:
- *                  description: Internal server error
+ *                  description: Bad request.
  *              404:
- *                  description: Not found
+ *                  description: Not found.
+ *              401:
+ *                  description: Unauthorized access.
+ *              500:
+ *                  description: Internal Server error.
  *          tags:
- *              - Accommodation
- *              
+ *              - Accommodation      
  */
 
 /**
@@ -319,21 +319,18 @@ const accommodationRouter = RESTRouter("/", Accommodation);
  *                  content:
  *                      application/json:
  *                          schema:
- *                              type: array
- *                              items:
- *                                  $ref: '#/components/schemas/Accommodation'
+ *                              $ref: '#/components/schemas/Accommodation'
  *              400:
- *                  description: Bad request
+ *                  description: Bad request.
+ *              404:
+ *                  description: Not found.
  *              401:
- *                  description:  Unauthorize access
+ *                  description: Unauthorized access.
  *              500:
- *                  description: Internal Service error
+ *                  description: Internal Server error.
  *          tags:
- *              - Accommodation
- *              
- *              
+ *              - Accommodation     
  */
-
 
 /**
  * @openapi
@@ -348,16 +345,22 @@ const accommodationRouter = RESTRouter("/", Accommodation);
  *                  required: true
  *          responses:
  *              200:
- *                  description: Accommodation was deleted
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/Accommodation'
+ *              400:
+ *                  description: Bad request.
  *              404:
- *                  description: The accommodation was not found
+ *                  description: Not found.
+ *              401:
+ *                  description: Unauthorized access.
  *              500:
- *                  description: Internal server error
+ *                  description: Internal Server error.
  *          tags:
  *              - Accommodation
  *              
  */
-
 
 /**
  * @openapi
@@ -382,14 +385,14 @@ const accommodationRouter = RESTRouter("/", Accommodation);
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Accommodation'
- *              404:
- *                  description: Not found
  *              400:
- *                  description: Bad request
+ *                  description: Bad request.
+ *              404:
+ *                  description: Not found.
  *              401:
- *                  description: Unauthorized access
+ *                  description: Unauthorized access.
  *              500:
- *                  description: Internal server error
+ *                  description: Internal Server error.
  *          tags:
  *              - Accommodation
  *              
