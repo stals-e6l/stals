@@ -1,4 +1,4 @@
-import { Button, Box, Grid, Typography, Rating } from '@mui/material'
+import { Button, Box, Grid, Typography, Rating, useTheme } from '@mui/material'
 import React from 'react'
 // import { useNavigate } from 'react-router-dom'
 import AccommodationFormModal from './AccommodationFormModal'
@@ -17,8 +17,27 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation }) => {
   const sourceSansPro = 'Source Sans Pro'
   // const navigate = useNavigate()
 
+  const theme = useTheme()
+
   if (!accommodation) {
-    return <div>{/* TODO: handle error */}</div>
+    return (
+      <Box
+        sx={{
+          // desktop
+          background: 'red',
+          // tablet
+          [theme.breakpoints.down('md')]: {
+            background: 'green',
+          },
+          // mobile
+          [theme.breakpoints.down('sm')]: {
+            background: 'orange',
+          },
+        }}
+      >
+        hello
+      </Box>
+    )
   }
 
   const accommType =
