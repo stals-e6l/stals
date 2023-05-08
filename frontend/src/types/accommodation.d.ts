@@ -39,7 +39,7 @@ interface IAccommodation {
   is_soft_deleted: boolean
 }
 
-interface IAccommodationFilter {
+interface IAccommodationsFilter {
   name?: string
   type?: TAccommodationType
   price?: number
@@ -52,23 +52,28 @@ interface IAccommodationFilter {
   furnishing?: TAccommodationFurnishing
 }
 
-interface IAccommodationState {
-  accommodations: IAccommodation[]
-  results: IAccommodation[]
-  dispatch: React.Dispatch<
-    IReducerAction<TAccommodationActionType, TAccommodationPayload>
-  >
+interface IDownloadAccommodations {
+  name: boolean
+  type: boolean
+  price: boolean
+  size_sqm: boolean
+  meters_from_uplb: boolean
+  min_pax: boolean
+  max_pax: boolean
+  num_rooms: boolean
+  num_beds: boolean
+  furnishing: boolean
 }
 
-// ACTIONS
+type IDownloadAccommodationsField = keyof IDownloadAccommodations
 
-type TAccommodationActionType =
-  | 'AC_INIT'
-  | 'AC_CREATE'
-  | 'AC_RETRIEVE_ALL'
-  | 'AC_RETRIEVE_BY_ID'
-  | 'AC_UPDATE'
-  | 'AC_DELETE'
-  | 'AC_SEARCH'
+interface IAccommodationsState {
+  accommodations: IAccommodation[] | null
+  dispatch: React.Dispatch<
+    IReducerAction<TAccommodationActionType, TAccommodationPayload>
+  > | null
+}
 
-type TAccommodationPayload = IAccommodation | IAccommodation[] | string
+type TAccommodationActionType = 'INIT_ACCOMMODATIONS'
+
+type TAccommodationPayload = IAccommodation[]

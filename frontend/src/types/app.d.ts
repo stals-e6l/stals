@@ -7,3 +7,5 @@
 //   data: T
 //   dispatch: (params: U) => T
 // }
+
+type IEvent = any

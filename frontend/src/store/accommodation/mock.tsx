@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-const mockAccommodations: IAccommodation[] = Array.from(Array(3)).map(_ => ({
+const mockAccommodations: IAccommodation[] = Array.from(Array(10)).map(_ => ({
   _id: faker.database.mongodbObjectId(),
   owner_id: faker.database.mongodbObjectId(),
   description: faker.lorem.paragraph(),
