@@ -54,11 +54,8 @@ const SearchAccommodations: React.FC<IProps> = () => {
 export default SearchAccommodations
 
 // TODO: theming
-const blue = '#154360'
 const green = '#60ce80'
 const grey = '#f0f0f0'
-const darkGrey = '#f5f5f7'
-const quicksand = 'Quicksand'
 const sourceSansPro = 'Source Sans Pro'
 
 const searchBoxStyles = (theme: Theme) => ({
