@@ -39,8 +39,9 @@ authMid('*', async(req, res, next) => {
             throw error;
         }
 
+        req.user = dbUser
         next();
-        
+
     } catch (err) {
         let code = ErrorHandler(err.name);
 
