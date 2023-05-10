@@ -1,105 +1,97 @@
 const { Router } = require('express')
 
-const { ERRORS } = require("./error_handler")
-const { ErrorHandler } = require("./error_handler")
+const { ERRORS, BAD_REQUEST, NOT_FOUND } = require('./error_handler')
+const { ErrorHandler } = require('./error_handler')
+const { CREATED, OK } = require('./success_handler')
 
-const RESTRouter = function(name, model){
-    const router = Router();
+const RESTRouter = function (name, model) {
+  // create router
+  const router = Router()
 
-    router.post(name, async(req, res) => {
-        try{
-            const newData = await model.create({ ...req.body });
+  // POST /[resource]
+  router.post(name, async (req, res) => {
+    try {
+      const newData = await model.create({ ...req.body })
 
-            if(!newData){
-                var error = new Error();
-                error.name = "NullError";
-                throw error;
-            }
+      if (!newData) {
+        throw BAD_REQUEST
+      }
 
-            res.status(201).json({ status: true, data: newData });
-        } catch(err){
-            let code = ErrorHandler(err.name);
-            
-            res.status(code).json({success: false, messages: [ERRORS[code]]});
-        }
-    })
+      res.status(CREATED).json({ status: true, data: newData })
+    } catch (err) {
+      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+    }
+  })
 
-    router.get(name, async(req, res) => {
-        try{
-            let query = {...req.query}
-            delete query["limit"];  //delete every query that's not part of the database model
-    
-            const limit = Number(req.query.limit) || 100;
-            const data = await model.find(query).limit(limit);
-            
-            res.status(200).json({success: true, data: data });
-        }catch(err){
-            let code = ErrorHandler(err.name);
-            
-            res.status(code).json({success: false, messages: [ERRORS[code]]});
-        }
-    })
+  // GET /[resource]
+  router.get(name, async (req, res) => {
+    try {
+      let query = { ...req.query }
+      delete query['limit'] //delete every query that's not part of the database model
 
-    router.get(`${name}/:id`, async(req, res) => {
-        try{
-            const data = await model.findById(req.params.id);
+      const limit = Number(req.query.limit) || 100
+      const data = await model.find(query).limit(limit)
 
-            if(!data){
-                var error = new Error();
-                error.name = "NullError";
-                throw error;
-            }
+      if (!data) {
+        throw BAD_REQUEST
+      }
 
-            res.status(200).json({success: true, data: data});
-        } catch(err){
-            let code = ErrorHandler(err.name);
-            
-            res.status(code).json({success: false, messages: [ERRORS[code]]});
-        }
-    })
+      res.status(OK).json({ success: true, data: data })
+    } catch (err) {
+      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+    }
+  })
 
-    router.delete(`${name}/:id`, async(req, res) => {
-        try{
-            const data = await model.findByIdAndRemove({_id: req.params.id});
-            
-            if(!data) {
-                var error = new Error();
-                error.name = "NullError";
-                throw error;
-            }
+  // GET /[resource]/:id
+  router.get(`${name}/:id`, async (req, res) => {
+    try {
+      const data = await model.findById(req.params.id)
 
-            res.status(200).json({success: true, data: null});
-        } catch(err){
-            let code = ErrorHandler(err.name);
-            
-            res.status(code).json({success: false, messages: [ERRORS[code]]});
-        }
-    })
+      if (!data) {
+        throw NOT_FOUND
+      }
 
-    router.put(`${name}/:id`, async(req, res) => {
-        try{
-            const data = await model.findOneAndUpdate(
-                {_id: req.params.id},
-                { ...req.body},
-                {new: true});
-    
-            if(!data){
-                var error = new Error();
-                error.name = "NullError";
-                throw error;
-            }
+      res.status(OK).json({ success: true, data: data })
+    } catch (err) {
+      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+    }
+  })
 
-            //WHERE TO PUT REQ BODY VALIDATORS?
+  // DELETE /[resource]/:id
+  router.delete(`${name}/:id`, async (req, res) => {
+    try {
+      const data = await model.findByIdAndRemove({ _id: req.params.id })
 
-            res.status(200).json({ success: true, data: data })
-        } catch(err){
-            let code = ErrorHandler(err.name);
-            
-            res.status(code).json({success: false, messages: [ERRORS[code]]});
-        }
-    })
+      if (!data) {
+        throw NOT_FOUND
+      }
 
-    return router;
+      res.status(OK).json({ success: true, data: null })
+    } catch (err) {
+      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+    }
+  })
+
+  // PUT /[resource]/:id
+  router.put(`${name}/:id`, async (req, res) => {
+    try {
+      const data = await model.findOneAndUpdate(
+        { _id: req.params.id },
+        { ...req.body },
+        { new: true }
+      )
+
+      if (!data) {
+        throw BAD_REQUEST
+      }
+
+      res.status(OK).json({ success: true, data: data })
+    } catch (err) {
+      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+    }
+  })
+
+  return router
 }
 
-module.exports = { RESTRouter };
+module.exports = { RESTRouter }
