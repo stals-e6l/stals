@@ -68,6 +68,13 @@ const theme = createTheme({
       fontWeight: 'normal',
     },
   },
+  // TODO: components customization
+  components: {
+    // sample on button
+    MuiButton: {
+      styleOverrides: {},
+    },
+  },
 })
 
 export default theme
