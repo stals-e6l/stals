@@ -10,12 +10,7 @@ const ERRORS = {
   SERVER_ERR: 'Internal server error',
 }
 
-const ErrorHandler = function (errorCode) {
-  return ERRORS[errorCode]
-}
-
 module.exports = {
-  ErrorHandler,
   ERRORS,
   BAD_REQUEST,
   UNAUTHORIZED,
