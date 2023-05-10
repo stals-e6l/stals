@@ -28,6 +28,42 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: [FONT.sourceSansPro, FONT.quicksand].join(', '),
+    h1: {
+      fontFamily: FONT.sourceSansPro,
+      fontWeight: 'bold',
+    },
+    h2: {
+      fontFamily: FONT.sourceSansPro,
+      fontWeight: 'bold',
+    },
+    h3: {
+      fontFamily: FONT.sourceSansPro,
+      fontWeight: 'bold',
+    },
+    h4: {
+      fontFamily: FONT.sourceSansPro,
+      fontWeight: 'bold',
+    },
+    h6: {
+      fontFamily: FONT.sourceSansPro,
+      fontWeight: 'bold',
+    },
+    h5: {
+      fontFamily: FONT.sourceSansPro,
+      fontWeight: 'bold',
+    },
+    body1: {
+      fontFamily: FONT.quicksand,
+      fontWeight: 'normal',
+    },
+    body2: {
+      fontFamily: FONT.quicksand,
+      fontWeight: 'normal',
+    },
+    button: {
+      fontFamily: FONT.quicksand,
+      fontWeight: 'normal',
+    },
   },
 })
 
