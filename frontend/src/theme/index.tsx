@@ -1,21 +1,6 @@
-// types
-type TColor =
-  | 'gray1'
-  | 'gray2'
-  | 'black'
-  | 'blue'
-  | 'green'
-  | 'textBlack'
-  | 'textGray'
+import { createTheme } from '@mui/material'
 
-type IColor = {
-  [key in TColor]: string
-}
-
-type TFont = 'sourceSansPro' | 'quicksand'
-type IFont = {
-  [key in TFont]: string
-}
+declare module '@mui/material/styles' {}
 
 export const COLOR: IColor = {
   gray1: '#f5f5f7',
@@ -32,5 +17,15 @@ export const FONT: IFont = {
   quicksand: 'Quicksand',
 }
 
-const theme = {}
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: COLOR.blue,
+    },
+    secondary: {
+      main: COLOR.green,
+    },
+  },
+})
+
 export default theme
