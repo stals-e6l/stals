@@ -17,7 +17,10 @@ export const FONT: IFont = {
   quicksand: 'Quicksand',
 }
 
+export const SPACING = 8
+
 const theme = createTheme({
+  spacing: SPACING,
   palette: {
     primary: {
       main: COLOR.blue,
