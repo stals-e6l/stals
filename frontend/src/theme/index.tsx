@@ -26,6 +26,9 @@ const theme = createTheme({
       main: COLOR.green,
     },
   },
+  typography: {
+    fontFamily: [FONT.sourceSansPro, FONT.quicksand].join(', '),
+  },
 })
 
 export default theme
