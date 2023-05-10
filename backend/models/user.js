@@ -2,6 +2,50 @@ const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema(
   {
+    name: {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      middleName: {
+        type: String,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+    },
+    gender: {
+      type: String,
+      enum: ['male', 'female', 'non-binary', 'prefer not to say'],
+      default: 'male',
+      required: true,
+    },
+    phones: {
+      landline: {
+        type: String,
+      },
+      mobile: {
+        type: String,
+      },
+    },
+    addresses: {
+      home: {
+        type: String,
+        required: true,
+      },
+      current: {
+        type: String,
+        required: true,
+      },
+    },
+    biography: {
+      type: String,
+    },
+    birthday: {
+      type: Date,
+      required: true,
+    },
     username: {
       type: String,
       required: true,
@@ -10,6 +54,26 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    avatar: {
+      url: {
+        type: String,
+      },
+      // filename:  {   // uses Multer
+      //   type: String,
+      // },
+      // desc:  {
+      //   type: String,
+      // },
+      // img:
+      // {
+      //   data: {
+      //     type: Buffer,
+      //   },
+      //   contentType: {
+      //     type: String
+      //   }
+      // },
     },
     email: {
       type: String,
@@ -22,6 +86,9 @@ const userSchema = new mongoose.Schema(
       enum: ['admin', 'owner', 'tenant'],
       default: 'admin',
       required: true,
+    },
+    organization: {
+      type: String,
     },
     // generatedReports: {
     //   // This will be the list of generated reports by this user
@@ -63,7 +130,16 @@ const userSchema = new mongoose.Schema(
     // }
     /*                               */
   },
-  { timestamps: true }
+  { timestamps: true },
+  {
+    virtuals: {
+      fullName: {
+        get() {
+          return this.name.first + ' ' + this.name.last
+        },
+      },
+    },
+  }
 )
 
 module.exports = mongoose.model('User', userSchema)

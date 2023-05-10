@@ -1,15 +1,15 @@
 const { Router } = require('express')
 
-var Forum = require("../models/forum");
+var Review = require("../models/review");
 var Accommodation = require("../models/accommodation");
 
-const forumRouter = Router()
+const reviewRouter = Router()
 
 /**
  * @openapi
  * components:
  *  schemas:
- *      Forum:
+ *      Review:
  *          type: object
  *          required:
  *              - content
@@ -25,10 +25,10 @@ const forumRouter = Router()
  *              status:
  *                  type: string
  *                  pattern: '^((active)|(archived)|(deleted))$'
- *                  description: Status of the forum/chat conversation
+ *                  description: Status of the review/chat conversation
  *              is_public:
  *                  type: boolean
- *                  description: Either public forum or private chat
+ *                  description: Either public review or private chat
  *              accommodation_id:
  *                  type: string
  *                  pattern: '^[0-9A-Fa-f]{24}$'
@@ -37,21 +37,21 @@ const forumRouter = Router()
 
 /**
  * @openapi
- * /api/forum:
+ * /api/review:
  *      post:
- *          description: Create forum
+ *          description: Create review
  *          requestBody:
  *              required: true
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Forum'
+ *                          $ref: '#/components/schemas/Review'
  *          responses:
  *              201:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Forum'
+ *                              $ref: '#/components/schemas/Review'
  *              400:
  *                  description: Bad request.
  *              401:
@@ -61,10 +61,10 @@ const forumRouter = Router()
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Forum
+ *              - Review
  *              
  */
-forumRouter.post("/", async function(req, res){
+reviewRouter.post("/", async function(req, res){
     try {
         // TODO: Check if user is authenticated
         // if (user is not authenticated){
@@ -81,9 +81,9 @@ forumRouter.post("/", async function(req, res){
             throw error;
         }
 
-        const savedForum = await Forum.create({ ...req.body });
+        const savedReview = await Review.create({ ...req.body });
 
-        res.status(201).json({ success: true, data: savedForum });
+        res.status(201).json({ success: true, data: savedReview });
 
     } catch(err) {
         let code;
@@ -111,9 +111,9 @@ forumRouter.post("/", async function(req, res){
 
 /**
  * @openapi
- * /api/forum/{id}:
+ * /api/review/{id}:
  *      get:
- *          description: Get forum by id
+ *          description: Get review by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -125,7 +125,7 @@ forumRouter.post("/", async function(req, res){
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Forum'
+ *                              $ref: '#/components/schemas/Review'
  *              400:
  *                  description: Bad request
  *              401:
@@ -133,23 +133,23 @@ forumRouter.post("/", async function(req, res){
  *              500:
  *                  description: Internal server error
  *              404:
- *                  description: Forum could not be found
+ *                  description: Review could not be found
  *          tags:
- *              - Forum
+ *              - Review
  *              
  */
-forumRouter.get('/:id', async function(req, res){
+reviewRouter.get('/:id', async function(req, res){
     try{
         if(!req.params.id){
             throw 400;
         }
-        const forum = await Forum.findById(req.params.id);
-        if(!forum){
-            const error = new Error("Forum does not exist");
+        const review = await Review.findById(req.params.id);
+        if(!review){
+            const error = new Error("Review does not exist");
             error.name = "NullError";
             throw error;
         }
-        res.status(200).json({success: true, data: forum});
+        res.status(200).json({success: true, data: review});
     } catch(err){
         let code;
 
@@ -175,9 +175,9 @@ forumRouter.get('/:id', async function(req, res){
 
 /**
  * @openapi
- * /api/forum:
+ * /api/review:
  *      get:
- *          description: Get all forums
+ *          description: Get all reviews
  *          parameters:
  *              -   in: query
  *                  name: content
@@ -187,18 +187,18 @@ forumRouter.get('/:id', async function(req, res){
  *                      items:
  *                          type: string
  *                      example: ["string"]
- *                  description: The collection of comments of a user in the forum
+ *                  description: The collection of comments of a user in the review
  *              -   in: query
  *                  name: status
  *                  schema:
  *                      type: string
  *                      enum: ["active", "archived", "deleted"]
- *                  description: The status of the Forum
+ *                  description: The status of the Review
  *              -   in: query
  *                  name: is_public
  *                  schema:
  *                      type: boolean
- *                  description: Type of Forum either public or private.
+ *                  description: Type of Review either public or private.
  *              -   in: query
  *                  name: accommodation_id
  *                  schema:
@@ -209,7 +209,7 @@ forumRouter.get('/:id', async function(req, res){
  *                  name: limit
  *                  schema:
  *                      type: number
- *                  description: Number of forums to return
+ *                  description: Number of reviews to return
  * 
  *          responses:
  *              200:
@@ -218,7 +218,7 @@ forumRouter.get('/:id', async function(req, res){
  *                          schema:
  *                              type: array
  *                              items:
- *                                  $ref: '#/components/schemas/Forum'
+ *                                  $ref: '#/components/schemas/Review'
  *              400:
  *                  description: Bad request
  *              401:
@@ -226,19 +226,19 @@ forumRouter.get('/:id', async function(req, res){
  *              500:
  *                  description: Internal Service error
  *          tags:
- *              - Forum
+ *              - Review
  *              
  *              
  */
-forumRouter.get('/', async function(req, res){
+reviewRouter.get('/', async function(req, res){
     try{
         let query = {...req.query}
         delete query["limit"];  //delete every query that's not part of the database model
         
         const limit = Number(req.query.limit) || 100;
-        const forums = await Forum.find(query).limit(limit);
+        const reviews = await Review.find(query).limit(limit);
         
-        res.status(200).json({success:true, data:forums});
+        res.status(200).json({success:true, data:reviews});
     } catch(err){
         let code;
         switch(err.name){
@@ -263,9 +263,9 @@ forumRouter.get('/', async function(req, res){
 
 /**
  * @openapi
- * /api/forum/{id}:
+ * /api/review/{id}:
  *      delete:
- *          description: Delete forum by id
+ *          description: Delete review by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -274,21 +274,21 @@ forumRouter.get('/', async function(req, res){
  *                  required: true
  *          responses:
  *              200:
- *                  description: Forum was deleted
+ *                  description: Review was deleted
  *              404:
- *                  description: The forum was not found
+ *                  description: The review was not found
  *              500:
  *                  description: Internal server error
  *          tags:
- *              - Forum
+ *              - Review
  *              
  */
-forumRouter.delete('/:id', async function(req, res){
+reviewRouter.delete('/:id', async function(req, res){
     try{
-        const removedForum = await Forum.findByIdAndRemove({_id: req.params.id});
+        const removedReview = await Review.findByIdAndRemove({_id: req.params.id});
         
-        if (!removedForum) {
-            const error= new Error("Forum does not exist");
+        if (!removedReview) {
+            const error= new Error("Review does not exist");
             error.name="NullError";
             throw error;
         } else {
@@ -322,9 +322,9 @@ forumRouter.delete('/:id', async function(req, res){
 
 /**
  * @openapi
- * /api/forum/{id}:
+ * /api/review/{id}:
  *      put:
- *          description: Edit forum by id
+ *          description: Edit review by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -336,26 +336,26 @@ forumRouter.delete('/:id', async function(req, res){
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Forum'
+ *                          $ref: '#/components/schemas/Review'
  *          responses:
  *              200:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Forum'
+ *                              $ref: '#/components/schemas/Review'
  *              400:
  *                  description: Bad request.
  *              401:
  *                  description: Unauthorized access.
  *              404:
- *                  description: Not found (For accommodation and forum).
+ *                  description: Not found (For accommodation and review).
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Forum
+ *              - Review
  *              
  */
-forumRouter.put('/:id', async function(req, res){
+reviewRouter.put('/:id', async function(req, res){
     try{
 
         const refAccom = await Accommodation.findById(req.body.accommodation_id);
@@ -371,18 +371,18 @@ forumRouter.put('/:id', async function(req, res){
             throw error;
         }
 
-        const editedForum = await Forum.findOneAndUpdate(
+        const editedReview = await Review.findOneAndUpdate(
             {_id: req.params.id},
             { ...req.body},
             {new: true});
 
-        if(!editedForum){
-            const error = new Error("Forum does not exist");
+        if(!editedReview){
+            const error = new Error("Review does not exist");
             error.name = "NullError";
             throw error;
         }
 
-        res.status(200).json({ success: true, data: editedForum })
+        res.status(200).json({ success: true, data: editedReview })
 
     } catch(err) {
         let code;
@@ -412,4 +412,4 @@ forumRouter.put('/:id', async function(req, res){
 
 });
 
-module.exports = forumRouter;
+module.exports = reviewRouter;
