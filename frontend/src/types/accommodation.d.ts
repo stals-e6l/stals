@@ -39,10 +39,6 @@ interface IAccommodation {
   is_soft_deleted: boolean
 }
 
-type IAccommodationStore = {
-  [key: string]: IAccommodation
-}
-
 interface IAccommodationsFilter {
   name?: string
   type?: TAccommodationType
@@ -72,7 +68,7 @@ interface IDownloadAccommodations {
 type IDownloadAccommodationsField = keyof IDownloadAccommodations
 
 interface IAccommodationsState {
-  accommodations: IAccommodationsStore | null
+  accommodations: IMap<IAccommodation> | null
   dispatch: React.Dispatch<
     IReducerAction<TAccommodationActionType, TAccommodationPayload>
   > | null

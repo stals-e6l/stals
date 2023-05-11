@@ -74,7 +74,11 @@ export const retrieveAccommodations = () => {
 }
 
 export const retrieveOneAccommodation = (id: string) => {
-  // TODO:
+  const { accommodations } =
+    React.useContext<IAccommodationsState>(accommodationContext)
+
+  if (!id || !accommodations) return null
+  return accommodations[id]
 }
 
 export const filterAccommodations = () => {
