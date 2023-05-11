@@ -13,14 +13,6 @@ const accommodationFurnishingEnum = [
   'fully_furnished',
 ]
 
-const accommodationType = {
-  hotel: 'hotel',
-  apartment: 'apartment',
-  bedspace: 'bedspace',
-  dormitory: 'dormitory',
-  transient: 'transient',
-}
-
 const accommodationSchema = new mongoose.Schema(
   {
     user_id: { type: mongoose.Schema.ObjectId, ref: 'User', required: false },
