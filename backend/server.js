@@ -6,7 +6,7 @@ const swaggerJsdoc = require('swagger-jsdoc')
 const cors = require('cors')
 const { connectDb } = require('./db')
 var bodyParser = require("body-parser");
-const authGuard = require('./handler/auth_middleware');
+const { authGuard } = require('./handler/auth_middleware');
 
 const server = express()
 const PORT = 5000
@@ -38,12 +38,12 @@ server.use(
 server.use(bodyParser.json());
 
 /** INSERT API BELOW */
+server.use('/api', require('./api/auth'))
 server.use(authGuard)
 server.use('/api/ping', require('./api/ping'))
 server.use('/api', require('./api/accommodation'))
 server.use('/api/forum', require('./api/forum'))
 server.use('/api/report', require('./api/report'))
-server.use('/api', require('./api/auth'))
 /** END API */
 
 const startServer = async () => {

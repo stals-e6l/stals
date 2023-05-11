@@ -107,6 +107,9 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *              is_soft_deleted:
  *                  type: boolean
  *                  description: Accommodation is soft deleted
+ * 
+ * security:
+ *      - bearerAuth: []
  */
 
 /**
@@ -114,6 +117,8 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  * /api/accommodation:
  *      post:
  *          description: Adds accommodation
+ *          security:
+ *              -   bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
@@ -144,6 +149,8 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  * /api/accommodation/{id}:
  *      get:
  *          description: Get accommodation by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -173,6 +180,8 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  * /api/accommodation:
  *      get:
  *          description: Get all accommodations
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
  *                  name: name
@@ -337,6 +346,8 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  * /api/accommodation/{id}:
  *      delete:
  *          description: Delete accommodation by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -367,6 +378,8 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  * /api/accommodation/{id}:
  *      put:
  *          description: Edit accommodation by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id

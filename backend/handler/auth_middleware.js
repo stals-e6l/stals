@@ -1,49 +1,45 @@
 const jwt = require("jsonwebtoken");
 
-const { ERRORS } = require("./error_handler")
-const { ErrorHandler } = require("./error_handler")
+const { ERRORS, UNAUTHORIZED } = require('./error_handler')
+const { ErrorHandler } = require('./error_handler')
+const User = require('../models/user')
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 
 const authGuard = async(req, res, next) => {
     try {
         const authHeader = req.headers.authorization
+        console.log(authHeader)
     
         if (!authHeader) {
-            var error = new Error();
-            error.name = "AuthError";
-            throw error;
-        }
-    
-        const [authMethod, token] = authHeader.split(' ')
-    
-        if (authMethod !== 'Bearer') {
-            var error = new Error();
-            error.name = "AuthError";
-            throw error;
-        }
-    
-        if (!token) {
-            var error = new Error();
-            error.name = "AuthError";
-            throw error;
-        }
-    
-        const decoded = jwt.verify(token, PRIVATE_KEY)
-        const dbUser = await User.findById(decoded.id)
-    
-        if (!dbUser) {
-            var error = new Error();
-            error.name = "AuthError";
-            throw error;
+            throw UNAUTHORIZED;
         }
 
+        const [authMethod, token] = authHeader.split(' ')
+        console.log(authMethod)
+        console.log(token)
+    
+        if (authMethod !== 'Bearer') {
+            throw UNAUTHORIZED;
+        }
+
+        if (!token) {
+            throw UNAUTHORIZED;
+        }
+
+        const decoded = jwt.verify(token, PRIVATE_KEY)
+        const dbUser = await User.findById(decoded.id)
+        console.log(dbUser)
+    
+        if (!dbUser) {
+            throw UNAUTHORIZED;
+        }
         req.user = dbUser
         next();
 
-    } catch (err) {
-        let code = ErrorHandler(err.name);
-
-        res.status(code).json({success: false, messages: [ERRORS[code]]});
+    } catch (err){
+        res.status(err).json({ success: false, messages: [ERRORS[err]] })
     }
 }
+
+module.exports = { authGuard };
