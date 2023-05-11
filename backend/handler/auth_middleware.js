@@ -4,9 +4,8 @@ const { ERRORS } = require("./error_handler")
 const { ErrorHandler } = require("./error_handler")
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
-const authMid = router();
 
-authMid('*', async(req, res, next) => {
+const authGuard = async(req, res, next) => {
     try {
         const authHeader = req.headers.authorization
     
@@ -47,4 +46,4 @@ authMid('*', async(req, res, next) => {
 
         res.status(code).json({success: false, messages: [ERRORS[code]]});
     }
-})
+}
