@@ -1,5 +1,3 @@
-// TODO:  make owner_id required in future sprints
-
 const mongoose = require('mongoose')
 
 const accommodationTypeEnum = [
@@ -15,17 +13,24 @@ const accommodationFurnishingEnum = [
   'fully_furnished',
 ]
 
+const accommodationType = {
+  hotel: 'hotel',
+  apartment: 'apartment',
+  bedspace: 'bedspace',
+  dormitory: 'dormitory',
+  transient: 'transient',
+}
+
 const accommodationSchema = new mongoose.Schema(
   {
-    // nullable
-    owner_id: { type: mongoose.Schema.ObjectId, ref: 'User', required: false },
+    user_id: { type: mongoose.Schema.ObjectId, ref: 'User', required: false },
     description: { type: String, required: false },
-    // required
     name: { type: String, required: true },
     image: {
       url: {
         type: String,
       },
+      // TODO: sprint 5
       // filename:  {   // uses Multer
       //   type: String,
       // }F
@@ -42,30 +47,27 @@ const accommodationSchema = new mongoose.Schema(
       //   }
       // },
     },
-    rating: {
-      type: Number,
-      required: true,
-    },
     address: { type: String, required: true },
     type: {
       type: String,
-      enum: accommodationTypeEnum,
       required: true,
+      enum: accommodationTypeEnum,
     },
-    price: { type: Number, required: true },
-    size_sqm: { type: Number, required: true },
-    meters_from_uplb: { type: Number, required: true },
-    landmarks: { type: [String], required: true, default: [] },
-    min_pax: { type: Number, required: true },
-    max_pax: { type: Number, required: true },
-    num_rooms: { type: Number, required: true },
-    num_beds: { type: Number, required: true },
-    num_views: { type: Number, required: true },
     furnishing: {
       type: String,
       required: true,
       enum: accommodationFurnishingEnum,
     },
+    min_price: { type: Number, required: true, min: 0 },
+    max_price: { type: Number, required: true },
+    size_sqm: { type: Number, required: true, min: 0 },
+    meters_from_uplb: { type: Number, required: true, min: 0 },
+    min_pax: { type: Number, required: true, min: 0 },
+    max_pax: { type: Number, required: true },
+    num_rooms: { type: Number, required: true, min: 0 },
+    num_beds: { type: Number, required: true , min: 0},
+    num_views: { type: Number, required: true, min: 0 },
+    landmarks: { type: [String], required: true, default: [] },
     cooking_rules: { type: [String], required: true, default: [] },
     pet_rules: { type: [String], required: true, default: [] },
     other_rules: { type: [String], required: true, default: [] },
