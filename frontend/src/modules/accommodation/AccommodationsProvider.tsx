@@ -15,7 +15,7 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   // events
   const initAccommodations = async () => {
     dispatch({
-      type: 'INIT_ACCOMMODATIONS',
+      type: 'SET_ACCOMMODATIONS',
       payload: mockAccommodations, // TODO: PM's job (api call)
     })
   }
@@ -47,7 +47,7 @@ const accommodationReducer = (
   action: IReducerAction<TAccommodationActionType, TAccommodationPayload>
 ): IAccommodationsState => {
   switch (action.type) {
-    case 'INIT_ACCOMMODATIONS':
+    case 'SET_ACCOMMODATIONS':
       return {
         ...state,
         accommodations: action.payload as IAccommodation[],
@@ -88,7 +88,7 @@ export const filterAccommodations = () => {
 
     // dispatch
     dispatch({
-      type: 'INIT_ACCOMMODATIONS',
+      type: 'SET_ACCOMMODATIONS',
       payload: [],
     })
   }
