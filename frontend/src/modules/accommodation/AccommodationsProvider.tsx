@@ -64,6 +64,10 @@ const accommodationReducer = (
 
 /// ACTIONS
 
+export const initAccommodations = () => {
+  // TODO:
+}
+
 export const createAccommodation = () => {
   // TODO:
 }
