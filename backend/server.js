@@ -42,7 +42,7 @@ server.use('/api', require('./api/auth'))
 server.use(authGuard)
 server.use('/api/ping', require('./api/ping'))
 server.use('/api', require('./api/accommodation'))
-server.use('/api/forum', require('./api/forum'))
+server.use('/api/review', require('./api/review'))
 server.use('/api/report', require('./api/report'))
 /** END API */
 

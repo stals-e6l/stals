@@ -1,7 +1,7 @@
-const { RESTRouter } = require("../handler/rest_router");
+const { RESTRouter } = require('../handler/rest_router')
 
-const Accommodation = require("../models/accommodation");
-const accommodationRouter = RESTRouter("/accommodation", Accommodation);
+const Accommodation = require('../models/v2/accommodation')
+const accommodationRouter = RESTRouter('/accommodation', Accommodation)
 
 /**
  * @openapi
@@ -52,7 +52,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *                  description: Accommodation distance from uplb in meters
  *              landmarks:
  *                  type: array
- *                  items: 
+ *                  items:
  *                      type: string
  *                  description: Accommodation nearest landmarks
  *              min_pax:
@@ -93,7 +93,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *                  type: array
  *                  items:
  *                      type: string
- *                  description: Accommodation safety and security  
+ *                  description: Accommodation safety and security
  *              appliances:
  *                  type: array
  *                  items:
@@ -141,7 +141,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *                  description: Internal Server error.
  *          tags:
  *              - Accommodation
- *              
+ *
  */
 
 /**
@@ -172,7 +172,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Accommodation      
+ *              - Accommodation
  */
 
 /**
@@ -192,7 +192,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *                  name: address
  *                  schema:
  *                      type: string
- *                  description: The address of accommodation 
+ *                  description: The address of accommodation
  *              -   in: query
  *                  name: type
  *                  schema:
@@ -203,7 +203,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *                  name: description
  *                  schema:
  *                      type: string
- *                  description: The description of accommodation 
+ *                  description: The description of accommodation
  *              -   in: query
  *                  name: price
  *                  schema:
@@ -338,7 +338,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Accommodation     
+ *              - Accommodation
  */
 
 /**
@@ -370,7 +370,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *                  description: Internal Server error.
  *          tags:
  *              - Accommodation
- *              
+ *
  */
 
 /**
@@ -408,7 +408,7 @@ const accommodationRouter = RESTRouter("/accommodation", Accommodation);
  *                  description: Internal Server error.
  *          tags:
  *              - Accommodation
- *              
+ *
  */
 
-module.exports = accommodationRouter;
+module.exports = accommodationRouter
