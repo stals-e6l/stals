@@ -1,5 +1,6 @@
 import React from 'react'
 import { mockAccommodations } from '../../store/accommodation/mock'
+import toMap from '../../utils/toMap'
 
 interface IProps {
   children?: React.ReactNode
@@ -22,6 +23,8 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   React.useEffect(() => {
     initAccommodations()
   }, [])
+
+  console.log({ accommodationsState: state })
 
   return (
     <accommodationContext.Provider
@@ -50,7 +53,7 @@ const accommodationReducer = (
     case 'SET_ACCOMMODATIONS':
       return {
         ...state,
-        accommodations: action.payload as IAccommodation[],
+        accommodations: toMap<IAccommodation>(action.payload, '_id'),
       }
 
     default:
