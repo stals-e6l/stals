@@ -1,8 +1,8 @@
 import { Box, Grid, Typography } from '@mui/material'
 import React from 'react'
-import { colors, fontFamily } from '../../theme'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
+import { COLOR, FONT } from '../../theme'
 
 interface IProps {
   children?: React.ReactNode
@@ -20,7 +20,7 @@ const AccommodationResults: React.FC<IProps> = () => {
       <Typography
         sx={{
           color: 'black',
-          fontFamily: fontFamily,
+          fontFamily: FONT.sourceSansPro,
           fontWeight: 'bold',
           fontSize: '25px',
           display: 'flex',
@@ -31,7 +31,7 @@ const AccommodationResults: React.FC<IProps> = () => {
         {' '}
         <Typography
           sx={{
-            color: colors.green,
+            color: COLOR.green,
             fontFamily: 'inherit',
             fontWeight: 'inherit',
             fontSize: 'inherit',
