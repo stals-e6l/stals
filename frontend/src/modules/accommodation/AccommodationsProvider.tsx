@@ -58,10 +58,20 @@ const accommodationReducer = (
   }
 }
 
+/// ACTIONS
+
+export const createAccommodation = () => {
+  // TODO:
+}
+
 export const retrieveAccommodations = () => {
   const { accommodations } =
     React.useContext<IAccommodationsState>(accommodationContext)
   return accommodations
+}
+
+export const retrieveOneAccommodation = (id: string) => {
+  // TODO:
 }
 
 export const filterAccommodations = () => {
@@ -71,6 +81,7 @@ export const filterAccommodations = () => {
   if (!dispatch) return
 
   return async (filter: IAccommodationsFilter) => {
+    // TODO:
     // get filters
 
     // call api
@@ -81,4 +92,12 @@ export const filterAccommodations = () => {
       payload: [],
     })
   }
+}
+
+export const updateAccommodation = () => {
+  // TODO:
+}
+
+export const deleteAccommodation = () => {
+  // TODO:
 }
