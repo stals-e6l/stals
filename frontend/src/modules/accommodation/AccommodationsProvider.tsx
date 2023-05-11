@@ -1,6 +1,7 @@
 import React from 'react'
 import { mockAccommodations } from '../../store/accommodation/mock'
 import toMap from '../../utils/toMap'
+import toArray from '../../utils/toArray'
 
 interface IProps {
   children?: React.ReactNode
@@ -70,7 +71,8 @@ export const createAccommodation = () => {
 export const retrieveAccommodations = () => {
   const { accommodations } =
     React.useContext<IAccommodationsState>(accommodationContext)
-  return accommodations
+  if (!accommodations) return null
+  return toArray<IAccommodation>(accommodations)
 }
 
 export const retrieveOneAccommodation = (id: string) => {
