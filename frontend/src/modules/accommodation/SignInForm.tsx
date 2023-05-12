@@ -1,10 +1,17 @@
-import { Box, Typography, TextField, Button, useTheme } from '@mui/material'
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  useTheme,
+  Dialog,
+} from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/Images/Logo_Green.png'
 import Header from '../../components/header'
 
-// import SignUp from '../../pages/Auth/SignUp'
+import SignUpForm from './SignUpForm'
 // import { signIn } from '../../store/auth/action'
 
 interface IProps {
@@ -20,9 +27,9 @@ const SignInForm: React.FC<IProps> = () => {
     username: '',
     password: '',
   })
-  // const [open, setOpen] = React.useState(false)
-  // const handleOpen = () => setOpen(true)
-  // const handleClose = () => setOpen(false)
+  const [open, setOpen] = React.useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
 
   const handleSignIn = () => {
     // TODO: PM's job, refine the styling for now
@@ -34,7 +41,7 @@ const SignInForm: React.FC<IProps> = () => {
 
   return (
     <React.Fragment>
-        <Header />
+      <Header />
 
       <Box sx={{ display: 'flex' }}>
         <Box
@@ -153,17 +160,23 @@ const SignInForm: React.FC<IProps> = () => {
               variant="contained"
               fullWidth
               sx={{ backgroundColor: '#154360', marginTop: '20px' }}
-              // onClick={handleOpen}
+              onClick={handleOpen}
             >
               Create new account
             </Button>
-            {/* <Dialog
+            <Dialog
               open={open}
               onClose={handleClose}
-              sx={{ width: '30%', margin: '0 auto' }}
+              sx={{
+                width: '30%',
+                margin: '0 auto',
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%',    
+                },
+              }}
             >
-              <SignUp onClose={handleClose} />
-            </Dialog> */}
+              <SignUpForm />
+            </Dialog>
           </Box>
         </Box>
       </Box>
