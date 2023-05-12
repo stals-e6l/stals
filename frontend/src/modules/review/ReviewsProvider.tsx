@@ -4,8 +4,8 @@ interface IProps {
   children?: React.ReactNode
 }
 
-const ReviewsProvider: React.FC<IProps> = () => {
-  return <div>hello</div>
+const ReviewsProvider: React.FC<IProps> = ({ children }) => {
+  return <div>{children}</div>
 }
 
 export default ReviewsProvider
