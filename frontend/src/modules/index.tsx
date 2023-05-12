@@ -20,6 +20,7 @@ const ModulesViewer: React.FC<IProps> = () => {
     '/SearchAccommodations',
     '/SignInForm',
     '/SignUpForm',
+    '/AccommodationDetail',
   ]
   return (
     <AccommodationsProvider>

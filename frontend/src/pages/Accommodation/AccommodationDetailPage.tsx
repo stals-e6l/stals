@@ -6,7 +6,7 @@ import location from '../../assets/Images/Ellens.jpg'
 // import pin from '../../assets/Map pin - Green.png'
 import { Box, Container, Typography, Grid } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import Forum from '../Forum/Forum'
+import Forum from '../../modules/review/Forum'
 import { setCurrentAccommodation } from '../../store/forum/actions'
 
 interface IProps {

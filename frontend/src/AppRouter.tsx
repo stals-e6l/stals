@@ -21,6 +21,7 @@ import SearchAccommodations from './modules/accommodation/SearchAccommodations'
 import SignInForm from './modules/accommodation/SignInForm'
 import SignUpForm from './modules/accommodation/SignUpForm'
 import ModulesViewer from './modules'
+import AccommodationDetail from './modules/accommodation/AccommodationDetail'
 
 interface IProps {
   children?: React.ReactNode
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
       {
         path: '/SignUpForm',
         element: <SignUpForm />,
+      },
+      {
+        path: '/AccommodationDetail',
+        element: <AccommodationDetail />,
       },
     ],
   },

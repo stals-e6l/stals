@@ -3,6 +3,7 @@ import location from '../../assets/Images/Ellens.jpg'
 import { Box, Container, Typography, Grid } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { retrieveAccommodations } from './AccommodationsProvider'
+import Forum from '../review/Forum'
 
 interface IProps {
   children?: React.ReactNode
