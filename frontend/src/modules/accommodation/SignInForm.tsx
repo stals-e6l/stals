@@ -12,7 +12,6 @@ import logo from '../../assets/Images/Logo_Green.png'
 import Header from '../../components/header'
 
 import SignUpForm from './SignUpForm'
-// import { signIn } from '../../store/auth/action'
 
 interface IProps {
   children?: React.ReactNode
@@ -61,7 +60,7 @@ const SignInForm: React.FC<IProps> = () => {
             component="img"
             sx={{
               display: 'block',
-              marginLeft: '50px',
+              marginLeft: theme.spacing(6),
               width: '50%',
             }}
             alt="green logo"
@@ -70,7 +69,7 @@ const SignInForm: React.FC<IProps> = () => {
           <Box
             sx={{
               display: 'block',
-              marginLeft: '50px',
+              marginLeft: theme.spacing(6),
               width: '40%',
             }}
           >
@@ -96,9 +95,9 @@ const SignInForm: React.FC<IProps> = () => {
             sx={{
               backgroundColor: '#f0f0f0',
               width: '45%',
-              marginRight: '50px',
-              padding: '30px',
-              borderRadius: '5px',
+              marginRight: theme.spacing(6),
+              padding: theme.spacing(3),
+              borderRadius: theme.spacing(1),
               boxShadow: '0px 3px 5px #888888',
               [theme.breakpoints.down('sm')]: {
                 width: '100%',
@@ -137,9 +136,9 @@ const SignInForm: React.FC<IProps> = () => {
               variant="contained"
               fullWidth
               sx={{
-                backgroundColor: '#154360',
-                marginTop: '20px',
-                marginBottom: '10px',
+                backgroundColor: theme.palette.primary.main,
+                marginTop: theme.spacing(3),
+                marginBottom: theme.spacing(2),
               }}
               onClick={handleSignIn}
             >
@@ -152,14 +151,14 @@ const SignInForm: React.FC<IProps> = () => {
               sx={{
                 width: '100%',
                 height: '2px',
-                backgroundColor: '#60ce80',
-                marginTop: '20px',
+                backgroundColor: theme.palette.secondary.main,
+                marginTop: theme.spacing(3),
               }}
             ></Box>
             <Button
               variant="contained"
               fullWidth
-              sx={{ backgroundColor: '#154360', marginTop: '20px' }}
+              sx={{ backgroundColor: theme.palette.primary.main, marginTop: theme.spacing(2) }}
               onClick={handleOpen}
             >
               Create new account

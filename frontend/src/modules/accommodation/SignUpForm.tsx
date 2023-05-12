@@ -7,9 +7,9 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
+  useTheme,
 } from '@mui/material'
 import React from 'react'
-// import { signUp } from '../../store/auth/action'
 
 interface IProps {
   children?: React.ReactNode
@@ -38,6 +38,8 @@ const SignUpForm: React.FC<IProps> = () => {
     // })
   }
 
+  const theme = useTheme()
+
   return (
     <Box
       sx={{
@@ -53,17 +55,16 @@ const SignUpForm: React.FC<IProps> = () => {
           backgroundColor: '#f0f0f0',
           width: '100%',
           height: '100%',
-          padding: '30px',
-          borderRadius: '5px',
-          boxShadow: '0px 3px 5px #888888',
+          padding: theme.spacing(2),
+          borderRadius: theme.spacing(1),
         }}
       >
         <Typography
           variant="h6"
           sx={{
             fontWeight: 'bold',
-            color: '#154360',
-            paddingBottom: '10px',
+            color: theme.palette.primary.main,
+            paddingBottom: theme.spacing(1),
           }}
         >
           Create an Account
@@ -138,7 +139,7 @@ const SignUpForm: React.FC<IProps> = () => {
           label={
             <Typography>
               I have read the{' '}
-              <Typography sx={{ display: 'inline', color: '#60ce80' }}>
+              <Typography sx={{ display: 'inline', color: theme.palette.secondary.main }}>
                 Data Privacy Act of 2012
               </Typography>
             </Typography>
@@ -150,11 +151,11 @@ const SignUpForm: React.FC<IProps> = () => {
           label={
             <Typography>
               I have read and agree to{' '}
-              <Typography sx={{ display: 'inline', color: '#60ce80' }}>
+              <Typography sx={{ display: 'inline', color: theme.palette.secondary.main }}>
                 AirVnV&apos;s Terms of Service
               </Typography>{' '}
               and{' '}
-              <Typography sx={{ display: 'inline', color: '#60ce80' }}>
+              <Typography sx={{ display: 'inline', color: theme.palette.secondary.main }}>
                 Privacy Policy
               </Typography>
               .
@@ -166,9 +167,9 @@ const SignUpForm: React.FC<IProps> = () => {
           variant="contained"
           fullWidth
           sx={{
-            backgroundColor: '#154360',
-            marginTop: '20px',
-            marginBottom: '10px',
+            backgroundColor: theme.palette.primary.main,
+                marginTop: theme.spacing(2),
+                marginBottom: theme.spacing(1),
           }}
           disabled={
             form.password.length === 0 || form.password !== form.confirm
