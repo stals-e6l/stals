@@ -1,12 +1,26 @@
-import { Button, Box, Grid, Typography, Rating, useTheme } from '@mui/material'
+import { Button, Box, Grid, Typography, Rating, useTheme, Card, CardMedia, CardContent, CardActionArea } from '@mui/material'
 import React from 'react'
 // import { useNavigate } from 'react-router-dom'
 import AccommodationFormModal from './AccommodationFormModal'
 import DeleteAccommodationFormModal from './DeleteAccommodationFormModal'
+import Image from "../../assets/Ellens.jpg"
 
 interface IProps {
   children?: React.ReactNode
   accommodation: IAccommodation
+}
+
+// This functions converts a string to sentence case format (e.g. transient space to Transient Space)
+function toSentenceCase( str: string ) {
+
+  str = str.toLowerCase();
+  let strSplit = str.split(' ');
+
+  for (var i=0; i<strSplit.length; i++) {
+    strSplit[i] = strSplit[i].charAt(0).toUpperCase() + strSplit[i].slice(1);
+  }
+
+  return strSplit.join(' ');
 }
 
 const AccommodationCard: React.FC<IProps> = ({ accommodation }) => {
@@ -19,130 +33,123 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation }) => {
 
   const theme = useTheme()
 
-  if (!accommodation) {
-    return (
-      <Box
-        sx={{
-          // desktop
-          background: 'red',
-          // tablet
-          [theme.breakpoints.down('md')]: {
-            background: 'green',
-          },
-          // mobile
-          [theme.breakpoints.down('sm')]: {
-            background: 'orange',
-          },
-        }}
-      >
-        hello
-      </Box>
-    )
-  }
-
-  const accommType =
-    accommodation.type.charAt(0).toUpperCase() + accommodation.type.slice(1)
-  const formattedPrice = 'Php ' + accommodation.price
-  let formattedName = accommodation.name
-
-  // Name text display will adjust depending on the size of the string
-  if (formattedName.length > 25)
-    formattedName = formattedName.slice(0, 21) + '...'
+  // if (!accommodation) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         // desktop
+  //         background: 'red',
+  //         // tablet
+  //         [theme.breakpoints.down('md')]: {
+  //           background: 'green',
+  //         },
+  //         // mobile
+  //         [theme.breakpoints.down('sm')]: {
+  //           background: 'orange',
+  //         },
+  //       }}
+  //     >
+  //       hello
+  //     </Box>
+  //   )
+  // }
 
   return (
-    <Button
-      sx={{
-        textTransform: 'none',
-        textAlign: 'left',
-      }}
-    >
-      <Box
-        sx={{
-          backgroundColor: darkGrey,
-          width: '300px',
-          height: '350px',
-          borderRadius: '20px',
-          boxShadow: '0px 4px 4px #6e6e73',
-          cursor: 'pointer',
-          ':hover': {
-            boxShadow: '0px 4px 15px #6e6e73',
-          },
-          transition: '0.3s all',
-        }}
-      >
-        <Box
-          onClick={() => {
-            // navigate(`${accommodation._id as string}`)
-          }}
+
+    // Initialize card
+    <Card sx={{
+      backgroundColor: darkGrey,
+      width: '300px',
+      borderRadius: '20px',
+      boxShadow: '0px 4px 4px #6e6e73',
+      cursor: 'pointer',
+      ':hover': {
+        boxShadow: '0px 4px 15px #6e6e73',
+      },
+      transition: '0.3s all',
+    }}>
+
+      <CardActionArea>
+
+        {/* Accommodation Image */}
+        <CardMedia
           component="img"
-          // src={Image}
-          sx={{
-            width: '100%',
-            height: '200px',
-            borderRadius: '20px 20px 5px 5px',
-          }}
+          height="200px"
+          image={Image}
         />
-        <Grid container direction="column" sx={{ paddingLeft: '15px' }}>
-          <Grid item>
+
+        <CardContent sx={{ wordSpacing: "10" }}>
+
+          {/* Type of Accommodation */}
+          <Typography
+            sx={{
+              fontFamily: quicksand,
+              color: 'black',
+            }}
+          >
+            {toSentenceCase( accommodation.type )}
+          </Typography>
+
+          {/* Name of Accommodation */}
+          <Typography
+            sx={{
+              fontFamily: sourceSansPro,
+              
+              fontWeight: 'bold',
+              fontSize: 'x-large',
+              color: blue,
+              whiteSpace: 'nowrap',
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {toSentenceCase( accommodation.name )}
+          </Typography>
+
+          <Box
+            sx={{
+              display: 'flex',
+            }}
+          >
+
+            {/* Rating */}
+            <Rating
+              value={4.5}
+              precision={0.5}
+              readOnly
+              sx={{
+                color: green,
+              }}
+            />
+
+            {/* Rating in Number */}
+            <Typography
+              sx={{
+                fontFamily: quicksand,
+                fontWeight: 'bold',
+                color: green,
+              }}
+            >
+              {' '}
+              {4.5}{' '}
+            </Typography>
+
+            {/* Number of Reviews */}
             <Typography
               sx={{
                 fontFamily: quicksand,
                 color: 'black',
+                marginLeft: '1%',
               }}
             >
-              {accommType}
+              ({10} reviews)
             </Typography>
-          </Grid>
-          <Grid item>
-            <Typography
-              sx={{
-                fontFamily: sourceSansPro,
-                fontSize: 'x-large',
-                fontWeight: 'bold',
-                color: blue,
-                whiteSpace: 'none',
-              }}
-            >
-              {formattedName}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Box
-              sx={{
-                display: 'flex',
-              }}
-            >
-              <Rating
-                value={4.5}
-                precision={0.5}
-                readOnly
-                sx={{
-                  color: green,
-                }}
-              />
-              <Typography
-                sx={{
-                  fontFamily: quicksand,
-                  fontWeight: 'bold',
-                  color: green,
-                }}
-              >
-                {' '}
-                {4.5}{' '}
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: quicksand,
-                  color: 'black',
-                  marginLeft: '1%',
-                }}
-              >
-                ({10} reviews)
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid>
-            <Typography
+          </Box>
+
+          <br />
+          
+          {/* Price */}
+          <Typography
               sx={{
                 fontFamily: sourceSansPro,
                 color: blue,
@@ -151,23 +158,14 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation }) => {
               }}
             >
               {' '}
-              {formattedPrice}{' '}
+              {/* Formats the number to currency format */}
+              Php {new Intl.NumberFormat().format(accommodation.price)}{' '}
             </Typography>
-          </Grid>
-          <Grid container>
-            <Grid item>
-              <AccommodationFormModal defaultValues={accommodation} />
-            </Grid>
-            <Grid item>
-              <DeleteAccommodationFormModal
-                accommodationId={accommodation._id as string}
-                isSoftDelete={false}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-      </Box>
-    </Button>
+
+        </CardContent>
+      </CardActionArea>
+    </Card>
+
   )
 }
 
