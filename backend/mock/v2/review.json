@@ -1,0 +1,66 @@
+[
+  {
+    "user_id": "user1",
+    "accommodation_id": "accommodation1",
+    "rating": 4,
+    "comment": "Great experience! The hotel room was clean and comfortable.",
+    "createdAt": "2023-05-13T14:00:00.000Z",
+    "updatedAt": "2023-05-13T14:00:00.000Z"
+  },
+  {
+    "user_id": "user2",
+    "accommodation_id": "accommodation2",
+    "rating": 5,
+    "comment": "The apartment exceeded my expectations. Spacious and well-furnished.",
+    "createdAt": "2023-05-13T14:15:00.000Z",
+    "updatedAt": "2023-05-13T14:15:00.000Z"
+  },
+  {
+    "user_id": "user3",
+    "accommodation_id": "accommodation3",
+    "rating": 3.5,
+    "comment": "The bedspace was affordable, but the facilities were quite basic.",
+    "createdAt": "2023-05-13T14:30:00.000Z",
+    "updatedAt": "2023-05-13T14:30:00.000Z"
+  },
+  {
+    "user_id": "user4",
+    "accommodation_id": "accommodation4",
+    "rating": 4.5,
+    "comment": "The transient room was perfect for a short stay. Clean and convenient location.",
+    "createdAt": "2023-05-13T14:45:00.000Z",
+    "updatedAt": "2023-05-13T14:45:00.000Z"
+  },
+  {
+    "user_id": "user5",
+    "accommodation_id": "accommodation5",
+    "rating": 4,
+    "comment": "Decent dormitory for students. Close to campus and friendly atmosphere.",
+    "createdAt": "2023-05-13T15:00:00.000Z",
+    "updatedAt": "2023-05-13T15:00:00.000Z"
+  },
+  {
+    "user_id": "user6",
+    "accommodation_id": "accommodation6",
+    "rating": 3,
+    "comment": "The hotel room was okay, but the noise from the nearby road was bothersome.",
+    "createdAt": "2023-05-13T15:15:00.000Z",
+    "updatedAt": "2023-05-13T15:15:00.000Z"
+  },
+  {
+    "user_id": "user7",
+    "accommodation_id": "accommodation7",
+    "rating": 5,
+    "comment": "Absolutely loved the apartment. Modern amenities and stunning city view.",
+    "createdAt": "2023-05-13T15:30:00.000Z",
+    "updatedAt": "2023-05-13T15:30:00.000Z"
+  },
+  {
+    "user_id": "user8",
+    "accommodation_id": "accommodation8",
+    "rating": 4.5,
+    "comment": "The bedspace was comfortable and the common areas were well-maintained.",
+    "createdAt": "2023-05-13T15:45:00.000Z",
+    "updatedAt": "2023-05-13T15:45:00.000Z"
+  }
+]
