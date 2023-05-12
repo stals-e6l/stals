@@ -1,6 +1,9 @@
-import { Box, Typography, TextField, Button } from '@mui/material'
+import { Box, Typography, TextField, Button, useTheme } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import logo from '../../assets/Images/Logo_Green.png'
+import Header from '../../components/header'
+
 // import SignUp from '../../pages/Auth/SignUp'
 // import { signIn } from '../../store/auth/action'
 
@@ -27,19 +30,26 @@ const SignInForm: React.FC<IProps> = () => {
     //   navigate('/accommodations')
     // })
   }
-  const boxStyle = {
-    height: '90vh',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
+  const theme = useTheme()
 
   return (
     <React.Fragment>
+        <Header />
+
       <Box sx={{ display: 'flex' }}>
-        <Box sx={boxStyle}>
+        <Box
+          sx={{
+            height: '90vh',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            [theme.breakpoints.down('sm')]: {
+              display: 'none',
+            },
+          }}
+        >
           <Box
             component="img"
             sx={{
@@ -48,7 +58,7 @@ const SignInForm: React.FC<IProps> = () => {
               width: '50%',
             }}
             alt="green logo"
-            // src={logo}
+            src={logo}
           />
           <Box
             sx={{
@@ -65,7 +75,16 @@ const SignInForm: React.FC<IProps> = () => {
             </Typography>
           </Box>
         </Box>
-        <Box sx={boxStyle}>
+        <Box
+          sx={{
+            height: '90vh',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Box
             sx={{
               backgroundColor: '#f0f0f0',
@@ -74,6 +93,12 @@ const SignInForm: React.FC<IProps> = () => {
               padding: '30px',
               borderRadius: '5px',
               boxShadow: '0px 3px 5px #888888',
+              [theme.breakpoints.down('sm')]: {
+                width: '100%',
+                height: '100%',
+                margin: 'auto auto',
+                borderRadius: '0px',
+              },
             }}
           >
             <Typography>Username</Typography>
