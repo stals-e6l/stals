@@ -1,5 +1,5 @@
 import React from 'react'
-import AppRouter from './AppRouter'
+import AppRouter from './app/AppRouter'
 import AppProvider from './app/AppProvider'
 import AppTheme from './app/AppTheme'
 
