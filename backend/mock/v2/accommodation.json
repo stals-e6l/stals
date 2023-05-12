@@ -1,5 +1,6 @@
 [
   {
+    "_id": "615b3a3d1f126d001ffdd7d5",
     "user_id": "user1",
     "description": "Cozy hotel room near the beach",
     "name": "Beach Hotel",
@@ -30,6 +31,7 @@
     "updatedAt": "2023-05-10T10:00:00.000Z"
   },
   {
+    "_id": "615b3a3d1f126d001ffdd7d6",
     "user_id": "user2",
     "description": "Spacious apartment in the city center",
     "name": "City Apartment",
@@ -60,6 +62,7 @@
     "updatedAt": "2023-05-11T12:30:00.000Z"
   },
   {
+    "_id": "615b3a3d1f126d001ffdd7d7",
     "user_id": "user4",
     "description": "Cozy transient room for short stays",
     "name": "Transient Room",
@@ -90,6 +93,7 @@
     "updatedAt": "2023-05-12T09:15:00.000Z"
   },
   {
+    "_id": "615b3a3d1f126d001ffdd7d8",
     "user_id": "user5",
     "description": "Student dormitory near the university",
     "name": "Campus Dorm",
