@@ -1,7 +1,7 @@
 import React from 'react'
-import { mockAccommodations } from '../../store/accommodation/mock'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
+import { apiGet } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -15,14 +15,13 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   })
 
   // events
-  const initAccommodations = async () => {
-    dispatch({
-      type: 'SET_ACCOMMODATIONS',
-      payload: mockAccommodations, // TODO: PM's job (api call)
-    })
-  }
   React.useEffect(() => {
-    initAccommodations()
+    initAccommodations().then(data => {
+      dispatch({
+        type: 'SET_ACCOMMODATIONS',
+        payload: data as IAccommodation[],
+      })
+    })
   }, [])
 
   console.log({ accommodationsState: state })
@@ -64,8 +63,16 @@ const accommodationReducer = (
 
 /// ACTIONS
 
-export const initAccommodations = () => {
-  // TODO:
+export const initAccommodations = async () => {
+  const res = await apiGet<IAccommodation[]>('mock/accommodations') // TODO: change to actual endpoint
+
+  if (res.data && res.success) {
+    return res.data
+  }
+
+  if (res.messages) {
+    throw new Error(res.messages[0])
+  }
 }
 
 export const createAccommodation = () => {
