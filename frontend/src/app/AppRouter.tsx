@@ -9,8 +9,8 @@ import DeleteAccommodationFormModal from '../modules/accommodation/DeleteAccommo
 import DownloadAccommodations from '../modules/accommodation/DownloadAccommodations'
 import FilterAccommodations from '../modules/accommodation/FilterAccommodations'
 import SearchAccommodations from '../modules/accommodation/SearchAccommodations'
-import SignInForm from '../modules/accommodation/SignInForm'
-import SignUpForm from '../modules/accommodation/SignUpForm'
+import SignInForm from '../modules/auth/SignInForm'
+import SignUpForm from '../modules/auth/SignUpForm'
 import ModulesViewer from '../modules'
 import AuthPage from '../pages/AuthPage'
 
