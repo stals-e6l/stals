@@ -120,8 +120,16 @@ export const signIn = () => {
   }
 }
 
-export const signUp = async (user: IUserSignUp) => {
-  // call api
+export const signUp = () => {
+  return async (user: IUserSignUp) => {
+    const res = await apiPost<IUserSignUp, IUser>('sign-up', {
+      payload: user,
+    })
+
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
+  }
 }
 
 export const signOut = () => {

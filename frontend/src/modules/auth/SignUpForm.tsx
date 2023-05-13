@@ -8,40 +8,47 @@ import {
   Checkbox,
   Button,
   useTheme,
-  colors,
 } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { COLOR } from '../../theme'
+import { signUp } from './AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const SignUpForm: React.FC<IProps> = () => {
-  // const signUpHandler = signUp()
+  // hooks
+  const theme = useTheme()
+  const onSignUp = signUp()
+
   // state
   const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
     username: '',
     password: '',
     email: '',
     role: 'admin',
+    full_name: {
+      first_name: 'Juan',
+      middle_name: '',
+      last_name: 'Dela Cruz',
+    },
+    gender: 'male',
+    address: {
+      home: 'Blah blah street',
+      current: 'Blah blah street',
+    },
+    birthday: String(new Date()),
     confirm: '',
   })
 
+  // events
   const handleSignUp = () => {
-    // TODO: PM's job, for now refine the styling
-    // signUpHandler({
-    //   username: form.username,
-    //   password: form.password,
-    //   email: form.email,
-    //   role: form.role,
-    // }).then(() => {
-    //   onClose()
-    // })
+    if (onSignUp) {
+      onSignUp(form)
+    }
   }
-
-  const theme = useTheme()
 
   return (
     <Box
@@ -90,7 +97,9 @@ const SignUpForm: React.FC<IProps> = () => {
           sx={{ backgroundColor: COLOR.white }}
           size="small"
           value={form.role}
-          onChange={e => setForm(prev => ({ ...prev, role: e.target.value }))}
+          onChange={e =>
+            setForm(prev => ({ ...prev, role: e.target.value as TUserRole }))
+          }
         >
           <MenuItem value={'admin'}>Admin</MenuItem>
           <MenuItem value={'tenant'}>Student</MenuItem>
