@@ -31,10 +31,6 @@ export default AppRouter
 
 const router = createBrowserRouter([
   {
-    path: ROUTES.auth,
-    element: <AuthPage />,
-  },
-  {
     path: '/',
     element: (
       <AuthGuard>
@@ -42,6 +38,10 @@ const router = createBrowserRouter([
       </AuthGuard>
     ),
     children: [
+      {
+        path: ROUTES.auth,
+        element: <AuthPage />,
+      },
       {
         path: '/AccommodationCard',
         element: <AccommodationCard accommodation={{} as any} />,
