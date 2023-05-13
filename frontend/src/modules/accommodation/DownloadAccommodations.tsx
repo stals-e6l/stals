@@ -73,6 +73,18 @@ const DownloadAccommodations: React.FC<IProps> = () => {
     'num_beds': 'Number of Beds',
     'furnishing': 'Furnishing Type ', 
   }
+  const accommType : header = {
+    'hotel': 'Hotel',
+    'apartment': 'Apartment',
+    'bedspace': 'Bedspace',
+    'dormitory': 'Dormitory',
+    'transient': 'Transient',
+  }
+  const furnishing : header = {
+    'unfurnished': 'Unfurnished',
+    'semifurnished': 'Semifurnished',
+    'fully_furnished': 'Fully Furnished',
+  }
   const downloadFields: IDownloadAccommodationsField[] = [
     'name',
     'type',
@@ -330,7 +342,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                           <TableCell sx={{textAlign: 'center'}}>{accommodation.name}</TableCell>
                         )}
                         {fields.type && (
-                          <TableCell sx={{textAlign: 'center'}}>{accommodation.type}</TableCell>
+                          <TableCell sx={{textAlign: 'center'}}>{accommType[accommodation.type]}</TableCell>
                         )}
                         {fields.price && (
                           <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.price} thousandSeparator=","/></TableCell>
@@ -354,7 +366,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                           <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'bed'} plural={'beds'} count={accommodation.num_beds} /></TableCell>
                         )}
                         {fields.furnishing && (
-                          <TableCell sx={{textAlign: 'center'}}>{accommodation.furnishing}</TableCell>
+                          <TableCell sx={{textAlign: 'center'}}>{furnishing[accommodation.furnishing]}</TableCell>
                         )}
                       </TableRow>
                     ))}
