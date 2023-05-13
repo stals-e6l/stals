@@ -1,6 +1,7 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
 import { useNavigate } from 'react-router-dom'
+import { apiPost } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -104,12 +105,18 @@ export const signIn = () => {
   if (!dispatch) return null
 
   return async (user: IUserSignIn) => {
-    // call api
+    const res = await apiPost<IUserSignIn, string>('sign-in', {
+      payload: user,
+    })
 
-    saveToken('')
-
-    // save token
-    dispatch({ type: 'SET_TOKEN', payload: '' })
+    if (res.success && res.data) {
+      saveToken(res.data)
+      dispatch({ type: 'SET_TOKEN', payload: res.data })
+    } else {
+      if (res.messages) {
+        throw new Error(res.messages[0])
+      }
+    }
   }
 }
 
