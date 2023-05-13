@@ -1,4 +1,5 @@
 import React from 'react'
+import { saveToken, getToken, removeToken } from '../../services/localStorage'
 
 interface IProps {
   children?: React.ReactNode
@@ -11,6 +12,20 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
     token: null,
     dispatch: null,
   })
+
+  React.useEffect(() => {
+    initAuth().then(token => {
+      dispatch({ type: 'SET_TOKEN', payload: token })
+    })
+  }, [])
+
+  React.useEffect(() => {
+    if (!state.user) {
+      // redirect to /sigin
+    } else {
+      // redirect to /[app]
+    }
+  }, [state.user])
 
   return (
     <authContext.Provider
@@ -56,6 +71,11 @@ const authReducer = (
 }
 
 // ACTIONS
+const initAuth = async () => {
+  const token = getToken()
+  return token
+}
+
 const signIn = async () => {
   const { dispatch } = useAuth()
 
@@ -63,6 +83,8 @@ const signIn = async () => {
 
   return async (user: IUserSignIn) => {
     // call api
+
+    saveToken('')
 
     // save token
     dispatch({ type: 'SET_TOKEN', payload: '' })
@@ -74,12 +96,15 @@ const signUp = async (user: IUserSignUp) => {
 }
 
 const signOut = () => {
-  const { dispatch } = useAuth()
+  const { dispatch, token } = useAuth()
 
-  if (!dispatch) return null
+  if (!dispatch || !token) return null
 
   return async () => {
     // call api
+
+    // remove token
+    removeToken()
 
     // remove user
     dispatch({ type: 'SET_USER', payload: null })
@@ -87,12 +112,14 @@ const signOut = () => {
 }
 
 const getMe = () => {
-  const { dispatch } = useAuth()
+  const { dispatch, token } = useAuth()
 
   if (!dispatch) return null
 
   return async () => {
-    // get token in localStorage
+    if (!token) {
+      dispatch({ type: 'SET_USER', payload: null }) // unauthenticated
+    }
 
     // call api
 
