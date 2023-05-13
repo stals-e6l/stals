@@ -30,13 +30,13 @@ export default AppRouter
 
 const router = createBrowserRouter([
   {
+    path: ROUTES.auth,
+    element: <AuthPage />,
+  },
+  {
     path: '/',
     element: <ModulesViewer />,
     children: [
-      {
-        path: ROUTES.auth,
-        element: <AuthPage />,
-      },
       {
         path: '/AccommodationCard',
         element: <AccommodationCard accommodation={{} as any} />,
