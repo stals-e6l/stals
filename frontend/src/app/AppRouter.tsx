@@ -12,6 +12,11 @@ import SearchAccommodations from '../modules/accommodation/SearchAccommodations'
 import SignInForm from '../modules/accommodation/SignInForm'
 import SignUpForm from '../modules/accommodation/SignUpForm'
 import ModulesViewer from '../modules'
+import AuthPage from '../pages/AuthPage'
+
+const ROUTES = {
+  auth: '/auth',
+}
 
 interface IProps {
   children?: React.ReactNode
@@ -28,6 +33,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <ModulesViewer />,
     children: [
+      {
+        path: ROUTES.auth,
+        element: <AuthPage />,
+      },
       {
         path: '/AccommodationCard',
         element: <AccommodationCard accommodation={{} as any} />,
