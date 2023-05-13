@@ -40,7 +40,7 @@ const authReducer = (
     case 'SET_USER':
       return {
         ...state,
-        user: action.payload as any,
+        user: action.payload as IUser,
       }
     default:
       return state
