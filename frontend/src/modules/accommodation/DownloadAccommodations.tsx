@@ -17,6 +17,8 @@ import {
   FormControlLabel,
   DialogActions,
   Button,
+  Box,
+  useTheme,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -33,6 +35,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   const { open: openDialog, toggleDialog } = useDialog()
   const { open: openDrawer, toggleDrawer } = useDrawer()
   const accommodations = retrieveAccommodations()
+  const theme = useTheme()
 
   // state
   const [fields, setFields] = React.useState<IDownloadAccommodations>({
@@ -50,6 +53,18 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   // immediates
   const tableId = 'accommodations-table'
+  const tableHeaders = {
+    'name': 'Name',
+    'type': 'Type',
+    'price': 'Price',
+    'size_sqm': 'Size (sqm)',
+    'meters_from_uplb': 'Distance from UPLB',
+    'min_pax': 'Minimum Tenants',
+    'max_pax': 'Maximum Tenants',
+    'num_rooms': 'Number of Rooms',
+    'num_beds': 'Number of Beds',
+    'furnishing': 'Furnishing Type ', 
+  }
   const downloadFields: IDownloadAccommodationsField[] = [
     'name',
     'type',
@@ -86,7 +101,13 @@ const DownloadAccommodations: React.FC<IProps> = () => {
       </Button>
       {openDialog && accommodations && (
         <Dialog open={openDialog} onClose={toggleDialog} sx={mainDialog}>
-          <DialogTitle>
+          <DialogTitle
+            sx={{
+              '&.MuiTypography-root': {
+                color: theme.palette.primary.main,
+              }
+            }}
+          >
             {/* Button to open Drawer */}
             <IconButton
               size="large"
@@ -101,6 +122,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             PDF Preview
           </DialogTitle>
 
+          <Divider />
+
           <DialogContent>
             {/* Which fields to include */}
             <Drawer
@@ -114,22 +137,39 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               anchor="left"
               open={openDrawer}
             >
-              <div>
+              <Box sx={filterBox}>
                 <IconButton onClick={toggleDrawer}>
-                  <ChevronLeftIcon />
+                  <ChevronLeftIcon style={{
+                    color: theme.palette.primary.main,
+                  }} />
                 </IconButton>
-              </div>
+                <DialogTitle sx={{ 
+                  '&.MuiTypography-root': {
+                    color: theme.palette.primary.main,
+                  }
+                 }}>
+                  Filters
+                </DialogTitle>
+              </Box>
               <Divider />
               {/* show which fields to preview */}
               <div style={filterListStyle}>
                 {downloadFields.map(field => (
-                  <div key={field}>
+                  <div style={individualFilterStyle} key={field}>
                     <FormControlLabel
-                      label={field}
+                      label={tableHeaders[field]}
                       control={
                         <Checkbox
                           checked={fields[field]}
-                          sx={{ individualFilterStyle }}
+                          sx={{ 
+                            '&.Mui-checked': {
+                              color: theme.palette.secondary.main,
+                            },
+                            '&.MuiButtonBase-root': {
+                              paddingTop: '4px',
+                              paddingBottom: '4px',
+                            },
+                          }}
                           onChange={(e, checked) => {
                             const newFields = { ...fields }
                             newFields[field] = checked
@@ -137,6 +177,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                           }}
                         />
                       }
+                      sx={{ individualFilterStyle }}
                     />
                   </div>
                 ))}
@@ -210,10 +251,16 @@ export default DownloadAccommodations
 
 const mainDialog = {
   '& .MuiPaper-root': {
-    maxWidth: '100%',
-    width: '100%',
-    height: '100%',
+    maxWidth: '90%',
+    width: '90%',
+    height: '85%',
   },
+}
+
+const filterBox = {
+  display: 'inline-flex',
+  paddingTop: '8px',
+  paddingBottom: '8px',
 }
 
 const drawerStyle = {
@@ -221,6 +268,7 @@ const drawerStyle = {
   flexShrink: 0,
   '& .MuiDrawer-paper': {
     width: '20%',
+    height: '100%',
     boxSizing: 'border-box',
   },
 }
@@ -231,7 +279,4 @@ const filterListStyle = {
 }
 
 const individualFilterStyle = {
-  '& .MuiCheckbox-root': {
-    paddingBottom: '5px',
-  },
 }
