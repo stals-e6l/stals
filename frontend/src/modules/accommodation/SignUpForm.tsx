@@ -14,7 +14,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { COLOR } from '../../theme'
 
-
 interface IProps {
   children?: React.ReactNode
 }
@@ -145,6 +144,7 @@ const SignUpForm: React.FC<IProps> = () => {
               I have read the{' '}
               <Link
                 to="https://www.privacy.gov.ph/data-privacy-act/"
+                target="_blank"
                 style={{
                   display: 'inline',
                   color: theme.palette.secondary.main,
@@ -165,6 +165,7 @@ const SignUpForm: React.FC<IProps> = () => {
               I have read and agree to{' '}
               <Link
                 to="#"
+                target="_blank"
                 style={{
                   display: 'inline',
                   color: theme.palette.secondary.main,
@@ -177,6 +178,7 @@ const SignUpForm: React.FC<IProps> = () => {
               and{' '}
               <Link
                 to="#"
+                target="_blank"
                 style={{
                   display: 'inline',
                   color: theme.palette.secondary.main,
