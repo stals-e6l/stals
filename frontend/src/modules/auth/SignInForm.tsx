@@ -7,7 +7,7 @@ import {
   Dialog,
 } from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../assets/Images/Logo_Green.png'
 
 import SignUpForm from './SignUpForm'
@@ -24,6 +24,7 @@ const SignInForm: React.FC<IProps> = () => {
   const theme = useTheme()
   const onSignIn = signIn()
   const { open, toggleDialog } = useDialog()
+  const navigate = useNavigate()
 
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
@@ -36,7 +37,9 @@ const SignInForm: React.FC<IProps> = () => {
   const handleClose = () => toggleDialog()
   const handleSignIn = () => {
     if (onSignIn) {
-      onSignIn(form)
+      onSignIn(form).then(() => {
+        navigate('/')
+      })
     }
   }
 
