@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const User = require('../models/user')
+const User = require('../models/v2/user')
 
 const authRouter = Router()
 const saltRounds = 10
@@ -327,15 +327,15 @@ authRouter.get('/me', async function (req, res) {
       throw error
     }
 
-  let decoded;
+    let decoded
 
-	try {
-    decoded = jwt.verify(token, PRIVATE_KEY)
-	} catch(err) {
-    const error = new Error("Verification error")
-    error.name = 'AuthError'
-    throw error
-	}
+    try {
+      decoded = jwt.verify(token, PRIVATE_KEY)
+    } catch (err) {
+      const error = new Error('Verification error')
+      error.name = 'AuthError'
+      throw error
+    }
 
     const dbUser = await User.findById(decoded.id)
 
