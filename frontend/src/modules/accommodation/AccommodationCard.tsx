@@ -1,65 +1,55 @@
-import { Button, Box, Grid, Typography, Rating, useTheme, Card, CardMedia, CardContent, CardActionArea } from '@mui/material'
+import {
+  Box,
+  Typography,
+  Rating,
+  useTheme,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActionArea,
+  CardActions,
+  IconButton,
+  Menu,
+  MenuItem,
+} from '@mui/material'
 import React from 'react'
-// import { useNavigate } from 'react-router-dom'
 import AccommodationFormModal from './AccommodationFormModal'
 import DeleteAccommodationFormModal from './DeleteAccommodationFormModal'
-import Image from "../../assets/Ellens.jpg"
+import MoreHorizSharpIcon from '@mui/icons-material/MoreHorizSharp';
+import AccommodationImages from './accommodationImages'
+import toSentenceCase from "../../helpers/toSentenceCase"
+import { COLOR, FONT } from '../../theme/index'
 
 interface IProps {
   children?: React.ReactNode
   accommodation: IAccommodation
+  isPublicView: boolean
 }
 
-// This functions converts a string to sentence case format (e.g. transient space to Transient Space)
-function toSentenceCase( str: string ) {
+const AccommodationCard: React.FC<IProps> = ({ accommodation, isPublicView }) => {
 
-  str = str.toLowerCase();
-  let strSplit = str.split(' ');
+  const actions = [
+    { name: 'Edit' },
+    { name: 'Archive' },
+    { name: 'Delete' }
+  ];
 
-  for (var i=0; i<strSplit.length; i++) {
-    strSplit[i] = strSplit[i].charAt(0).toUpperCase() + strSplit[i].slice(1);
-  }
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  return strSplit.join(' ');
-}
-
-const AccommodationCard: React.FC<IProps> = ({ accommodation }) => {
-  const blue = '#154360'
-  const green = '#60ce80'
-  const darkGrey = '#f5f5f7'
-  const quicksand = 'Quicksand'
-  const sourceSansPro = 'Source Sans Pro'
-  // const navigate = useNavigate()
-
-  const theme = useTheme()
-
-  // if (!accommodation) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         // desktop
-  //         background: 'red',
-  //         // tablet
-  //         [theme.breakpoints.down('md')]: {
-  //           background: 'green',
-  //         },
-  //         // mobile
-  //         [theme.breakpoints.down('sm')]: {
-  //           background: 'orange',
-  //         },
-  //       }}
-  //     >
-  //       hello
-  //     </Box>
-  //   )
-  // }
 
   return (
 
     // Initialize card
     <Card sx={{
-      backgroundColor: darkGrey,
-      width: '300px',
+      backgroundColor: COLOR.gray1,
+      width: '280px',
       borderRadius: '20px',
       boxShadow: '0px 4px 4px #6e6e73',
       cursor: 'pointer',
@@ -74,95 +64,141 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation }) => {
         {/* Accommodation Image */}
         <CardMedia
           component="img"
-          height="200px"
-          image={Image}
+          height="180px"
+          image={AccommodationImages.ellens}
         />
 
         <CardContent sx={{ wordSpacing: "10" }}>
 
           {/* Type of Accommodation */}
-          <Typography
-            sx={{
-              fontFamily: quicksand,
-              color: 'black',
-            }}
+          <Typography variant='body1'
           >
-            {toSentenceCase( accommodation.type )}
+            {toSentenceCase(accommodation.type)}
           </Typography>
 
           {/* Name of Accommodation */}
-          <Typography
+          <Typography variant='h5'
             sx={{
-              fontFamily: sourceSansPro,
-              
-              fontWeight: 'bold',
-              fontSize: 'x-large',
-              color: blue,
+              color: COLOR.blue,
               whiteSpace: 'nowrap',
               overflow: "hidden",
               textOverflow: "ellipsis",
             }}
           >
-            {toSentenceCase( accommodation.name )}
+            {toSentenceCase(accommodation.name)}
           </Typography>
 
-          <Box
-            sx={{
-              display: 'flex',
-            }}
-          >
+          {isPublicView
+            ?
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                }}
+              >
 
-            {/* Rating */}
-            <Rating
-              value={4.5}
-              precision={0.5}
-              readOnly
-              sx={{
-                color: green,
-              }}
-            />
+                {/* Rating */}
+                <Rating
+                  value={4.5}
+                  precision={0.5}
+                  readOnly
+                  sx={{
+                    color: COLOR.green,
+                  }}
+                />
 
-            {/* Rating in Number */}
-            <Typography
-              sx={{
-                fontFamily: quicksand,
-                fontWeight: 'bold',
-                color: green,
-              }}
-            >
-              {' '}
-              {4.5}{' '}
-            </Typography>
+                {/* Rating in Number */}
+                <Typography variant='body1'
+                  sx={{
+                    fontWeight: 'bold',
+                    color: COLOR.green,
+                  }}
+                >
+                  {4.5}
+                </Typography>
 
-            {/* Number of Reviews */}
-            <Typography
-              sx={{
-                fontFamily: quicksand,
-                color: 'black',
-                marginLeft: '1%',
-              }}
-            >
-              ({10} reviews)
-            </Typography>
-          </Box>
+                {/* Number of Reviews */}
+                <Typography variant='body1'
+                  sx={{
+                    marginLeft: '1%',
+                  }}
+                >
+                  ({10} reviews)
+                </Typography>
+              </Box>
 
-          <br />
-          
-          {/* Price */}
-          <Typography
-              sx={{
-                fontFamily: sourceSansPro,
-                color: blue,
-                fontWeight: 'bold',
-                fontSize: 'large',
-              }}
-            >
-              {' '}
-              {/* Formats the number to currency format */}
-              Php {new Intl.NumberFormat().format(accommodation.price)}{' '}
-            </Typography>
+              <br />
 
+              {/* Price */}
+              <Typography variant='h6'
+                sx={{
+                  color: COLOR.blue,
+                }}
+              >
+                {/* Formats the number to currency format */}
+                Php {new Intl.NumberFormat().format(accommodation.price)}{' '}
+              </Typography>
+            </>
+            : // If not for public view, display only the address
+            <>
+              {/* Address */}
+              <Typography variant='body1' sx={{
+                whiteSpace: 'nowrap',
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}>
+                {accommodation.address}
+              </Typography>
+            </>
+          }
         </CardContent>
+
+        {
+          isPublicView
+            ?
+            <></>
+            :
+            <>
+              {/* If not public view */}
+              <CardActions>
+
+                {/* Menu Btn */}
+                <IconButton
+                  id="menu-btn"
+                  aria-controls={open ? 'menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                  sx={{ marginLeft: "auto"}}>
+                  <MoreHorizSharpIcon sx={{
+                    color: COLOR.green,
+                  }} />
+                </IconButton>
+
+                {/* Menu Items */}
+                <Menu
+                  id="menu"
+                  aria-labelledby="menu-btn"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                >
+                  <MenuItem onClick={handleClose}><Typography variant="body2">Edit</Typography></MenuItem>
+                  <MenuItem onClick={handleClose}><Typography variant="body2">Archive</Typography></MenuItem>
+                  <MenuItem onClick={handleClose}><Typography variant="body2">Delete</Typography></MenuItem>
+                </Menu>
+
+              </CardActions>
+            </>
+        }
       </CardActionArea>
     </Card>
 
