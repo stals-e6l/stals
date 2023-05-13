@@ -13,10 +13,9 @@ interface IUser extends IUserSignUp {
 }
 
 interface IAuthState {
-  loaded: boolean
-  user?: IUser
+  user: IUser | null
   dispatch: React.Dispatch<IReducerAction<TAuthActionType, TAuthActionPayload>>
 }
 
-type TAuthActionType = 'SIGN_IN' | 'SIGN_UP' | 'SIGN_OUT' | 'ME'
+type TAuthActionType = 'SET_USER'
 type TAuthActionPayload = IUserSignIn | IUserSignUp | IUser | undefined
