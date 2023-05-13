@@ -100,7 +100,14 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         Download
       </Button>
       {openDialog && accommodations && (
-        <Dialog open={openDialog} onClose={toggleDialog} sx={mainDialog}>
+        <Dialog open={openDialog} onClose={toggleDialog} 
+          sx={{
+          '& .MuiPaper-root': {
+            maxWidth: '90%',
+            width: '90%',
+            height: '85%',
+          },
+        }}>
           <DialogTitle
             sx={{
               '&.MuiTypography-root': {
@@ -127,7 +134,15 @@ const DownloadAccommodations: React.FC<IProps> = () => {
           <DialogContent>
             {/* Which fields to include */}
             <Drawer
-              sx={drawerStyle}
+              sx={{
+                width: '20%',
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                  width: '20%',
+                  height: '100%',
+                  boxSizing: 'border-box',
+                },
+              }}
               PaperProps={{
                 style: {
                   position: 'absolute',
@@ -137,7 +152,11 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               anchor="left"
               open={openDrawer}
             >
-              <Box sx={filterBox}>
+              <Box sx={{
+                display: 'inline-flex',
+                paddingTop: theme.spacing(1),
+                paddingBottom: theme.spacing(1),
+              }}>
                 <IconButton onClick={toggleDrawer}>
                   <ChevronLeftIcon style={{
                     color: theme.palette.primary.main,
@@ -153,9 +172,12 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               </Box>
               <Divider />
               {/* show which fields to preview */}
-              <div style={filterListStyle}>
+              <Box sx={{
+                padding: theme.spacing(1.25),
+                flexGrow: '1',
+              }}>
                 {downloadFields.map(field => (
-                  <div style={individualFilterStyle} key={field}>
+                  <Box key={field}>
                     <FormControlLabel
                       label={tableHeaders[field]}
                       control={
@@ -166,8 +188,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                               color: theme.palette.secondary.main,
                             },
                             '&.MuiButtonBase-root': {
-                              paddingTop: '4px',
-                              paddingBottom: '4px',
+                              paddingTop: theme.spacing(0.5),
+                              paddingBottom: theme.spacing(0.5),
                             },
                           }}
                           onChange={(e, checked) => {
@@ -177,11 +199,10 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                           }}
                         />
                       }
-                      sx={{ individualFilterStyle }}
                     />
-                  </div>
+                  </Box>
                 ))}
-              </div>
+              </Box>
             </Drawer>
 
             {/* Preview table */}
@@ -248,35 +269,3 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 }
 
 export default DownloadAccommodations
-
-const mainDialog = {
-  '& .MuiPaper-root': {
-    maxWidth: '90%',
-    width: '90%',
-    height: '85%',
-  },
-}
-
-const filterBox = {
-  display: 'inline-flex',
-  paddingTop: '8px',
-  paddingBottom: '8px',
-}
-
-const drawerStyle = {
-  width: '20%',
-  flexShrink: 0,
-  '& .MuiDrawer-paper': {
-    width: '20%',
-    height: '100%',
-    boxSizing: 'border-box',
-  },
-}
-
-const filterListStyle = {
-  padding: '10px',
-  flexGrow: '1',
-}
-
-const individualFilterStyle = {
-}
