@@ -13,6 +13,7 @@ import SignInForm from '../modules/auth/SignInForm'
 import SignUpForm from '../modules/auth/SignUpForm'
 import ModulesViewer from '../modules'
 import AuthPage from '../pages/AuthPage'
+import { AuthGuard } from '../modules/auth/AuthProvider'
 
 const ROUTES = {
   auth: '/auth',
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <ModulesViewer />,
+    element: (
+      <AuthGuard>
+        <ModulesViewer />
+      </AuthGuard>
+    ),
     children: [
       {
         path: '/AccommodationCard',
@@ -84,7 +89,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/SignUpForm',
-        element: <SignUpForm />,
+        element: (
+          <SignUpForm
+            onClose={() => {
+              return 1
+            }}
+          />
+        ),
       },
     ],
   },

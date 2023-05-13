@@ -52,7 +52,7 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     if (!user) {
       navigate('/sign-in')
     } else {
-      navigate('/app')
+      navigate('/')
     }
   }, [user])
 
