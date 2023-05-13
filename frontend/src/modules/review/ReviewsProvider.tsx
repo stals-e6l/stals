@@ -1,5 +1,6 @@
 import React from 'react'
 import { apiGet } from '../../api'
+import toMap from '../../utils/toMap'
 
 interface IProps {
   children?: React.ReactNode
@@ -41,7 +42,7 @@ const reviewsReducer = (
     case 'SET_REVIEWS':
       return {
         ...state,
-        reviews: action.payload as IReview[],
+        reviews: toMap<IReview>(action.payload, '_id'),
       }
     default:
       return state
