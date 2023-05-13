@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const { ERRORS, UNAUTHORIZED } = require('./error_handler')
-const { ErrorHandler } = require('./error_handler')
-const User = require('../models/user')
+const User = require('../models/v2/user')
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 

@@ -77,4 +77,4 @@ const accommodationSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-module.exports = mongoose.model('Accommodation', accommodationSchema)
+module.exports = mongoose.model('Accommodation1', accommodationSchema)
