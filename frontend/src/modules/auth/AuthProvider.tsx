@@ -1,5 +1,6 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
+import { useNavigate } from 'react-router-dom'
 
 interface IProps {
   children?: React.ReactNode
@@ -42,6 +43,27 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
 
 export default AuthProvider
 
+export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
+  // TODO: use as child RouterProvider
+  const user = getMe()
+  const onFetchMe = fetchMe()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    if (onFetchMe) onFetchMe()
+  }, [onFetchMe])
+
+  React.useEffect(() => {
+    if (!user) {
+      navigate('/sign-in')
+    } else {
+      navigate('/app')
+    }
+  }, [user])
+
+  return <React.Fragment>{children}</React.Fragment>
+}
+
 const authContext = React.createContext<IAuthState>({
   user: null,
   token: null,
@@ -71,12 +93,12 @@ const authReducer = (
 }
 
 // ACTIONS
-const initAuth = async () => {
+export const initAuth = async () => {
   const token = getToken()
   return token
 }
 
-const signIn = async () => {
+export const signIn = async () => {
   const { dispatch } = useAuth()
 
   if (!dispatch) return null
@@ -91,11 +113,11 @@ const signIn = async () => {
   }
 }
 
-const signUp = async (user: IUserSignUp) => {
+export const signUp = async (user: IUserSignUp) => {
   // call api
 }
 
-const signOut = () => {
+export const signOut = () => {
   const { dispatch, token } = useAuth()
 
   if (!dispatch || !token) return null
@@ -111,7 +133,7 @@ const signOut = () => {
   }
 }
 
-const getMe = () => {
+export const fetchMe = () => {
   const { dispatch, token } = useAuth()
 
   if (!dispatch) return null
@@ -126,4 +148,9 @@ const getMe = () => {
     // save user me
     dispatch({ type: 'SET_USER', payload: {} as IUser })
   }
+}
+
+export const getMe = () => {
+  const { user } = useAuth()
+  return user
 }
