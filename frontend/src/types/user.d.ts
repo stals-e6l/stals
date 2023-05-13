@@ -46,4 +46,4 @@ interface IAuthState {
 }
 
 type TAuthActionType = 'SET_USER'
-type TAuthActionPayload = IUserSignIn | IUserSignUp | IUser | undefined
+type TAuthActionPayload = IUser | null
