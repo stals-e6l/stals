@@ -98,7 +98,7 @@ export const initAuth = async () => {
   return token
 }
 
-export const signIn = async () => {
+export const signIn = () => {
   const { dispatch } = useAuth()
 
   if (!dispatch) return null

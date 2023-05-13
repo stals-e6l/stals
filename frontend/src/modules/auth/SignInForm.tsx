@@ -12,6 +12,7 @@ import logo from '../../assets/Images/Logo_Green.png'
 
 import SignUpForm from './SignUpForm'
 import { COLOR } from '../../theme'
+import { signIn } from './AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -19,28 +20,27 @@ interface IProps {
 
 const SignInForm: React.FC<IProps> = () => {
   // hooks
-  // const signInHandler = signIn()
-  // const navigate = useNavigate()
+  const theme = useTheme()
+  const onSignIn = signIn()
+
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
     username: '',
     password: '',
   })
   const [open, setOpen] = React.useState(false)
+
+  // events
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-
   const handleSignIn = () => {
-    // TODO: PM's job, refine the styling for now
-    // signInHandler(form).then(() => {
-    //   navigate('/accommodations')
-    // })
+    if (onSignIn) {
+      onSignIn(form)
+    }
   }
-  const theme = useTheme()
 
   return (
     <React.Fragment>
-
       <Box sx={{ display: 'flex' }}>
         <Box
           sx={{
@@ -157,7 +157,10 @@ const SignInForm: React.FC<IProps> = () => {
             <Button
               variant="contained"
               fullWidth
-              sx={{ backgroundColor: theme.palette.primary.main, marginTop: theme.spacing(2) }}
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                marginTop: theme.spacing(2),
+              }}
               onClick={handleOpen}
             >
               Create new account
@@ -169,7 +172,7 @@ const SignInForm: React.FC<IProps> = () => {
                 width: '30%',
                 margin: '0 auto',
                 [theme.breakpoints.down('sm')]: {
-                  width: '100%',    
+                  width: '100%',
                 },
               }}
             >
