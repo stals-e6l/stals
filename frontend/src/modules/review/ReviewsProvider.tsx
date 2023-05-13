@@ -1,4 +1,5 @@
 import React from 'react'
+import { apiGet } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -30,6 +31,8 @@ const reviewsContext = React.createContext<IReviewsState>({
   dispatch: null,
 })
 
+export const useReviews = () => React.useContext<IReviewsState>(reviewsContext)
+
 const reviewsReducer = (
   state: IReviewsState,
   action: IReducerAction<TReviewActionType, TReviewActionPayload>
@@ -42,5 +45,23 @@ const reviewsReducer = (
       }
     default:
       return state
+  }
+}
+
+// ACTIONS
+export const fetchReviews = () => {
+  const { dispatch } = useReviews()
+
+  if (!dispatch) return
+
+  return async (accommodationId: string) => {
+    // TODO: use id to fetch the specific reviews
+    const res = await apiGet<IReview[]>('mock/reviews')
+
+    if (res.data && res.success) {
+      dispatch({ type: 'SET_REVIEWS', payload: res.data })
+    } else {
+      if (res.messages) throw new Error(res.messages[0])
+    }
   }
 }
