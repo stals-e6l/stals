@@ -2,50 +2,50 @@ const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema(
   {
-    // name: {
-    //   firstName: {
-    //     type: String,
-    //     required: true,
-    //   },
-    //   middleName: {
-    //     type: String,
-    //   },
-    //   lastName: {
-    //     type: String,
-    //     required: true,
-    //   },
-    // },
-    // gender: {
-    //   type: String,
-    //   enum: ['male', 'female', 'non-binary', 'prefer not to say'],
-    //   default: 'male',
-    //   required: true,
-    // },
-    // phones: {
-    //   landline: {
-    //     type: String,
-    //   },
-    //   mobile: {
-    //     type: String,
-    //   },
-    // },
-    // addresses: {
-    //   home: {
-    //     type: String,
-    //     required: true,
-    //   },
-    //   current: {
-    //     type: String,
-    //     required: true,
-    //   },
-    // },
-    // biography: {
-    //   type: String,
-    // },
-    // birthday: {
-    //   type: Date,
-    //   required: true,
-    // },
+    name: {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      middleName: {
+        type: String,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+    },
+    gender: {
+      type: String,
+      enum: ['male', 'female', 'non-binary', 'prefer not to say'],
+      default: 'male',
+      required: true,
+    },
+    phones: {
+      landline: {
+        type: String,
+      },
+      mobile: {
+        type: String,
+      },
+    },
+    addresses: {
+      home: {
+        type: String,
+        required: true,
+      },
+      current: {
+        type: String,
+        required: true,
+      },
+    },
+    biography: {
+      type: String,
+    },
+    birthday: {
+      type: Date,
+      required: true,
+    },
     username: {
       type: String,
       required: true,
@@ -55,26 +55,26 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // avatar: {
-    //   url: {
-    //     type: String,
-    //   },
-    //   // filename:  {   // uses Multer
-    //   //   type: String,
-    //   // },
-    //   // desc:  {
-    //   //   type: String,
-    //   // },
-    //   // img:
-    //   // {
-    //   //   data: {
-    //   //     type: Buffer,
-    //   //   },
-    //   //   contentType: {
-    //   //     type: String
-    //   //   }
-    //   // },
-    // },
+    avatar: {
+      url: {
+        type: String,
+      },
+      // filename:  {   // uses Multer
+      //   type: String,
+      // },
+      // desc:  {
+      //   type: String,
+      // },
+      // img:
+      // {
+      //   data: {
+      //     type: Buffer,
+      //   },
+      //   contentType: {
+      //     type: String
+      //   }
+      // },
+    },
     email: {
       type: String,
       required: true,
@@ -87,9 +87,9 @@ const userSchema = new mongoose.Schema(
       default: 'admin',
       required: true,
     },
-    // organization: {
-    //   type: String,
-    // },
+    organization: {
+      type: String,
+    },
     // generatedReports: {
     //   // This will be the list of generated reports by this user
     //   type: Array,
@@ -142,4 +142,4 @@ const userSchema = new mongoose.Schema(
   }
 )
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User1', userSchema)
