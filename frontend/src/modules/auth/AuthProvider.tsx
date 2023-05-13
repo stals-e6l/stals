@@ -21,13 +21,7 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
     })
   }, [])
 
-  React.useEffect(() => {
-    if (!state.user) {
-      // redirect to /sigin
-    } else {
-      // redirect to /[app]
-    }
-  }, [state.user])
+  console.log({ authState: state })
 
   return (
     <authContext.Provider
