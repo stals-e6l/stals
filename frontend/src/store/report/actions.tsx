@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
+import theme from '../../theme'
 // import { apiPost } from '../../api'
 
 export const downloadPdf = async (htmlRef: string) => {
@@ -7,7 +8,11 @@ export const downloadPdf = async (htmlRef: string) => {
   doc.text('Accommodation Details', doc.internal.pageSize.getWidth() / 2, 10, {
     align: 'center',
   })
-  autoTable(doc, { html: htmlRef })
+  autoTable(doc, { 
+    headStyles: { textColor: theme.palette.primary.main },
+    useCss: true,
+    html: htmlRef 
+  })
   doc.save('AccommodationDetails.pdf')
 
   // await apiPost<IReport, IReport>('report', {

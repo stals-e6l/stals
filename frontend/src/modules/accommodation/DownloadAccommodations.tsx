@@ -19,15 +19,21 @@ import {
   Button,
   Box,
   useTheme,
+  Typography,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import useDrawer from '../../hooks/useDrawer'
+import { NumericFormat } from 'react-number-format'
 import { downloadPdf } from '../../store/report/actions'
 import { retrieveAccommodations } from './AccommodationsProvider'
 
 interface IProps {
   children?: React.ReactNode
+}
+
+interface header {
+  [key: string]: string;
 }
 
 const DownloadAccommodations: React.FC<IProps> = () => {
@@ -53,12 +59,12 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   // immediates
   const tableId = 'accommodations-table'
-  const tableHeaders = {
+  const tableHeaders : header = {
     'name': 'Name',
     'type': 'Type',
-    'price': 'Price',
+    'price': 'Price (₱)',
     'size_sqm': 'Size (sqm)',
-    'meters_from_uplb': 'Distance from UPLB',
+    'meters_from_uplb': 'Distance from UPLB (km)',
     'min_pax': 'Minimum Tenants',
     'max_pax': 'Maximum Tenants',
     'num_rooms': 'Number of Rooms',
@@ -106,13 +112,15 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             maxWidth: '90%',
             width: '90%',
             height: '85%',
+            borderRadius: theme.spacing(2),
           },
+          
         }}>
           <DialogTitle
             sx={{
               '&.MuiTypography-root': {
                 color: theme.palette.primary.main,
-              }
+              },
             }}
           >
             {/* Button to open Drawer */}
@@ -141,6 +149,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                   width: '20%',
                   height: '100%',
                   boxSizing: 'border-box',
+                  borderRadius: theme.spacing(0),
                 },
               }}
               PaperProps={{
@@ -165,7 +174,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 <DialogTitle sx={{ 
                   '&.MuiTypography-root': {
                     color: theme.palette.primary.main,
-                  }
+                  }, 
                  }}>
                   Filters
                 </DialogTitle>
@@ -208,12 +217,21 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             {/* Preview table */}
             <TableContainer>
               <Table id={tableId}>
-                <TableHead>
+                <TableHead sx={{
+                  whiteSpace: 'nowrap',
+                }}>
                   <TableRow>
                     {Object.entries(fields as object)
                       .filter(field => field[1])
                       .map(field => (
-                        <TableCell key={field[0]}>{field[0]}</TableCell>
+                        <TableCell key={field[0]} sx={{textAlign: 'center'}}>
+                          <Typography variant='h6' sx={{
+                            color: theme.palette.primary.main,
+                            fontSize: theme.spacing(2),
+                          }}>
+                            {tableHeaders[field[0]]}
+                          </Typography>
+                        </TableCell>
                       ))}
                   </TableRow>
                 </TableHead>
@@ -221,34 +239,34 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                   {accommodations.map(accommodation => (
                     <TableRow key={accommodation._id}>
                       {fields.name && (
-                        <TableCell>{accommodation.name}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}>{accommodation.name}</TableCell>
                       )}
                       {fields.type && (
-                        <TableCell>{accommodation.type}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}>{accommodation.type}</TableCell>
                       )}
                       {fields.price && (
-                        <TableCell>{accommodation.price}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.price} thousandSeparator=","/></TableCell>
                       )}
                       {fields.size_sqm && (
-                        <TableCell>{accommodation.size_sqm}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.size_sqm} thousandSeparator=","/></TableCell>
                       )}
                       {fields.meters_from_uplb && (
-                        <TableCell>{accommodation.meters_from_uplb}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.meters_from_uplb} thousandSeparator=","/></TableCell>
                       )}
                       {fields.min_pax && (
-                        <TableCell>{accommodation.min_pax}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.min_pax} suffix={accommodation.min_pax > 1 ? ' tenants': ' tenant'}/></TableCell>
                       )}
                       {fields.max_pax && (
-                        <TableCell>{accommodation.max_pax}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.max_pax} suffix={accommodation.max_pax > 1 ? ' tenants': ' tenant'}/></TableCell>
                       )}
                       {fields.num_rooms && (
-                        <TableCell>{accommodation.num_rooms}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.num_rooms} suffix={accommodation.num_rooms > 1 ? ' rooms': ' room'}/></TableCell>
                       )}
                       {fields.num_beds && (
-                        <TableCell>{accommodation.num_beds}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.num_beds} suffix={accommodation.num_beds > 1 ? ' beds': ' bed'}/></TableCell>
                       )}
                       {fields.furnishing && (
-                        <TableCell>{accommodation.furnishing}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}>{accommodation.furnishing}</TableCell>
                       )}
                     </TableRow>
                   ))}
@@ -257,10 +275,13 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             </TableContainer>
           </DialogContent>
 
-          <DialogActions>
+          <DialogActions sx={{
+            paddingRight: theme.spacing(4.50),
+            paddingBottom: theme.spacing(1.5),
+          }}>
             {/* Action buttons */}
-            <Button onClick={handleDownload}>Save PDF</Button>
-            <Button onClick={toggleDialog}>Cancel</Button>
+            <Button variant='contained' onClick={handleDownload}>Save PDF</Button>
+            <Button variant='outlined' onClick={toggleDialog}>Cancel</Button>
           </DialogActions>
         </Dialog>
       )}
