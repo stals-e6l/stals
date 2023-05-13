@@ -1,7 +1,7 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
 import { useNavigate } from 'react-router-dom'
-import { apiPost } from '../../api'
+import { apiGet, apiPost } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -153,9 +153,13 @@ export const fetchMe = () => {
     }
 
     // call api
+    const res = await apiGet<IUser>('me', token as string)
 
-    // save user me
-    dispatch({ type: 'SET_USER', payload: {} as IUser })
+    if (res.data && res.success) {
+      dispatch({ type: 'SET_USER', payload: res.data })
+    } else {
+      if (res.messages) throw new Error(res.messages[0])
+    }
   }
 }
 
