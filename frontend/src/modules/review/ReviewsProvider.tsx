@@ -75,3 +75,33 @@ export const retrieveReviews = () => {
   if (!reviews) return null
   return toArray<IReview>(reviews)
 }
+
+export const createReview = () => {
+  const { dispatch } = useReviews()
+  if (!dispatch) return null
+  return async (review: IReview) => {
+    // TODO:
+    // post
+    // loads new reviews
+  }
+}
+
+export const updateReview = () => {
+  const { dispatch } = useReviews()
+  if (!dispatch) return null
+  return async (review: IReview) => {
+    // TODO:
+    // post
+    // loads new reviews
+  }
+}
+
+export const deleteReview = () => {
+  const { dispatch } = useReviews()
+  if (!dispatch) return null
+  return async (reviewId: string) => {
+    // TODO:
+    // post
+    // loads new reviews
+  }
+}
