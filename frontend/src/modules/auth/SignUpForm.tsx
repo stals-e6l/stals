@@ -16,9 +16,10 @@ import { signUp } from './AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
+  onClose: () => void
 }
 
-const SignUpForm: React.FC<IProps> = () => {
+const SignUpForm: React.FC<IProps> = ({ onClose }) => {
   // hooks
   const theme = useTheme()
   const onSignUp = signUp()
@@ -46,7 +47,7 @@ const SignUpForm: React.FC<IProps> = () => {
   // events
   const handleSignUp = () => {
     if (onSignUp) {
-      onSignUp(form)
+      onSignUp(form).then(() => onClose())
     }
   }
 

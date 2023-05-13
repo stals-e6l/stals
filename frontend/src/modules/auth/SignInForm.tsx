@@ -13,6 +13,7 @@ import logo from '../../assets/Images/Logo_Green.png'
 import SignUpForm from './SignUpForm'
 import { COLOR } from '../../theme'
 import { signIn } from './AuthProvider'
+import useDialog from '../../hooks/useDialog'
 
 interface IProps {
   children?: React.ReactNode
@@ -22,17 +23,17 @@ const SignInForm: React.FC<IProps> = () => {
   // hooks
   const theme = useTheme()
   const onSignIn = signIn()
+  const { open, toggleDialog } = useDialog()
 
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
     username: '',
     password: '',
   })
-  const [open, setOpen] = React.useState(false)
 
   // events
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleOpen = () => toggleDialog()
+  const handleClose = () => toggleDialog()
   const handleSignIn = () => {
     if (onSignIn) {
       onSignIn(form)
@@ -176,7 +177,7 @@ const SignInForm: React.FC<IProps> = () => {
                 },
               }}
             >
-              <SignUpForm />
+              <SignUpForm onClose={handleClose} />
             </Dialog>
           </Box>
         </Box>
