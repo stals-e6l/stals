@@ -12,6 +12,7 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
   const [state, dispatch] = React.useReducer(authReducer, {
     user: null,
     token: null,
+    loaded: false,
     dispatch: null,
   })
 
@@ -28,6 +29,7 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
       value={{
         user: state.user,
         token: state.token,
+        loaded: state.loaded,
         dispatch,
       }}
     >
@@ -40,21 +42,25 @@ export default AuthProvider
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   // TODO: use as child RouterProvider
-  const user = getMe()
+  const onSetAuthLoaded = setAuthLoaded()
   const onFetchMe = fetchMe()
   const navigate = useNavigate()
+  const loaded = getAuthLoaded()
+  const { dispatch } = useAuth()
 
   React.useEffect(() => {
-    if (onFetchMe) onFetchMe()
-  }, [onFetchMe])
-
-  React.useEffect(() => {
-    if (!user) {
-      navigate('/sign-in')
-    } else {
-      navigate('/')
-    }
-  }, [user])
+    if (onFetchMe && dispatch && !loaded && onSetAuthLoaded)
+      onFetchMe()
+        .then(() => {
+          navigate('/')
+        })
+        .catch(() => {
+          navigate('/auth')
+        })
+        .finally(() => {
+          onSetAuthLoaded(true)
+        })
+  }, [onFetchMe, loaded, onSetAuthLoaded])
 
   return <React.Fragment>{children}</React.Fragment>
 }
@@ -62,6 +68,7 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 const authContext = React.createContext<IAuthState>({
   user: null,
   token: null,
+  loaded: false,
   dispatch: null,
 })
 
@@ -81,6 +88,11 @@ const authReducer = (
       return {
         ...state,
         token: action.payload as string | null,
+      }
+    case 'SET_LOADED':
+      return {
+        ...state,
+        loaded: action.payload as boolean,
       }
     default:
       return state
@@ -166,4 +178,17 @@ export const fetchMe = () => {
 export const getMe = () => {
   const { user } = useAuth()
   return user
+}
+
+export const getAuthLoaded = () => {
+  const { loaded } = useAuth()
+  return loaded
+}
+
+export const setAuthLoaded = () => {
+  const { dispatch } = useAuth()
+  if (!dispatch) return null
+  return (isLoaded: boolean) => {
+    dispatch({ type: 'SET_LOADED', payload: isLoaded })
+  }
 }
