@@ -40,10 +40,11 @@ interface IUser extends IUserSignUp {
 
 interface IAuthState {
   user: IUser | null
+  token: string | null
   dispatch: React.Dispatch<
     IReducerAction<TAuthActionType, TAuthActionPayload>
   > | null
 }
 
-type TAuthActionType = 'SET_USER'
-type TAuthActionPayload = IUser | null
+type TAuthActionType = 'SET_USER' | 'SET_TOKEN'
+type TAuthActionPayload = IUser | null | string

@@ -8,6 +8,7 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
   //state
   const [state, dispatch] = React.useReducer(authReducer, {
     user: null,
+    token: null,
     dispatch: null,
   })
 
@@ -15,6 +16,7 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
     <authContext.Provider
       value={{
         user: state.user,
+        token: state.token,
         dispatch,
       }}
     >
@@ -27,6 +29,7 @@ export default AuthProvider
 
 const authContext = React.createContext<IAuthState>({
   user: null,
+  token: null,
   dispatch: null,
 })
 
@@ -40,7 +43,12 @@ const authReducer = (
     case 'SET_USER':
       return {
         ...state,
-        user: action.payload as IUser,
+        user: action.payload as IUser | null,
+      }
+    case 'SET_TOKEN':
+      return {
+        ...state,
+        token: action.payload as string | null,
       }
     default:
       return state
@@ -48,9 +56,17 @@ const authReducer = (
 }
 
 // ACTIONS
-const signIn = async (user: IUserSignIn) => {
-  // call api
-  // save token
+const signIn = async () => {
+  const { dispatch } = useAuth()
+
+  if (!dispatch) return null
+
+  return async (user: IUserSignIn) => {
+    // call api
+
+    // save token
+    dispatch({ type: 'SET_TOKEN', payload: '' })
+  }
 }
 
 const signUp = async (user: IUserSignUp) => {
