@@ -46,3 +46,41 @@ const authReducer = (
       return state
   }
 }
+
+// ACTIONS
+const signIn = async (user: IUserSignIn) => {
+  // call api
+  // save token
+}
+
+const signUp = async (user: IUserSignUp) => {
+  // call api
+}
+
+const signOut = () => {
+  const { dispatch } = useAuth()
+
+  if (!dispatch) return null
+
+  return async () => {
+    // call api
+
+    // remove user
+    dispatch({ type: 'SET_USER', payload: null })
+  }
+}
+
+const getMe = () => {
+  const { dispatch } = useAuth()
+
+  if (!dispatch) return null
+
+  return async () => {
+    // get token in localStorage
+
+    // call api
+
+    // save user me
+    dispatch({ type: 'SET_USER', payload: {} as IUser })
+  }
+}
