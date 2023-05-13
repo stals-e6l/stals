@@ -23,7 +23,9 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ClearIcon from '@mui/icons-material/Clear'
 import useDrawer from '../../hooks/useDrawer'
+import Pluralize from 'react-pluralize'
 import { NumericFormat } from 'react-number-format'
 import { downloadPdf } from '../../store/report/actions'
 import { retrieveAccommodations } from './AccommodationsProvider'
@@ -63,8 +65,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
     'name': 'Name',
     'type': 'Type',
     'price': 'Price (₱)',
-    'size_sqm': 'Size (sqm)',
-    'meters_from_uplb': 'Distance from UPLB (km)',
+    'size_sqm': 'Room Size',
+    'meters_from_uplb': 'Distance from UPLB (meter)',
     'min_pax': 'Minimum Tenants',
     'max_pax': 'Maximum Tenants',
     'num_rooms': 'Number of Rooms',
@@ -143,10 +145,10 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             {/* Which fields to include */}
             <Drawer
               sx={{
-                width: '20%',
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                  width: '20%',
+                  width: {sm: '50%', md: '30%', lg: '20%', xl: '20%',},
+                  maxWidth: '100%',
                   height: '100%',
                   boxSizing: 'border-box',
                   borderRadius: theme.spacing(0),
@@ -165,6 +167,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 display: 'inline-flex',
                 paddingTop: theme.spacing(1),
                 paddingBottom: theme.spacing(1),
+                paddingLeft: theme.spacing(1.2),
               }}>
                 <IconButton onClick={toggleDrawer}>
                   <ChevronLeftIcon style={{
@@ -183,6 +186,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               {/* show which fields to preview */}
               <Box sx={{
                 padding: theme.spacing(1.25),
+                paddingLeft: theme.spacing(2.5),
                 flexGrow: '1',
               }}>
                 {downloadFields.map(field => (
@@ -214,65 +218,150 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               </Box>
             </Drawer>
 
+            <Drawer
+              sx={{
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                  width: {xs: '100%', sm: '50%', md: '30%', lg: '20%', xl: '20%',},
+                  maxWidth: '100%',
+                  height: '100%',
+                  boxSizing: 'border-box',
+                  borderRadius: theme.spacing(0),
+                },
+                display: {xs: 'block', sm: 'none', md: 'none', lg: 'none', xl: 'none',}
+              }}
+              PaperProps={{
+                style: {
+                  position: 'absolute',
+                },
+              }}
+              variant="permanent"
+              anchor="left"
+              open
+            >
+              <Box sx={{
+                display: 'inline-flex',
+                paddingTop: theme.spacing(1),
+                paddingBottom: theme.spacing(1),
+                paddingLeft: theme.spacing(1.2),
+              }}>
+                <IconButton onClick={toggleDialog}>
+                  <ClearIcon style={{
+                    color: theme.palette.primary.main,
+                  }} />
+                </IconButton>
+                <DialogTitle sx={{ 
+                  '&.MuiTypography-root': {
+                    color: theme.palette.primary.main,
+                  }, 
+                 }}>
+                  Filters
+                </DialogTitle>
+              </Box>
+              <Divider />
+              {/* show which fields to preview */}
+              <Box sx={{
+                paddingTop: theme.spacing(1),
+                paddingLeft: theme.spacing(2.5),
+                flexGrow: '1',
+              }}>
+                {downloadFields.map(field => (
+                  <Box key={field}>
+                    <FormControlLabel
+                      label={tableHeaders[field]}
+                      control={
+                        <Checkbox
+                          checked={fields[field]}
+                          sx={{ 
+                            '&.Mui-checked': {
+                              color: theme.palette.secondary.main,
+                            },
+                            '&.MuiButtonBase-root': {
+                              paddingTop: theme.spacing(0.5),
+                              paddingBottom: theme.spacing(0.5),
+                            },
+                          }}
+                          onChange={(e, checked) => {
+                            const newFields = { ...fields }
+                            newFields[field] = checked
+                            setFields(newFields)
+                          }}
+                        />
+                      }
+                    />
+                  </Box>
+                ))}
+              </Box>
+              <DialogActions sx={{
+                paddingRight: theme.spacing(4.50),
+                paddingBottom: theme.spacing(1.5),
+              }}>
+                <Button variant='contained' onClick={handleDownload}>Save PDF</Button>
+                <Button variant='outlined' onClick={toggleDialog}>Cancel</Button>
+              </DialogActions>
+            </Drawer>
+
             {/* Preview table */}
-            <TableContainer>
-              <Table id={tableId}>
-                <TableHead sx={{
-                  whiteSpace: 'nowrap',
-                }}>
-                  <TableRow>
-                    {Object.entries(fields as object)
-                      .filter(field => field[1])
-                      .map(field => (
-                        <TableCell key={field[0]} sx={{textAlign: 'center'}}>
-                          <Typography variant='h6' sx={{
-                            color: theme.palette.primary.main,
-                            fontSize: theme.spacing(2),
-                          }}>
-                            {tableHeaders[field[0]]}
-                          </Typography>
-                        </TableCell>
-                      ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {accommodations.map(accommodation => (
-                    <TableRow key={accommodation._id}>
-                      {fields.name && (
-                        <TableCell sx={{textAlign: 'center'}}>{accommodation.name}</TableCell>
-                      )}
-                      {fields.type && (
-                        <TableCell sx={{textAlign: 'center'}}>{accommodation.type}</TableCell>
-                      )}
-                      {fields.price && (
-                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.price} thousandSeparator=","/></TableCell>
-                      )}
-                      {fields.size_sqm && (
-                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.size_sqm} thousandSeparator=","/></TableCell>
-                      )}
-                      {fields.meters_from_uplb && (
-                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.meters_from_uplb} thousandSeparator=","/></TableCell>
-                      )}
-                      {fields.min_pax && (
-                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.min_pax} suffix={accommodation.min_pax > 1 ? ' tenants': ' tenant'}/></TableCell>
-                      )}
-                      {fields.max_pax && (
-                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.max_pax} suffix={accommodation.max_pax > 1 ? ' tenants': ' tenant'}/></TableCell>
-                      )}
-                      {fields.num_rooms && (
-                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.num_rooms} suffix={accommodation.num_rooms > 1 ? ' rooms': ' room'}/></TableCell>
-                      )}
-                      {fields.num_beds && (
-                        <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.num_beds} suffix={accommodation.num_beds > 1 ? ' beds': ' bed'}/></TableCell>
-                      )}
-                      {fields.furnishing && (
-                        <TableCell sx={{textAlign: 'center'}}>{accommodation.furnishing}</TableCell>
-                      )}
+            <Box sx={{display: {xs: 'none', sm: 'block', md: 'block', lg: 'block', xl: 'block',}}}>
+              <TableContainer >
+                <Table id={tableId}>
+                  <TableHead sx={{
+                    whiteSpace: 'nowrap',
+                  }}>
+                    <TableRow>
+                      {Object.entries(fields as object)
+                        .filter(field => field[1])
+                        .map(field => (
+                          <TableCell key={field[0]} sx={{textAlign: 'center'}}>
+                            <Typography variant='h6' sx={{
+                              color: theme.palette.primary.main,
+                              fontSize: theme.spacing(2),
+                            }}>
+                              {tableHeaders[field[0]]}
+                            </Typography>
+                          </TableCell>
+                        ))}
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+                  <TableBody>
+                    {accommodations.map(accommodation => (
+                      <TableRow key={accommodation._id}>
+                        {fields.name && (
+                          <TableCell sx={{textAlign: 'center'}}>{accommodation.name}</TableCell>
+                        )}
+                        {fields.type && (
+                          <TableCell sx={{textAlign: 'center'}}>{accommodation.type}</TableCell>
+                        )}
+                        {fields.price && (
+                          <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.price} thousandSeparator=","/></TableCell>
+                        )}
+                        {fields.size_sqm && (
+                          <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.size_sqm} thousandSeparator=","/></TableCell>
+                        )}
+                        {fields.meters_from_uplb && (
+                          <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.meters_from_uplb} thousandSeparator=","/></TableCell>
+                        )}
+                        {fields.min_pax && (
+                          <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'tenant'} plural={'tenants'} count={accommodation.min_pax} /></TableCell>
+                        )}
+                        {fields.max_pax && (
+                          <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'tenant'} plural={'tenants'} count={accommodation.max_pax} /></TableCell>
+                        )}
+                        {fields.num_rooms && (
+                          <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'room'} plural={'rooms'} count={accommodation.num_rooms} /></TableCell>
+                        )}
+                        {fields.num_beds && (
+                          <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'bed'} plural={'beds'} count={accommodation.num_beds} /></TableCell>
+                        )}
+                        {fields.furnishing && (
+                          <TableCell sx={{textAlign: 'center'}}>{accommodation.furnishing}</TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
           </DialogContent>
 
           <DialogActions sx={{

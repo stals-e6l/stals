@@ -25,6 +25,7 @@
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-number-format": "^5.1.4",
+    "react-pluralize": "^1.6.3",
     "react-router-dom": "^6.9.0",
     "yup": "^1.1.1"
   },
