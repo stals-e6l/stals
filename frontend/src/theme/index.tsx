@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material'
 declare module '@mui/material/styles' {}
 
 export const COLOR: IColor = {
+  white: '#ffffff',
   gray1: '#f5f5f7',
   gray2: '#f0f0f0',
   black: '#1d1d15',
