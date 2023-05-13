@@ -1,6 +1,7 @@
 import React from 'react'
 import { apiGet } from '../../api'
 import toMap from '../../utils/toMap'
+import toArray from '../../utils/toArray'
 
 interface IProps {
   children?: React.ReactNode
@@ -67,4 +68,10 @@ export const fetchReviews = () => {
       if (res.messages) throw new Error(res.messages[0])
     }
   }
+}
+
+export const retrieveReviews = () => {
+  const { reviews } = useReviews()
+  if (!reviews) return null
+  return toArray<IReview>(reviews)
 }
