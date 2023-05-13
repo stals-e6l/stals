@@ -105,3 +105,13 @@ export const deleteReview = () => {
     // loads new reviews
   }
 }
+
+export const averageReviewRating = () => {
+  const { reviews } = useReviews()
+  if (!reviews) return null
+  const arrReviews = toArray<IReview>(reviews)
+  if (!arrReviews) return null
+  let total = 0
+  arrReviews.forEach(el => (total = total + el.rating))
+  return total / arrReviews.length
+}
