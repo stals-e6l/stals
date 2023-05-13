@@ -144,7 +144,7 @@ const SignUpForm: React.FC<IProps> = () => {
             <Typography>
               I have read the{' '}
               <Link
-                to="#"
+                to="https://www.privacy.gov.ph/data-privacy-act/"
                 style={{
                   display: 'inline',
                   color: theme.palette.secondary.main,
