@@ -13,6 +13,8 @@ const ReviewsProvider: React.FC<IProps> = ({ children }) => {
     dispatch: null,
   })
 
+  console.log({ reviewsState: state })
+
   return (
     <reviewsContext.Provider
       value={{
