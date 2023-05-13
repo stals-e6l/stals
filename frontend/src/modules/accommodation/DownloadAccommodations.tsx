@@ -82,7 +82,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   }
   const furnishing : header = {
     'unfurnished': 'Unfurnished',
-    'semifurnished': 'Semifurnished',
+    'semifurnished': 'Semi-furnished',
     'fully_furnished': 'Fully Furnished',
   }
   const downloadFields: IDownloadAccommodationsField[] = [
