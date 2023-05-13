@@ -64,7 +64,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   const tableHeaders : header = {
     'name': 'Name',
     'type': 'Type',
-    'price': 'Price (₱)',
+    'price': 'Price',
     'size_sqm': 'Room Size',
     'meters_from_uplb': 'Distance from UPLB (meter)',
     'min_pax': 'Minimum Tenants',
@@ -345,13 +345,13 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                           <TableCell sx={{textAlign: 'center'}}>{accommType[accommodation.type]}</TableCell>
                         )}
                         {fields.price && (
-                          <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.price} thousandSeparator=","/></TableCell>
+                          <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.price} prefix={'₱ '} thousandSeparator=","/></TableCell>
                         )}
                         {fields.size_sqm && (
-                          <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.size_sqm} thousandSeparator=","/></TableCell>
+                          <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.size_sqm} thousandSeparator="," suffix={' sqm.'}/></TableCell>
                         )}
                         {fields.meters_from_uplb && (
-                          <TableCell sx={{textAlign: 'center'}}><NumericFormat displayType='text' value={accommodation.meters_from_uplb} thousandSeparator=","/></TableCell>
+                          <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.meters_from_uplb} thousandSeparator="," suffix={' meters'}/></TableCell>
                         )}
                         {fields.min_pax && (
                           <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'tenant'} plural={'tenants'} count={accommodation.min_pax} /></TableCell>
