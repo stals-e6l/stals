@@ -95,4 +95,4 @@ const userSchema = new mongoose.Schema(
 
 userSchema.index({ username: 1, email: 1 }, { unique: true })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User1', userSchema)

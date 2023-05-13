@@ -8,15 +8,12 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY
 const authGuard = async(req, res, next) => {
     try {
         const authHeader = req.headers.authorization
-        console.log(authHeader)
     
         if (!authHeader) {
             throw UNAUTHORIZED;
         }
 
         const [authMethod, token] = authHeader.split(' ')
-        console.log(authMethod)
-        console.log(token)
     
         if (authMethod !== 'Bearer') {
             throw UNAUTHORIZED;
@@ -28,7 +25,6 @@ const authGuard = async(req, res, next) => {
 
         const decoded = jwt.verify(token, PRIVATE_KEY)
         const dbUser = await User.findById(decoded.id)
-        console.log(dbUser)
     
         if (!dbUser) {
             throw UNAUTHORIZED;
