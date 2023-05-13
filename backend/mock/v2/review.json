@@ -36,7 +36,7 @@
     "updatedAt": "2023-05-13T14:45:00.000Z"
   },
   {
-    "-id": "615b3ba0194a3a001f2de483",
+    "_id": "615b3ba0194a3a001f2de483",
     "user_id": "user5",
     "accommodation_id": "accommodation5",
     "rating": 4,
