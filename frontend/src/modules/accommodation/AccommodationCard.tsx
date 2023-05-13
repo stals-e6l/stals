@@ -15,10 +15,12 @@ import {
 import React from 'react'
 import AccommodationFormModal from './AccommodationFormModal'
 import DeleteAccommodationFormModal from './DeleteAccommodationFormModal'
+import StarPurple500SharpIcon from '@mui/icons-material/StarPurple500Sharp';
 import MoreHorizSharpIcon from '@mui/icons-material/MoreHorizSharp';
 import AccommodationImages from './accommodationImages'
 import toSentenceCase from "../../helpers/toSentenceCase"
-import { COLOR, FONT } from '../../theme/index'
+import toPhp from "../../helpers/toPhp"
+import { COLOR, } from '../../theme/index'
 
 interface IProps {
   children?: React.ReactNode
@@ -27,12 +29,6 @@ interface IProps {
 }
 
 const AccommodationCard: React.FC<IProps> = ({ accommodation, isPublicView }) => {
-
-  const actions = [
-    { name: 'Edit' },
-    { name: 'Archive' },
-    { name: 'Delete' }
-  ];
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -43,20 +39,27 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation, isPublicView }) =>
     setAnchorEl(null);
   };
 
+  const theme = useTheme()
 
   return (
 
     // Initialize card
     <Card sx={{
       backgroundColor: COLOR.gray1,
-      width: '280px',
-      borderRadius: '20px',
+      width: theme.spacing(35),
+      borderRadius: theme.spacing(2),
       boxShadow: '0px 4px 4px #6e6e73',
       cursor: 'pointer',
       ':hover': {
         boxShadow: '0px 4px 15px #6e6e73',
       },
       transition: '0.3s all',
+      [theme.breakpoints.down('md')]: {
+        width: theme.spacing(28)
+      },
+      [theme.breakpoints.down('sm')]: {
+        width: theme.spacing(19),
+      }
     }}>
 
       <CardActionArea>
@@ -64,25 +67,49 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation, isPublicView }) =>
         {/* Accommodation Image */}
         <CardMedia
           component="img"
-          height="180px"
+          height={theme.spacing(23)}
           image={AccommodationImages.ellens}
+
+          sx={{
+            [theme.breakpoints.down('md')]: {
+              height: theme.spacing(20)
+            },
+            [theme.breakpoints.down('sm')]: {
+              height: theme.spacing(13)
+            }
+          }}
         />
 
         <CardContent sx={{ wordSpacing: "10" }}>
 
           {/* Type of Accommodation */}
           <Typography variant='body1'
+            sx={{
+              [theme.breakpoints.down('md')]: {
+                fontSize: theme.spacing(1.75)
+              },
+              [theme.breakpoints.down('sm')]: {
+                fontSize: theme.spacing(1.5)
+              },
+            }}
           >
             {toSentenceCase(accommodation.type)}
           </Typography>
 
           {/* Name of Accommodation */}
-          <Typography variant='h5'
+          <Typography
+            variant='h5'
             sx={{
               color: COLOR.blue,
               whiteSpace: 'nowrap',
               overflow: "hidden",
               textOverflow: "ellipsis",
+              [theme.breakpoints.down('md')]: {
+                fontSize: theme.spacing(2.5)
+              },
+              [theme.breakpoints.down('sm')]: {
+                fontSize: theme.spacing(2)
+              },
             }}
           >
             {toSentenceCase(accommodation.name)}
@@ -104,14 +131,35 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation, isPublicView }) =>
                   readOnly
                   sx={{
                     color: COLOR.green,
+                    [theme.breakpoints.down('md')]: {
+                      fontSize: theme.spacing(2.25)
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                      display:"none"
+                    },
                   }}
                 />
+
+                <StarPurple500SharpIcon sx={{
+                  display: "none",
+                  [theme.breakpoints.down('sm')]: {
+                    display:"inherit",
+                    color: COLOR.green,
+                    fontSize: theme.spacing(2)
+                  },
+                }}/>
 
                 {/* Rating in Number */}
                 <Typography variant='body1'
                   sx={{
                     fontWeight: 'bold',
                     color: COLOR.green,
+                    [theme.breakpoints.down('md')]: {
+                      fontSize: theme.spacing(1.75)
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: theme.spacing(1.65)
+                    },
                   }}
                 >
                   {4.5}
@@ -121,6 +169,12 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation, isPublicView }) =>
                 <Typography variant='body1'
                   sx={{
                     marginLeft: '1%',
+                    [theme.breakpoints.down('md')]: {
+                      fontSize: theme.spacing(1.75)
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: theme.spacing(1.65)
+                    },
                   }}
                 >
                   ({10} reviews)
@@ -133,10 +187,16 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation, isPublicView }) =>
               <Typography variant='h6'
                 sx={{
                   color: COLOR.blue,
+                  [theme.breakpoints.down('md')]: {
+                    fontSize: theme.spacing(2)
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: theme.spacing(1.75)
+                  },
                 }}
               >
                 {/* Formats the number to currency format */}
-                Php {new Intl.NumberFormat().format(accommodation.price)}{' '}
+                Php {toPhp(accommodation.price)}{' '}
               </Typography>
             </>
             : // If not for public view, display only the address
@@ -154,10 +214,7 @@ const AccommodationCard: React.FC<IProps> = ({ accommodation, isPublicView }) =>
         </CardContent>
 
         {
-          isPublicView
-            ?
-            <></>
-            :
+          !isPublicView &&
             <>
               {/* If not public view */}
               <CardActions>
