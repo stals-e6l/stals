@@ -107,7 +107,6 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *              is_soft_deleted:
  *                  type: boolean
  *                  description: Accommodation is soft deleted
- * 
  * security:
  *      - bearerAuth: []
  */

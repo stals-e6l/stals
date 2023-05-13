@@ -5,49 +5,49 @@ const roleEnum = ['admin', 'owner', 'tenant']
 
 const userSchema = new mongoose.Schema(
   {
-    // full_name: {
-    //   first_name: {
-    //     type: String,
-    //     required: true,
-    //   },
-    //   middle_name: {
-    //     type: String,
-    //   },
-    //   last_name: {
-    //     type: String,
-    //     required: true,
-    //   },
-    // },
-    // gender: {
-    //   type: String,
-    //   enum: genderEnum,
-    //   required: true,
-    // },
-    // phone: {
-    //   landline: {
-    //     type: String,
-    //   },
-    //   mobile: {
-    //     type: String,
-    //   },
-    // },
-    // address: {
-    //   home: {
-    //     type: String,
-    //     required: true,
-    //   },
-    //   current: {
-    //     type: String,
-    //     required: true,
-    //   },
-    // },
-    // biography: {
-    //   type: String,
-    // },
-    // birthday: {
-    //   type: Date,
-    //   required: true,
-    // },
+    full_name: {
+      first_name: {
+        type: String,
+        required: true,
+      },
+      middle_name: {
+        type: String,
+      },
+      last_name: {
+        type: String,
+        required: true,
+      },
+    },
+    gender: {
+      type: String,
+      enum: genderEnum,
+      required: true,
+    },
+    phone: {
+      landline: {
+        type: String,
+      },
+      mobile: {
+        type: String,
+      },
+    },
+    address: {
+      home: {
+        type: String,
+        required: true,
+      },
+      current: {
+        type: String,
+        required: true,
+      },
+    },
+    biography: {
+      type: String,
+    },
+    birthday: {
+      type: Date,
+      required: true,
+    },
     username: {
       type: String,
       required: true,
@@ -60,10 +60,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // avatar: {
-    //   url: {
-    //     type: String,
-    //   },
+    avatar: {
+      url: {
+        type: String,
+      },
       // TODO: sprint 5
       // filename:  {   // uses Multer
       //   type: String,
@@ -80,15 +80,15 @@ const userSchema = new mongoose.Schema(
       //     type: String
       //   }
       // },
-    // },
+    },
     role: {
       type: String,
       enum: roleEnum,
       required: true,
     },
-    // organization: {
-    //   type: String,
-    // },
+    organization: {
+      type: String,
+    },
   },
   { timestamps: true }
 )
