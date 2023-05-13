@@ -9,9 +9,9 @@ import {
 import React from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/Images/Logo_Green.png'
-import Header from '../../components/header'
 
 import SignUpForm from './SignUpForm'
+import { COLOR } from '../../theme'
 
 interface IProps {
   children?: React.ReactNode
@@ -40,7 +40,6 @@ const SignInForm: React.FC<IProps> = () => {
 
   return (
     <React.Fragment>
-      <Header />
 
       <Box sx={{ display: 'flex' }}>
         <Box
@@ -75,7 +74,7 @@ const SignInForm: React.FC<IProps> = () => {
           >
             <Typography
               variant="h6"
-              sx={{ textAlign: 'center', marginTop: '-30px' }}
+              sx={{ textAlign: 'center', marginTop: theme.spacing(-5) }}
             >
               Find your perfect place according to your preference
             </Typography>
@@ -93,7 +92,7 @@ const SignInForm: React.FC<IProps> = () => {
         >
           <Box
             sx={{
-              backgroundColor: '#f0f0f0',
+              backgroundColor: COLOR.gray2,
               width: '45%',
               marginRight: theme.spacing(6),
               padding: theme.spacing(3),
@@ -103,7 +102,7 @@ const SignInForm: React.FC<IProps> = () => {
                 width: '100%',
                 height: '100%',
                 margin: 'auto auto',
-                borderRadius: '0px',
+                borderRadius: theme.spacing(0),
               },
             }}
           >
@@ -113,7 +112,7 @@ const SignInForm: React.FC<IProps> = () => {
               variant="outlined"
               size="small"
               fullWidth
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: COLOR.white }}
               onChange={e =>
                 setForm(prev => ({ ...prev, username: e.target.value }))
               }
@@ -126,7 +125,7 @@ const SignInForm: React.FC<IProps> = () => {
               size="small"
               fullWidth
               type="password"
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: COLOR.white }}
               value={form.password}
               onChange={e =>
                 setForm(prev => ({ ...prev, password: e.target.value }))
@@ -150,7 +149,7 @@ const SignInForm: React.FC<IProps> = () => {
             <Box
               sx={{
                 width: '100%',
-                height: '2px',
+                height: theme.spacing(0.25),
                 backgroundColor: theme.palette.secondary.main,
                 marginTop: theme.spacing(3),
               }}
