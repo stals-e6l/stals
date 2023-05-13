@@ -66,7 +66,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
     'type': 'Type',
     'price': 'Price',
     'size_sqm': 'Room Size',
-    'meters_from_uplb': 'Distance from UPLB (meter)',
+    'meters_from_uplb': 'Distance from UPLB',
     'min_pax': 'Minimum Tenants',
     'max_pax': 'Maximum Tenants',
     'num_rooms': 'Number of Rooms',
