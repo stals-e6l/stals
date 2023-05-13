@@ -1,6 +1,12 @@
 //
 interface IReview {
   _id?: string
+  user_id: string
+  accommodation_id: string
+  rating: number
+  comment?: string // not requirede
+  createdAt?: string
+  updatedAt?: string
 }
 
 // STORE
