@@ -14,6 +14,7 @@ import SignUpForm from './SignUpForm'
 import { COLOR } from '../../theme'
 import { signIn } from './AuthProvider'
 import useDialog from '../../hooks/useDialog'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -38,7 +39,7 @@ const SignInForm: React.FC<IProps> = () => {
   const handleSignIn = () => {
     if (onSignIn) {
       onSignIn(form).then(() => {
-        navigate('/')
+        navigate(ROUTES.explore)
       })
     }
   }
