@@ -1,9 +1,10 @@
 const { RESTRouter } = require('../handler/rest_router')
 
 const Report = require("../models/v2/report");
-const User = require("../models/v2/user")
 
 const reportRouter = RESTRouter('/report', Report)
+
+module.exports = reportRouter;
 
 /**
  * @openapi
@@ -191,6 +192,3 @@ const reportRouter = RESTRouter('/report', Report)
  *              - Report
  *              
  */
-
-
-module.exports = reportRouter;
