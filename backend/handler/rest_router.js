@@ -14,12 +14,12 @@ const RESTRouter = function (name, model) {
       const newData = await model.create({ ...req.body })
 
       if (!newData) {
-        throw BAD_REQUEST
+        throw Error(ERRORS[BAD_REQUEST])
       }
 
-      res.status(CREATED).json({ status: true, data: newData })
+      res.status(CREATED).json({ success: true, data: newData })
     } catch (err) {
-      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+      res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
     }
   })
 
@@ -33,12 +33,12 @@ const RESTRouter = function (name, model) {
       const data = await model.find(query).limit(limit)
 
       if (!data) {
-        throw BAD_REQUEST
+        throw Error(ERRORS[BAD_REQUEST])
       }
 
       res.status(OK).json({ success: true, data: data })
     } catch (err) {
-      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+      res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
     }
   })
 
@@ -48,12 +48,12 @@ const RESTRouter = function (name, model) {
       const data = await model.findById(req.params.id)
 
       if (!data) {
-        throw NOT_FOUND
+        throw Error(ERRORS[NOT_FOUND])
       }
 
       res.status(OK).json({ success: true, data: data })
     } catch (err) {
-      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+      res.status(NOT_FOUND).json({ success: false, messages: [String(err)] })
     }
   })
 
@@ -63,31 +63,31 @@ const RESTRouter = function (name, model) {
       const data = await model.findByIdAndRemove({ _id: req.params.id })
 
       if (!data) {
-        throw NOT_FOUND
+        throw Error(ERRORS[NOT_FOUND])
       }
 
       res.status(OK).json({ success: true, data: null })
     } catch (err) {
-      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+      res.status(NOT_FOUND).json({ success: false, messages: [String(err)] })
     }
   })
 
   // PUT /[resource]/:id
   router.put(`${name}/:id`, async (req, res) => {
     try {
-      const data = await model.findOneAndUpdate(
-        { _id: req.params.id },
+      const data = await model.findByIdAndUpdate(
+        req.params.id,
         { ...req.body },
-        { new: true }
+        { new: true, runValidators: true },
       )
 
       if (!data) {
-        throw BAD_REQUEST
+        throw Error(ERRORS[BAD_REQUEST])
       }
 
       res.status(OK).json({ success: true, data: data })
     } catch (err) {
-      res.status(err).json({ success: false, messages: [ERRORS[err]] })
+      res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
     }
   })
 

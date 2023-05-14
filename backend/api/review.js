@@ -1,64 +1,72 @@
 const { RESTRouter } = require('../handler/rest_router')
 
-const Report = require("../models/v2/report");
+const Review = require('../models/v2/review')
+const reviewRouter = RESTRouter('/review', Review)
 
-const reportRouter = RESTRouter('/report', Report)
-
-module.exports = reportRouter;
+module.exports = reviewRouter
 
 /**
  * @openapi
  * components:
  *  schemas:
- *      Report:
+ *      Review:
  *          type: object
  *          required:
- *              - user_id
- *              - pdf_url
+ *              - rating
+ *              - accommodation_id
+ *              - user_id 
  *          properties:
+ *              rating:
+ *                  type: number
+ *                  description: Review rating from 0-5 stars
+ *              comment:
+ *                  type: string
+ *                  description: Comment of user
+ *              accommodation_id:
+ *                  type: string
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation reference
  *              user_id:
  *                  type: string
  *                  pattern: '^[0-9A-Fa-f]{24}$'
- *                  description: User id that created report
- *              pdf_url:
- *                  type: string
- *                  description: URL of pdf
+ *                  description: User id author reference
  */
 
 /**
  * @openapi
- * /api/report:
+ * /api/review:
  *      post:
- *          description: Create report
+ *          description: Create review
  *          requestBody:
  *              required: true
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Report'
+ *                          $ref: '#/components/schemas/Review'
  *          responses:
  *              201:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Report'
+ *                              $ref: '#/components/schemas/Review'
  *              400:
  *                  description: Bad request.
  *              401:
  *                  description: Unauthorized access.
+ *              404:
+ *                  description: Not found (for accommodation id).
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Report
- *              
+ *              - Review
+ *
  */
-
 
 /**
  * @openapi
- * /api/report/{id}:
+ * /api/review/{id}:
  *      get:
- *          description: Get report by id
+ *          description: Get review by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -70,43 +78,53 @@ module.exports = reportRouter;
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Report'
+ *                              $ref: '#/components/schemas/Review'
  *              400:
- *                  description: Bad request.
+ *                  description: Bad request
  *              401:
- *                  description: Unauthorized access.
+ *                  description: Unauthorized access
  *              500:
- *                  description: Internal Server error.
+ *                  description: Internal server error
  *              404:
- *                  description: Not found.
+ *                  description: Review could not be found
  *          tags:
- *              - Report
- *              
+ *              - Review
+ *
  */
-
 
 /**
  * @openapi
- * /api/report:
+ * /api/review:
  *      get:
- *          description: Get all reports
+ *          description: Get all reviews
  *          parameters:
+ *              -   in: query
+ *                  name: rating
+ *                  schema:
+ *                      type: number
+ *                  description: Review rating from 0-5 stars
+ *              -   in: query
+ *                  name: comment
+ *                  schema:
+ *                      type: string
+ *                  description: Comment of user
+ *              -   in: query
+ *                  name: accommodation_id
+ *                  schema:
+ *                      type: string
+ *                      pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation reference
  *              -   in: query
  *                  name: user_id
  *                  schema:
  *                      type: string
  *                      pattern: '^[0-9A-Fa-f]{24}$'
- *                  description: User that generated the report
- *              -   in: query
- *                  name: pdf_url
- *                  schema:
- *                      type: string
- *                  description: URL of the PDF generated
+ *                  description: User reference
  *              -   in: query
  *                  name: limit
  *                  schema:
  *                      type: number
- *                  description: Number of reports to return
+ *                  description: Number of reviews to return
  *          responses:
  *              200:
  *                  content:
@@ -114,25 +132,24 @@ module.exports = reportRouter;
  *                          schema:
  *                              type: array
  *                              items:
- *                                  $ref: '#/components/schemas/Report'
+ *                                  $ref: '#/components/schemas/Review'
  *              400:
- *                  description: Bad request.
+ *                  description: Bad request
  *              401:
- *                  description:  Unauthorized access.
+ *                  description:  Unauthorize access
  *              500:
- *                  description: Internal Server error.
+ *                  description: Internal Service error
  *          tags:
- *              - Report
- *              
- *              
+ *              - Review
+ *
+ *
  */
-
 
 /**
  * @openapi
- * /api/report/{id}:
+ * /api/review/{id}:
  *      delete:
- *          description: Delete report by id
+ *          description: Delete review by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -141,27 +158,21 @@ module.exports = reportRouter;
  *                  required: true
  *          responses:
  *              200:
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: array
- *                              items:
- *                                  $ref: '#/components/schemas/Report'
+ *                  description: Review was deleted
  *              404:
- *                  description: Not found.
+ *                  description: The review was not found
  *              500:
- *                  description: Internal Server error.
+ *                  description: Internal server error
  *          tags:
- *              - Report
- *              
+ *              - Review
+ *
  */
-
 
 /**
  * @openapi
- * /api/report/{id}:
+ * /api/review/{id}:
  *      put:
- *          description: Edit report by id
+ *          description: Edit review by id
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -173,22 +184,23 @@ module.exports = reportRouter;
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Report'
+ *                          $ref: '#/components/schemas/Review'
  *          responses:
  *              200:
  *                  content:
  *                      application/json:
  *                          schema:
- *                              $ref: '#/components/schemas/Report'
+ *                              $ref: '#/components/schemas/Review'
  *              400:
  *                  description: Bad request.
  *              401:
  *                  description: Unauthorized access.
  *              404:
- *                  description: Not found.
+ *                  description: Not found (For accommodation and review).
  *              500:
  *                  description: Internal Server error.
  *          tags:
- *              - Report
- *              
+ *              - Review
+ *
  */
+

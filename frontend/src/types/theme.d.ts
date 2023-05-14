@@ -1,5 +1,6 @@
 // types
 type TColor =
+  | 'white'
   | 'gray1'
   | 'gray2'
   | 'black'

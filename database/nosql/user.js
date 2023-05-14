@@ -1,39 +1,98 @@
-/* Subject to review */
-/* Followed the format in report.js*/
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
-    userName: {
-        type: String, required: true, unique: true
+const genderEnum = ['male', 'female', 'non_binary', 'prefer_not_to_say']
+const roleEnum = ['admin', 'owner', 'tenant']
+
+const userSchema = new mongoose.Schema(
+  {
+    full_name: {
+      first_name: {
+        type: String,
+        required: true,
+      },
+      middle_name: {
+        type: String,
+      },
+      last_name: {
+        type: String,
+        required: true,
+      },
     },
-    passwordHash: {
-        type: String, required: true
+    gender: {
+      type: String,
+      enum: genderEnum,
+      required: true,
+    },
+    phone: {
+      landline: {
+        type: String,
+      },
+      mobile: {
+        type: String,
+      },
+    },
+    address: {
+      home: {
+        type: String,
+        required: true,
+      },
+      current: {
+        type: String,
+        required: true,
+      },
+    },
+    biography: {
+      type: String,
+    },
+    birthday: {
+      type: Date,
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
     },
     email: {
-        type: String, required: true, unique: true
+      type: String,
+      required: true,
     },
-    role: { // Di ako masyado sure kung ano right na type for role
-        type: String, required: true
+    password: {
+      type: String,
+      required: true,
     },
-    generatedReports: { // This will be the list of generated reports by this user 
-        type: Array, default : []
+    avatar: {
+      url: {
+        type: String,
+      },
+      // TODO: sprint 5
+      // filename:  {   // uses Multer
+      //   type: String,
+      // },
+      // desc:  {
+      //   type: String,
+      // },
+      // img:
+      // {
+      //   data: {
+      //     type: Buffer,
+      //   },
+      //   contentType: {
+      //     type: String
+      //   }
+      // },
     },
-    bookmarks: { // This will be the list of bookmarks by this user 
-        type: Array, default : []
+    role: {
+      type: String,
+      enum: roleEnum,
+      required: true,
     },
-    messages: { // This will be the list of messages by this user 
-        type: Array, default : []
+    organization: {
+      type: String,
     },
-    /* */
-    isOnline: { // 
-        type: Boolean, required: true
-    },
-    isVerified: { // 
-        type: Boolean, required: true
-    }
-    /*                               */
-}, {timestamps: true});
+  },
+  { timestamps: true },
+)
 
-module.exports = mongoose.model("User", userSchema);
+userSchema.index({ username: 1, email: 1}, { unique: true })
 
-
+module.exports = mongoose.model('User', userSchema)
