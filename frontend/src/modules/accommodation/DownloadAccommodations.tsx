@@ -28,6 +28,7 @@ import Pluralize from 'react-pluralize'
 import { NumericFormat } from 'react-number-format'
 import { downloadPdf } from '../../store/report/actions'
 import { retrieveAccommodations } from './AccommodationsProvider'
+import DownloadAccommodationsIncludeFields from './DownloadAccommodationsIncludeFields'
 
 interface IProps {
   children?: React.ReactNode
@@ -212,40 +213,12 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 </Box>
                 <Divider />
                 {/* show which fields to preview */}
-                <Box
-                  sx={{
-                    padding: theme.spacing(1.25),
-                    paddingLeft: theme.spacing(2.5),
-                    flexGrow: '1',
-                  }}
-                >
-                  {downloadFields.map(field => (
-                    <Box key={field}>
-                      <FormControlLabel
-                        label={tableHeaders[field]}
-                        control={
-                          <Checkbox
-                            checked={fields[field]}
-                            sx={{
-                              '&.Mui-checked': {
-                                color: theme.palette.secondary.main,
-                              },
-                              '&.MuiButtonBase-root': {
-                                paddingTop: theme.spacing(0.5),
-                                paddingBottom: theme.spacing(0.5),
-                              },
-                            }}
-                            onChange={(e, checked) => {
-                              const newFields = { ...fields }
-                              newFields[field] = checked
-                              setFields(newFields)
-                            }}
-                          />
-                        }
-                      />
-                    </Box>
-                  ))}
-                </Box>
+                <DownloadAccommodationsIncludeFields
+                  downloadFields={downloadFields}
+                  tableHeaders={tableHeaders}
+                  fields={fields}
+                  setFields={setFields}
+                />
               </Drawer>
 
               {/* Preview table */}
