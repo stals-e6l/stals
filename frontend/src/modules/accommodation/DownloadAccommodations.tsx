@@ -29,6 +29,7 @@ import { NumericFormat } from 'react-number-format'
 import { downloadPdf } from '../../store/report/actions'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import DownloadAccommodationsIncludeFields from './DownloadAccommodationsIncludeFields'
+import useMenu from '../../hooks/useMenu'
 
 interface IProps {
   children?: React.ReactNode
@@ -42,10 +43,11 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   // hooks
   const theme = useTheme()
   const { open: openDialog, toggleDialog } = useDialog()
+  const { anchorEl, onClose, onOpen } = useMenu()
   const accommodations = retrieveAccommodations()
 
   // state
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+
   const [fields, setFields] = React.useState<IDownloadAccommodations>({
     name: true,
     type: true,
@@ -166,10 +168,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
             <DialogContent>
               <Box>
-                <Button
-                  onClick={e => setAnchorEl(e.currentTarget)}
-                  variant="text"
-                >
+                <Button onClick={onOpen} variant="text">
                   Include fields
                 </Button>
               </Box>
@@ -177,7 +176,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               <Menu
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
-                onClose={() => setAnchorEl(null)}
+                onClose={onClose}
               >
                 <DownloadAccommodationsIncludeFields
                   downloadFields={downloadFields}
