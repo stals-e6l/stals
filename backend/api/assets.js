@@ -5,9 +5,19 @@ const { ERRORS, BAD_REQUEST, NOT_FOUND } = require('../handler/error_handler')
 const { CREATED, OK } = require('../handler/success_handler');
 
 const multer  = require('multer')
-const upload = multer({ dest: '../assets/' })
 
 const assetsRouter = Router()
+
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../assets/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
 
 /**
  * @openapi
