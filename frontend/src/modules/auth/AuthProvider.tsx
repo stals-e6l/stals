@@ -2,6 +2,7 @@ import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
 import { useNavigate } from 'react-router-dom'
 import { apiGet, apiPost } from '../../api'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -52,10 +53,10 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     if (onFetchMe && dispatch && !loaded && onSetAuthLoaded)
       onFetchMe()
         .then(() => {
-          navigate('/')
+          navigate(ROUTES.explore)
         })
         .catch(() => {
-          navigate('/auth')
+          navigate(ROUTES.auth)
         })
         .finally(() => {
           onSetAuthLoaded(true)
