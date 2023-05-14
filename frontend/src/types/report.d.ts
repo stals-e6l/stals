@@ -4,5 +4,4 @@ interface IReport {
   pdf_url: string
   createdAt?: string
   updatedAt?: string
-  __v?: number
 }
