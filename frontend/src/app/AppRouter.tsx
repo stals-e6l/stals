@@ -15,10 +15,12 @@ import ModulesViewer from '../modules'
 import AuthPage from '../pages/AuthPage'
 import { AuthGuard } from '../modules/auth/AuthProvider'
 import ExplorePage from '../pages/ExplorePage'
+import ResultPage from '../pages/ResultPage'
 
 export const ROUTES = {
   auth: '/auth',
   explore: '/explore',
+  result: '/result',
 }
 
 interface IProps {
@@ -49,8 +51,14 @@ const router = createBrowserRouter([
         element: <ExplorePage />,
       },
       {
+        path: ROUTES.result,
+        element: <ResultPage />,
+      },
+      {
         path: '/AccommodationCard',
-        element: <AccommodationCard accommodation={{} as any} />,
+        element: (
+          <AccommodationCard isPublicView={false} accommodation={{} as any} />
+        ),
       },
       {
         path: '/AccommodationForm',
