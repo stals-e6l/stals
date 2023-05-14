@@ -2,6 +2,8 @@ const { Router } = require('express')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/v2/user')
+const { ERRORS, UNAUTHORIZED, BAD_REQUEST} = require('../handler/error_handler')
+const { CREATED, OK } = require('../handler/success_handler')
 
 const saltRounds = 10
 const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -90,50 +92,27 @@ const signUpEndpoint = async(req, res) => {
     let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
 
     if (!regex.test(req.body.email)) {
-      const error = new Error('Not a valid email')
-      error.name = 'ValidationError'
-      throw error
+      throw Error(ERRORS[BAD_REQUEST])
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
 
     if (!hashedPassword) {
-      const error = new Error('Internal server error')
-      throw error
+      throw Error(ERRORS[BAD_REQUEST])
     }
 
     const user = await User.create({ ...req.body, password: hashedPassword })
 
     if (!user) {
-      const error = new Error('Internal server error')
-      throw error
+      throw Error(ERRORS[BAD_REQUEST])
     }
 
-    return res.status(201).json({
+    res.status(CREATED).json({
       success: true,
       data: { username: user.username, email: user.email, role: user.role },
     })
   } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'NullError':
-        code = 404
-        break
-      case 'UnprocessableContent':
-        code = 422
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
+    res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
   }
 }
 
@@ -175,11 +154,11 @@ const signInEndpoint = async(req, res) => {
 
     // second, validate if user indeed exists
     const user = await User.findOne({ username: username })
-    if (!user) throw new Error('No User Found')
+    if (!user) throw Error(ERRORS[BAD_REQUEST])
 
     // third, check if password is correct
     const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) throw new Error('Wrong password')
+    if (!isMatch) throw Error(ERRORS[BAD_REQUEST])
 
     // fourth, generate token
     const token = jwt.sign(
@@ -191,25 +170,9 @@ const signInEndpoint = async(req, res) => {
     if (blacklist[token]) delete blacklist[token]
 
     // last, return success
-    res.status(200).json({ success: true, data: token })
+    res.status(OK).json({ success: true, data: token })
   } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
+    res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
   }
 }
 
@@ -238,41 +201,22 @@ const signOutEndpoint = async(req, res) => {
   try {
     // Extract the auth header
     const authHeader = req.headers.authorization
-    if (!authHeader) throw new Error('No auth header!')
+    if (!authHeader) throw Error(ERRORS[UNAUTHORIZED])
 
     // Extract token
     const [authMethod, token] = authHeader.split(' ')
     if (authMethod !== 'Bearer')
-      throw new Error('Auth method should be "Bearer"!')
-    if (!token) throw new Error('No token!')
+
+    if (!token) throw Error(ERRORS[UNAUTHORIZED])
 
     // Add token to blacklist
     if (!blacklist[token]) blacklist[token] = token
 
     res
-      .status(200)
+      .status(OK)
       .json({ success: true, data: 'You are successfully logged out!' })
   } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
+    res.status(UNAUTHORIZED).json({ success: false, messages: [String(err)] })
   }
 }
 
@@ -306,23 +250,17 @@ const meEndpoint = async(req, res) => {
     const authHeader = req.headers.authorization
 
     if (!authHeader) {
-      const error = new Error("Header doesn't exist")
-      error.name = 'AuthError'
-      throw error
+      throw Error(ERRORS[UNAUTHORIZED])
     }
 
     const [authMethod, token] = authHeader.split(' ')
 
     if (authMethod !== 'Bearer') {
-      const error = new Error('Auth method is not bearer')
-      error.name = 'AuthError'
-      throw error
+      throw Error(ERRORS[UNAUTHORIZED])
     }
 
     if (!token) {
-      const error = new Error("Token doesn't exist")
-      error.name = 'AuthError'
-      throw error
+      throw Error(ERRORS[UNAUTHORIZED])
     }
 
   let decoded;
@@ -330,41 +268,18 @@ const meEndpoint = async(req, res) => {
 	try {
     decoded = jwt.verify(token, PRIVATE_KEY)
 	} catch(err) {
-    const error = new Error("Verification error")
-    error.name = 'AuthError'
-    throw error
+    throw Error(ERRORS[UNAUTHORIZED])
 	}
 
     const dbUser = await User.findOne({_id: decoded.id}).select('-password');
 
     if (!dbUser) {
-      const error = new Error("User doesn't exist")
-      error.name = 'NullError'
-      throw error
+      throw Error(ERRORS[UNAUTHORIZED])
     }
 
     res.status(200).json({ success: true, data: dbUser })
-  } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
+  } catch (err){
+    res.status(UNAUTHORIZED).json({ success: false, messages: [String(err)] })
   }
 }
 

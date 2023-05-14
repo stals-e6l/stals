@@ -1,6 +1,6 @@
 const { Router } = require('express')
 
-var Review = require('../models/review')
+var Review = require('../models/v2/review')
 var Accommodation = require('../models/v2/accommodation')
 
 const reviewRouter = Router()
@@ -10,7 +10,7 @@ const reviewRouter = Router()
  * components:
  *  schemas:
  *      Review:
- *          type: object
+ *          type: obje
  *          required:
  *              - content
  *              - status

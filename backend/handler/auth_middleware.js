@@ -10,30 +10,30 @@ const authGuard = async(req, res, next) => {
         const authHeader = req.headers.authorization
     
         if (!authHeader) {
-            throw UNAUTHORIZED;
+            throw Error(ERRORS[UNAUTHORIZED])
         }
 
         const [authMethod, token] = authHeader.split(' ')
     
         if (authMethod !== 'Bearer') {
-            throw UNAUTHORIZED;
+            throw Error(ERRORS[UNAUTHORIZED])
         }
 
         if (!token) {
-            throw UNAUTHORIZED;
+            throw Error(ERRORS[UNAUTHORIZED])
         }
 
         const decoded = jwt.verify(token, PRIVATE_KEY)
         const dbUser = await User.findById(decoded.id)
     
         if (!dbUser) {
-            throw UNAUTHORIZED;
+            throw Error(ERRORS[UNAUTHORIZED])
         }
         req.user = dbUser
         next();
 
     } catch (err){
-        res.status(err).json({ success: false, messages: [ERRORS[err]] })
+        res.status(UNAUTHORIZED).json({ success: false, messages: [String(err)] })
     }
 }
 
