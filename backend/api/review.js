@@ -1,9 +1,9 @@
-const { Router } = require('express')
+const { RESTRouter } = require('../handler/rest_router')
 
-var Review = require('../models/v2/review')
-var Accommodation = require('../models/v2/accommodation')
+const Review = require('../models/v2/review')
+const reviewRouter = RESTRouter('/review', Review)
 
-const reviewRouter = Router()
+module.exports = reviewRouter
 
 /**
  * @openapi
@@ -12,27 +12,24 @@ const reviewRouter = Router()
  *      Review:
  *          type: object
  *          required:
- *              - content
- *              - status
- *              - is_public
+ *              - rating
  *              - accommodation_id
+ *              - user_id 
  *          properties:
- *              content:
- *                  type: array
- *                  items:
- *                      type: string
- *                  description: Array of comments/chats of users
- *              status:
+ *              rating:
+ *                  type: number
+ *                  description: Review rating from 0-5 stars
+ *              comment:
  *                  type: string
- *                  pattern: '^((active)|(archived)|(deleted))$'
- *                  description: Status of the review/chat conversation
- *              is_public:
- *                  type: boolean
- *                  description: Either public review or private chat
+ *                  description: Comment of user
  *              accommodation_id:
  *                  type: string
  *                  pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: Accommodation reference
+ *              user_id:
+ *                  type: string
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: User id author reference
  * security:
  *      - bearerAuth: []
  */
@@ -68,49 +65,6 @@ const reviewRouter = Router()
  *              - Review
  *
  */
-reviewRouter.post('/', async function (req, res) {
-  try {
-    // TODO: Check if user is authenticated
-    // if (user is not authenticated){
-    //     const error = new Error("Permission denied");
-    //     error.name = "AuthError";
-    //     throw error;
-    // }
-
-    // Check if accommodation exists
-    const refAccom = await Accommodation.findById(req.body.accommodation_id)
-    if (!refAccom) {
-      const error = new Error('Accommodation does not exist')
-      error.name = 'NullError'
-      throw error
-    }
-
-    const savedReview = await Review.create({ ...req.body })
-
-    res.status(201).json({ success: true, data: savedReview })
-  } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
-  }
-})
 
 /**
  * @openapi
@@ -143,40 +97,6 @@ reviewRouter.post('/', async function (req, res) {
  *              - Review
  *
  */
-reviewRouter.get('/:id', async function (req, res) {
-  try {
-    if (!req.params.id) {
-      throw 400
-    }
-    const review = await Review.findById(req.params.id)
-    if (!review) {
-      const error = new Error('Review does not exist')
-      error.name = 'NullError'
-      throw error
-    }
-    res.status(200).json({ success: true, data: review })
-  } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-    res.status(code).json({ success: false, messages: [String(err)] })
-  }
-})
 
 /**
  * @openapi
@@ -187,25 +107,15 @@ reviewRouter.get('/:id', async function (req, res) {
  *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
- *                  name: content
+ *                  name: rating
  *                  schema:
- *                      type: array
- *                      collectionFormat: csv
- *                      items:
- *                          type: string
- *                      example: ["string"]
- *                  description: The collection of comments of a user in the review
+ *                      type: number
+ *                  description: Review rating from 0-5 stars
  *              -   in: query
- *                  name: status
+ *                  name: comment
  *                  schema:
  *                      type: string
- *                      enum: ["active", "archived", "deleted"]
- *                  description: The status of the Review
- *              -   in: query
- *                  name: is_public
- *                  schema:
- *                      type: boolean
- *                  description: Type of Review either public or private.
+ *                  description: Comment of user
  *              -   in: query
  *                  name: accommodation_id
  *                  schema:
@@ -213,11 +123,16 @@ reviewRouter.get('/:id', async function (req, res) {
  *                      pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: Accommodation reference
  *              -   in: query
+ *                  name: user_id
+ *                  schema:
+ *                      type: string
+ *                      pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: User reference
+ *              -   in: query
  *                  name: limit
  *                  schema:
  *                      type: number
  *                  description: Number of reviews to return
- *
  *          responses:
  *              200:
  *                  content:
@@ -237,36 +152,6 @@ reviewRouter.get('/:id', async function (req, res) {
  *
  *
  */
-reviewRouter.get('/', async function (req, res) {
-  try {
-    let query = { ...req.query }
-    delete query['limit'] //delete every query that's not part of the database model
-
-    const limit = Number(req.query.limit) || 100
-    const reviews = await Review.find(query).limit(limit)
-
-    res.status(200).json({ success: true, data: reviews })
-  } catch (err) {
-    let code
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-    res.status(code).json({ success: false, messages: [String(err)] })
-  }
-})
 
 /**
  * @openapi
@@ -292,40 +177,6 @@ reviewRouter.get('/', async function (req, res) {
  *              - Review
  *
  */
-reviewRouter.delete('/:id', async function (req, res) {
-  try {
-    const removedReview = await Review.findByIdAndRemove({ _id: req.params.id })
-
-    if (!removedReview) {
-      const error = new Error('Review does not exist')
-      error.name = 'NullError'
-      throw error
-    } else {
-      res.status(200).json({ success: true, data: null })
-    }
-  } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
-  }
-})
 
 /**
  * @openapi
@@ -364,59 +215,4 @@ reviewRouter.delete('/:id', async function (req, res) {
  *              - Review
  *
  */
-reviewRouter.put('/:id', async function (req, res) {
-  try {
-    const refAccom = await Accommodation.findById(req.body.accommodation_id)
-    if (!refAccom) {
-      const error = new Error('Accommodation does not exist')
-      error.name = 'NullError'
-      throw error
-    }
 
-    if (!['active', 'archived', 'deleted'].includes(req.body.status)) {
-      const error = new Error('Status is incorrect')
-      error.name = 'ValidationError'
-      throw error
-    }
-
-    const editedReview = await Review.findOneAndUpdate(
-      { _id: req.params.id },
-      { ...req.body },
-      { new: true }
-    )
-
-    if (!editedReview) {
-      const error = new Error('Review does not exist')
-      error.name = 'NullError'
-      throw error
-    }
-
-    res.status(200).json({ success: true, data: editedReview })
-  } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
-  }
-})
-
-module.exports = reviewRouter
