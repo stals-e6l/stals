@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material'
+import { colors, createTheme } from '@mui/material'
 
 declare module '@mui/material/styles' {}
 
@@ -64,7 +64,7 @@ const theme = createTheme({
       fontWeight: 'normal',
     },
     button: {
-      fontFamily: FONT.quicksand,
+      fontFamily: FONT.sourceSansPro,
       fontWeight: 'normal',
     },
   },
@@ -72,8 +72,47 @@ const theme = createTheme({
   components: {
     // sample on button
     MuiButton: {
-      styleOverrides: {},
+      styleOverrides: {
+        root: {
+          color: COLOR.gray2
+        }
+      },
     },
+    MuiRadio: {
+      styleOverrides: {
+        checked: {
+          color: COLOR.green,
+        }
+      }
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        checked: {
+          color: COLOR.green,
+        }
+      }
+    },
+
+    MuiSlider: {
+      styleOverrides: {
+        root: {
+        },
+        thumb: {
+          color: COLOR.green,
+        },
+        track: {
+          color: COLOR.blue,
+        },
+        rail: {
+          color: COLOR.gray2,
+          border: '2px solid',
+          borderColor: COLOR.black,
+        },
+        active: {
+          color: COLOR.gray1,
+        }
+      }
+    }
   },
 })
 
