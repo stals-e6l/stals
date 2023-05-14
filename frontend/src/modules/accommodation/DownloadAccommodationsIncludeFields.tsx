@@ -41,6 +41,7 @@ const DownloadAccommodationsIncludeFields: React.FC<IProps> = ({
                   },
                 }}
                 onChange={(e, checked) => {
+                  if (field === 'name') return
                   const newFields = { ...fields }
                   newFields[field] = checked
                   setFields(newFields)
