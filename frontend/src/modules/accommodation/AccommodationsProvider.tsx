@@ -100,17 +100,22 @@ export const filterAccommodations = () => {
 
   if (!dispatch) return
 
-  return async (filter: IAccommodationsFilter) => {
-    // TODO:
+  return async (queryString: string) => {
     // get filters
 
     // call api
+    const url = encodeURI(`accommodation?${queryString}`)
+    const res = await apiGet<IAccommodation[]>(url)
 
-    // dispatch
-    dispatch({
-      type: 'SET_ACCOMMODATIONS',
-      payload: [],
-    })
+    if (res.data && res.success) {
+      // dispatch
+      dispatch({
+        type: 'SET_ACCOMMODATIONS',
+        payload: res.data,
+      })
+    } else {
+      if (res.messages) throw new Error(res.messages[0])
+    }
   }
 }
 

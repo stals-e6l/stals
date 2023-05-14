@@ -1,20 +1,16 @@
 import {
-  Input,
   Button,
   Typography,
   useTheme,
   Box,
-  Theme,
   Autocomplete,
-  Stack,
   TextField,
-  Grid,
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import React from 'react'
-import { filterAccommodations } from './AccommodationsProvider'
-import Banner from '../../components/bannerElementBak'
-import { FONT, COLOR } from '../../theme'
+import { COLOR } from '../../theme'
+import { useNavigate } from 'react-router-dom'
+import buildQueryString from '../../helpers/buildQueryString'
 
 interface IProps {
   children?: React.ReactNode
@@ -23,7 +19,7 @@ interface IProps {
 const SearchAccommodations: React.FC<IProps> = () => {
   // hooks
   const theme = useTheme()
-  const filterHandler = filterAccommodations()
+  const navigate = useNavigate()
 
   // static data
   const data = [
@@ -41,16 +37,12 @@ const SearchAccommodations: React.FC<IProps> = () => {
     setName(event.target.value)
   }
   const handleSearch = () => {
-    if (!filterHandler) return
-    filterHandler({ name })
-      .then(() => {
-        // TODO: PM's job (maybe a callback)
-      })
-      .catch(err => {
-        // TODO: PM's job (track error)
-        console.error(err)
-      })
+    navigate(`/results?${buildQueryString({ name })}`)
   }
+
+  React.useEffect(() => {
+    navigate(`/explore?${buildQueryString({ name })}`)
+  }, [name])
 
   return (
     <React.Fragment>
@@ -74,6 +66,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
           options={data.map(option => option.name)}
           renderInput={params => (
             <TextField
+              onChange={handleInputChange}
               {...params}
               placeholder="Search accommodation"
               fullWidth
@@ -94,6 +87,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
         {/* Search Button */}
         <Button
           onClick={handleSearch}
+          disabled={name.length === 0}
           sx={{
             textTransform: 'none',
             backgroundColor: COLOR.green,
