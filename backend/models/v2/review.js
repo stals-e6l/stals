@@ -35,12 +35,12 @@ reviewSchema.path('accommodation_id').validate(async function (value) {
   const accom = await Accommodation.findById(value);
   if (!accom) return false;
   else return true;
-}, "Invalid Accommodation ID reference")
+}, "The accommodation the user is reviewing does not exist")
 
 reviewSchema.path('user_id').validate(async function (value) {
   const user = await User.findById(value);
   if (!user) return false;
   else return true;
-}, "Invalid User ID reference")
+}, "The user reviewing the accommodation does not exist")
 
 module.exports = mongoose.model('Review', reviewSchema)
