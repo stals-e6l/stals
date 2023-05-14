@@ -89,22 +89,22 @@ let blacklist = {}
  */
 const signUpEndpoint = async(req, res) => {
   try {
-    let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
+    let regex = new RegExp('^[a-z0-9]+@[a-z]+\\.[a-z]{2,3}$')
 
     if (!regex.test(req.body.email)) {
-      throw Error(ERRORS[BAD_REQUEST])
+      throw Error("Email is invalid.")
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
 
     if (!hashedPassword) {
-      throw Error(ERRORS[BAD_REQUEST])
+      throw Error("Password is not found.")
     }
 
     const user = await User.create({ ...req.body, password: hashedPassword })
 
     if (!user) {
-      throw Error(ERRORS[BAD_REQUEST])
+      throw Error("User is not found.")
     }
 
     res.status(CREATED).json({
