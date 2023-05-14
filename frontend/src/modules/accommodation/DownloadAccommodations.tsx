@@ -187,17 +187,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               </Menu>
 
               {/* Preview table */}
-              <Box
-                sx={{
-                  display: {
-                    xs: 'none',
-                    sm: 'block',
-                    md: 'block',
-                    lg: 'block',
-                    xl: 'block',
-                  },
-                }}
-              >
+              <Box>
                 <TableContainer>
                   <Table id={tableId}>
                     <TableHead
