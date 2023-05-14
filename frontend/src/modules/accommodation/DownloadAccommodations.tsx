@@ -169,6 +169,12 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             <DialogContent>
               <Box>
                 <Button onClick={onOpen} variant="text">
+                  <MenuIcon
+                    sx={{
+                      color: theme.palette.secondary.main,
+                      marginRight: theme.spacing(),
+                    }}
+                  />
                   Include fields
                 </Button>
               </Box>
