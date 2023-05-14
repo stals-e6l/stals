@@ -145,6 +145,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               display: {xs: 'block', sm: 'none', md: 'none', lg: 'none', xl: 'none',},
               '& .MuiPaper-root': {
                 height: '85%',
+                borderTopLeftRadius: theme.spacing(2),
+                borderTopRightRadius: theme.spacing(2),
               },
             }}
           >
