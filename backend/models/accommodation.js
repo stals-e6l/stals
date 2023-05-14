@@ -22,6 +22,30 @@ const accommodationSchema = new mongoose.Schema(
     description: { type: String, required: false },
     // required
     name: { type: String, required: true },
+    image: {
+      url: {
+        type: String,
+      },
+      // filename:  {   // uses Multer
+      //   type: String,
+      // }F
+      // desc:  {
+      //   type: String,
+      // },
+      // file:
+      // {
+      //   data: {
+      //     type: Buffer,
+      //   },
+      //   contentType: {
+      //     type: String
+      //   }
+      // },
+    },
+    rating: {
+      type: Number,
+      required: true,
+    },
     address: { type: String, required: true },
     type: {
       type: String,

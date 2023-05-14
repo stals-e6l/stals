@@ -4,10 +4,10 @@ const NOT_FOUND = 404 // use this if server resource is not found
 const SERVER_ERR = 500 // use this if server's error
 
 const ERRORS = {
-  BAD_REQUEST: 'Bad request',
-  UNAUTHORIZED: 'Unauthorized access',
-  NOT_FOUND: 'Not found',
-  SERVER_ERR: 'Internal server error',
+  [BAD_REQUEST]: 'Bad request',
+  [UNAUTHORIZED]: 'Unauthorized access',
+  [NOT_FOUND]: 'Not found',
+  [SERVER_ERR]: 'Internal server error',
 }
 
 module.exports = {
