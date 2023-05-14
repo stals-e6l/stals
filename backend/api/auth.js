@@ -277,7 +277,7 @@ const meEndpoint = async(req, res) => {
       throw Error("We don't know this user. Try to sign up.")
     }
 
-    res.status(200).json({ success: true, data: dbUser })
+    res.status(OK).json({ success: true, data: dbUser })
   } catch (err){
     res.status(UNAUTHORIZED).json({ success: false, messages: [String(err)] })
   }
