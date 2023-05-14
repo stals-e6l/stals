@@ -12,6 +12,7 @@ import { COLOR } from '../../theme'
 import { useNavigate } from 'react-router-dom'
 import buildQueryString from '../../helpers/buildQueryString'
 import { retrieveAccommodations } from './AccommodationsProvider'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -31,11 +32,11 @@ const SearchAccommodations: React.FC<IProps> = () => {
     setName(event.target.value)
   }
   const handleSearch = () => {
-    navigate(`/results?${buildQueryString({ name })}`)
+    navigate(`${ROUTES.result}?${buildQueryString({ name })}`)
   }
 
   React.useEffect(() => {
-    navigate(`/explore?${buildQueryString({ name })}`)
+    navigate(`${ROUTES.explore}?${buildQueryString({ name })}`)
   }, [name])
 
   return (
