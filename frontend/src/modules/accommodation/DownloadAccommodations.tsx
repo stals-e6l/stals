@@ -137,138 +137,138 @@ const DownloadAccommodations: React.FC<IProps> = () => {
       {!matches && accommodations && (
         <Box>
           <SwipeableDrawer
-          anchor="bottom"
-          open={openDrawer}
-          onClose={toggleDrawer}
-          onOpen={toggleDrawer}
-          sx={{
-            display: {xs: 'block', sm: 'none', md: 'none', lg: 'none', xl: 'none',},
-            '& .MuiPaper-root': {
-              height: '100%',
-            },
-          }}
-        >
-          <Box sx={{
-            display: 'inline-flex',
-            paddingTop: theme.spacing(1),
-            paddingBottom: theme.spacing(1),
-            paddingLeft: theme.spacing(1.2),
-          }}>
-            <IconButton onClick={toggleDrawer}>
-              <ClearIcon style={{
-                color: theme.palette.primary.main,
-              }} />
-            </IconButton>
-            <DialogTitle sx={{ 
-              '&.MuiTypography-root': {
-                color: theme.palette.primary.main,
-              }, 
-              }}>
-              Filters
-            </DialogTitle>
-          </Box>
-          <Divider />
-          {/* show which fields to preview */}
-          <Box sx={{
-            paddingTop: theme.spacing(1),
-            paddingLeft: theme.spacing(2.5),
-            flexGrow: '1',
-          }}>
-            {downloadFields.map(field => (
-              <Box key={field}>
-                <FormControlLabel
-                  label={tableHeaders[field]}
-                  control={
-                    <Checkbox
-                      checked={fields[field]}
-                      sx={{ 
-                        '&.Mui-checked': {
-                          color: theme.palette.secondary.main,
-                        },
-                        '&.MuiButtonBase-root': {
-                          paddingTop: theme.spacing(0.5),
-                          paddingBottom: theme.spacing(0.5),
-                        },
-                      }}
-                      onChange={(e, checked) => {
-                        const newFields = { ...fields }
-                        newFields[field] = checked
-                        setFields(newFields)
-                      }}
-                    />
-                  }
-                />
-              </Box>
-            ))}
-          </Box>
-          <DialogActions sx={{
-            paddingRight: theme.spacing(4.50),
-            paddingBottom: theme.spacing(1.5),
-          }}>
-            <Button variant='contained' onClick={handleMobileDownload}>Save PDF</Button>
-            <Button variant='outlined' onClick={toggleDrawer}>Cancel</Button>
-          </DialogActions>
-        </SwipeableDrawer>
-        <Box sx={{display: {xs: 'none', sm: 'block', md: 'block', lg: 'block', xl: 'block',}}}>
-          <TableContainer >
-            <Table id={tableId}>
-              <TableHead sx={{
-                whiteSpace: 'nowrap',
-              }}>
-                <TableRow>
-                  {Object.entries(fields as object)
-                    .filter(field => field[1])
-                    .map(field => (
-                      <TableCell key={field[0]} sx={{textAlign: 'center'}}>
-                        <Typography variant='h6' sx={{
-                          color: theme.palette.primary.main,
-                          fontSize: theme.spacing(2),
-                        }}>
-                          {tableHeaders[field[0]]}
-                        </Typography>
-                      </TableCell>
-                    ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {accommodations.map(accommodation => (
-                  <TableRow key={accommodation._id}>
-                    {fields.name && (
-                      <TableCell sx={{textAlign: 'center'}}>{accommodation.name}</TableCell>
-                    )}
-                    {fields.type && (
-                      <TableCell sx={{textAlign: 'center'}}>{accommType[accommodation.type]}</TableCell>
-                    )}
-                    {fields.price && (
-                      <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.price} prefix={'₱ '} thousandSeparator=","/></TableCell>
-                    )}
-                    {fields.size_sqm && (
-                      <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.size_sqm} thousandSeparator="," suffix={' sqm.'}/></TableCell>
-                    )}
-                    {fields.meters_from_uplb && (
-                      <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.meters_from_uplb} thousandSeparator="," suffix={' meters'}/></TableCell>
-                    )}
-                    {fields.min_pax && (
-                      <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'tenant'} plural={'tenants'} count={accommodation.min_pax} /></TableCell>
-                    )}
-                    {fields.max_pax && (
-                      <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'tenant'} plural={'tenants'} count={accommodation.max_pax} /></TableCell>
-                    )}
-                    {fields.num_rooms && (
-                      <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'room'} plural={'rooms'} count={accommodation.num_rooms} /></TableCell>
-                    )}
-                    {fields.num_beds && (
-                      <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'bed'} plural={'beds'} count={accommodation.num_beds} /></TableCell>
-                    )}
-                    {fields.furnishing && (
-                      <TableCell sx={{textAlign: 'center'}}>{furnishing[accommodation.furnishing]}</TableCell>
-                    )}
+            anchor="bottom"
+            open={openDrawer}
+            onClose={toggleDrawer}
+            onOpen={toggleDrawer}
+            sx={{
+              display: {xs: 'block', sm: 'none', md: 'none', lg: 'none', xl: 'none',},
+              '& .MuiPaper-root': {
+                height: '85%',
+              },
+            }}
+          >
+            <Box sx={{
+              display: 'inline-flex',
+              paddingTop: theme.spacing(1),
+              paddingBottom: theme.spacing(1),
+              paddingLeft: theme.spacing(1.2),
+            }}>
+              <IconButton onClick={toggleDrawer}>
+                <ClearIcon style={{
+                  color: theme.palette.primary.main,
+                }} />
+              </IconButton>
+              <DialogTitle sx={{ 
+                '&.MuiTypography-root': {
+                  color: theme.palette.primary.main,
+                }, 
+                }}>
+                Filters
+              </DialogTitle>
+            </Box>
+            <Divider />
+            {/* show which fields to preview */}
+            <Box sx={{
+              paddingTop: theme.spacing(1),
+              paddingLeft: theme.spacing(2.5),
+              flexGrow: '1',
+            }}>
+              {downloadFields.map(field => (
+                <Box key={field}>
+                  <FormControlLabel
+                    label={tableHeaders[field]}
+                    control={
+                      <Checkbox
+                        checked={fields[field]}
+                        sx={{ 
+                          '&.Mui-checked': {
+                            color: theme.palette.secondary.main,
+                          },
+                          '&.MuiButtonBase-root': {
+                            paddingTop: theme.spacing(0.5),
+                            paddingBottom: theme.spacing(0.5),
+                          },
+                        }}
+                        onChange={(e, checked) => {
+                          const newFields = { ...fields }
+                          newFields[field] = checked
+                          setFields(newFields)
+                        }}
+                      />
+                    }
+                  />
+                </Box>
+              ))}
+            </Box>
+            <DialogActions sx={{
+              paddingRight: theme.spacing(4.50),
+              paddingBottom: theme.spacing(1.5),
+            }}>
+              <Button variant='contained' onClick={handleMobileDownload}>Save PDF</Button>
+              <Button variant='outlined' onClick={toggleDrawer}>Cancel</Button>
+            </DialogActions>
+          </SwipeableDrawer>
+          <Box sx={{display: {xs: 'none', sm: 'block', md: 'block', lg: 'block', xl: 'block',}}}>
+            <TableContainer >
+              <Table id={tableId}>
+                <TableHead sx={{
+                  whiteSpace: 'nowrap',
+                }}>
+                  <TableRow>
+                    {Object.entries(fields as object)
+                      .filter(field => field[1])
+                      .map(field => (
+                        <TableCell key={field[0]} sx={{textAlign: 'center'}}>
+                          <Typography variant='h6' sx={{
+                            color: theme.palette.primary.main,
+                            fontSize: theme.spacing(2),
+                          }}>
+                            {tableHeaders[field[0]]}
+                          </Typography>
+                        </TableCell>
+                      ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+                </TableHead>
+                <TableBody>
+                  {accommodations.map(accommodation => (
+                    <TableRow key={accommodation._id}>
+                      {fields.name && (
+                        <TableCell sx={{textAlign: 'center'}}>{accommodation.name}</TableCell>
+                      )}
+                      {fields.type && (
+                        <TableCell sx={{textAlign: 'center'}}>{accommType[accommodation.type]}</TableCell>
+                      )}
+                      {fields.price && (
+                        <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.price} prefix={'₱ '} thousandSeparator=","/></TableCell>
+                      )}
+                      {fields.size_sqm && (
+                        <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.size_sqm} thousandSeparator="," suffix={' sqm.'}/></TableCell>
+                      )}
+                      {fields.meters_from_uplb && (
+                        <TableCell sx={{textAlign: 'center', whiteSpace: 'nowrap'}}><NumericFormat displayType='text' value={accommodation.meters_from_uplb} thousandSeparator="," suffix={' meters'}/></TableCell>
+                      )}
+                      {fields.min_pax && (
+                        <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'tenant'} plural={'tenants'} count={accommodation.min_pax} /></TableCell>
+                      )}
+                      {fields.max_pax && (
+                        <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'tenant'} plural={'tenants'} count={accommodation.max_pax} /></TableCell>
+                      )}
+                      {fields.num_rooms && (
+                        <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'room'} plural={'rooms'} count={accommodation.num_rooms} /></TableCell>
+                      )}
+                      {fields.num_beds && (
+                        <TableCell sx={{textAlign: 'center'}}><Pluralize singular={'bed'} plural={'beds'} count={accommodation.num_beds} /></TableCell>
+                      )}
+                      {fields.furnishing && (
+                        <TableCell sx={{textAlign: 'center'}}>{furnishing[accommodation.furnishing]}</TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
         </Box>
       )}
       {openDialog && accommodations && (
