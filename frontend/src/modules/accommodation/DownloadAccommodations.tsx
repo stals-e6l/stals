@@ -105,6 +105,20 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         // TODO: PM's job (track error)
         console.error(err)
       })
+      .finally(() => {
+        setFields({
+          name: true,
+          type: true,
+          price: true,
+          size_sqm: true,
+          meters_from_uplb: true,
+          min_pax: true,
+          max_pax: true,
+          num_rooms: true,
+          num_beds: true,
+          furnishing: true,
+        })
+      })
   }
 
   return (
