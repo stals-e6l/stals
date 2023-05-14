@@ -8,8 +8,6 @@ const reviewSchema = new mongoose.Schema(
     rating: {
       type: Number,
       required: true,
-      min: 0,
-      max: 5,
     },
     comment: {
       type: String,
@@ -28,16 +26,21 @@ const reviewSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+reviewSchema.path('rating').validate(function (value) {
+  if (value < 0 || value > 5) return false;
+  else return true;
+}, "Rating should be within the range 0-5 only")
+
 reviewSchema.path('accommodation_id').validate(async function (value) {
   const accom = await Accommodation.findById(value);
   if (!accom) return false;
   else return true;
-}, "Invalid Accommodation ID")
+}, "Invalid Accommodation ID reference")
 
 reviewSchema.path('user_id').validate(async function (value) {
   const user = await User.findById(value);
   if (!user) return false;
   else return true;
-}, "Invalid User ID")
+}, "Invalid User ID reference")
 
 module.exports = mongoose.model('Review', reviewSchema)
