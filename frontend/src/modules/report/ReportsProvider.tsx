@@ -1,4 +1,5 @@
 import React from 'react'
+import toArray from '../../utils/toArray'
 
 interface IProps {
   children?: React.ReactNode
@@ -45,4 +46,20 @@ const reportsReducer = (
     default:
       return state
   }
+}
+
+// ACTION
+
+export const fetchReports = () => {
+  // TODO: use this action in dashboard maybe (admin, owner)
+  return async (userId: string) => {
+    // TODO: call reports api
+    // TODO: dispatch
+  }
+}
+
+export const getReports = () => {
+  const { reports } = useReports()
+  if (!reports) return null
+  return toArray<IReport>(reports)
 }
