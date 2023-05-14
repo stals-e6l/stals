@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 
+const Accommodation = require('./accommodation')
+const User = require('./user')
+
 const reviewSchema = new mongoose.Schema(
   {
     rating: {
@@ -24,5 +27,17 @@ const reviewSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+reviewSchema.path('accommodation_id').validate(async function (value) {
+  const accom = await Accommodation.findById(value);
+  if (!accom) return false;
+  else return true;
+}, "Invalid Accommodation ID")
+
+reviewSchema.path('user_id').validate(async function (value) {
+  const user = await User.findById(value);
+  if (!user) return false;
+  else return true;
+}, "Invalid User ID")
 
 module.exports = mongoose.model('Review', reviewSchema)

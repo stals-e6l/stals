@@ -3,6 +3,8 @@ const { RESTRouter } = require('../handler/rest_router')
 const Review = require('../models/v2/review')
 const reviewRouter = RESTRouter('/review', Review)
 
+module.exports = reviewRouter
+
 /**
  * @openapi
  * components:
@@ -202,4 +204,3 @@ const reviewRouter = RESTRouter('/review', Review)
  *
  */
 
-module.exports = reviewRouter
