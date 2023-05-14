@@ -1,9 +1,7 @@
 import React from 'react'
 import useDialog from '../../hooks/useDialog'
 import {
-  Checkbox,
   Dialog,
-  Drawer,
   Table,
   TableBody,
   TableCell,
@@ -11,7 +9,6 @@ import {
   TableHead,
   TableRow,
   DialogTitle,
-  IconButton,
   DialogContent,
   Divider,
   DialogActions,
@@ -22,8 +19,6 @@ import {
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import useDrawer from '../../hooks/useDrawer'
 import Pluralize from 'react-pluralize'
 import { NumericFormat } from 'react-number-format'
 import { downloadPdf } from '../../store/report/actions'
@@ -150,17 +145,6 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 },
               }}
             >
-              {/* Button to open Drawer */}
-              {/* <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-                onClick={toggleDrawer}
-              >
-                <MenuIcon />
-              </IconButton> */}
               PDF Preview
             </DialogTitle>
 
