@@ -2,12 +2,14 @@ import { Box } from '@mui/material'
 import React from 'react'
 import Navbar from '../modules/general/Navbar'
 import Banner from '../modules/general/Banner'
+import AccommodationResults from '../modules/accommodation/AccommodationResults'
 
 interface IProps {
   children?: React.ReactNode
+  isPublic?: boolean
 }
 
-const ExplorePage: React.FC<IProps> = () => {
+const ExplorePage: React.FC<IProps> = ({ isPublic }) => {
   return (
     <Box
       sx={{
@@ -17,6 +19,7 @@ const ExplorePage: React.FC<IProps> = () => {
     >
       <Navbar />
       <Banner />
+      <AccommodationResults />
     </Box>
   )
 }
