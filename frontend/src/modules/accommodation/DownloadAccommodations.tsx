@@ -278,6 +278,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   const { open: openDialog, toggleDialog } = useDialog()
   const { open: openDrawer, toggleDrawer } = useDrawer()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
   const accommodations = retrieveAccommodations()
 
   // state
@@ -366,70 +367,28 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         Download
       </Button>
 
-      {openDialog && accommodations && (
-        <Dialog
-          fullScreen
-          open={openDialog}
-          onClose={toggleDialog}
-          sx={{
-            '& .MuiPaper-root': {
-              [theme.breakpoints.up('md')]: {
-                maxWidth: '90%',
-                width: '90%',
-                height: '85%',
-                borderRadius: theme.spacing(2),
-              },
-              [theme.breakpoints.down('sm')]: {
-                width: '100vw',
-                height: '100vh',
-              },
-            },
-          }}
-        >
-          <DialogTitle
-            sx={{
-              '&.MuiTypography-root': {
-                color: theme.palette.primary.main,
-              },
-            }}
-          >
-            {/* Button to open Drawer */}
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={toggleDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
-            PDF Preview
-          </DialogTitle>
-
-          <Divider />
-
-          <DialogContent>
-            {/* Which fields to include */}
-            <Drawer
-              sx={{
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                  width: { sm: '50%', md: '30%', lg: '20%', xl: '20%' },
-                  maxWidth: '100%',
-                  height: '100%',
-                  boxSizing: 'border-box',
-                  borderRadius: theme.spacing(0),
-                },
-              }}
-              PaperProps={{
-                style: {
-                  position: 'absolute',
-                },
-              }}
-              variant="persistent"
-              anchor="left"
+      {(openDialog || openDrawer) && accommodations && (
+        <Box>
+          <Box>
+            <SwipeableDrawer
+              anchor="bottom"
               open={openDrawer}
+              onClose={toggleDrawer}
+              onOpen={toggleDrawer}
+              sx={{
+                display: {
+                  xs: 'block',
+                  sm: 'none',
+                  md: 'none',
+                  lg: 'none',
+                  xl: 'none',
+                },
+                '& .MuiPaper-root': {
+                  height: '85%',
+                  borderTopLeftRadius: theme.spacing(2),
+                  borderTopRightRadius: theme.spacing(2),
+                },
+              }}
             >
               <Box
                 sx={{
@@ -440,7 +399,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 }}
               >
                 <IconButton onClick={toggleDrawer}>
-                  <ChevronLeftIcon
+                  <ClearIcon
                     style={{
                       color: theme.palette.primary.main,
                     }}
@@ -460,7 +419,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               {/* show which fields to preview */}
               <Box
                 sx={{
-                  padding: theme.spacing(1.25),
+                  paddingTop: theme.spacing(1),
                   paddingLeft: theme.spacing(2.5),
                   flexGrow: '1',
                 }}
@@ -492,17 +451,24 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                   </Box>
                 ))}
               </Box>
-            </Drawer>
-
-            {/* Preview table */}
+              <DialogActions
+                sx={{
+                  paddingRight: theme.spacing(4.5),
+                  paddingBottom: theme.spacing(1.5),
+                }}
+              >
+                <Button variant="contained" onClick={handleMobileDownload}>
+                  Save PDF
+                </Button>
+                <Button variant="outlined" onClick={toggleDrawer}>
+                  Cancel
+                </Button>
+              </DialogActions>
+            </SwipeableDrawer>
             <Box
               sx={{
-                display: {
-                  xs: 'none',
-                  sm: 'block',
-                  md: 'block',
-                  lg: 'block',
-                  xl: 'block',
+                [theme.breakpoints.up('xs')]:{
+                  display: 'none',
                 },
               }}
             >
@@ -517,10 +483,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                       {Object.entries(fields as object)
                         .filter(field => field[1])
                         .map(field => (
-                          <TableCell
-                            key={field[0]}
-                            sx={{ textAlign: 'center' }}
-                          >
+                          <TableCell key={field[0]} sx={{ textAlign: 'center' }}>
                             <Typography
                               variant="h6"
                               sx={{
@@ -630,23 +593,288 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 </Table>
               </TableContainer>
             </Box>
-          </DialogContent>
-
-          <DialogActions
+          </Box>
+          <Dialog
+            fullScreen
+            open={isMobile? false:openDialog}
+            onClose={toggleDialog}
             sx={{
-              paddingRight: theme.spacing(4.5),
-              paddingBottom: theme.spacing(1.5),
+              '& .MuiPaper-root': {
+                [theme.breakpoints.up('md')]: {
+                  maxWidth: '90%',
+                  width: '90%',
+                  height: '85%',
+                  borderRadius: theme.spacing(2),
+                },
+                [theme.breakpoints.down('sm')]: {
+                  width: '100vw',
+                  height: '100vh',
+                },
+              },
             }}
           >
-            {/* Action buttons */}
-            <Button variant="contained" onClick={handleDownload}>
-              Save PDF
-            </Button>
-            <Button variant="outlined" onClick={toggleDialog}>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
+            <DialogTitle
+              sx={{
+                '&.MuiTypography-root': {
+                  color: theme.palette.primary.main,
+                },
+              }}
+            >
+              {/* Button to open Drawer */}
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={toggleDrawer}
+              >
+                <MenuIcon />
+              </IconButton>
+              PDF Preview
+            </DialogTitle>
+
+            <Divider />
+
+            <DialogContent>
+              {/* Which fields to include */}
+              <Drawer
+                sx={{
+                  flexShrink: 0,
+                  '& .MuiDrawer-paper': {
+                    width: { sm: '50%', md: '30%', lg: '20%', xl: '20%' },
+                    maxWidth: '100%',
+                    height: '100%',
+                    boxSizing: 'border-box',
+                    borderRadius: theme.spacing(0),
+                  },
+                }}
+                PaperProps={{
+                  style: {
+                    position: 'absolute',
+                  },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={openDrawer}
+              >
+                <Box
+                  sx={{
+                    display: 'inline-flex',
+                    paddingTop: theme.spacing(1),
+                    paddingBottom: theme.spacing(1),
+                    paddingLeft: theme.spacing(1.2),
+                  }}
+                >
+                  <IconButton onClick={toggleDrawer}>
+                    <ChevronLeftIcon
+                      style={{
+                        color: theme.palette.primary.main,
+                      }}
+                    />
+                  </IconButton>
+                  <DialogTitle
+                    sx={{
+                      '&.MuiTypography-root': {
+                        color: theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    Filters
+                  </DialogTitle>
+                </Box>
+                <Divider />
+                {/* show which fields to preview */}
+                <Box
+                  sx={{
+                    padding: theme.spacing(1.25),
+                    paddingLeft: theme.spacing(2.5),
+                    flexGrow: '1',
+                  }}
+                >
+                  {downloadFields.map(field => (
+                    <Box key={field}>
+                      <FormControlLabel
+                        label={tableHeaders[field]}
+                        control={
+                          <Checkbox
+                            checked={fields[field]}
+                            sx={{
+                              '&.Mui-checked': {
+                                color: theme.palette.secondary.main,
+                              },
+                              '&.MuiButtonBase-root': {
+                                paddingTop: theme.spacing(0.5),
+                                paddingBottom: theme.spacing(0.5),
+                              },
+                            }}
+                            onChange={(e, checked) => {
+                              const newFields = { ...fields }
+                              newFields[field] = checked
+                              setFields(newFields)
+                            }}
+                          />
+                        }
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </Drawer>
+
+              {/* Preview table */}
+              <Box
+                sx={{
+                  display: {
+                    xs: 'none',
+                    sm: 'block',
+                    md: 'block',
+                    lg: 'block',
+                    xl: 'block',
+                  },
+                }}
+              >
+                <TableContainer>
+                  <Table id={tableId}>
+                    <TableHead
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <TableRow>
+                        {Object.entries(fields as object)
+                          .filter(field => field[1])
+                          .map(field => (
+                            <TableCell
+                              key={field[0]}
+                              sx={{ textAlign: 'center' }}
+                            >
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  color: theme.palette.primary.main,
+                                  fontSize: theme.spacing(2),
+                                }}
+                              >
+                                {tableHeaders[field[0]]}
+                              </Typography>
+                            </TableCell>
+                          ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {accommodations.map(accommodation => (
+                        <TableRow key={accommodation._id}>
+                          {fields.name && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              {accommodation.name}
+                            </TableCell>
+                          )}
+                          {fields.type && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              {accommType[accommodation.type]}
+                            </TableCell>
+                          )}
+                          {fields.price && (
+                            <TableCell
+                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                            >
+                              <NumericFormat
+                                displayType="text"
+                                value={accommodation.price}
+                                prefix={'₱ '}
+                                thousandSeparator=","
+                              />
+                            </TableCell>
+                          )}
+                          {fields.size_sqm && (
+                            <TableCell
+                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                            >
+                              <NumericFormat
+                                displayType="text"
+                                value={accommodation.size_sqm}
+                                thousandSeparator=","
+                                suffix={' sqm.'}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.meters_from_uplb && (
+                            <TableCell
+                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                            >
+                              <NumericFormat
+                                displayType="text"
+                                value={accommodation.meters_from_uplb}
+                                thousandSeparator=","
+                                suffix={' meters'}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.min_pax && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              <Pluralize
+                                singular={'tenant'}
+                                plural={'tenants'}
+                                count={accommodation.min_pax}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.max_pax && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              <Pluralize
+                                singular={'tenant'}
+                                plural={'tenants'}
+                                count={accommodation.max_pax}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.num_rooms && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              <Pluralize
+                                singular={'room'}
+                                plural={'rooms'}
+                                count={accommodation.num_rooms}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.num_beds && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              <Pluralize
+                                singular={'bed'}
+                                plural={'beds'}
+                                count={accommodation.num_beds}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.furnishing && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              {furnishing[accommodation.furnishing]}
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </DialogContent>
+
+            <DialogActions
+              sx={{
+                paddingRight: theme.spacing(4.5),
+                paddingBottom: theme.spacing(1.5),
+              }}
+            >
+              {/* Action buttons */}
+              <Button variant="contained" onClick={handleDownload}>
+                Save PDF
+              </Button>
+              <Button variant="outlined" onClick={toggleDialog}>
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
       )}
     </React.Fragment>
   )
