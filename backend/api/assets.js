@@ -21,7 +21,7 @@ const upload = multer({ storage: storage })
 
 /**
  * @openapi
- * /api/image:
+ * /api/asset:
  *      post:
  *          description: Adds image
  *          requestBody:
@@ -49,7 +49,7 @@ const upload = multer({ storage: storage })
  *              - Assets
  *
  */
-assetsRouter.post("/image", upload.single('fileName'), async (req, res) => {
+assetsRouter.post("/asset", upload.single('fileName'), async (req, res) => {
 try {
     var path = resolve(req.file.path)
 
