@@ -154,11 +154,11 @@ const signInEndpoint = async(req, res) => {
 
     // second, validate if user indeed exists
     const user = await User.findOne({ username: username })
-    if (!user) throw Error(ERRORS[BAD_REQUEST])
+    if (!user) throw Error("User does not exist.")
 
     // third, check if password is correct
     const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) throw Error(ERRORS[BAD_REQUEST])
+    if (!isMatch) throw Error("Password is incorrect.")
 
     // fourth, generate token
     const token = jwt.sign(
@@ -201,13 +201,13 @@ const signOutEndpoint = async(req, res) => {
   try {
     // Extract the auth header
     const authHeader = req.headers.authorization
-    if (!authHeader) throw Error(ERRORS[UNAUTHORIZED])
+    if (!authHeader) throw Error("Header does not exist.")
 
     // Extract token
     const [authMethod, token] = authHeader.split(' ')
     if (authMethod !== 'Bearer')
 
-    if (!token) throw Error(ERRORS[UNAUTHORIZED])
+    if (!token) throw Error("Auth method is not bearer.")
 
     // Add token to blacklist
     if (!blacklist[token]) blacklist[token] = token
@@ -250,31 +250,31 @@ const meEndpoint = async(req, res) => {
     const authHeader = req.headers.authorization
 
     if (!authHeader) {
-      throw Error(ERRORS[UNAUTHORIZED])
+      throw Error("Header does not exist.")
     }
 
     const [authMethod, token] = authHeader.split(' ')
 
     if (authMethod !== 'Bearer') {
-      throw Error(ERRORS[UNAUTHORIZED])
+      throw Error("Auth method is not bearer.")
     }
 
     if (!token) {
-      throw Error(ERRORS[UNAUTHORIZED])
+      throw Error("Token does not exist.")
     }
 
-  let decoded;
+    let decoded;
 
-	try {
-    decoded = jwt.verify(token, PRIVATE_KEY)
-	} catch(err) {
-    throw Error(ERRORS[UNAUTHORIZED])
-	}
+    try {
+      decoded = jwt.verify(token, PRIVATE_KEY)
+    } catch(err) {
+      throw Error("Docoding failed.")
+    }
 
     const dbUser = await User.findOne({_id: decoded.id}).select('-password');
 
     if (!dbUser) {
-      throw Error(ERRORS[UNAUTHORIZED])
+      throw Error("User does not exist")
     }
 
     res.status(200).json({ success: true, data: dbUser })
