@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/v2/user')
 
-const authRouter = Router()
 const saltRounds = 10
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 
@@ -86,8 +85,7 @@ let blacklist = {}
  *              - User
  *
  */
-
-authRouter.post('/sign-up', async function (req, res) {
+const signUpEndpoint = async(req, res) => {
   try {
     let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
 
@@ -137,7 +135,7 @@ authRouter.post('/sign-up', async function (req, res) {
 
     res.status(code).json({ success: false, messages: [String(err)] })
   }
-})
+}
 
 /**
  * @openapi
@@ -169,7 +167,7 @@ authRouter.post('/sign-up', async function (req, res) {
  *
  */
 
-authRouter.post('/sign-in', async function (req, res) {
+const signInEndpoint = async(req, res) => {
   try {
     // first, extract the req payload
     const username = req.body.username
@@ -213,7 +211,7 @@ authRouter.post('/sign-in', async function (req, res) {
 
     res.status(code).json({ success: false, messages: [String(err)] })
   }
-})
+}
 
 /**
  * @openapi
@@ -223,7 +221,7 @@ authRouter.post('/sign-in', async function (req, res) {
  *          security:
  *              -   bearerAuth: []
  *          responses:
- *              201:
+ *              200:
  *                  content:
  *                      application/json:
  *                          schema:
@@ -236,7 +234,7 @@ authRouter.post('/sign-in', async function (req, res) {
  *              - User
  *
  */
-authRouter.post('/sign-out', async function (req, res) {
+const signOutEndpoint = async(req, res) => {
   try {
     // Extract the auth header
     const authHeader = req.headers.authorization
@@ -276,7 +274,7 @@ authRouter.post('/sign-out', async function (req, res) {
 
     res.status(code).json({ success: false, messages: [String(err)] })
   }
-})
+}
 
 /**
  * @openapi
@@ -303,7 +301,7 @@ authRouter.post('/sign-out', async function (req, res) {
  *              - User
  *
  */
-authRouter.get('/me', async function (req, res) {
+const meEndpoint = async(req, res) => {
   try {
     const authHeader = req.headers.authorization
 
@@ -368,6 +366,6 @@ authRouter.get('/me', async function (req, res) {
 
     res.status(code).json({ success: false, messages: [String(err)] })
   }
-})
+}
 
-module.exports = authRouter
+module.exports = { signUpEndpoint, signInEndpoint, signOutEndpoint, meEndpoint };

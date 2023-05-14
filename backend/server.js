@@ -7,6 +7,7 @@ const cors = require('cors')
 const { connectDb } = require('./db')
 var bodyParser = require("body-parser");
 const { authGuard } = require('./handler/auth_middleware');
+const { signUpEndpoint, signInEndpoint, signOutEndpoint, meEndpoint } = require('./api/auth');
 
 const server = express()
 const PORT = 5000
@@ -38,8 +39,11 @@ server.use(
 server.use(bodyParser.json());
 
 /** INSERT API BELOW */
+server.use('/api/sign-up', signUpEndpoint)
+server.use('/api/sign-in', signInEndpoint)
 server.use(authGuard)
-server.use('/api', require('./api/auth'))
+server.use('/api/me', meEndpoint)
+server.use('/api/sign-out', signOutEndpoint)
 server.use('/api/ping', require('./api/ping'))
 server.use('/api', require('./api/accommodation'))
 server.use('/api/review', require('./api/review'))
