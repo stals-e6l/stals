@@ -40,8 +40,9 @@ server.use(bodyParser.json());
 server.use('/api/ping', require('./api/ping'))
 server.use('/api', require('./api/accommodation'))
 server.use('/api', require('./api/review'))
-server.use('/api/report', require('./api/report'))
+server.use('/api', require('./api/report'))
 server.use('/api', require('./api/auth'))
+server.use('/api', require('./api/assets'))
 
 /** END API */
 
