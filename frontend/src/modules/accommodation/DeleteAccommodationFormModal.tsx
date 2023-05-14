@@ -4,6 +4,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material'
 import React from 'react'
 import DeleteAccommodationForm from './DeleteAccommodationForm'
@@ -22,6 +24,9 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
   // hooks
   const { open, toggleDialog } = useDialog()
 
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+
   // events
   const handleSubmit = () => {
     // TODO: PM's job
@@ -36,7 +41,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
     <React.Fragment>
       <Button onClick={toggleDialog}>Delete</Button>
       {open && (
-        <Dialog open={open} onClose={toggleDialog}>
+        <Dialog open={open} onClose={toggleDialog} fullScreen={fullScreen} maxWidth={'sm'} fullWidth={true}>
           <DialogTitle>Hello</DialogTitle>
 
           <DialogContent>
