@@ -1,5 +1,5 @@
 import React from 'react'
-import { apiGet } from '../../api'
+import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
 
@@ -59,8 +59,9 @@ export const fetchReviews = () => {
   if (!dispatch) return
 
   return async (accommodationId: string) => {
-    // TODO: use id to fetch the specific reviews
-    const res = await apiGet<IReview[]>('mock/reviews')
+    const res = await apiGet<IReview[]>(
+      `review?accommodation_id=${accommodationId}`
+    )
 
     if (res.data && res.success) {
       dispatch({ type: 'SET_REVIEWS', payload: res.data })
@@ -80,9 +81,13 @@ export const createReview = () => {
   const { dispatch } = useReviews()
   if (!dispatch) return null
   return async (review: IReview) => {
-    // TODO:
-    // post
-    // loads new reviews
+    const res = await apiPost<IReview, IReview>('review', {
+      payload: review,
+    })
+
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
   }
 }
 
@@ -90,9 +95,13 @@ export const updateReview = () => {
   const { dispatch } = useReviews()
   if (!dispatch) return null
   return async (review: IReview) => {
-    // TODO:
-    // post
-    // loads new reviews
+    const res = await apiPut<IReview, IReview>(`review/${review._id}`, {
+      payload: review,
+    })
+
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
   }
 }
 
@@ -100,9 +109,11 @@ export const deleteReview = () => {
   const { dispatch } = useReviews()
   if (!dispatch) return null
   return async (reviewId: string) => {
-    // TODO:
-    // post
-    // loads new reviews
+    const res = await apiDelete<string>(`review/${reviewId}`)
+
+    if (!res.success && res.messages) {
+      throw new Error(res.messages[0])
+    }
   }
 }
 
