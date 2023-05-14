@@ -26,7 +26,54 @@ let blacklist = {}
  *              - password
  *              - email
  *              - role
+ *              - first_name
+ *              - middle_name
+ *              - last_name
+ *              - gender
+ *              - home
+ *              - current
+ *              - birthday
  *          properties:
+ *              full_name:
+ *                  type: object
+ *                  properties:
+ *                      first_name:
+ *                          type: string
+ *                          description: First name  
+ *                      middle_name:
+ *                          type: string
+ *                          description: Middle name  
+ *                      last_name:
+ *                          type: string
+ *                          description: Last name  
+ *              gender:
+ *                  type: string
+ *                  pattern: '^((male)|(female)|(non_binary)|(prefer_not_to_say))$'
+ *                  description: Gender of the user
+ *              phone:
+ *                  type: object
+ *                  properties:
+ *                      landline:
+ *                          type: string
+ *                          description: Landline number 
+ *                      mobile:
+ *                          type: string
+ *                          description: Mobile phone number 
+ *              address:
+ *                  type: object
+ *                  properties:
+ *                      home:
+ *                          type: string
+ *                          description: Home address 
+ *                      current:
+ *                          type: string
+ *                          description: Current address 
+ *              biography:
+ *                  type: string
+ *                  description: Biography of user
+ *              birthday:
+ *                  type: date
+ *                  description: Username of user
  *              username:
  *                  type: string
  *                  description: Username of user
@@ -36,10 +83,19 @@ let blacklist = {}
  *              email:
  *                  type: string
  *                  description: Email of user
+ *              avatar:
+ *                  type: object
+ *                  properties:
+ *                      url:
+ *                          type: string
+ *                          description: URL of 
  *              role:
  *                  type: string
  *                  pattern: '^((admin)|(owner)|(tenant))$'
  *                  description: Role of the user
+ *              organization:
+ *                  type: string
+ *                  description: Organization of user
  *
  *      Login:
  *          type: object

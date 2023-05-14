@@ -10,7 +10,7 @@ const reviewRouter = Router()
  * components:
  *  schemas:
  *      Review:
- *          type: obje
+ *          type: object
  *          required:
  *              - content
  *              - status
@@ -33,6 +33,8 @@ const reviewRouter = Router()
  *                  type: string
  *                  pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: Accommodation reference
+ * security:
+ *      - bearerAuth: []
  */
 
 /**
@@ -40,6 +42,8 @@ const reviewRouter = Router()
  * /api/review:
  *      post:
  *          description: Create review
+ *          security:
+ *              -   bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
@@ -113,6 +117,8 @@ reviewRouter.post('/', async function (req, res) {
  * /api/review/{id}:
  *      get:
  *          description: Get review by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -177,6 +183,8 @@ reviewRouter.get('/:id', async function (req, res) {
  * /api/review:
  *      get:
  *          description: Get all reviews
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
  *                  name: content
@@ -265,6 +273,8 @@ reviewRouter.get('/', async function (req, res) {
  * /api/review/{id}:
  *      delete:
  *          description: Delete review by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -322,6 +332,8 @@ reviewRouter.delete('/:id', async function (req, res) {
  * /api/review/{id}:
  *      put:
  *          description: Edit review by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id

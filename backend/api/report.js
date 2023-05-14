@@ -22,6 +22,8 @@ const reportRouter = Router()
  *              pdf_url:
  *                  type: string
  *                  description: URL of pdf
+ * security:
+ *      - bearerAuth: []
  */
 
 /**
@@ -29,6 +31,8 @@ const reportRouter = Router()
  * /api/report:
  *      post:
  *          description: Create report
+ *          security:
+ *              -   bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
@@ -102,6 +106,8 @@ reportRouter.post("/", async function(req, res){
  * /api/report/{id}:
  *      get:
  *          description: Get report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -169,6 +175,8 @@ reportRouter.get('/:id', async function(req, res){
  * /api/report:
  *      get:
  *          description: Get all reports
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
  *                  name: user_id
@@ -243,6 +251,8 @@ reportRouter.get('/', async function(req, res){
  * /api/report/{id}:
  *      delete:
  *          description: Delete report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -301,6 +311,8 @@ reportRouter.delete('/:id', async function(req, res){
  * /api/report/{id}:
  *      put:
  *          description: Edit report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
