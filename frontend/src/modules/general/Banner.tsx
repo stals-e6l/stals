@@ -31,6 +31,9 @@ const Banner: React.FC<IProps> = () => {
         item
         sx={{
           height: theme.spacing(68 / 8),
+          [theme.breakpoints.up('sm')]: {
+            width: '50%',
+          },
           [theme.breakpoints.down('sm')]: {
             marginTop: theme.spacing(5),
           },
