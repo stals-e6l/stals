@@ -46,7 +46,7 @@ server.use('/api/me', meEndpoint)
 server.use('/api/sign-out', signOutEndpoint)
 server.use('/api/ping', require('./api/ping'))
 server.use('/api', require('./api/accommodation'))
-server.use('/api/review', require('./api/review'))
+server.use('/api', require('./api/review'))
 server.use('/api/report', require('./api/report'))
 /** END API */
 
