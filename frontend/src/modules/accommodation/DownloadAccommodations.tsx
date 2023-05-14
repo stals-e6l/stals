@@ -166,60 +166,12 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
             <DialogContent>
               {/* Which fields to include */}
-              <Drawer
-                sx={{
-                  flexShrink: 0,
-                  '& .MuiDrawer-paper': {
-                    width: { sm: '50%', md: '30%', lg: '20%', xl: '20%' },
-                    maxWidth: '100%',
-                    height: '100%',
-                    boxSizing: 'border-box',
-                    borderRadius: theme.spacing(0),
-                  },
-                }}
-                PaperProps={{
-                  style: {
-                    position: 'absolute',
-                  },
-                }}
-                variant="persistent"
-                anchor="left"
-                open={openDrawer}
-              >
-                <Box
-                  sx={{
-                    display: 'inline-flex',
-                    paddingTop: theme.spacing(1),
-                    paddingBottom: theme.spacing(1),
-                    paddingLeft: theme.spacing(1.2),
-                  }}
-                >
-                  <IconButton onClick={toggleDrawer}>
-                    <ChevronLeftIcon
-                      style={{
-                        color: theme.palette.primary.main,
-                      }}
-                    />
-                  </IconButton>
-                  <DialogTitle
-                    sx={{
-                      '&.MuiTypography-root': {
-                        color: theme.palette.primary.main,
-                      },
-                    }}
-                  >
-                    Filters
-                  </DialogTitle>
-                </Box>
-                <Divider />
-                {/* show which fields to preview */}
-                <DownloadAccommodationsIncludeFields
-                  downloadFields={downloadFields}
-                  tableHeaders={tableHeaders}
-                  fields={fields}
-                  setFields={setFields}
-                />
-              </Drawer>
+              <DownloadAccommodationsIncludeFields
+                downloadFields={downloadFields}
+                tableHeaders={tableHeaders}
+                fields={fields}
+                setFields={setFields}
+              />
 
               {/* Preview table */}
               <Box
