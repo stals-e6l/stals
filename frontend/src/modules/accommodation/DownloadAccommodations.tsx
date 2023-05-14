@@ -14,11 +14,11 @@ import {
   IconButton,
   DialogContent,
   Divider,
-  FormControlLabel,
   DialogActions,
   Button,
   Box,
   Typography,
+  Menu,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -42,10 +42,10 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   // hooks
   const theme = useTheme()
   const { open: openDialog, toggleDialog } = useDialog()
-  const { open: openDrawer, toggleDrawer } = useDrawer()
   const accommodations = retrieveAccommodations()
 
   // state
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
   const [fields, setFields] = React.useState<IDownloadAccommodations>({
     name: true,
     type: true,
@@ -149,7 +149,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               }}
             >
               {/* Button to open Drawer */}
-              <IconButton
+              {/* <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
@@ -158,20 +158,34 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 onClick={toggleDrawer}
               >
                 <MenuIcon />
-              </IconButton>
+              </IconButton> */}
               PDF Preview
             </DialogTitle>
 
             <Divider />
 
             <DialogContent>
+              <Box>
+                <Button
+                  onClick={e => setAnchorEl(e.currentTarget)}
+                  variant="text"
+                >
+                  Include fields
+                </Button>
+              </Box>
               {/* Which fields to include */}
-              <DownloadAccommodationsIncludeFields
-                downloadFields={downloadFields}
-                tableHeaders={tableHeaders}
-                fields={fields}
-                setFields={setFields}
-              />
+              <Menu
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={() => setAnchorEl(null)}
+              >
+                <DownloadAccommodationsIncludeFields
+                  downloadFields={downloadFields}
+                  tableHeaders={tableHeaders}
+                  fields={fields}
+                  setFields={setFields}
+                />
+              </Menu>
 
               {/* Preview table */}
               <Box
