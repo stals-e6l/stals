@@ -11,6 +11,7 @@ import React from 'react'
 import { COLOR } from '../../theme'
 import { useNavigate } from 'react-router-dom'
 import buildQueryString from '../../helpers/buildQueryString'
+import { retrieveAccommodations } from './AccommodationsProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -20,14 +21,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
   // hooks
   const theme = useTheme()
   const navigate = useNavigate()
-
-  // static data
-  const data = [
-    { name: 'Ellens' },
-    { name: 'Joanalisa' },
-    { name: 'Sacay' },
-    { name: 'Catalan' },
-  ]
+  const accommodations = retrieveAccommodations()
 
   // state
   const [name, setName] = React.useState<string>('')
@@ -63,11 +57,13 @@ const SearchAccommodations: React.FC<IProps> = () => {
         {/* Textfield with autocomplete */}
         <Autocomplete
           freeSolo
-          options={data.map(option => option.name)}
+          fullWidth
+          options={(accommodations && accommodations.map(p => p.name)) || []}
           renderInput={params => (
             <TextField
-              onChange={handleInputChange}
               {...params}
+              value={name}
+              onChange={handleInputChange}
               placeholder="Search accommodation"
               fullWidth
               sx={{
@@ -81,7 +77,6 @@ const SearchAccommodations: React.FC<IProps> = () => {
               }}
             />
           )}
-          fullWidth
         />
 
         {/* Search Button */}
