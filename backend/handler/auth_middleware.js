@@ -10,17 +10,17 @@ const authGuard = async(req, res, next) => {
         const authHeader = req.headers.authorization
     
         if (!authHeader) {
-            throw Error("Header does not exist.")
+            throw Error("Your request needs to be authenticated")
         }
 
         const [authMethod, token] = authHeader.split(' ')
     
         if (authMethod !== 'Bearer') {
-            throw Error("Auth method is not bearer.")
+            throw Error("Invalid authentication method")
         }
 
         if (!token) {
-            throw Error("Token does not exist.")
+            throw Error("Invalid authentication method")
         }
 
         let decoded;
@@ -28,12 +28,12 @@ const authGuard = async(req, res, next) => {
         try {
           decoded = jwt.verify(token, PRIVATE_KEY)
         } catch(err) {
-          throw Error("Docoding failed.")
+          throw Error("You are not authenticated")
         }
         const dbUser = await User.findById(decoded.id)
     
         if (!dbUser) {
-            throw Error("User does not exist")
+            throw Error("We don't know this user. Try to sign up.")
         }
         req.user = dbUser
         next();

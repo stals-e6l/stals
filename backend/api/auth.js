@@ -92,19 +92,19 @@ const signUpEndpoint = async(req, res) => {
     let regex = new RegExp('^[a-z0-9]+@[a-z]+\\.[a-z]{2,3}$')
 
     if (!regex.test(req.body.email)) {
-      throw Error("Email is invalid.")
+      throw Error("Email is invalid")
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
 
     if (!hashedPassword) {
-      throw Error("Password is not found.")
+      throw Error("Password is not found")
     }
 
     const user = await User.create({ ...req.body, password: hashedPassword })
 
     if (!user) {
-      throw Error("User is not found.")
+      throw Error("User is not found")
     }
 
     res.status(CREATED).json({
@@ -154,11 +154,11 @@ const signInEndpoint = async(req, res) => {
 
     // second, validate if user indeed exists
     const user = await User.findOne({ username: username })
-    if (!user) throw Error("User does not exist.")
+    if (!user) throw Error("We don't know this user. Try to sign up.")
 
     // third, check if password is correct
     const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) throw Error("Password is incorrect.")
+    if (!isMatch) throw Error("Password is incorrect")
 
     // fourth, generate token
     const token = jwt.sign(
@@ -201,13 +201,13 @@ const signOutEndpoint = async(req, res) => {
   try {
     // Extract the auth header
     const authHeader = req.headers.authorization
-    if (!authHeader) throw Error("Header does not exist.")
+    if (!authHeader) throw Error("Your request needs authentication")
 
     // Extract token
     const [authMethod, token] = authHeader.split(' ')
-    if (authMethod !== 'Bearer')
+    if (authMethod !== 'Bearer') throw Error("Invalid authentication method")
 
-    if (!token) throw Error("Auth method is not bearer.")
+    if (!token) throw Error("Invalid authentication method")
 
     // Add token to blacklist
     if (!blacklist[token]) blacklist[token] = token
@@ -250,17 +250,17 @@ const meEndpoint = async(req, res) => {
     const authHeader = req.headers.authorization
 
     if (!authHeader) {
-      throw Error("Header does not exist.")
+      throw Error("Your request needs to be authenticated")
     }
 
     const [authMethod, token] = authHeader.split(' ')
 
     if (authMethod !== 'Bearer') {
-      throw Error("Auth method is not bearer.")
+      throw Error("Invalid authentication method")
     }
 
     if (!token) {
-      throw Error("Token does not exist.")
+      throw Error("Invalid authentication method")
     }
 
     let decoded;
@@ -268,13 +268,13 @@ const meEndpoint = async(req, res) => {
     try {
       decoded = jwt.verify(token, PRIVATE_KEY)
     } catch(err) {
-      throw Error("Docoding failed.")
+      throw Error("You are not authenticated")
     }
 
     const dbUser = await User.findOne({_id: decoded.id}).select('-password');
 
     if (!dbUser) {
-      throw Error("User does not exist")
+      throw Error("We don't know this user. Try to sign up.")
     }
 
     res.status(200).json({ success: true, data: dbUser })
