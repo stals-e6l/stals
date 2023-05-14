@@ -16,9 +16,11 @@ import {
   Box,
   Typography,
   Menu,
+  IconButton,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
+import CloseIcon from '@mui/icons-material/Close';
 import Pluralize from 'react-pluralize'
 import { NumericFormat } from 'react-number-format'
 import { downloadPdf } from '../../store/report/actions'
@@ -152,15 +154,40 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               },
             }}
           >
-            <DialogTitle
-              sx={{
-                '&.MuiTypography-root': {
-                  color: theme.palette.primary.main,
-                },
-              }}
-            >
-              PDF Preview
-            </DialogTitle>
+            {/* <DialogTitle
+                sx={{
+                  '&.MuiTypography-root': {
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                PDF Preview
+              </DialogTitle> */}
+            <Box sx={{
+              display: 'inline-flex',
+              justifyContent: 'space-between',
+              paddingRight: theme.spacing(2),
+              paddingLeft: theme.spacing(1),
+            }}>
+              <DialogTitle
+                sx={{
+                  '&.MuiTypography-root': {
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                PDF Preview
+              </DialogTitle>
+              <IconButton onClick={toggleDialog}>
+                <CloseIcon
+                  sx={{
+                    color: theme.palette.primary.main,
+                    marginRight: theme.spacing(),
+                  }}
+                />
+              </IconButton>
+            </Box>
+            
 
             <Divider />
 
