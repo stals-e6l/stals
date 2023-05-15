@@ -11,27 +11,20 @@ const userSchema = new mongoose.Schema(
     full_name: {
       first_name: {
         type: String,
-        required: true,
+        required: [true, "First name is required"],
       },
       middle_name: {
         type: String,
       },
       last_name: {
         type: String,
-        required: true,
+        required: [true, "Last name is required"],
       },
     },
     gender: {
       type: String,
-      enum: genderEnum,
-      validate: {
-        validator: function(v) {
-
-          return /^((male)|(female)|(non_binary)|(prefer_not_to_say))$/.test(v);
-        },
-        message: 'Invalid gender input'
-      },
-      required: true,
+      enum: {values:genderEnum,message:'Invalid input for gender'},
+      required: [true, "Gender is required"],
     },
     phone: {
       landline: {
@@ -50,11 +43,11 @@ const userSchema = new mongoose.Schema(
     address: {
       home: {
         type: String,
-        required: true,
+        required: [true, "Home address is required"],
       },
       current: {
         type: String,
-        required: true,
+        required: [true, "Current address is required"],
       },
     },
     biography: {
@@ -62,16 +55,16 @@ const userSchema = new mongoose.Schema(
     },
     birthday: {
       type: Date,
-      required: true,
+      required: [true, "Birthday is required"],
     },
     username: {
       type: String,
-      required: true,
+      required: [true, "Username is required"],
       unique: true,
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
       validate:{
         validator: function(v){
           console.log("email"+v)
@@ -82,10 +75,9 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Password is required"],
       validate:{
         validator: function(v){
-          console.log("password_raw:"+v); 
           return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v);
         },
         message: 'Password should have a minimum of 8 characters and must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.'
@@ -114,14 +106,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: roleEnum,
-      validate: {
-        validator: function(v) {
-          return /^((admin)|(tenant)|(owner))$/.test(v);
-        },
-        message: 'is not a valid role!'
-      },
-      required: true,
+      enum: {values:roleEnum,message:'Invalid input for role'},
+      required: [true, "Role is required"],
     },
     organization: {
       type: String,
@@ -135,15 +121,19 @@ userSchema.pre('save', function(next) {
 
   // generate a salt
   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-      if (err) return next(err);
+      if (err){
+        const error = new Error('Internal server error')
+        return next(error);
+      } 
 
       // hash the password using our new salt
       bcrypt.hash(user.password, salt, function(err, hash) {
-          if (err) return next(err);
+          if (err) {
+            const error = new Error('Internal server error')
+            return next(error);
+          }
           // override the cleartext password with the hashed one
           user.password = hash;
-          // this.save();
-          console.log("hashed password:" +user.password)
           next();
       });
   });
@@ -154,4 +144,4 @@ userSchema.pre('save', function(next) {
 
 userSchema.index({ username: 1, email: 1 }, { unique: true })
 
-module.exports = mongoose.model('User1', userSchema)
+module.exports = mongoose.model('User', userSchema)
