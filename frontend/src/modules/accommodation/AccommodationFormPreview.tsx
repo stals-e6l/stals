@@ -9,7 +9,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { setCurrentAccommodation } from '../../store/forum/actions'
 
 interface IProps {
-  accommodation:any
+  accommodation: any
   // children?: React.ReactNode
 }
 
@@ -64,8 +64,9 @@ interface AccommDetails {
   accommodation: IAccommodation
 }
 
-const AccommodationFormPreview: React.FC<IProps> = (props:IProps) => {
+// NOTE : Linter is angry at map functions
 
+const AccommodationFormPreview: React.FC<IProps> = (props: IProps) => {
   console.log(props.accommodation)
   // TODO: add ui/logic to handle non-existent accommodation
   if (!props.accommodation) {
@@ -211,7 +212,9 @@ const AccommodationFormPreview: React.FC<IProps> = (props:IProps) => {
               <Typography>Room Size</Typography>
             </Grid>
             <Grid item xs={8}>
-              <Typography>{props.accommodation.size_sqm} square meters</Typography>
+              <Typography>
+                {props.accommodation.size_sqm} square meters
+              </Typography>
             </Grid>
 
             <Grid item xs={4}>

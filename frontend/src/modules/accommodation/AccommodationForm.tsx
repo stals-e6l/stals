@@ -1,33 +1,34 @@
 import React from 'react'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Paper from '@mui/material/Paper'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import IconButton from '@mui/material/IconButton/IconButton'
-import { PhotoCamera } from '@mui/icons-material'
-import Card from '@mui/material/Card'
-import CardActionArea from '@mui/material/CardActionArea'
-import CardContent from '@mui/material/CardContent'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import Autocomplete from '@mui/material/Autocomplete'
-import Chip from '@mui/material/Chip'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Switch from '@mui/material/Switch'
 import { useNavigate } from 'react-router-dom'
-import clsx from 'clsx'
-import '../../store/createAccommodation/styles.css'
 import { useAccommodationForm } from '../../pages/Accommodation/form/hooks'
-// import { createAccommodation } from '../Accommodation/actions'
-// import { BasicInputFields } from '../../store/createAccommodation/components'
 import { createAccommodation } from '../../store/accommodation/actions'
+import AccommodationFormPreview from './AccommodationFormPreview'
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  Chip,
+  CssBaseline,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Switch,
+  TextField,
+  Typography,
+} from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { PhotoCamera } from '@mui/icons-material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useTheme } from '@mui/material'
+
 interface IProps {
   children?: React.ReactNode
   defaultValues?: IAccommodation
@@ -389,15 +390,12 @@ function AdvancedInputFields(props: any) {
     </div>
   )
 }
-// // STYLES
-//   TextField{
-
-//   }
-// // STYLES
 
 const CreateAccommodationPage: React.FC<IProps> = () => {
   // const accommodations = retrieveAccommodations()
   // const navigate = useNavigate()
+
+  const theme = useTheme()
 
   const createAccommodationHandler = createAccommodation()
   const navigate = useNavigate()
@@ -552,21 +550,14 @@ const CreateAccommodationPage: React.FC<IProps> = () => {
         </Grid>{' '}
         {/* LEFT COLUMN END */}
         <Grid // RIGHT COLUMN
-          item
+          container
           xs={false}
           sm={4}
           md={8}
-          sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random/?random)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: t =>
-              t.palette.mode === 'light'
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
+          sx={{ maxHeight: '100vh', overflow: 'auto' }}
+        >
+          <AccommodationFormPreview accommodation={values} />
+        </Grid>
       </Grid>
     </ThemeProvider>
   )
