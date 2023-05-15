@@ -75,10 +75,10 @@ const RESTRouter = function (name, model) {
   // PUT /[resource]/:id
   router.put(`${name}/:id`, async (req, res) => {
     try {
-      const data = await model.findOneAndUpdate(
-        { _id: req.params.id },
+      const data = await model.findByIdAndUpdate(
+        req.params.id,
         { ...req.body },
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       )
 
       if (!data) {

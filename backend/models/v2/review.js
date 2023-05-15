@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
 
+const Accommodation = require('./accommodation')
+const User = require('./user')
+
 const reviewSchema = new mongoose.Schema(
   {
     rating: {
       type: Number,
       required: true,
-      min: 0,
-      max: 5,
     },
     comment: {
       type: String,
@@ -24,5 +25,22 @@ const reviewSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+reviewSchema.path('rating').validate(function (value) {
+  if (value < 0 || value > 5) return false;
+  else return true;
+}, "Rating should be within the range 0-5 only")
+
+reviewSchema.path('accommodation_id').validate(async function (value) {
+  const accom = await Accommodation.findById(value);
+  if (!accom) return false;
+  else return true;
+}, "The accommodation the user is reviewing does not exist")
+
+reviewSchema.path('user_id').validate(async function (value) {
+  const user = await User.findById(value);
+  if (!user) return false;
+  else return true;
+}, "The user reviewing the accommodation does not exist")
 
 module.exports = mongoose.model('Review', reviewSchema)
