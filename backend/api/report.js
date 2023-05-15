@@ -23,6 +23,8 @@ module.exports = reportRouter;
  *              pdf_url:
  *                  type: string
  *                  description: URL of pdf
+ * security:
+ *      - bearerAuth: []
  */
 
 /**
@@ -30,6 +32,8 @@ module.exports = reportRouter;
  * /api/report:
  *      post:
  *          description: Create report
+ *          security:
+ *              -   bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
@@ -59,6 +63,8 @@ module.exports = reportRouter;
  * /api/report/{id}:
  *      get:
  *          description: Get report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -90,6 +96,8 @@ module.exports = reportRouter;
  * /api/report:
  *      get:
  *          description: Get all reports
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
  *                  name: user_id
@@ -133,6 +141,8 @@ module.exports = reportRouter;
  * /api/report/{id}:
  *      delete:
  *          description: Delete report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -162,6 +172,8 @@ module.exports = reportRouter;
  * /api/report/{id}:
  *      put:
  *          description: Edit report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
