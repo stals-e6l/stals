@@ -21,19 +21,17 @@ const reportSchema = new mongoose.Schema(
       type: String,
       validate: {
         validator: async function(url) {
-          // url_regex will accept the following examples:
-          //    -- facebook.com
-          //    -- https://facebook.com
-          //    -- https://www.facebook.com
-          const url_regex = new RegExp('((https?:\/\/(?:www\.|(?!www)))?[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})')
+          try{
+            const pdf_url = new URL(url);
+          } catch(err){
+              return false;
+          }
 
-          if (!url_regex.test(url)) return false;
-          else return true;
+          return true;
         },
         message: "The provided URL for the report is not valid"
       },
       required: [true, 'PDF URL is required'],
-      // TODO: sprint 5 (upload pdf file)
     },
   },
   { timestamps: true }
