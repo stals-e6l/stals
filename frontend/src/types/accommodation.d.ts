@@ -43,6 +43,11 @@ interface IAccommodation {
   is_soft_deleted: boolean
 }
 
+interface IArchiveAccomodationPayload {
+  _id: string
+  is_soft_deleted: boolean
+}
+
 interface IAccommodationsFilter {
   name?: string
   type?: TAccommodationType

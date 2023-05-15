@@ -128,11 +128,14 @@ export const filterAccommodations = () => {
   }
 }
 
-export const updateAccommodation = () => {
-  return async (accommodation: IAccommodation) => {
-    const res = await apiPut<IAccommodation, IAccommodation>('accommodation', {
-      payload: accommodation,
-    })
+export const archiveAccommodation = () => {
+  return async (payload: IArchiveAccomodationPayload) => {
+    const res = await apiPut<IArchiveAccomodationPayload, IAccommodation>(
+      'accommodation',
+      {
+        payload: payload,
+      }
+    )
 
     if (res.success && res.data) {
       // TODO: refresh accommodations?
