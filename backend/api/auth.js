@@ -141,14 +141,15 @@ authRouter.post('/sign-up', async function (req, res) {
     //   throw error
     // }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+    // const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+    
 
-    if (!hashedPassword) {
+    if (!req.body.password) {
       const error = new Error('Internal server error')
       throw error
     }
 
-    const user = await User.create({ ...req.body, password: hashedPassword })
+    const user = await User.create({ ...req.body})
 
     if (!user) {
       const error = new Error('Internal server error')
