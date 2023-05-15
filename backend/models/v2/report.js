@@ -13,7 +13,7 @@ const reportSchema = new mongoose.Schema(
           if (!user) return false;
           else return true;
         },
-        message: "User id for the report not found"
+        message: "The user generating the report does not exist"
       },
       required: [true, 'User id is required'],
     },
