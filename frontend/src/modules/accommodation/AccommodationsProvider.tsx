@@ -1,7 +1,7 @@
 import React from 'react'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
-import { apiGet, apiPost, apiPut } from '../../api'
+import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -146,5 +146,12 @@ export const archiveAccommodation = () => {
 }
 
 export const deleteAccommodation = () => {
-  // TODO:
+  return async (id: string) => {
+    const res = await apiDelete<string>(`accommodation/${id}`)
+    if (res.success && res.data) {
+      // TODO: refresh accommodations?
+    } else {
+      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+    }
+  }
 }
