@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import { getToken } from '../services/localStorage'
 
 export const API_URL = 'http://localhost:5000/api'
@@ -57,11 +55,18 @@ export async function apiPut<D, E>(
   return json as IResponse<E>
 }
 
-export async function apiDelete<D>(resource: string) {
-  const res = await axios.delete(`${API_URL}/${resource}`)
+export async function apiDelete<D>(resource: string, authToken?: string) {
+  const auth = `Bearer ${getToken() || authToken}`
+  const res = await fetch(`${API_URL}/${resource}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: auth,
+    },
+  })
 
-  return {
-    success: res.data.success,
-    data: res.data.data,
-  } as IResponse<D>
+  const json = await res.json()
+
+  return json as IResponse<D>
 }
