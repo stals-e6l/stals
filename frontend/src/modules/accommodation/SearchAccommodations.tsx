@@ -10,7 +10,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import React from 'react'
 import { COLOR } from '../../theme'
 import { useNavigate } from 'react-router-dom'
-import buildQueryString from '../../helpers/buildQueryString'
+import { buildQueryString } from '../../helpers/queryString'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import { ROUTES } from '../../app/AppRouter'
 

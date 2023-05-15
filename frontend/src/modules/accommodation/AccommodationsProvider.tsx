@@ -2,6 +2,7 @@ import React from 'react'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
 import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
+import { extractQueryString } from '../../helpers/queryString'
 
 interface IProps {
   children?: React.ReactNode
@@ -109,12 +110,11 @@ export const filterAccommodations = () => {
 
   if (!dispatch) return
 
-  return async (queryString: string) => {
-    // get filters
-
+  return async (url: string) => {
+    const qs = extractQueryString(url)
     // call api
-    const url = encodeURI(`accommodation?${queryString}`)
-    const res = await apiGet<IAccommodation[]>(url)
+    const endpoint = encodeURI(`accommodation?${qs}`)
+    const res = await apiGet<IAccommodation[]>(endpoint)
 
     if (res.data && res.success) {
       // dispatch
