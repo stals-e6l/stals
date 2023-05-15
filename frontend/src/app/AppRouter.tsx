@@ -81,7 +81,7 @@ const router = createBrowserRouter([
         element: (
           <DeleteAccommodationFormModal
             accommodationId={''}
-            isSoftDelete={true}
+            isSoftDelete={false}
           />
         ),
       },
