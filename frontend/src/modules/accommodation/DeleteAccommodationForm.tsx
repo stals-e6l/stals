@@ -37,7 +37,7 @@ const DeleteAccommodationForm: React.FC<IProps> = ({input, setField, isSoftDelet
       <Grid sx={{ flexGrow: 1, height: '100%', width: '100%'}} container spacing={0} flexDirection="column" alignItems="center" justifyContent="center">
         <Grid item xs={'auto'} sx={{}}>
             <Typography id="delete-text" variant="body1" sx={{ p: 1, width: '100%', textAlign: 'center' }}>
-                Are you sure that you want to delete accommodation?
+                {isSoftDelete ? "Are you sure you want to archive accommodation?" : "Are you sure you want to delete accommodation?"}
             </Typography>
         </Grid>
 
@@ -57,7 +57,7 @@ const DeleteAccommodationForm: React.FC<IProps> = ({input, setField, isSoftDelet
 
         <Grid item xs={'auto'} sx={{}}>
             <Typography variant="body1" sx={{ textAlign: 'center' }}>
-            Type<b> Confirm </b>to delete the listing.
+            Type<b> Confirm </b> {isSoftDelete ? "to archive listing." : "to delete listing."}
             </Typography>
         </Grid>
       </Grid>

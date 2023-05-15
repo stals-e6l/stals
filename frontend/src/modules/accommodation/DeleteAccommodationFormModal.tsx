@@ -25,13 +25,6 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
   const { open, toggleDialog } = useDialog()
   const [ inputField, setField ] = useState<string>('')
 
-  const [ buttState, setState ] = useState(true)
-
-  const handleState = () => {
-      if(inputField == "Confirm") setState(false)
-      else setState(true)
-  }
-
   const fullScreen = useMediaQuery(useTheme().breakpoints.down('sm'))
 
   // events
@@ -49,7 +42,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
       <Button onClick={toggleDialog}>Delete</Button>
       {open && (
         <Dialog open={open} onClose={toggleDialog} fullScreen={fullScreen} maxWidth={'sm'} fullWidth={true}>
-          <DialogTitle>Delete Accommodation</DialogTitle>
+          <DialogTitle>{isSoftDelete ? "Archive Accommodation" : "Delete Accommodation"}</DialogTitle>
 
           <DialogContent>
             <DeleteAccommodationForm setField={setField} input={inputField} isSoftDelete={isSoftDelete}/>
@@ -69,6 +62,14 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
                 borderRadius: 2,
                 backgroundColor: '#154360',
                 color: '#fff',
+                ":disabled": {
+                    backgroundColor: '#fff',
+                    color: '#154360'
+                },
+                ":hover": {
+                    backgroundColor: '#60ce80',
+                    borderColor: '#60ce80'
+                }
             }}>Delete</Button>
           </DialogActions>
           
