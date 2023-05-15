@@ -78,7 +78,7 @@ const RESTRouter = function (name, model) {
       const data = await model.findOneAndUpdate(
         { _id: req.params.id },
         { ...req.body },
-        { new: true }
+        { new: true, runValidators: true }
       )
 
       if (!data) {
