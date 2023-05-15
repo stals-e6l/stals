@@ -1,5 +1,6 @@
 import React from 'react'
 import toArray from '../../utils/toArray'
+import { apiPost } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -62,4 +63,18 @@ export const getReports = () => {
   const { reports } = useReports()
   if (!reports) return null
   return toArray<IReport>(reports)
+}
+
+export const createReport = () => {
+  return async (report: IReport) => {
+    const res = await apiPost<IReport, IReport>('report', {
+      payload: report,
+    })
+
+    if (res.data && res.success) {
+      // TODO:
+    } else {
+      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+    }
+  }
 }
