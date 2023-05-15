@@ -1,6 +1,9 @@
 import React from 'react'
 import toArray from '../../utils/toArray'
 import { apiPost } from '../../api'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
+import theme from '../../theme'
 
 interface IProps {
   children?: React.ReactNode
@@ -63,6 +66,20 @@ export const getReports = () => {
   const { reports } = useReports()
   if (!reports) return null
   return toArray<IReport>(reports)
+}
+
+export const downloadPdf = (htmlRef: string) => {
+  const doc = new jsPDF('l')
+  doc.text('Accommodation Details', doc.internal.pageSize.getWidth() / 2, 10, {
+    align: 'center',
+  })
+  autoTable(doc, {
+    headStyles: { textColor: theme.palette.primary.main },
+    useCss: true,
+    html: htmlRef,
+  })
+  const res = doc.save('AccommodationDetails.pdf')
+  return res.getFileId()
 }
 
 export const createReport = () => {
