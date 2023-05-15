@@ -57,6 +57,15 @@ const userSchema = new mongoose.Schema(
       type: Date,
       min:['1900-01-01',' Invalid birthday input'],
       max: [new Date(), 'Invalid birthday'],
+      validate:{
+        validator: function(v){
+          return /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$}/.test(v);
+        },
+        message: 'Birthday format should be YYYY-mm-dd'
+      },
+
+
+      
       required: [true, "Birthday is required input"],
     },
     username: {
@@ -69,7 +78,6 @@ const userSchema = new mongoose.Schema(
       required: [true, "Email is required"],
       validate:{
         validator: function(v){
-          console.log("email"+v)
           return /[a-z0-9]+@[a-z]+.[a-z]{2,3}/.test(v);
         },
         message: 'The user email should be valid'
