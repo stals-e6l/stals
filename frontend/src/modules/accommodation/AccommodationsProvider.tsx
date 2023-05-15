@@ -110,10 +110,9 @@ export const filterAccommodations = () => {
 
   if (!dispatch) return
 
-  return async (url: string) => {
-    const qs = extractQueryString(url)
+  return async (qs: string) => {
     // call api
-    const endpoint = encodeURI(`accommodation?${qs}`)
+    const endpoint = encodeURI(`accommodation${qs}`)
     const res = await apiGet<IAccommodation[]>(endpoint)
 
     if (res.data && res.success) {
