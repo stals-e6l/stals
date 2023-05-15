@@ -40,19 +40,21 @@ export async function apiPost<D, E>(
 
 export async function apiPut<D, E>(
   resource: string,
-  payload: IRequestPayload<D>
+  payload: IRequestPayload<D>,
+  authToken?: string
 ) {
-  const res = await axios.put(
-    `${API_URL}/${resource}`,
-    { ...payload.payload },
-    {
-      headers: {
-        Accept: 'application/json',
-      },
-    }
-  )
-
-  return res.data as IResponse<E>
+  const auth = `Bearer ${getToken() || authToken}`
+  const res = await fetch(`${API_URL}/${resource}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload.payload),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: auth,
+    },
+  })
+  const json = await res.json()
+  return json as IResponse<E>
 }
 
 export async function apiDelete<D>(resource: string) {
