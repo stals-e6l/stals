@@ -1,7 +1,7 @@
 import React from 'react'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
-import { apiGet } from '../../api'
+import { apiGet, apiPost } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -76,7 +76,17 @@ export const initAccommodations = async () => {
 }
 
 export const createAccommodation = () => {
-  // TODO:
+  return async (accommodation: IAccommodation) => {
+    const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
+      payload: accommodation,
+    })
+
+    if (res.success && res.data) {
+      // TODO: refresh accommodations?
+    } else {
+      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+    }
+  }
 }
 
 export const retrieveAccommodations = () => {
