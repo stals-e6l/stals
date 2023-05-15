@@ -21,11 +21,62 @@ let blacklist = {}
  *      User:
  *          type: object
  *          required:
+ *              - full_name
+ *              - gender
+ *              - phone
+ *              - biography
+ *              - birthday
  *              - username
  *              - password
  *              - email
  *              - role
+ *              - organization
  *          properties:
+ *              full_name:
+ *                  type: object
+ *                  description: Name of the user
+ *                  properties:
+ *                    first_name:
+ *                      type: string
+ *                    middle_name:
+ *                      type: string
+ *                    last_name:
+ *                      type: string
+ *                  required:
+ *                    - first_name
+ *                    - last_name
+ *              gender:
+ *                  type: string
+ *                  pattern: '^((male)|(female)|(non_binary)|(prefer_not_to_say))$'
+ *                  description: Gender of the user
+ *              phone:
+ *                type: object
+ *                description: Phone or Landline number of the user
+ *                properties:
+ *                  landline:
+ *                    type: string
+ *                    pattern: '^((\d){7,8})$'
+ *                  mobile:
+ *                    type: string
+ *                    pattern: '^(\+63(\d){10})$'
+ *              address:
+ *                type: object
+ *                description: Phone or Landline number of the user
+ *                properties:
+ *                  home:
+ *                    type: string
+ *                  current:
+ *                    type: string
+ *                required:
+ *                  - home
+ *                  - current
+ *              biography:
+ *                  type: string
+ *                  description: Biography of the user
+ *              birthday:
+ *                  type: string
+ *                  format: date
+ *                  description: Birthday of the user 
  *              username:
  *                  type: string
  *                  description: Username of user
@@ -39,6 +90,9 @@ let blacklist = {}
  *                  type: string
  *                  pattern: '^((admin)|(owner)|(tenant))$'
  *                  description: Role of the user
+ *              organization:
+ *                  type: string
+ *                  description: Organization of the user
  *
  *      Login:
  *          type: object
@@ -89,22 +143,23 @@ let blacklist = {}
 
 authRouter.post('/sign-up', async function (req, res) {
   try {
-    let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
+    // let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
 
-    if (!regex.test(req.body.email)) {
-      const error = new Error('Not a valid email')
-      error.name = 'ValidationError'
-      throw error
-    }
+    // if (!regex.test(req.body.email)) {
+    //   const error = new Error('Not a valid email')
+    //   error.name = 'ValidationError'
+    //   throw error
+    // }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+    // const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+    
 
-    if (!hashedPassword) {
+    if (!req.body.password) {
       const error = new Error('Internal server error')
       throw error
     }
 
-    const user = await User.create({ ...req.body, password: hashedPassword })
+    const user = await User.create({ ...req.body})
 
     if (!user) {
       const error = new Error('Internal server error')
