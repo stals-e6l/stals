@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
-
 const genderEnum = ['male', 'female', 'non_binary', 'prefer_not_to_say']
 const roleEnum = ['admin', 'owner', 'tenant']
 
@@ -15,6 +14,7 @@ const userSchema = new mongoose.Schema(
       },
       middle_name: {
         type: String,
+        required: false
       },
       last_name: {
         type: String,
@@ -29,12 +29,18 @@ const userSchema = new mongoose.Schema(
     phone: {
       landline: {
         type: String,
+        validate: {
+          validator: function(v) {
+            return /^((\d){7,8})$/.test(v);
+          },
+          message: 'Not valid phone number'
+        },
       },
       mobile: {
         type: String,
         validate: {
           validator: function(v) {
-            return /((^(\+)(\d){12}$)|(^\d{11}$))/.test(v);
+            return /^(\+63(\d){10})$/.test(v);
           },
           message: 'Not valid phone number'
         },
@@ -52,20 +58,16 @@ const userSchema = new mongoose.Schema(
     },
     biography: {
       type: String,
+      required: false
     },
     birthday: {
-      type: Date,
-      min:['1900-01-01',' Invalid birthday input'],
-      max: [new Date(), 'Invalid birthday'],
+      type: String,
       validate:{
         validator: function(v){
-          return /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$}/.test(v);
+          return /^(\d{4}\-(0[1-9]|1[0-2])\-(0[1-9]|[12][0-9]|3[01]))$/.test(v);
         },
         message: 'Birthday format should be YYYY-mm-dd'
       },
-
-
-      
       required: [true, "Birthday is required input"],
     },
     username: {
@@ -88,7 +90,7 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       validate:{
         validator: function(v){
-          return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v);
+          return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/.test(v);
         },
         message: 'Password should have a minimum of 8 characters and must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.'
       },
@@ -121,6 +123,7 @@ const userSchema = new mongoose.Schema(
     },
     organization: {
       type: String,
+      required: false
     },
   },
   { timestamps: true }
@@ -148,9 +151,6 @@ userSchema.pre('save', function(next) {
       });
   });
 });
-
-
-
 
 userSchema.index({ username: 1, email: 1 }, { unique: true })
 

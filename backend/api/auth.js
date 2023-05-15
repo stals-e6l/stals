@@ -55,8 +55,10 @@ let blacklist = {}
  *                properties:
  *                  landline:
  *                    type: string
+ *                    pattern: '^((\d){7,8})$'
  *                  mobile:
  *                    type: string
+ *                    pattern: '^(\+63(\d){10})$'
  *              address:
  *                type: object
  *                description: Phone or Landline number of the user
