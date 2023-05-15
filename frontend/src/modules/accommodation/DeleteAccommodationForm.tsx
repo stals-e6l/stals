@@ -1,5 +1,5 @@
-import { Button, Grid, Box, Typography, TextField, useTheme, useMediaQuery } from '@mui/material'
-import React, { useState, useEffect, useRef } from 'react'
+import { Grid, Typography, TextField, } from '@mui/material'
+import React from 'react'
 // import { useNavigate } from 'react-router-dom'
 // import accommodation from '../../store/accommodation'
 // import { deleteAccommodation } from '../../store/accommodation/actions'
