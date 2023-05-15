@@ -327,15 +327,15 @@ authRouter.get('/me', async function (req, res) {
       throw error
     }
 
-  let decoded;
+    let decoded
 
-	try {
-    decoded = jwt.verify(token, PRIVATE_KEY)
-	} catch(err) {
-    const error = new Error("Verification error")
-    error.name = 'AuthError'
-    throw error
-	}
+    try {
+      decoded = jwt.verify(token, PRIVATE_KEY)
+    } catch (err) {
+      const error = new Error('Verification error')
+      error.name = 'AuthError'
+      throw error
+    }
 
     const dbUser = await User.findById(decoded.id)
 
