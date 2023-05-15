@@ -24,11 +24,13 @@ let blacklist = {}
  *              - full_name
  *              - gender
  *              - phone
- *              - birthdays
+ *              - biography
+ *              - birthday
  *              - username
  *              - password
  *              - email
  *              - role
+ *              - organization
  *          properties:
  *              full_name:
  *                  type: object
@@ -66,6 +68,9 @@ let blacklist = {}
  *                required:
  *                  - home
  *                  - current
+ *              biography:
+ *                  type: string
+ *                  description: Biography of the user
  *              birthday:
  *                  type: string
  *                  format: date
@@ -83,6 +88,9 @@ let blacklist = {}
  *                  type: string
  *                  pattern: '^((admin)|(owner)|(tenant))$'
  *                  description: Role of the user
+ *              organization:
+ *                  type: string
+ *                  description: Organization of the user
  *
  *      Login:
  *          type: object

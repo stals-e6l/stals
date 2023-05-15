@@ -55,7 +55,9 @@ const userSchema = new mongoose.Schema(
     },
     birthday: {
       type: Date,
-      required: [true, "Birthday is required"],
+      min:['1900-01-01',' Invalid birthday input'],
+      max: [new Date(), 'Invalid birthday'],
+      required: [true, "Birthday is required input"],
     },
     username: {
       type: String,
