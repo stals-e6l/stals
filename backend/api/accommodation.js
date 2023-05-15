@@ -13,16 +13,17 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *              - name
  *              - address
  *              - type
- *              - price
+ *              - furnishing
+ *              - min_price
+ *              - max_price
  *              - size_sqm
  *              - meters_from_uplb
- *              - landmarks
  *              - min_pax
  *              - max_pax
  *              - num_rooms
  *              - num_beds
  *              - num_views
- *              - furnishing
+ *              - landmarks
  *              - cooking_rules
  *              - pet_rules
  *              - other_rules
@@ -31,6 +32,13 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *              - amenities
  *              - is_soft_deleted
  *          properties:
+ *              user_id:
+ *                  type: string
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: User id that created accommodation
+ *              description:
+ *                  type: string
+ *                  description: Description of accommodation
  *              name:
  *                  type: string
  *                  description: Accommodation name
@@ -41,20 +49,22 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *                  type: string
  *                  pattern: '^((hotel)|(apartment)|(bedspace)|(dormitory)|(transient))$'
  *                  description: Accommodation type
- *              price:
+ *              furnishing:
+ *                  type: string
+ *                  pattern: '^((fully_furnished)|(semifurnished)|(unfurnished))$'
+ *                  description: Accommodation type of furnishing
+ *              min_price:
  *                  type: number
- *                  description: Accommodation price
+ *                  description: Accommodation minimum price
+ *              max_price:
+ *                  type: number
+ *                  description: Accommodation maximum price
  *              size_sqm:
  *                  type: number
  *                  description: Accommodation size in square meters
  *              meters_from_uplb:
  *                  type: number
  *                  description: Accommodation distance from uplb in meters
- *              landmarks:
- *                  type: array
- *                  items:
- *                      type: string
- *                  description: Accommodation nearest landmarks
  *              min_pax:
  *                  type: number
  *                  description: Accommodation minimum occupants
@@ -70,10 +80,11 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *              num_views:
  *                  type: number
  *                  description: Accommodation number of views
- *              furnishing:
- *                  type: string
- *                  pattern: '^((fully_furnished)|(semifurnished)|(unfurnished))$'
- *                  description: Accommodation type of furnishing
+ *              landmarks:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                  description: Accommodation nearest landmarks
  *              cooking_rules:
  *                  type: array
  *                  items:
@@ -183,6 +194,16 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
+ *                  name: user_id
+ *                  schema:
+ *                      type: string
+ *                  description: User id that created accommodation
+ *              -   in: query
+ *                  name: description
+ *                  schema:
+ *                      type: string
+ *                  description: Description of accommodation
+ *              -   in: query
  *                  name: name
  *                  schema:
  *                      type: string
@@ -199,15 +220,21 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *                      enum: ["hotel","apartment","bedspace","dormitory","transient"]
  *                  description: The type of accommodation
  *              -   in: query
- *                  name: description
+ *                  name: furnishing
  *                  schema:
  *                      type: string
- *                  description: The description of accommodation
+ *                      enum: ["unfurnished","semifurnished","fully_furnished"]
+ *                  description: furnishing of the accommodation
  *              -   in: query
- *                  name: price
+ *                  name: min_price
  *                  schema:
  *                      type: number
- *                  description: The price of accommodation
+ *                  description: The minimum price of accommodation
+ *              -   in: query
+ *                  name: max_price
+ *                  schema:
+ *                      type: number
+ *                  description: The maximum price of accommodation
  *              -   in: query
  *                  name: size_sqm
  *                  schema:
@@ -218,15 +245,6 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *                  schema:
  *                      type: number
  *                  description: The distance of accommodation from the uplb campus
- *              -   in: query
- *                  name: landmarks
- *                  schema:
- *                      type: array
- *                      collectionFormat: csv
- *                      items:
- *                          type: string
- *                      example: ["string"]
- *                  description: The landmarks within the accommodation
  *              -   in: query
  *                  name: min_pax
  *                  schema:
@@ -253,11 +271,14 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *                      type: number
  *                  description: The number of views of the accommodation
  *              -   in: query
- *                  name: furnishing
+ *                  name: landmarks
  *                  schema:
- *                      type: string
- *                      enum: ["unfurnished","semifurnished","fully_furnished"]
- *                  description: furnishing of the accommodation
+ *                      type: array
+ *                      collectionFormat: csv
+ *                      items:
+ *                          type: string
+ *                      example: ["string"]
+ *                  description: The landmarks within the accommodation
  *              -   in: query
  *                  name: cooking_rules
  *                  schema:

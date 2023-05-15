@@ -2,7 +2,11 @@ const { Router } = require('express')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/v2/user')
-const { ERRORS, UNAUTHORIZED, BAD_REQUEST} = require('../handler/error_handler')
+const {
+  ERRORS,
+  UNAUTHORIZED,
+  BAD_REQUEST,
+} = require('../handler/error_handler')
 const { CREATED, OK } = require('../handler/success_handler')
 
 const saltRounds = 10
@@ -22,58 +26,62 @@ let blacklist = {}
  *      User:
  *          type: object
  *          required:
+ *              - full_name
+ *              - gender
+ *              - phone
+ *              - biography
+ *              - birthday
  *              - username
  *              - password
  *              - email
  *              - role
- *              - first_name
- *              - middle_name
- *              - last_name
- *              - gender
- *              - home
- *              - current
- *              - birthday
+ *              - organization
  *          properties:
  *              full_name:
  *                  type: object
+ *                  description: Name of the user
  *                  properties:
- *                      first_name:
- *                          type: string
- *                          description: First name  
- *                      middle_name:
- *                          type: string
- *                          description: Middle name  
- *                      last_name:
- *                          type: string
- *                          description: Last name  
+ *                    first_name:
+ *                      type: string
+ *                    middle_name:
+ *                      type: string
+ *                    last_name:
+ *                      type: string
+ *                  required:
+ *                    - first_name
+ *                    - last_name
  *              gender:
  *                  type: string
  *                  pattern: '^((male)|(female)|(non_binary)|(prefer_not_to_say))$'
  *                  description: Gender of the user
  *              phone:
- *                  type: object
- *                  properties:
- *                      landline:
- *                          type: string
- *                          description: Landline number 
- *                      mobile:
- *                          type: string
- *                          description: Mobile phone number 
+ *                type: object
+ *                description: Phone or Landline number of the user
+ *                properties:
+ *                  landline:
+ *                    type: string
+ *                    pattern: '^((\d){7,8})$'
+ *                  mobile:
+ *                    type: string
+ *                    pattern: '^(\+63(\d){10})$'
  *              address:
- *                  type: object
- *                  properties:
- *                      home:
- *                          type: string
- *                          description: Home address 
- *                      current:
- *                          type: string
- *                          description: Current address 
+ *                type: object
+ *                description: Phone or Landline number of the user
+ *                properties:
+ *                  home:
+ *                    type: string
+ *                  current:
+ *                    type: string
+ *                required:
+ *                  - home
+ *                  - current
  *              biography:
  *                  type: string
- *                  description: Biography of user
+ *                  description: Biography of the user
  *              birthday:
- *                  type: date
- *                  description: Username of user
+ *                  type: string
+ *                  format: date
+ *                  description: Birthday of the user
  *              username:
  *                  type: string
  *                  description: Username of user
@@ -88,14 +96,14 @@ let blacklist = {}
  *                  properties:
  *                      url:
  *                          type: string
- *                          description: URL of 
+ *                          description: URL of
  *              role:
  *                  type: string
  *                  pattern: '^((admin)|(owner)|(tenant))$'
  *                  description: Role of the user
  *              organization:
  *                  type: string
- *                  description: Organization of user
+ *                  description: Organization of the user
  *
  *      Login:
  *          type: object
@@ -143,24 +151,27 @@ let blacklist = {}
  *              - User
  *
  */
-const signUpEndpoint = async(req, res) => {
+const signUpEndpoint = async (req, res) => {
   try {
-    let regex = new RegExp('^[a-z0-9]+@[a-z]+\\.[a-z]{2,3}$')
+    // let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
 
-    if (!regex.test(req.body.email)) {
-      throw Error("Email is invalid")
+    // if (!regex.test(req.body.email)) {
+    //   const error = new Error('Not a valid email')
+    //   error.name = 'ValidationError'
+    //   throw error
+    // }
+
+    // const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+
+    if (!req.body.password) {
+      const error = new Error('Internal server error')
+      throw error
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
-
-    if (!hashedPassword) {
-      throw Error("Password is not found")
-    }
-
-    const user = await User.create({ ...req.body, password: hashedPassword })
+    const user = await User.create({ ...req.body })
 
     if (!user) {
-      throw Error("User is not found")
+      throw Error('User is not found')
     }
 
     res.status(CREATED).json({
@@ -202,7 +213,7 @@ const signUpEndpoint = async(req, res) => {
  *
  */
 
-const signInEndpoint = async(req, res) => {
+const signInEndpoint = async (req, res) => {
   try {
     // first, extract the req payload
     const username = req.body.username
@@ -214,7 +225,7 @@ const signInEndpoint = async(req, res) => {
 
     // third, check if password is correct
     const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) throw Error("Password is incorrect")
+    if (!isMatch) throw Error('Password is incorrect')
 
     // fourth, generate token
     const token = jwt.sign(
@@ -253,17 +264,17 @@ const signInEndpoint = async(req, res) => {
  *              - User
  *
  */
-const signOutEndpoint = async(req, res) => {
+const signOutEndpoint = async (req, res) => {
   try {
     // Extract the auth header
     const authHeader = req.headers.authorization
-    if (!authHeader) throw Error("Your request needs authentication")
+    if (!authHeader) throw Error('Your request needs authentication')
 
     // Extract token
     const [authMethod, token] = authHeader.split(' ')
-    if (authMethod !== 'Bearer') throw Error("Invalid authentication method")
+    if (authMethod !== 'Bearer') throw Error('Invalid authentication method')
 
-    if (!token) throw Error("Invalid authentication method")
+    if (!token) throw Error('Invalid authentication method')
 
     // Add token to blacklist
     if (!blacklist[token]) blacklist[token] = token
@@ -301,42 +312,42 @@ const signOutEndpoint = async(req, res) => {
  *              - User
  *
  */
-const meEndpoint = async(req, res) => {
+const meEndpoint = async (req, res) => {
   try {
     const authHeader = req.headers.authorization
 
     if (!authHeader) {
-      throw Error("Your request needs to be authenticated")
+      throw Error('Your request needs to be authenticated')
     }
 
     const [authMethod, token] = authHeader.split(' ')
 
     if (authMethod !== 'Bearer') {
-      throw Error("Invalid authentication method")
+      throw Error('Invalid authentication method')
     }
 
     if (!token) {
-      throw Error("Invalid authentication method")
+      throw Error('Invalid authentication method')
     }
 
-    let decoded;
+    let decoded
 
     try {
       decoded = jwt.verify(token, PRIVATE_KEY)
-    } catch(err) {
-      throw Error("You are not authenticated")
+    } catch (err) {
+      throw Error('You are not authenticated')
     }
 
-    const dbUser = await User.findOne({_id: decoded.id}).select('-password');
+    const dbUser = await User.findOne({ _id: decoded.id }).select('-password')
 
     if (!dbUser) {
       throw Error("We don't know this user. Try to sign up.")
     }
 
     res.status(OK).json({ success: true, data: dbUser })
-  } catch (err){
+  } catch (err) {
     res.status(UNAUTHORIZED).json({ success: false, messages: [String(err)] })
   }
 }
 
-module.exports = { signUpEndpoint, signInEndpoint, signOutEndpoint, meEndpoint };
+module.exports = { signUpEndpoint, signInEndpoint, signOutEndpoint, meEndpoint }
