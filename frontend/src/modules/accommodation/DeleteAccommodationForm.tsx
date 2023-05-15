@@ -1,15 +1,17 @@
 import { Button, Grid, Box, Typography, TextField, useTheme, useMediaQuery } from '@mui/material'
-import React from 'react'
-import theme from '../../theme/AppTheme'
+import React, { useState, useEffect, useRef } from 'react'
 // import { useNavigate } from 'react-router-dom'
 // import accommodation from '../../store/accommodation'
 // import { deleteAccommodation } from '../../store/accommodation/actions'
 
 interface IProps {
   children?: React.ReactNode
+  input: string
+  setField: React.Dispatch<React.SetStateAction<string>>
+  isSoftDelete: boolean
 }
 
-const DeleteAccommodationForm: React.FC<IProps> = () => {
+const DeleteAccommodationForm: React.FC<IProps> = ({input, setField, isSoftDelete}) => {
   // TODO: PM's job to integrate state, for now refine the styling
 
   // const navigate = useNavigate()
@@ -21,7 +23,6 @@ const DeleteAccommodationForm: React.FC<IProps> = () => {
     // )
   }
 
-  const smallerScreen = useTheme().breakpoints.down('sm')
 
   // const handleClose = () => {
   //   setState(false)
@@ -30,49 +31,33 @@ const DeleteAccommodationForm: React.FC<IProps> = () => {
   // const handleOpen = () => {
   //   setState(false)
   // }
-
+  
   return (
     <>
-      <Grid sx={{ flexGrow: 1 }} container spacing={0}>
-        <Grid
-          item
-          xs
-          sx={{
-            backgroundColor: '#696969',
-            [smallerScreen]: {
-                display: 'none',
-            }
-          }}
-        >
-          <Box sx={{width: 'auto'}} />
-        </Grid>
-        <Grid
-          item
-          xs
-          sx={{
-            padding: 5,
-          }}
-        >
-        <Typography
-        id="delete-text"
-        variant="body1"
-        sx={{
-            p: 1,
-        }}
-        >
-            Are you sure that you want to delete accommodation?
+      <Grid sx={{ flexGrow: 1, height: '100%', width: '100%'}} container spacing={0} flexDirection="column" alignItems="center" justifyContent="center">
+        <Grid item xs={'auto'} sx={{}}>
+            <Typography id="delete-text" variant="body1" sx={{ p: 1, width: '100%', textAlign: 'center' }}>
+                Are you sure that you want to delete accommodation?
             </Typography>
+        </Grid>
+
+        <Grid item xs={'auto'} sx={{}}>
             <TextField
             id="confirmation-field"
-            required
             placeholder="Confirm"
+            value={input}
+            onChange={e => setField(e.target.value)}
             sx={{
                boxShadow: 2,
                m: 1,
+               width: '100%'
             }}
-        ></TextField>
-            <Typography variant="body1">
-            Type Confirm to delete the listing.
+         />
+         </Grid>
+
+        <Grid item xs={'auto'} sx={{}}>
+            <Typography variant="body1" sx={{ textAlign: 'center' }}>
+            Type<b> Confirm </b>to delete the listing.
             </Typography>
         </Grid>
       </Grid>

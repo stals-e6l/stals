@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import DeleteAccommodationForm from './DeleteAccommodationForm'
 import useDialog from '../../hooks/useDialog'
 
@@ -23,6 +23,14 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
 }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
+  const [ inputField, setField ] = useState<string>('')
+
+  const [ buttState, setState ] = useState(true)
+
+  const handleState = () => {
+      if(inputField == "Confirm") setState(false)
+      else setState(true)
+  }
 
   const fullScreen = useMediaQuery(useTheme().breakpoints.down('sm'))
 
@@ -40,11 +48,11 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
     <React.Fragment>
       <Button onClick={toggleDialog}>Delete</Button>
       {open && (
-        <Dialog open={open} onClose={toggleDialog} fullScreen={fullScreen} maxWidth={'md'} fullWidth={true}>
+        <Dialog open={open} onClose={toggleDialog} fullScreen={fullScreen} maxWidth={'sm'} fullWidth={true}>
           <DialogTitle>Delete Accommodation</DialogTitle>
 
           <DialogContent>
-            <DeleteAccommodationForm />
+            <DeleteAccommodationForm setField={setField} input={inputField} isSoftDelete={isSoftDelete}/>
           </DialogContent>
 
           <DialogActions>
@@ -55,7 +63,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
                 backgroundColor: '#fff',
                 color: '#154360',
           }}>Cancel</Button>
-            <Button onClick={handleSubmit} sx={{ 
+            <Button disabled={inputField != "Confirm"} onClick={handleSubmit} sx={{ 
                 border: 2,
                 borderColor: '#154360',
                 borderRadius: 2,
