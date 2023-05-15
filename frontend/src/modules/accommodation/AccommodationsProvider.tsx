@@ -131,7 +131,7 @@ export const filterAccommodations = () => {
 export const archiveAccommodation = () => {
   return async (payload: IArchiveAccomodationPayload) => {
     const res = await apiPut<IArchiveAccomodationPayload, IAccommodation>(
-      'accommodation',
+      `accommodation/${payload._id}`,
       {
         payload: payload,
       }

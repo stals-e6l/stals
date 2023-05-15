@@ -8,6 +8,7 @@ import {
 import React from 'react'
 import DeleteAccommodationForm from './DeleteAccommodationForm'
 import useDialog from '../../hooks/useDialog'
+import { archiveAccommodation } from './AccommodationsProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -21,12 +22,15 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
 }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
+  const onArchiveAccommodation = archiveAccommodation()
 
   // events
   const handleSubmit = () => {
-    // TODO: PM's job
     if (isSoftDelete) {
-      console.log({ accommodationId })
+      onArchiveAccommodation({
+        _id: '64629aa5150cc28f3cf80810',
+        is_soft_deleted: true,
+      })
     } else {
       console.log({ accommodationId })
     }
