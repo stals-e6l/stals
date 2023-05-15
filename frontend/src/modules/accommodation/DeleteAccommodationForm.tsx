@@ -1,5 +1,6 @@
-import { Button, Grid, Box, Typography, TextField, FormControl } from '@mui/material'
+import { Button, Grid, Box, Typography, TextField, useTheme, useMediaQuery } from '@mui/material'
 import React from 'react'
+import theme from '../../theme/AppTheme'
 // import { useNavigate } from 'react-router-dom'
 // import accommodation from '../../store/accommodation'
 // import { deleteAccommodation } from '../../store/accommodation/actions'
@@ -20,6 +21,8 @@ const DeleteAccommodationForm: React.FC<IProps> = () => {
     // )
   }
 
+  const smallerScreen = useTheme().breakpoints.down('sm')
+
   // const handleClose = () => {
   //   setState(false)
   // }
@@ -36,6 +39,9 @@ const DeleteAccommodationForm: React.FC<IProps> = () => {
           xs
           sx={{
             backgroundColor: '#696969',
+            [smallerScreen]: {
+                display: 'none',
+            }
           }}
         >
           <Box sx={{width: 'auto'}} />
@@ -51,7 +57,7 @@ const DeleteAccommodationForm: React.FC<IProps> = () => {
         id="delete-text"
         variant="body1"
         sx={{
-p: 1,
+            p: 1,
         }}
         >
             Are you sure that you want to delete accommodation?
@@ -61,44 +67,13 @@ p: 1,
             required
             placeholder="Confirm"
             sx={{
-boxShadow: 2,
+               boxShadow: 2,
                m: 1,
             }}
         ></TextField>
             <Typography variant="body1">
             Type Confirm to delete the listing.
             </Typography>
-
-            <Button
-            id="cancel-button"
-            onClick={() => {
-                // setState(false)
-            }}
-        sx={{
-            border: 2,
-            borderColor: '#154360',
-            borderRadius: 2,
-            backgroundColor: '#fff',
-            color: '#154360',
-            m: 1,
-        }}
-        >
-            Cancel
-            </Button>
-            <Button
-            id="delete-button"
-            onClick={handleDelete}
-        sx={{
-            border: 2,
-            borderColor: '#154360',
-            borderRadius: 2,
-            backgroundColor: '#154360',
-            color: '#fff',
-            m: 1,
-        }}
-        >
-            Delete
-            </Button>
         </Grid>
       </Grid>
     </>

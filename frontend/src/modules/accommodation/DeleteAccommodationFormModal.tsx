@@ -24,8 +24,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
   // hooks
   const { open, toggleDialog } = useDialog()
 
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const fullScreen = useMediaQuery(useTheme().breakpoints.down('sm'))
 
   // events
   const handleSubmit = () => {
@@ -41,17 +40,30 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
     <React.Fragment>
       <Button onClick={toggleDialog}>Delete</Button>
       {open && (
-        <Dialog open={open} onClose={toggleDialog} fullScreen={fullScreen} maxWidth={'sm'} fullWidth={true}>
-          <DialogTitle>Hello</DialogTitle>
+        <Dialog open={open} onClose={toggleDialog} fullScreen={fullScreen} maxWidth={'md'} fullWidth={true}>
+          <DialogTitle>Delete Accommodation</DialogTitle>
 
           <DialogContent>
             <DeleteAccommodationForm />
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={toggleDialog}>Cancel</Button>
-            <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={toggleDialog} sx={{
+                border: 2,
+                borderColor: '#154360',
+                borderRadius: 2,
+                backgroundColor: '#fff',
+                color: '#154360',
+          }}>Cancel</Button>
+            <Button onClick={handleSubmit} sx={{ 
+                border: 2,
+                borderColor: '#154360',
+                borderRadius: 2,
+                backgroundColor: '#154360',
+                color: '#fff',
+            }}>Delete</Button>
           </DialogActions>
+          
         </Dialog>
       )}
     </React.Fragment>
