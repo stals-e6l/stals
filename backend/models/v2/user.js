@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema(
       },
       mobile: {
         type: String,
+        validate: {
+          validator: function(v) {
+            return /((^(\+)(\d){12}$)|(^\d{11}$))/.test(v);
+          },
+          message: 'is not a valid phone number!'
+        },
       },
     },
     address: {
@@ -55,10 +61,17 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      validate:{
+        validator: function(v){
+          return /[a-z0-9]+@[a-z]+.[a-z]{2,3}/.test(v);
+        },
+        message: 'not a valid email'
+      },
     },
     password: {
       type: String,
       required: true,
+      unique: true
     },
     avatar: {
       url: {
@@ -84,6 +97,12 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: roleEnum,
+      validate: {
+        validator: function(v) {
+          return /^((admin)|(tenant)|(owner))$/.test(v);
+        },
+        message: 'is not a valid role!'
+      },
       required: true,
     },
     organization: {
@@ -95,4 +114,4 @@ const userSchema = new mongoose.Schema(
 
 userSchema.index({ username: 1, email: 1 }, { unique: true })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User1', userSchema)

@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const User = require('../models/user')
+const User = require('../models/v2/user')
 
 const authRouter = Router()
 const saltRounds = 10
@@ -21,11 +21,55 @@ let blacklist = {}
  *      User:
  *          type: object
  *          required:
+ *              - full_name
+ *              - gender
+ *              - phone
+ *              - birthdays
  *              - username
  *              - password
  *              - email
  *              - role
  *          properties:
+ *              full_name:
+ *                  type: object
+ *                  description: Name of the user
+ *                  properties:
+ *                    first_name:
+ *                      type: string
+ *                    middle_name:
+ *                      type: string
+ *                    last_name:
+ *                      type: string
+ *                  required:
+ *                    - first_name
+ *                    - last_name
+ *              gender:
+ *                  type: string
+ *                  pattern: '^((male)|(female)|(non_binary)|(prefer_not_to_say))$'
+ *                  description: Gender of the user
+ *              phone:
+ *                type: object
+ *                description: Phone or Landline number of the user
+ *                properties:
+ *                  landline:
+ *                    type: string
+ *                  mobile:
+ *                    type: string
+ *              address:
+ *                type: object
+ *                description: Phone or Landline number of the user
+ *                properties:
+ *                  home:
+ *                    type: string
+ *                  current:
+ *                    type: string
+ *                required:
+ *                  - home
+ *                  - current
+ *              birthday:
+ *                  type: string
+ *                  format: date
+ *                  description: Birthday of the user 
  *              username:
  *                  type: string
  *                  description: Username of user
@@ -89,13 +133,13 @@ let blacklist = {}
 
 authRouter.post('/sign-up', async function (req, res) {
   try {
-    let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
+    // let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
 
-    if (!regex.test(req.body.email)) {
-      const error = new Error('Not a valid email')
-      error.name = 'ValidationError'
-      throw error
-    }
+    // if (!regex.test(req.body.email)) {
+    //   const error = new Error('Not a valid email')
+    //   error.name = 'ValidationError'
+    //   throw error
+    // }
 
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
 
