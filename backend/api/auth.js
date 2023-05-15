@@ -2,8 +2,13 @@ const { Router } = require('express')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/v2/user')
+const {
+  ERRORS,
+  UNAUTHORIZED,
+  BAD_REQUEST,
+} = require('../handler/error_handler')
+const { CREATED, OK } = require('../handler/success_handler')
 
-const authRouter = Router()
 const saltRounds = 10
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 
@@ -76,7 +81,7 @@ let blacklist = {}
  *              birthday:
  *                  type: string
  *                  format: date
- *                  description: Birthday of the user 
+ *                  description: Birthday of the user
  *              username:
  *                  type: string
  *                  description: Username of user
@@ -86,6 +91,12 @@ let blacklist = {}
  *              email:
  *                  type: string
  *                  description: Email of user
+ *              avatar:
+ *                  type: object
+ *                  properties:
+ *                      url:
+ *                          type: string
+ *                          description: URL of
  *              role:
  *                  type: string
  *                  pattern: '^((admin)|(owner)|(tenant))$'
@@ -140,8 +151,7 @@ let blacklist = {}
  *              - User
  *
  */
-
-authRouter.post('/sign-up', async function (req, res) {
+const signUpEndpoint = async (req, res) => {
   try {
     // let regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
 
@@ -152,47 +162,26 @@ authRouter.post('/sign-up', async function (req, res) {
     // }
 
     // const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
-    
 
     if (!req.body.password) {
       const error = new Error('Internal server error')
       throw error
     }
 
-    const user = await User.create({ ...req.body})
+    const user = await User.create({ ...req.body })
 
     if (!user) {
-      const error = new Error('Internal server error')
-      throw error
+      throw Error('User is not found')
     }
 
-    return res.status(201).json({
+    res.status(CREATED).json({
       success: true,
       data: { username: user.username, email: user.email, role: user.role },
     })
   } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'NullError':
-        code = 404
-        break
-      case 'UnprocessableContent':
-        code = 422
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
+    res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
   }
-})
+}
 
 /**
  * @openapi
@@ -224,7 +213,7 @@ authRouter.post('/sign-up', async function (req, res) {
  *
  */
 
-authRouter.post('/sign-in', async function (req, res) {
+const signInEndpoint = async (req, res) => {
   try {
     // first, extract the req payload
     const username = req.body.username
@@ -232,11 +221,11 @@ authRouter.post('/sign-in', async function (req, res) {
 
     // second, validate if user indeed exists
     const user = await User.findOne({ username: username })
-    if (!user) throw new Error('No User Found')
+    if (!user) throw Error("We don't know this user. Try to sign up.")
 
     // third, check if password is correct
     const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) throw new Error('Wrong password')
+    if (!isMatch) throw Error('Password is incorrect')
 
     // fourth, generate token
     const token = jwt.sign(
@@ -248,27 +237,11 @@ authRouter.post('/sign-in', async function (req, res) {
     if (blacklist[token]) delete blacklist[token]
 
     // last, return success
-    res.status(200).json({ success: true, data: token })
+    res.status(OK).json({ success: true, data: token })
   } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
+    res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
   }
-})
+}
 
 /**
  * @openapi
@@ -278,7 +251,7 @@ authRouter.post('/sign-in', async function (req, res) {
  *          security:
  *              -   bearerAuth: []
  *          responses:
- *              201:
+ *              200:
  *                  content:
  *                      application/json:
  *                          schema:
@@ -291,47 +264,28 @@ authRouter.post('/sign-in', async function (req, res) {
  *              - User
  *
  */
-authRouter.post('/sign-out', async function (req, res) {
+const signOutEndpoint = async (req, res) => {
   try {
     // Extract the auth header
     const authHeader = req.headers.authorization
-    if (!authHeader) throw new Error('No auth header!')
+    if (!authHeader) throw Error('Your request needs authentication')
 
     // Extract token
     const [authMethod, token] = authHeader.split(' ')
-    if (authMethod !== 'Bearer')
-      throw new Error('Auth method should be "Bearer"!')
-    if (!token) throw new Error('No token!')
+    if (authMethod !== 'Bearer') throw Error('Invalid authentication method')
+
+    if (!token) throw Error('Invalid authentication method')
 
     // Add token to blacklist
     if (!blacklist[token]) blacklist[token] = token
 
     res
-      .status(200)
+      .status(OK)
       .json({ success: true, data: 'You are successfully logged out!' })
   } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
+    res.status(UNAUTHORIZED).json({ success: false, messages: [String(err)] })
   }
-})
+}
 
 /**
  * @openapi
@@ -358,28 +312,22 @@ authRouter.post('/sign-out', async function (req, res) {
  *              - User
  *
  */
-authRouter.get('/me', async function (req, res) {
+const meEndpoint = async (req, res) => {
   try {
     const authHeader = req.headers.authorization
 
     if (!authHeader) {
-      const error = new Error("Header doesn't exist")
-      error.name = 'AuthError'
-      throw error
+      throw Error('Your request needs to be authenticated')
     }
 
     const [authMethod, token] = authHeader.split(' ')
 
     if (authMethod !== 'Bearer') {
-      const error = new Error('Auth method is not bearer')
-      error.name = 'AuthError'
-      throw error
+      throw Error('Invalid authentication method')
     }
 
     if (!token) {
-      const error = new Error("Token doesn't exist")
-      error.name = 'AuthError'
-      throw error
+      throw Error('Invalid authentication method')
     }
 
     let decoded
@@ -387,42 +335,19 @@ authRouter.get('/me', async function (req, res) {
     try {
       decoded = jwt.verify(token, PRIVATE_KEY)
     } catch (err) {
-      const error = new Error('Verification error')
-      error.name = 'AuthError'
-      throw error
+      throw Error('You are not authenticated')
     }
 
-    const dbUser = await User.findById(decoded.id)
+    const dbUser = await User.findOne({ _id: decoded.id }).select('-password')
 
     if (!dbUser) {
-      const error = new Error("User doesn't exist")
-      error.name = 'NullError'
-      throw error
+      throw Error("We don't know this user. Try to sign up.")
     }
 
-    res.status(200).json({ success: true, data: dbUser })
+    res.status(OK).json({ success: true, data: dbUser })
   } catch (err) {
-    let code
-
-    switch (err.name) {
-      case 'ValidationError':
-        code = 400
-        break
-      case 'CastError':
-        code = 400
-        break
-      case 'AuthError':
-        code = 401
-        break
-      case 'NullError':
-        code = 404
-        break
-      default:
-        code = 500
-    }
-
-    res.status(code).json({ success: false, messages: [String(err)] })
+    res.status(UNAUTHORIZED).json({ success: false, messages: [String(err)] })
   }
-})
+}
 
-module.exports = authRouter
+module.exports = { signUpEndpoint, signInEndpoint, signOutEndpoint, meEndpoint }

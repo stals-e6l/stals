@@ -30,6 +30,8 @@ module.exports = reviewRouter
  *                  type: string
  *                  pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: User id author reference
+ * security:
+ *      - bearerAuth: []
  */
 
 /**
@@ -37,6 +39,8 @@ module.exports = reviewRouter
  * /api/review:
  *      post:
  *          description: Create review
+ *          security:
+ *              -   bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
@@ -67,6 +71,8 @@ module.exports = reviewRouter
  * /api/review/{id}:
  *      get:
  *          description: Get review by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -97,6 +103,8 @@ module.exports = reviewRouter
  * /api/review:
  *      get:
  *          description: Get all reviews
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
  *                  name: rating
@@ -150,6 +158,8 @@ module.exports = reviewRouter
  * /api/review/{id}:
  *      delete:
  *          description: Delete review by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -173,6 +183,8 @@ module.exports = reviewRouter
  * /api/review/{id}:
  *      put:
  *          description: Edit review by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
