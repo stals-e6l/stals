@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import { getToken } from '../services/localStorage'
+
 export const API_URL = 'http://localhost:5000/api'
 
 export async function apiGet<D>(resource: string, authToken?: string) {
@@ -14,19 +16,23 @@ export async function apiGet<D>(resource: string, authToken?: string) {
 
 export async function apiPost<D, E>(
   resource: string,
-  payload: IRequestPayload<D>
+  payload: IRequestPayload<D>,
+  authToken?: string
 ) {
-  const res = await axios.post(
-    `${API_URL}/${resource}`,
-    { ...payload.payload },
-    {
-      headers: {
-        Accept: 'application/json',
-      },
-    }
-  )
+  const auth = `Bearer ${getToken() || authToken}`
+  const res = await fetch(`${API_URL}/${resource}`, {
+    method: 'POST',
+    body: JSON.stringify(payload.payload),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: auth,
+    },
+  })
 
-  return res.data as IResponse<E>
+  const json = await res.json()
+
+  return json as IResponse<E>
 }
 
 export async function apiPut<D, E>(
