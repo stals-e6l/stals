@@ -64,14 +64,13 @@ const accommodationReducer = (
 /// ACTIONS
 
 export const initAccommodations = async () => {
-  const res = await apiGet<IAccommodation[]>('mock/accommodations') // TODO: change to actual endpoint
-
+  const res = await apiGet<IAccommodation[]>('accommodation')
   if (res.data && res.success) {
     return res.data
   }
 
   if (res.messages) {
-    throw new Error(res.messages[0])
+    throw new Error(res.messages[0]) // TODO: error snackbar
   }
 }
 
