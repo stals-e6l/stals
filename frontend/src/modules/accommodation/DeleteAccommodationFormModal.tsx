@@ -25,6 +25,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
   const { open, toggleDialog } = useDialog()
   const [ inputField, setField ] = useState<string>('')
 
+  const theme = useTheme()
   const fullScreen = useMediaQuery(useTheme().breakpoints.down('sm'))
 
   // events
@@ -51,24 +52,24 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
           <DialogActions>
           <Button onClick={toggleDialog} sx={{
                 border: 2,
-                borderColor: '#154360',
+                borderColor: theme.palette.primary.main,
                 borderRadius: 2,
                 backgroundColor: '#fff',
-                color: '#154360',
+                color: theme.palette.primary.main,
           }}>Cancel</Button>
             <Button disabled={inputField != "Confirm"} onClick={handleSubmit} sx={{ 
                 border: 2,
-                borderColor: '#154360',
+                borderColor: theme.palette.primary.main,
                 borderRadius: 2,
-                backgroundColor: '#154360',
+                backgroundColor: theme.palette.primary.main,
                 color: '#fff',
                 ":disabled": {
                     backgroundColor: '#fff',
-                    color: '#154360'
+                    color: theme.palette.primary.main,
                 },
                 ":hover": {
-                    backgroundColor: '#60ce80',
-                    borderColor: '#60ce80'
+                    backgroundColor: theme.palette.secondary.main,
+                    borderColor: theme.palette.secondary.main
                 }
             }}>Delete</Button>
           </DialogActions>
