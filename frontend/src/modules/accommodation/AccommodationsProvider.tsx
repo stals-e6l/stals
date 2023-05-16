@@ -2,7 +2,6 @@ import React from 'react'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
 import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
-import { extractQueryString } from '../../helpers/queryString'
 
 interface IProps {
   children?: React.ReactNode
