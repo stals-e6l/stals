@@ -20,6 +20,7 @@ import FilterAccommodations from './modules/accommodation/FilterAccommodations'
 import SearchAccommodations from './modules/accommodation/SearchAccommodations'
 import SignInForm from './modules/accommodation/SignInForm'
 import SignUpForm from './modules/accommodation/SignUpForm'
+import Profile from './modules/accommodation/Profile'
 import ModulesViewer from './modules'
 
 interface IProps {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
       {
         path: '/SignUpForm',
         element: <SignUpForm />,
+      },
+      {
+        path: '/Profile',
+        element: <Profile />,
       },
     ],
   },
