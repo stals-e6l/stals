@@ -53,7 +53,7 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
   }
 
   // immediate
-  const values = React.useMemo(() => form, [])
+  const values = React.useMemo(() => form, [form])
 
   return (
     <Box>
