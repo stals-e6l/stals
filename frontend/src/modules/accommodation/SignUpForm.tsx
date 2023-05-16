@@ -13,6 +13,7 @@ import {
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { COLOR } from '../../theme'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 interface IProps {
   children?: React.ReactNode
@@ -72,6 +73,14 @@ const SignUpForm: React.FC<IProps> = () => {
         >
           Create an Account
         </Typography>
+
+        <DatePicker
+          onChange={value => {
+            const date = value as { $d: string }
+            const strDate = date.$d
+            console.log({ strDate })
+          }}
+        />
 
         <Typography>Email</Typography>
         <TextField
