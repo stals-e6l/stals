@@ -50,15 +50,16 @@ interface IArchiveAccomodationPayload {
 
 interface IAccommodationsFilter {
   name?: string
-  type?: TAccommodationType
-  price?: number
+  type?: TAccommodationType | ''
+  min_price?: number
+  max_price?: number
   size_sqm?: number
   meters_from_uplb?: number
   min_pax?: number
   max_pax?: number
   num_rooms?: number
   num_beds?: number //string // e.g. 2-3 beds
-  furnishing?: TAccommodationFurnishing
+  furnishing?: TAccommodationFurnishing | ''
 }
 
 interface IDownloadAccommodations {
