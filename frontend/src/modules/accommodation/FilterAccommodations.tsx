@@ -17,8 +17,10 @@ import {
   Divider,
 } from '@mui/material'
 import { COLOR } from '../../theme'
-import { buildQueryString } from '../../helpers/queryString'
+import { buildQueryString, extractQueryString } from '../../helpers/queryString'
 import { filterAccommodations } from './AccommodationsProvider'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -27,11 +29,13 @@ interface IProps {
 const FilterAccommodations: React.FC<IProps> = () => {
   //hook
   const theme = useTheme()
+  const navigate = useNavigate()
   const onFilterAccommodations = filterAccommodations()
+  const location = useLocation()
 
   // state
   const [filter, setFilter] = React.useState<IAccommodationsFilter>({
-    name: '',
+    name: extractQueryString(location.search).name || '',
     type: '',
     min_price: 0,
     max_price: 10000,
@@ -67,6 +71,8 @@ const FilterAccommodations: React.FC<IProps> = () => {
       num_beds: filter.num_beds === 0 ? undefined : filter.num_beds,
       furnishing: filter.furnishing === '' ? undefined : filter.furnishing,
     })
+
+    navigate(`${ROUTES.result}?${queryString}`)
     if (onFilterAccommodations) {
       onFilterAccommodations(queryString)
     }

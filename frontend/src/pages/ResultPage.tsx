@@ -1,28 +1,14 @@
-import { Box } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import React from 'react'
 import Navbar from '../modules/general/Navbar'
-import { filterAccommodations } from '../modules/accommodation/AccommodationsProvider'
-import { useLocation } from 'react-router-dom'
+import FilterAccommodations from '../modules/accommodation/FilterAccommodations'
+import SearchAccommodations from '../modules/accommodation/SearchAccommodations'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const ResultPage: React.FC<IProps> = () => {
-  // hook
-  const onFilterAccommodations = filterAccommodations()
-  const location = useLocation()
-
-  // state
-  const [loaded, setLoaded] = React.useState<boolean>(false)
-
-  // upon landing
-  React.useEffect(() => {
-    if (onFilterAccommodations && !loaded) {
-      onFilterAccommodations(location.search).finally(() => setLoaded(true))
-    }
-  }, [onFilterAccommodations])
-
   return (
     <Box
       sx={{
@@ -31,6 +17,12 @@ const ResultPage: React.FC<IProps> = () => {
       }}
     >
       <Navbar />
+      <Grid container>
+        <Grid item xs={4}>
+          <SearchAccommodations />
+          <FilterAccommodations />
+        </Grid>
+      </Grid>
     </Box>
   )
 }
