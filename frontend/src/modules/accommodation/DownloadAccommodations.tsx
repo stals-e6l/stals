@@ -1,9 +1,7 @@
 import React from 'react'
 import useDialog from '../../hooks/useDialog'
 import {
-  Checkbox,
   Dialog,
-  Drawer,
   Table,
   TableBody,
   TableCell,
@@ -11,30 +9,45 @@ import {
   TableHead,
   TableRow,
   DialogTitle,
-  IconButton,
   DialogContent,
   Divider,
-  FormControlLabel,
   DialogActions,
   Button,
+  Box,
+  Typography,
+  Menu,
+  IconButton,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import useDrawer from '../../hooks/useDrawer'
-import { downloadPdf } from '../../store/report/actions'
+import CloseIcon from '@mui/icons-material/Close'
+import Pluralize from 'react-pluralize'
+import { NumericFormat } from 'react-number-format'
+import { downloadPdf, createReport } from '../report/ReportsProvider'
 import { retrieveAccommodations } from './AccommodationsProvider'
+import DownloadAccommodationsIncludeFields from './DownloadAccommodationsIncludeFields'
+import useMenu from '../../hooks/useMenu'
+import { getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
 }
 
+interface header {
+  [key: string]: string
+}
+
 const DownloadAccommodations: React.FC<IProps> = () => {
   // hooks
+  const theme = useTheme()
   const { open: openDialog, toggleDialog } = useDialog()
-  const { open: openDrawer, toggleDrawer } = useDrawer()
+  const { anchorEl, onClose, onOpen } = useMenu()
   const accommodations = retrieveAccommodations()
+  const onCreateReport = createReport()
+  const me = getMe()
 
   // state
+
   const [fields, setFields] = React.useState<IDownloadAccommodations>({
     name: true,
     type: true,
@@ -50,6 +63,30 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   // immediates
   const tableId = 'accommodations-table'
+  const tableHeaders: header = {
+    name: 'Name',
+    type: 'Type',
+    price: 'Price',
+    size_sqm: 'Room Size',
+    meters_from_uplb: 'Distance from UPLB',
+    min_pax: 'Minimum Tenants',
+    max_pax: 'Maximum Tenants',
+    num_rooms: 'Number of Rooms',
+    num_beds: 'Number of Beds',
+    furnishing: 'Furnishing Type ',
+  }
+  const accommType: header = {
+    hotel: 'Hotel',
+    apartment: 'Apartment',
+    bedspace: 'Bedspace',
+    dormitory: 'Dormitory',
+    transient: 'Transient',
+  }
+  const furnishing: header = {
+    unfurnished: 'Unfurnished',
+    semifurnished: 'Semi-furnished',
+    fully_furnished: 'Fully Furnished',
+  }
   const downloadFields: IDownloadAccommodationsField[] = [
     'name',
     'type',
@@ -65,14 +102,30 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   // events
   const handleDownload = () => {
-    downloadPdf(`#${tableId}`)
-      .then(() => {
-        toggleDialog()
+    const id = downloadPdf(`#${tableId}`)
+    if (me && onCreateReport) {
+      onCreateReport({
+        user_id: me._id,
+        pdf_url: `http://localhost:5173/DownloadAccommodations-${id}.pdf`,
       })
-      .catch(err => {
-        // TODO: PM's job (track error)
-        console.error(err)
-      })
+        .then(() => {
+          toggleDialog()
+        })
+        .finally(() => {
+          setFields({
+            name: true,
+            type: true,
+            price: true,
+            size_sqm: true,
+            meters_from_uplb: true,
+            min_pax: true,
+            max_pax: true,
+            num_rooms: true,
+            num_beds: true,
+            furnishing: true,
+          })
+        })
+    }
   }
 
   return (
@@ -84,154 +137,230 @@ const DownloadAccommodations: React.FC<IProps> = () => {
       >
         Download
       </Button>
+
       {openDialog && accommodations && (
-        <Dialog open={openDialog} onClose={toggleDialog} sx={mainDialog}>
-          <DialogTitle>
-            {/* Button to open Drawer */}
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={toggleDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
-            PDF Preview
-          </DialogTitle>
-
-          <DialogContent>
-            {/* Which fields to include */}
-            <Drawer
-              sx={drawerStyle}
-              PaperProps={{
-                style: {
-                  position: 'absolute',
+        <Box>
+          <Dialog
+            fullScreen
+            open={openDialog}
+            onClose={toggleDialog}
+            sx={{
+              '& .MuiPaper-root': {
+                [theme.breakpoints.up('md')]: {
+                  maxWidth: '90%',
+                  width: '90%',
+                  height: '85%',
+                  borderRadius: theme.spacing(2),
                 },
+                [theme.breakpoints.down('sm')]: {
+                  width: '100vw',
+                  height: '100vh',
+                },
+              },
+            }}
+          >
+            <Box
+              sx={{
+                display: 'inline-flex',
+                justifyContent: 'space-between',
+                paddingRight: theme.spacing(2),
+                paddingLeft: theme.spacing(1),
               }}
-              variant="persistent"
-              anchor="left"
-              open={openDrawer}
             >
-              <div>
-                <IconButton onClick={toggleDrawer}>
-                  <ChevronLeftIcon />
-                </IconButton>
-              </div>
-              <Divider />
-              {/* show which fields to preview */}
-              <div style={filterListStyle}>
-                {downloadFields.map(field => (
-                  <div key={field}>
-                    <FormControlLabel
-                      label={field}
-                      control={
-                        <Checkbox
-                          checked={fields[field]}
-                          sx={{ individualFilterStyle }}
-                          onChange={(e, checked) => {
-                            const newFields = { ...fields }
-                            newFields[field] = checked
-                            setFields(newFields)
-                          }}
-                        />
-                      }
-                    />
-                  </div>
-                ))}
-              </div>
-            </Drawer>
+              <DialogTitle
+                sx={{
+                  '&.MuiTypography-root': {
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                PDF Preview
+              </DialogTitle>
+              <IconButton onClick={toggleDialog}>
+                <CloseIcon
+                  sx={{
+                    color: theme.palette.primary.main,
+                    marginRight: theme.spacing(),
+                  }}
+                />
+              </IconButton>
+            </Box>
 
-            {/* Preview table */}
-            <TableContainer>
-              <Table id={tableId}>
-                <TableHead>
-                  <TableRow>
-                    {Object.entries(fields as object)
-                      .filter(field => field[1])
-                      .map(field => (
-                        <TableCell key={field[0]}>{field[0]}</TableCell>
+            <Divider />
+
+            <DialogContent>
+              <Box>
+                <Button onClick={onOpen} variant="text">
+                  <MenuIcon
+                    sx={{
+                      color: theme.palette.secondary.main,
+                      marginRight: theme.spacing(),
+                    }}
+                  />
+                  Include fields
+                </Button>
+              </Box>
+              {/* Which fields to include */}
+              <Menu
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={onClose}
+              >
+                <DownloadAccommodationsIncludeFields
+                  downloadFields={downloadFields}
+                  tableHeaders={tableHeaders}
+                  fields={fields}
+                  setFields={setFields}
+                />
+              </Menu>
+
+              {/* Preview table */}
+              <Box>
+                <TableContainer>
+                  <Table id={tableId}>
+                    <TableHead
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <TableRow>
+                        {Object.entries(fields as object)
+                          .filter(field => field[1])
+                          .map(field => (
+                            <TableCell
+                              key={field[0]}
+                              sx={{ textAlign: 'center' }}
+                            >
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  color: theme.palette.primary.main,
+                                  fontSize: theme.spacing(2),
+                                }}
+                              >
+                                {tableHeaders[field[0]]}
+                              </Typography>
+                            </TableCell>
+                          ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {accommodations.map(accommodation => (
+                        <TableRow key={accommodation._id}>
+                          {fields.name && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              {accommodation.name}
+                            </TableCell>
+                          )}
+                          {fields.type && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              {accommType[accommodation.type]}
+                            </TableCell>
+                          )}
+                          {fields.price && (
+                            <TableCell
+                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                            >
+                              <NumericFormat
+                                displayType="text"
+                                value={accommodation.min_price}
+                                prefix={'₱ '}
+                                thousandSeparator=","
+                              />
+                            </TableCell>
+                          )}
+                          {fields.size_sqm && (
+                            <TableCell
+                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                            >
+                              <NumericFormat
+                                displayType="text"
+                                value={accommodation.size_sqm}
+                                thousandSeparator=","
+                                suffix={' sqm.'}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.meters_from_uplb && (
+                            <TableCell
+                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                            >
+                              <NumericFormat
+                                displayType="text"
+                                value={accommodation.meters_from_uplb}
+                                thousandSeparator=","
+                                suffix={' meters'}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.min_pax && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              <Pluralize
+                                singular={'tenant'}
+                                plural={'tenants'}
+                                count={accommodation.min_pax}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.max_pax && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              <Pluralize
+                                singular={'tenant'}
+                                plural={'tenants'}
+                                count={accommodation.max_pax}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.num_rooms && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              <Pluralize
+                                singular={'room'}
+                                plural={'rooms'}
+                                count={accommodation.num_rooms}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.num_beds && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              <Pluralize
+                                singular={'bed'}
+                                plural={'beds'}
+                                count={accommodation.num_beds}
+                              />
+                            </TableCell>
+                          )}
+                          {fields.furnishing && (
+                            <TableCell sx={{ textAlign: 'center' }}>
+                              {furnishing[accommodation.furnishing]}
+                            </TableCell>
+                          )}
+                        </TableRow>
                       ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {accommodations.map(accommodation => (
-                    <TableRow key={accommodation._id}>
-                      {fields.name && (
-                        <TableCell>{accommodation.name}</TableCell>
-                      )}
-                      {fields.type && (
-                        <TableCell>{accommodation.type}</TableCell>
-                      )}
-                      {fields.price && (
-                        <TableCell>{accommodation.price}</TableCell>
-                      )}
-                      {fields.size_sqm && (
-                        <TableCell>{accommodation.size_sqm}</TableCell>
-                      )}
-                      {fields.meters_from_uplb && (
-                        <TableCell>{accommodation.meters_from_uplb}</TableCell>
-                      )}
-                      {fields.min_pax && (
-                        <TableCell>{accommodation.min_pax}</TableCell>
-                      )}
-                      {fields.max_pax && (
-                        <TableCell>{accommodation.max_pax}</TableCell>
-                      )}
-                      {fields.num_rooms && (
-                        <TableCell>{accommodation.num_rooms}</TableCell>
-                      )}
-                      {fields.num_beds && (
-                        <TableCell>{accommodation.num_beds}</TableCell>
-                      )}
-                      {fields.furnishing && (
-                        <TableCell>{accommodation.furnishing}</TableCell>
-                      )}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </DialogContent>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </DialogContent>
 
-          <DialogActions>
-            {/* Action buttons */}
-            <Button onClick={handleDownload}>Save PDF</Button>
-            <Button onClick={toggleDialog}>Cancel</Button>
-          </DialogActions>
-        </Dialog>
+            <DialogActions
+              sx={{
+                paddingRight: theme.spacing(4.5),
+                paddingBottom: theme.spacing(1.5),
+              }}
+            >
+              {/* Action buttons */}
+              <Button variant="contained" onClick={handleDownload}>
+                Save PDF
+              </Button>
+              <Button variant="outlined" onClick={toggleDialog}>
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
       )}
     </React.Fragment>
   )
 }
 
 export default DownloadAccommodations
-
-const mainDialog = {
-  '& .MuiPaper-root': {
-    maxWidth: '100%',
-    width: '100%',
-    height: '100%',
-  },
-}
-
-const drawerStyle = {
-  width: '20%',
-  flexShrink: 0,
-  '& .MuiDrawer-paper': {
-    width: '20%',
-    boxSizing: 'border-box',
-  },
-}
-
-const filterListStyle = {
-  padding: '10px',
-  flexGrow: '1',
-}
-
-const individualFilterStyle = {
-  '& .MuiCheckbox-root': {
-    paddingBottom: '5px',
-  },
-}

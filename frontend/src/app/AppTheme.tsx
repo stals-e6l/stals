@@ -1,6 +1,6 @@
 import React from 'react'
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import theme from '.'
+import theme from '../theme'
 
 interface IProps {
   children?: React.ReactNode

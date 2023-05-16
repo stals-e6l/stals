@@ -1,6 +1,5 @@
 import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import AccommodationsProvider from './accommodation/AccommodationsProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -23,28 +22,26 @@ const ModulesViewer: React.FC<IProps> = () => {
     '/AccommodationDetail',
   ]
   return (
-    <AccommodationsProvider>
-      <div>
-        <ul
-          style={{
-            marginBottom: '20px',
-          }}
-        >
-          {modules &&
-            modules.map(module => (
-              <li
-                style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                key={module}
-                onClick={() => navigate(module)}
-              >
-                {module}
-              </li>
-            ))}
-        </ul>
-        <hr style={{ marginBottom: '20px' }} />
-        <Outlet />
-      </div>
-    </AccommodationsProvider>
+    <div>
+      <ul
+        style={{
+          marginBottom: '20px',
+        }}
+      >
+        {modules &&
+          modules.map(module => (
+            <li
+              style={{ textDecoration: 'underline', cursor: 'pointer' }}
+              key={module}
+              onClick={() => navigate(module)}
+            >
+              {module}
+            </li>
+          ))}
+      </ul>
+      <hr style={{ marginBottom: '20px' }} />
+      <Outlet />
+    </div>
   )
 }
 

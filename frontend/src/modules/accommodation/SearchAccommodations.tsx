@@ -1,7 +1,18 @@
-import { Input, Button, Typography, useTheme, Box, Theme } from '@mui/material'
+import {
+  Button,
+  Typography,
+  useTheme,
+  Box,
+  Autocomplete,
+  TextField,
+} from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import React from 'react'
-import { filterAccommodations } from './AccommodationsProvider'
+import { COLOR } from '../../theme'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { buildQueryString } from '../../helpers/queryString'
+import { retrieveAccommodations } from './AccommodationsProvider'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -10,7 +21,9 @@ interface IProps {
 const SearchAccommodations: React.FC<IProps> = () => {
   // hooks
   const theme = useTheme()
-  const filterHandler = filterAccommodations()
+  const navigate = useNavigate()
+  const accommodations = retrieveAccommodations()
+  const location = useLocation()
 
   // state
   const [name, setName] = React.useState<string>('')
@@ -20,31 +33,94 @@ const SearchAccommodations: React.FC<IProps> = () => {
     setName(event.target.value)
   }
   const handleSearch = () => {
-    if (!filterHandler) return
-    filterHandler({ name })
-      .then(() => {
-        // TODO: PM's job (maybe a callback)
-      })
-      .catch(err => {
-        // TODO: PM's job (track error)
-        console.error(err)
-      })
+    navigate(`${ROUTES.result}?${buildQueryString({ name })}`)
   }
+
+  React.useEffect(() => {
+    navigate(`${location.pathname}?${buildQueryString({ name })}`)
+  }, [name])
 
   return (
     <React.Fragment>
-      <Box sx={searchBoxStyles(theme)}>
-        <Input
-          value={name}
-          placeholder="Search Accommodation"
-          onChange={handleInputChange}
-          disableUnderline
+      {/* container */}
+      <Box
+        sx={{
+          display: 'flex',
+          backgroundColor: COLOR.gray1,
+          borderRadius: theme.spacing(1),
+          boxShadow: '0px 2px 4px #6e6e73',
+          transition: '0.3s all',
+          width: '100%',
+          [theme.breakpoints.down('sm')]: {
+            width: theme.spacing(350 / 8),
+          },
+        }}
+      >
+        {/* Textfield with autocomplete */}
+        <Autocomplete
+          freeSolo
           fullWidth
-          sx={inputStyles}
+          options={(accommodations && accommodations.map(p => p.name)) || []}
+          renderInput={params => (
+            <TextField
+              {...params}
+              value={name}
+              onChange={handleInputChange}
+              placeholder="Search accommodation"
+              fullWidth
+              sx={{
+                '& .MuiInputBase-input': {
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+                ['& fieldset']: {
+                  borderRadius: theme.spacing(1),
+                },
+              }}
+            />
+          )}
         />
-        <Button onClick={handleSearch} sx={searchBtnStyles}>
-          <SearchIcon sx={searchIconStyles} />
-          <Typography sx={searchTextStyles(theme)}>Search</Typography>
+
+        {/* Search Button */}
+        <Button
+          onClick={handleSearch}
+          disabled={name.length === 0}
+          sx={{
+            textTransform: 'none',
+            backgroundColor: COLOR.green,
+            borderRadius: theme.spacing(1),
+            padding: '1% 3%',
+            color: COLOR.gray1,
+            ':hover': {
+              color: COLOR.green,
+            },
+            height: theme.spacing(7),
+            [theme.breakpoints.down('sm')]: {
+              padding: '1%',
+            },
+          }}
+        >
+          {/* Search icon */}
+          <SearchIcon
+            sx={{
+              color: 'inherit',
+              fontSize: theme.spacing(4),
+            }}
+          />
+
+          {/* Search text */}
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: theme.spacing(2),
+              color: 'inherit',
+              [theme.breakpoints.down('sm')]: {
+                display: 'none',
+              },
+            }}
+          >
+            Search
+          </Typography>
         </Button>
       </Box>
     </React.Fragment>
@@ -52,60 +128,3 @@ const SearchAccommodations: React.FC<IProps> = () => {
 }
 
 export default SearchAccommodations
-
-// TODO: theming
-const green = '#60ce80'
-const grey = '#f0f0f0'
-const sourceSansPro = 'Source Sans Pro'
-
-const searchBoxStyles = (theme: Theme) => ({
-  display: 'flex',
-  width: '900px',
-  backgroundColor: grey,
-  borderRadius: '5px',
-  [theme.breakpoints.down(1000)]: {
-    width: '700px',
-  },
-  [theme.breakpoints.down(800)]: {
-    width: '500px',
-  },
-  [theme.breakpoints.down('sm')]: {
-    width: '300px',
-  },
-  transition: '0.3s all',
-})
-
-const inputStyles = {
-  '& .MuiInputBase-input': {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  padding: '4px',
-  paddingX: '10px',
-}
-
-const searchBtnStyles = {
-  height: '100%',
-  textTransform: 'none',
-  backgroundColor: green,
-  padding: '1% 3%',
-  color: grey,
-  ':hover': {
-    color: green,
-  },
-}
-
-const searchIconStyles = {
-  color: 'inherit',
-  fontSize: 'xx-large',
-}
-
-const searchTextStyles = (theme: Theme) => ({
-  fontFamily: sourceSansPro,
-  fontSize: '1rem',
-  color: 'inherit',
-  fontWeight: 'bold',
-  [theme.breakpoints.down(800)]: {
-    display: 'none',
-  },
-})

@@ -13,59 +13,95 @@ import {
   Checkbox,
   Rating,
   FormGroup,
+  useTheme,
+  Divider,
 } from '@mui/material'
+import { COLOR } from '../../theme'
+import { buildQueryString, extractQueryString } from '../../helpers/queryString'
+import { filterAccommodations } from './AccommodationsProvider'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const FilterAccommodations: React.FC<IProps> = () => {
-  // TODO: all comments here are PM's job to integrate, for now refine the styling
-  // hooks
-  // const filterHandler = filterAccommodations()
+  //hook
+  const theme = useTheme()
+  const navigate = useNavigate()
+  const onFilterAccommodations = filterAccommodations()
+  const location = useLocation()
 
   // state
-  // const [filter, setFilter] = React.useState<IAccommodationsFilter>({})
+  const [filter, setFilter] = React.useState<IAccommodationsFilter>({
+    name: extractQueryString(location.search).name || '',
+    type: '',
+    min_price: 0,
+    max_price: 10000,
+    size_sqm: 0,
+    meters_from_uplb: 0,
+    min_pax: 0,
+    max_pax: 10000,
+    num_rooms: 0,
+    num_beds: 0,
+    furnishing: '',
+  })
 
   // events
-  // const handleChange = (key: keyof IAccommodationsFilter, e: IEvent) => {
-  //   const _filter = { ...filter }
-  //   _filter[key] = e.target.value
-  //   setFilter(_filter)
-  // }
-  // const handleType = (e: IEvent) => handleChange('type', e)
-  // const handlePrice = (e: IEvent) => handleChange('price', e)
-  // const handleRoomSize = (e: IEvent) => handleChange('size_sqm', e)
-  // const handleMeters = (e: IEvent) => handleChange('meters_from_uplb', e)
-  // const handlePax = (e: IEvent) => handleChange('min_pax', e)
-  // const handleNumRooms = (e: IEvent) => handleChange('num_rooms', e)
-  // const handleFurnishing = (e: IEvent) => handleChange('furnishing', e)
-  // const onFilter = () => {}
+  const onChange = (
+    key: keyof IAccommodationsFilter,
+    val: undefined | string | number
+  ) => {
+    setFilter(prev => ({ ...prev, [key]: val }))
+  }
 
-  // immediates
-  // const pax = [filter.min_pax as number, filter.max_pax as number]
+  React.useEffect(() => {
+    const queryString = buildQueryString({
+      name: filter.name === '' ? undefined : filter.name,
+      type: filter.type === '' ? undefined : filter.type,
+      min_price: filter.min_price === 0 ? undefined : filter.min_price,
+      max_price: filter.max_price === 10000 ? undefined : filter.max_price,
+      size_sqm: filter.size_sqm === 0 ? undefined : filter.size_sqm,
+      meters_from_uplb:
+        filter.meters_from_uplb === 0 ? undefined : filter.meters_from_uplb,
+      min_pax: filter.min_pax === 0 ? undefined : filter.min_pax,
+      max_pax: filter.max_pax === 10000 ? undefined : filter.max_pax,
+      num_rooms: filter.num_rooms === 0 ? undefined : filter.num_rooms,
+      num_beds: filter.num_beds === 0 ? undefined : filter.num_beds,
+      furnishing: filter.furnishing === '' ? undefined : filter.furnishing,
+    })
+
+    navigate(`${ROUTES.result}?${queryString}`)
+    if (onFilterAccommodations) {
+      onFilterAccommodations(queryString)
+    }
+  }, [filter])
 
   return (
     <>
       <Grid container>
         <Grid item xs={12}>
+          {/* | Filters */}
           <Typography
+            variant="h5"
             sx={{
-              color: 'black',
-              fontFamily: sourceSansPro,
-              fontWeight: 'bold',
-              fontSize: '22px',
+              color: COLOR.black,
               display: 'flex',
-              marginTop: '5%',
+              [theme.breakpoints.down('md')]: {
+                fontSize: theme.spacing(2.5),
+              },
+              [theme.breakpoints.down('sm')]: {
+                fontSize: theme.spacing(2),
+              },
             }}
           >
             <Typography
+              variant="h5"
               sx={{
-                color: green,
-                fontFamily: 'inherit',
-                fontWeight: 'inherit',
+                color: COLOR.green,
+                marginRight: theme.spacing(1),
                 fontSize: 'inherit',
-                marginRight: '10px',
               }}
             >
               |
@@ -77,311 +113,215 @@ const FilterAccommodations: React.FC<IProps> = () => {
           <Grid
             container
             direction="column"
-            paddingLeft={'15px'}
-            paddingRight={'15px'}
+            paddingLeft={theme.spacing(2)}
+            paddingRight={theme.spacing(2)}
           >
             {/* Type */}
             <Grid item>
               <FormControl>
                 <FormLabel id="type">
-                  <Typography sx={CustomLabelStyle}>Type</Typography>
+                  <Typography variant="h6" color={COLOR.black}>
+                    Type
+                  </Typography>
                 </FormLabel>
                 <RadioGroup
                   aria-labelledby="hotel"
-                  defaultValue={undefined}
-                  // value={filter.type}
-                  // onChange={handleType}
-                  name="type-group"
+                  value={filter.type}
+                  onChange={(e, val) => {
+                    onChange('type', val)
+                  }}
                 >
-                  <FormControlLabel
-                    value="hotel"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>Hotel</Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="apartment"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Apartment
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="bedspace"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Bed Space
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="dormitory"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Dormitory
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="transient"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Transient Space
-                      </Typography>
-                    }
-                  />
+                  {ACCOMMODATION_TYPES.map(type => (
+                    <FormControlLabel
+                      key={type.label}
+                      value={type.value}
+                      control={<Radio size="small" />}
+                      label={
+                        <Typography variant="body1">{type.label}</Typography>
+                      }
+                    />
+                  ))}
                 </RadioGroup>
               </FormControl>
             </Grid>
 
             {/*  Ratings */}
             <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Ratings</Typography>
+              <Typography variant="h6">Ratings</Typography>
               <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={5} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={4} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={3} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={2} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={1} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={0} readOnly sx={CustomRatingStyle} />}
-                />
+                {ACCOMMODATION_RATINGS.map(rating => (
+                  <FormControlLabel
+                    disabled
+                    key={rating}
+                    control={<Checkbox size="small" />}
+                    label={
+                      <Rating
+                        value={rating}
+                        readOnly
+                        sx={{
+                          color: COLOR.blue,
+                          [theme.breakpoints.down('md')]: {
+                            fontSize: theme.spacing(2.25),
+                          },
+                        }}
+                      />
+                    }
+                  />
+                ))}
               </FormGroup>
             </Grid>
 
             {/* Price */}
             <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Price Range</Typography>
+              <Typography variant="h6">Price Range</Typography>
               <Slider
-                sx={CustomSliderStyles}
-                max={1000}
-                // value={filter.price}
-                // onChange={handlePrice}
+                min={0}
+                max={10000}
                 disableSwap
+                value={[filter.min_price as number, filter.max_price as number]}
+                onChange={(e, val) => {
+                  const range = [...(val as number[])]
+                  onChange('min_price', range[0])
+                  onChange('max_price', range[1])
+                }}
               />
-              <Typography sx={CustomCaptionStyle}>
-                Php 123123 - Php {1000}
+              <Typography variant="body2">
+                Php {filter.min_price} - Php {filter.max_price}
               </Typography>
             </Grid>
 
             {/* Room size */}
-            <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Room Size</Typography>
+            <Grid item>
+              <Typography variant="h6">Room Size</Typography>
               <Slider
-                sx={CustomSliderStyles}
                 max={10}
-                // value={filter.size_sqm}
-                // onChange={handleRoomSize}
+                value={filter.size_sqm}
+                onChange={(e, val) => onChange('size_sqm', val as number)}
               />
-              <Typography sx={CustomCaptionStyle}>14 square meters</Typography>
+              <Typography variant="body2">{filter.size_sqm} sqm.</Typography>
             </Grid>
 
             {/*Meters from UPLB */}
             <Grid item>
-              <Typography sx={CustomLabelStyle}>Meters from UPLB</Typography>
+              <Typography variant="h6">Meters from UPLB</Typography>
               <Slider
-                max={1000}
-                // value={filter.meters_from_uplb}
-                // onChange={handleMeters}
-                sx={CustomSliderStyles}
+                max={10000}
+                value={filter.meters_from_uplb}
+                onChange={(e, val) =>
+                  onChange('meters_from_uplb', val as number)
+                }
               />
-              <Typography sx={CustomCaptionStyle}>600 meters</Typography>
+              <Typography variant="body2">
+                {filter.meters_from_uplb} meters
+              </Typography>
             </Grid>
 
             {/* Number of Occupants */}
             <Grid item>
-              <Typography sx={CustomLabelStyle}>Number of Occupants</Typography>
+              <Typography variant="h6">Number of occupants</Typography>
               <Slider
-                sx={CustomSliderStyles}
                 min={0}
-                max={1000}
-                // value={pax}
-                defaultValue={0}
-                // onChange={handlePax}
+                max={10000}
+                value={[filter.min_pax as number, filter.max_pax as number]}
+                onChange={(e, val) => {
+                  const range = [...(val as number[])]
+                  onChange('min_pax', range[0])
+                  onChange('max_pax', range[1])
+                }}
                 disableSwap
               />
-              <Typography sx={CustomCaptionStyle}>4 persons</Typography>
-              {/* {
-                // if both minimum and maximum are equal
-                pax[0] === pax[1] && pax[0] != 1 ? (
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {pax[0]} persons
-                    </Typography>
-                  </>
-                ) : // if both min and max pax are equal and both 1
-                pax[0] === pax[1] && pax[0] == 1 ? (
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {pax[0]} person
-                    </Typography>
-                  </>
-                ) : (
-                  // by default
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {pax[0]} - {pax[1]} persons
-                    </Typography>
-                  </>
-                )
-              } */}
+              <Typography variant="body2">
+                {filter.min_pax} - {filter.max_pax} persons
+              </Typography>
             </Grid>
 
             {/*  Number of Room */}
-            <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Number of Rooms</Typography>
+            <Grid item>
+              <Typography variant="h6">Number of rooms</Typography>
               <Slider
+                min={0}
                 max={10}
-                min={0}
-                defaultValue={0}
-                // value={filter.num_rooms}
-                // onChange={handleNumRooms}
-                sx={CustomSliderStyles}
+                value={filter.num_rooms}
+                onChange={(e, val) => {
+                  onChange('num_rooms', val as number)
+                }}
               />
-              <Typography sx={CustomCaptionStyle}>1 room</Typography>
-              {/* {filter.num_rooms == 1 ? (
-                <>
-                  <Typography sx={CustomCaptionStyle}>
-                    {filter.num_rooms} room
-                  </Typography>
-                </>
-              ) : (
-                <>
-                  <Typography sx={CustomCaptionStyle}>
-                    {filter.num_rooms} rooms
-                  </Typography>
-                </>
-              )} */}
+              <Typography variant="body2">{filter.num_rooms} room</Typography>
             </Grid>
-
-            {/* TODO: in model, num_beds is not range. change it to number */}
             {/*Number of Beds */}
-            <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Number of Beds</Typography>
+            <Grid item>
+              <Typography variant="h6">Number of beds</Typography>
               <Slider
-                sx={CustomSliderStyles}
                 min={0}
-                // max={maxBed}
-                defaultValue={0}
-                // value={num_beds}
-                // onChange={handleBed}
+                value={filter.num_beds}
+                onChange={(e, val) => {
+                  onChange('num_beds', val as number)
+                }}
                 disableSwap
               />
-              <Typography sx={CustomCaptionStyle}>2 beds</Typography>
-              {/* {
-                // if both minimum and maximum are equal
-                num_beds[0] == pax[1] && num_beds[0] != 1 ? (
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {num_beds[0]} beds
-                    </Typography>
-                  </>
-                ) : // if both min and max bed are equal and both 1
-                num_beds[0] == num_beds[1] && num_beds[0] == 1 ? (
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {num_beds[0]} bed
-                    </Typography>
-                  </>
-                ) : (
-                  // by default
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {num_beds[0]} - {num_beds[1]} beds
-                    </Typography>
-                  </>
-                )
-              } */}
+              <Typography variant="body2">{filter.num_beds} beds</Typography>
             </Grid>
 
             {/* Furnishing */}
             <Grid item>
               <FormControl>
-                <FormLabel id="furnishing">
-                  <Typography sx={CustomLabelStyle}>Furnishing</Typography>
+                <FormLabel>
+                  <Typography variant="h6">Furnishing</Typography>
                 </FormLabel>
 
                 <RadioGroup
-                  aria-labelledby="furnishing"
-                  defaultValue={'unfurnished'}
-                  // value={filter.furnishing}
-                  // onChange={handleFurnishing}
-                  name="furnishing-group"
+                  value={filter.furnishing}
+                  onChange={(e, val) => onChange('furnishing', val)}
                 >
-                  <FormControlLabel
-                    value="unfurnished"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Unfurnished
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="semifurnished"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Semifurnished
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="fully_furnished"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Fully-furnished
-                      </Typography>
-                    }
-                  />
+                  {ACCOMMODATION_FURNISHING.map(furnishing => (
+                    <FormControlLabel
+                      key={furnishing.value}
+                      value={furnishing.value}
+                      control={<Radio size="small" />}
+                      label={
+                        <Typography variant="body1">
+                          {furnishing.label}
+                        </Typography>
+                      }
+                    />
+                  ))}
                 </RadioGroup>
               </FormControl>
             </Grid>
           </Grid>
         </Grid>
 
+        {/* Filter Search btn */}
         <Grid item xs={12}>
+          <Divider />
           <Button
-            // onClick={onFilter}
             variant="contained"
             fullWidth
             sx={{
-              backgroundColor: green,
-              fontFamily: sourceSansPro,
-              fontWeight: 'bold',
-              borderRadius: '10px',
+              textTransform: 'none',
+              backgroundColor: COLOR.green,
+              borderRadius: theme.spacing(1),
+              boxShadow: '1px 2px 4px #6e6e73',
               ':hover': {
-                backgroundColor: grey,
-                border: '2px solid',
-                borderColor: green,
-                color: 'black',
+                color: COLOR.green,
+                backgroundColor: COLOR.gray1,
               },
             }}
           >
-            Filter Search
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: theme.spacing(2.15),
+                [theme.breakpoints.down('md')]: {
+                  fontSize: theme.spacing(2),
+                },
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: theme.spacing(1.85),
+                },
+              }}
+            >
+              Filter Search
+            </Typography>
           </Button>
         </Grid>
       </Grid>
@@ -391,61 +331,20 @@ const FilterAccommodations: React.FC<IProps> = () => {
 
 export default FilterAccommodations
 
-const blue = '#154360'
-const green = '#60ce80'
-const grey = '#f0f0f0'
-const darkGrey = '#f5f5f7'
-const quicksand = 'Quicksand'
-const sourceSansPro = 'Source Sans Pro'
+const ACCOMMODATION_TYPES = [
+  { label: 'Hotel', value: 'hotel' },
+  { label: 'Apartment', value: 'apartment' },
+  { label: 'Bed Space', value: 'bedspace' },
+  { label: 'Dormitory', value: 'dormitory' },
+  { label: 'Transient Space', value: 'transient' },
+  { label: 'Any type', value: '' },
+]
 
-// Setting custom styles
-const CustomLabelStyle = {
-  color: 'black',
-  fontFamily: sourceSansPro,
-  fontSize: '20px',
-  marginTop: '7px',
-}
+const ACCOMMODATION_RATINGS = [0, 1, 2, 3, 4, 5]
 
-const CustomCaptionStyle = {
-  color: 'black',
-  fontFamily: quicksand,
-  fontSize: '15px',
-}
-
-const CustomSliderStyles = {
-  '& .MuiSlider-thumb': {
-    color: green,
-  },
-  '& .MuiSlider-track': {
-    color: blue,
-  },
-  '& .MuiSlider-rail': {
-    color: grey,
-    border: '2px solid',
-    borderColor: 'black',
-  },
-  '& .MuiSlider-active': {
-    color: darkGrey,
-  },
-}
-
-const CustomRadioLabelStyle = {
-  fontFamily: quicksand,
-  color: 'black',
-}
-
-const CustomRadioStyle = {
-  '&.Mui-checked': {
-    color: green,
-  },
-}
-
-const CustomChecboxStyle = {
-  '&.Mui-checked': {
-    color: green,
-  },
-}
-
-const CustomRatingStyle = {
-  color: blue,
-}
+const ACCOMMODATION_FURNISHING = [
+  { label: 'Unfurnished', value: 'unfurnished' },
+  { label: 'Semifurnished', value: 'semifurnished' },
+  { label: 'Fully-furnished', value: 'fully_furnished' },
+  { label: 'Any type', value: '' },
+]

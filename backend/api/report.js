@@ -1,9 +1,10 @@
-const { Router } = require('express')
+const { RESTRouter } = require('../handler/rest_router')
 
-const Report = require("../models/report");
-const User = require("../models/user")
+const Report = require('../models/v2/report')
 
-const reportRouter = Router()
+const reportRouter = RESTRouter('/report', Report)
+
+module.exports = reportRouter
 
 /**
  * @openapi
@@ -22,6 +23,8 @@ const reportRouter = Router()
  *              pdf_url:
  *                  type: string
  *                  description: URL of pdf
+ * security:
+ *      - bearerAuth: []
  */
 
 /**
@@ -29,6 +32,8 @@ const reportRouter = Router()
  * /api/report:
  *      post:
  *          description: Create report
+ *          security:
+ *              -   bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
@@ -49,59 +54,16 @@ const reportRouter = Router()
  *                  description: Internal Server error.
  *          tags:
  *              - Report
- *              
+ *
  */
-reportRouter.post("/", async function(req, res){
-    try {
-        const refUser = await User.findById(req.body.user_id)
-
-        if(!refUser){
-            const error = new Error("User does not exist");
-            error.name = "NullError";
-            throw error;
-        }
-        
-        try{
-            const pdf_url = new URL(req.body.pdf_url);
-        } catch(err){
-            const error = new Error("URL does not exist");
-            error.name = "ValidationError";
-            throw error;
-        }
-
-        const savedReport = await Report.create({ ...req.body });
-
-        res.status(201).json({ success: true, data: savedReport });
-
-    } catch(err) {
-        let code;
-
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "AuthError":
-                code = 401;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
-
-        res.status(code).json({success: false, messages: [String(err)]});
-    }
-})
 
 /**
  * @openapi
  * /api/report/{id}:
  *      get:
  *          description: Get report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -115,60 +77,25 @@ reportRouter.post("/", async function(req, res){
  *                          schema:
  *                              $ref: '#/components/schemas/Report'
  *              400:
- *                  description: Bad request
+ *                  description: Bad request.
  *              401:
- *                  description: Unauthorized access
+ *                  description: Unauthorized access.
  *              500:
- *                  description: Internal server error
+ *                  description: Internal Server error.
  *              404:
- *                  description: Not found
+ *                  description: Not found.
  *          tags:
  *              - Report
- *              
+ *
  */
-reportRouter.get('/:id', async function(req, res){
-    try{
-        if(!req.params.id){
-            const error = new Error("Report does not exist");
-            error.name = "NullError";
-            throw error;
-        }
-        const report= await Report.findById(req.params.id);
-        if(!report){
-            const error = new Error("Report does not exist");
-            error.name = "NullError";
-            throw error;
-        }
-        res.status(200).json({success: true, data: report});
-    } catch(err) {
-        let code;
-
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "AuthError":
-                code = 401;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
-
-        res.status(code).json({success: false, messages: [String(err)]});
-    }
-})
 
 /**
  * @openapi
  * /api/report:
  *      get:
  *          description: Get all reports
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
  *                  name: user_id
@@ -195,54 +122,24 @@ reportRouter.get('/:id', async function(req, res){
  *                              items:
  *                                  $ref: '#/components/schemas/Report'
  *              400:
- *                  description: Bad request
+ *                  description: Bad request.
  *              401:
- *                  description:  Unauthorize access
+ *                  description:  Unauthorized access.
  *              500:
- *                  description: Internal Service error
+ *                  description: Internal Server error.
  *          tags:
  *              - Report
- *              
- *              
+ *
+ *
  */
-reportRouter.get('/', async function(req, res){
-    try{
-        let query = {...req.query}
-        delete query["limit"];  //delete every query that's not part of the database model
-
-        const limit = Number(req.query.limit) || 100;
-        const forums = await Report.find(query).limit(limit);
-        
-        res.status(200).json({success:true, data:forums});
-    } catch(err) {
-        let code;
-
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "AuthError":
-                code = 401;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
-
-        res.status(code).json({success: false, messages: [String(err)]});
-    }
-});
 
 /**
  * @openapi
  * /api/report/{id}:
  *      delete:
  *          description: Delete report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -251,56 +148,28 @@ reportRouter.get('/', async function(req, res){
  *                  required: true
  *          responses:
  *              200:
- *                  description: Report was deleted
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/Report'
  *              404:
- *                  description: The report was not found
+ *                  description: Not found.
  *              500:
- *                  description: Internal server error
+ *                  description: Internal Server error.
  *          tags:
  *              - Report
- *              
+ *
  */
-reportRouter.delete('/:id', async function(req, res){
-    try{
-        const removedReport = await Report.findByIdAndRemove({_id: req.params.id});
-        
-        if (!removedReport) {
-            const error = new Error("Report does not exist");
-            error.name = "NullError";
-            throw error;
-        } else {
-            res.status(200).json({success: true, data: null});
-        }
-        
-    } catch(err) {
-        let code;
-
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "AuthError":
-                code = 401;
-                break;
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
-
-        res.status(code).json({success: false, messages: [String(err)]});
-    }
-});
 
 /**
  * @openapi
  * /api/report/{id}:
  *      put:
  *          description: Edit report by id
+ *          security:
+ *              -   bearerAuth: []
  *          parameters:
  *              -   in: path
  *                  name: id
@@ -324,66 +193,10 @@ reportRouter.delete('/:id', async function(req, res){
  *              401:
  *                  description: Unauthorized access.
  *              404:
- *                  description: Not found (For user and forum).
+ *                  description: Not found.
  *              500:
  *                  description: Internal Server error.
  *          tags:
  *              - Report
- *              
+ *
  */
-reportRouter.put('/:id', async function(req, res){
-    try{
-        const refUser = await User.findById(req.body.user_id);
-        if (!refUser) {
-            const error = new Error("User does not exist");
-            error.name = "NullError";
-            throw error;
-        }
-
-        try{
-            const pdf_url = new URL(req.body.pdf_url);
-        } catch(err){
-            const error = new Error("URL does not exist");
-            error.name = "ValidationError";
-            throw error;
-        }
-
-        const editedReport = await Report.findOneAndUpdate(
-            {_id: req.params.id},
-            { ...req.body},
-            {new: true});
-
-        if(!editedReport){
-            const error = new Error("Report does not exist");
-            error.name = "NullError";
-            throw error;
-        }
-
-        res.status(200).json({ success: true, data: editedReport })
-
-    } catch(err) {
-        let code;
-
-        switch (err.name) {
-            case "ValidationError":
-                code = 400;
-                break;
-            case "CastError":
-                code = 400;
-                break;
-            case "AuthError":
-                code = 401;
-                break;  
-            case "NullError":
-                code = 404;
-                break;
-            default:
-                code = 500;
-        }
-
-        res.status(code).json({success: false, messages: [String(err)]});
-    }
-
-});
-
-module.exports = reportRouter;

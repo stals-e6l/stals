@@ -7,35 +7,48 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
+  useTheme,
 } from '@mui/material'
 import React from 'react'
-// import { signUp } from '../../store/auth/action'
+import { Link } from 'react-router-dom'
+import { COLOR } from '../../theme'
+import { signUp } from './AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
+  onClose: () => void
 }
 
-const SignUpForm: React.FC<IProps> = () => {
-  // const signUpHandler = signUp()
+const SignUpForm: React.FC<IProps> = ({ onClose }) => {
+  // hooks
+  const theme = useTheme()
+  const onSignUp = signUp()
+
   // state
   const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
     username: '',
     password: '',
     email: '',
     role: 'admin',
+    full_name: {
+      first_name: 'Juan',
+      middle_name: '',
+      last_name: 'Dela Cruz',
+    },
+    gender: 'male',
+    address: {
+      home: 'Blah blah street',
+      current: 'Blah blah street',
+    },
+    birthday: String(new Date()),
     confirm: '',
   })
 
+  // events
   const handleSignUp = () => {
-    // TODO: PM's job, for now refine the styling
-    // signUpHandler({
-    //   username: form.username,
-    //   password: form.password,
-    //   email: form.email,
-    //   role: form.role,
-    // }).then(() => {
-    //   onClose()
-    // })
+    if (onSignUp) {
+      onSignUp(form).then(() => onClose())
+    }
   }
 
   return (
@@ -50,20 +63,19 @@ const SignUpForm: React.FC<IProps> = () => {
     >
       <Box
         sx={{
-          backgroundColor: '#f0f0f0',
+          backgroundColor: COLOR.gray2,
           width: '100%',
           height: '100%',
-          padding: '30px',
-          borderRadius: '5px',
-          boxShadow: '0px 3px 5px #888888',
+          padding: theme.spacing(2),
+          borderRadius: theme.spacing(1),
         }}
       >
         <Typography
           variant="h6"
           sx={{
             fontWeight: 'bold',
-            color: '#154360',
-            paddingBottom: '10px',
+            color: theme.palette.primary.main,
+            paddingBottom: theme.spacing(1),
           }}
         >
           Create an Account
@@ -75,7 +87,7 @@ const SignUpForm: React.FC<IProps> = () => {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ backgroundColor: '#ffffff' }}
+          sx={{ backgroundColor: COLOR.white }}
           value={form.email}
           onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
         />
@@ -83,10 +95,12 @@ const SignUpForm: React.FC<IProps> = () => {
         <Select
           label=""
           fullWidth
-          sx={{ backgroundColor: '#ffffff' }}
+          sx={{ backgroundColor: COLOR.white }}
           size="small"
           value={form.role}
-          onChange={e => setForm(prev => ({ ...prev, role: e.target.value }))}
+          onChange={e =>
+            setForm(prev => ({ ...prev, role: e.target.value as TUserRole }))
+          }
         >
           <MenuItem value={'admin'}>Admin</MenuItem>
           <MenuItem value={'tenant'}>Student</MenuItem>
@@ -99,7 +113,7 @@ const SignUpForm: React.FC<IProps> = () => {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ backgroundColor: '#ffffff' }}
+          sx={{ backgroundColor: COLOR.white }}
           value={form.username}
           onChange={e =>
             setForm(prev => ({ ...prev, username: e.target.value }))
@@ -112,7 +126,7 @@ const SignUpForm: React.FC<IProps> = () => {
           size="small"
           type="password"
           fullWidth
-          sx={{ backgroundColor: '#ffffff' }}
+          sx={{ backgroundColor: COLOR.white }}
           value={form.password}
           onChange={e =>
             setForm(prev => ({ ...prev, password: e.target.value }))
@@ -125,7 +139,7 @@ const SignUpForm: React.FC<IProps> = () => {
           size="small"
           type="password"
           fullWidth
-          sx={{ backgroundColor: '#ffffff' }}
+          sx={{ backgroundColor: COLOR.white }}
           value={form.confirm}
           onChange={e =>
             setForm(prev => ({ ...prev, confirm: e.target.value }))
@@ -138,9 +152,18 @@ const SignUpForm: React.FC<IProps> = () => {
           label={
             <Typography>
               I have read the{' '}
-              <Typography sx={{ display: 'inline', color: '#60ce80' }}>
+              <Link
+                to="https://www.privacy.gov.ph/data-privacy-act/"
+                target="_blank"
+                style={{
+                  display: 'inline',
+                  color: theme.palette.secondary.main,
+                  textDecoration: 'none',
+                }}
+              >
+                {' '}
                 Data Privacy Act of 2012
-              </Typography>
+              </Link>
             </Typography>
           }
         />
@@ -150,13 +173,31 @@ const SignUpForm: React.FC<IProps> = () => {
           label={
             <Typography>
               I have read and agree to{' '}
-              <Typography sx={{ display: 'inline', color: '#60ce80' }}>
+              <Link
+                to="#"
+                target="_blank"
+                style={{
+                  display: 'inline',
+                  color: theme.palette.secondary.main,
+                  textDecoration: 'none',
+                }}
+              >
+                {' '}
                 AirVnV&apos;s Terms of Service
-              </Typography>{' '}
+              </Link>{' '}
               and{' '}
-              <Typography sx={{ display: 'inline', color: '#60ce80' }}>
+              <Link
+                to="#"
+                target="_blank"
+                style={{
+                  display: 'inline',
+                  color: theme.palette.secondary.main,
+                  textDecoration: 'none',
+                }}
+              >
+                {' '}
                 Privacy Policy
-              </Typography>
+              </Link>
               .
             </Typography>
           }
@@ -166,9 +207,9 @@ const SignUpForm: React.FC<IProps> = () => {
           variant="contained"
           fullWidth
           sx={{
-            backgroundColor: '#154360',
-            marginTop: '20px',
-            marginBottom: '10px',
+            backgroundColor: theme.palette.primary.main,
+            marginTop: theme.spacing(2),
+            marginBottom: theme.spacing(1),
           }}
           disabled={
             form.password.length === 0 || form.password !== form.confirm
