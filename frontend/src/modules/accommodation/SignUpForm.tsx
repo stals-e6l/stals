@@ -74,20 +74,13 @@ const SignUpForm: React.FC<IProps> = () => {
           Create an Account
         </Typography>
 
-        <DatePicker
-          onChange={value => {
-            const date = value as { $d: string }
-            const strDate = date.$d
-            console.log({ strDate })
-          }}
-        />
-
         <Typography>Email</Typography>
         <TextField
           id="outlined-basic"
           variant="outlined"
           size="small"
           fullWidth
+          required
           sx={{ backgroundColor: COLOR.white }}
           value={form.email}
           onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
@@ -96,6 +89,7 @@ const SignUpForm: React.FC<IProps> = () => {
         <Select
           label=""
           fullWidth
+          required
           sx={{ backgroundColor: COLOR.white }}
           size="small"
           value={form.role}
@@ -112,12 +106,160 @@ const SignUpForm: React.FC<IProps> = () => {
           variant="outlined"
           size="small"
           fullWidth
+          required
           sx={{ backgroundColor: COLOR.white }}
           value={form.username}
           onChange={e =>
             setForm(prev => ({ ...prev, username: e.target.value }))
           }
         />
+
+        <Typography>First Name</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          required
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Last Name</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          required
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Middle Name</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Birthday</Typography>
+        <DatePicker
+          onChange={value => {
+            const date = value as { $d: string }
+            const strDate = date.$d
+            console.log({ strDate })
+          }}
+        />
+
+        <Typography>Current Address</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          required
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Home Address</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          required
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Gender</Typography>
+        <Select
+          label=""
+          fullWidth
+          required
+          sx={{ backgroundColor: COLOR.white }}
+          size="small"
+          value={form.role}
+          onChange={e => setForm(prev => ({ ...prev, role: e.target.value }))}
+        >
+          <MenuItem value={'male'}>Male</MenuItem>
+          <MenuItem value={'female'}>Female</MenuItem>
+          <MenuItem value={'non_binary'}>Non-Binary</MenuItem>
+          <MenuItem value={'prefer_not_to_say'}>Prefer not to say</MenuItem>
+        </Select>
+
+        <Typography>Landline</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Phone</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Organization</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Last Name</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
         <Typography>Password</Typography>
         <TextField
           id="outlined-basic"
