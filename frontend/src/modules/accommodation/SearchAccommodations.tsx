@@ -9,7 +9,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import React from 'react'
 import { COLOR } from '../../theme'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { buildQueryString } from '../../helpers/queryString'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import { ROUTES } from '../../app/AppRouter'
@@ -23,6 +23,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
   const theme = useTheme()
   const navigate = useNavigate()
   const accommodations = retrieveAccommodations()
+  const location = useLocation()
 
   // state
   const [name, setName] = React.useState<string>('')
@@ -36,7 +37,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
   }
 
   React.useEffect(() => {
-    navigate(`${ROUTES.explore}?${buildQueryString({ name })}`)
+    navigate(`${location.pathname}?${buildQueryString({ name })}`)
   }, [name])
 
   return (
