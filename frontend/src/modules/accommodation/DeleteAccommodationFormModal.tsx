@@ -26,7 +26,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
   const [ inputField, setField ] = useState<string>('')
 
   const theme = useTheme()
-  const fullScreen = useMediaQuery(useTheme().breakpoints.down('sm'))
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   // events
   const handleSubmit = () => {
@@ -54,8 +54,8 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
                 border: 2,
                 borderColor: theme.palette.primary.main,
                 borderRadius: 2,
-                backgroundColor: '#fff',
-                color: theme.palette.primary.main,
+                backgroundColor: theme.palette.primary.main,
+                color: '#fff',
           }}>Cancel</Button>
             <Button disabled={inputField != "Confirm"} onClick={handleSubmit} sx={{ 
                 border: 2,
@@ -65,6 +65,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
                 color: '#fff',
                 ":disabled": {
                     backgroundColor: '#fff',
+                    borderColor: theme.palette.primary.main,
                     color: theme.palette.primary.main,
                 },
                 ":hover": {

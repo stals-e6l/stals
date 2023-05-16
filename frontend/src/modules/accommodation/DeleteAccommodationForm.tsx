@@ -34,29 +34,31 @@ const DeleteAccommodationForm: React.FC<IProps> = ({input, setField, isSoftDelet
   
   return (
     <>
-      <Grid sx={{ flexGrow: 1, height: '100%', width: '100%'}} container spacing={0} flexDirection="column" alignItems="center" justifyContent="center">
-        <Grid item xs={'auto'} sx={{}}>
-            <Typography id="delete-text" variant="body1" sx={{ p: 1, width: '100%', textAlign: 'center' }}>
+      <Grid sx={{ flexGrow: 1, height: '100%', width: '100%'}} container spacing={0} flexDirection="column" alignItems="center" justifyContent="center" alignContent="center">
+        <Grid item xs={'auto'} sx={{ width: '80%' }}>
+            <Typography id="delete-text" variant="body1" sx={{ width: '100%', }}>
                 {isSoftDelete ? "Are you sure you want to archive accommodation?" : "Are you sure you want to delete accommodation?"}
             </Typography>
         </Grid>
 
-        <Grid item xs={'auto'} sx={{}}>
+        <Grid item xs={'auto'} sx={{ width: '80%' }}>
             <TextField
             id="confirmation-field"
             placeholder="Confirm"
+            autoComplete="off"
             value={input}
             onChange={e => setField(e.target.value)}
             sx={{
                boxShadow: 2,
-               m: 1,
+               mt: 1,
+               mb: 1,
                width: '100%'
             }}
          />
          </Grid>
 
         <Grid item xs={'auto'} sx={{}}>
-            <Typography variant="body1" sx={{ textAlign: 'center' }}>
+            <Typography variant="body1" sx={{  }}>
             Type<b> Confirm </b> {isSoftDelete ? "to archive listing." : "to delete listing."}
             </Typography>
         </Grid>
