@@ -74,7 +74,15 @@ const router = createBrowserRouter([
       },
       {
         path: '/DeleteAccommodationForm',
-        element: <DeleteAccommodationForm />,
+        element: (
+          <DeleteAccommodationForm
+            input={''}
+            setField={() => {
+              return -1
+            }}
+            isSoftDelete={false}
+          />
+        ),
       },
       {
         path: '/DeleteAccommodationFormModal',
