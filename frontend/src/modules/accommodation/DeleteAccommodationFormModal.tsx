@@ -4,8 +4,10 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import DeleteAccommodationForm from './DeleteAccommodationForm'
 import useDialog from '../../hooks/useDialog'
 import {
@@ -27,6 +29,11 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
   const { open, toggleDialog } = useDialog()
   const onArchiveAccommodation = archiveAccommodation()
   const onDeleteAccommodation = deleteAccommodation()
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+
+  // state
+  const [inputField, setField] = useState<string>('')
 
   // events
   const handleSubmit = () => {
@@ -44,16 +51,60 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
     <React.Fragment>
       <Button onClick={toggleDialog}>Delete</Button>
       {open && (
-        <Dialog open={open} onClose={toggleDialog}>
-          <DialogTitle>Hello</DialogTitle>
+        <Dialog
+          open={open}
+          onClose={toggleDialog}
+          fullScreen={fullScreen}
+          maxWidth={'sm'}
+          fullWidth={true}
+        >
+          <DialogTitle>
+            {isSoftDelete ? 'Archive Accommodation' : 'Delete Accommodation'}
+          </DialogTitle>
 
           <DialogContent>
-            <DeleteAccommodationForm />
+            <DeleteAccommodationForm
+              setField={setField}
+              input={inputField}
+              isSoftDelete={isSoftDelete}
+            />
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={toggleDialog}>Cancel</Button>
-            <Button onClick={handleSubmit}>Submit</Button>
+            <Button
+              onClick={toggleDialog}
+              sx={{
+                border: 2,
+                borderColor: theme.palette.primary.main,
+                borderRadius: 2,
+                backgroundColor: theme.palette.primary.main,
+                color: '#fff',
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={inputField != 'Confirm'}
+              onClick={handleSubmit}
+              sx={{
+                border: 2,
+                borderColor: theme.palette.primary.main,
+                borderRadius: 2,
+                backgroundColor: theme.palette.primary.main,
+                color: '#fff',
+                ':disabled': {
+                  backgroundColor: '#fff',
+                  borderColor: theme.palette.primary.main,
+                  color: theme.palette.primary.main,
+                },
+                ':hover': {
+                  backgroundColor: theme.palette.secondary.main,
+                  borderColor: theme.palette.secondary.main,
+                },
+              }}
+            >
+              Delete
+            </Button>
           </DialogActions>
         </Dialog>
       )}
