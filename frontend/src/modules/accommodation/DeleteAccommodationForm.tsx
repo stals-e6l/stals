@@ -1,6 +1,5 @@
 import { Grid, Typography, TextField, } from '@mui/material'
 import React from 'react'
-// import { useNavigate } from 'react-router-dom'
 // import accommodation from '../../store/accommodation'
 // import { deleteAccommodation } from '../../store/accommodation/actions'
 
@@ -23,15 +22,6 @@ const DeleteAccommodationForm: React.FC<IProps> = ({input, setField, isSoftDelet
     // )
   }
 
-
-  // const handleClose = () => {
-  //   setState(false)
-  // }
-
-  // const handleOpen = () => {
-  //   setState(false)
-  // }
-  
   return (
     <>
       <Grid sx={{ flexGrow: 1, height: '100%', width: '100%'}} container spacing={0} flexDirection="column" alignItems="center" justifyContent="center" alignContent="center">
