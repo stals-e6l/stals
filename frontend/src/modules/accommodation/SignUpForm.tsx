@@ -19,9 +19,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 interface IProps {
   children?: React.ReactNode
+  onClose: () => void
 }
 
-const SignUpForm: React.FC<IProps> = () => {
+const SignUpForm: React.FC<IProps> = ({ onClose }) => {
   // const signUpHandler = signUp()
   // state
   const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
@@ -46,21 +47,31 @@ const SignUpForm: React.FC<IProps> = () => {
 
   const theme = useTheme()
 
+  React.useEffect(() => {
+    return () =>
+      setForm({
+        username: '',
+        password: '',
+        email: '',
+        role: 'admin',
+        confirm: '',
+      })
+  }, [])
+
   return (
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
         backdropFilter: 'blur(5px)',
+        backgroundColor: COLOR.gray2,
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        flexDirection: 'column',
+        display: 'flex',
       }}
     >
       <Box
         sx={{
-          backgroundColor: COLOR.gray2,
-          width: '100%',
-          height: '100%',
           padding: theme.spacing(2),
           borderRadius: theme.spacing(1),
         }}
@@ -365,6 +376,18 @@ const SignUpForm: React.FC<IProps> = () => {
           onClick={handleSignUp}
         >
           Sign up
+        </Button>
+        <Button
+          variant="outlined"
+          fullWidth
+          sx={{
+            backgroundColor: theme.palette.primary.main,
+            marginTop: theme.spacing(2),
+            marginBottom: theme.spacing(1),
+          }}
+          onClick={onClose}
+        >
+          Cancel
         </Button>
       </Box>
     </Box>

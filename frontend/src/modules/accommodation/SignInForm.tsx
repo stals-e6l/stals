@@ -5,6 +5,7 @@ import {
   Button,
   useTheme,
   Dialog,
+  useMediaQuery,
 } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -21,6 +22,8 @@ const SignInForm: React.FC<IProps> = () => {
   // hooks
   // const signInHandler = signIn()
   // const navigate = useNavigate()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
     username: '',
@@ -36,11 +39,9 @@ const SignInForm: React.FC<IProps> = () => {
     //   navigate('/accommodations')
     // })
   }
-  const theme = useTheme()
 
   return (
     <React.Fragment>
-
       <Box sx={{ display: 'flex' }}>
         <Box
           sx={{
@@ -157,24 +158,28 @@ const SignInForm: React.FC<IProps> = () => {
             <Button
               variant="contained"
               fullWidth
-              sx={{ backgroundColor: theme.palette.primary.main, marginTop: theme.spacing(2) }}
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                marginTop: theme.spacing(2),
+              }}
               onClick={handleOpen}
             >
               Create new account
             </Button>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              sx={{
-                width: '40%',
-                margin: '0 auto',
-                [theme.breakpoints.down('sm')]: {
-                  width: '100%',    
-                },
-              }}
-            >
-              <SignUpForm />
-            </Dialog>
+            {open && (
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                fullScreen={isMobile}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    width: '100%',
+                  },
+                }}
+              >
+                <SignUpForm onClose={handleClose} />
+              </Dialog>
+            )}
           </Box>
         </Box>
       </Box>
