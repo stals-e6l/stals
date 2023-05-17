@@ -9,6 +9,7 @@ import {
   Button,
   useTheme,
   colors,
+  Grid,
 } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -61,7 +62,7 @@ const SignUpForm: React.FC<IProps> = () => {
           height: '100%',
           padding: theme.spacing(2),
           borderRadius: theme.spacing(1),
-        }}
+        }}  
       >
         <Typography
           variant="h6"
@@ -74,7 +75,21 @@ const SignUpForm: React.FC<IProps> = () => {
           Create an Account
         </Typography>
 
-        <Typography>Email</Typography>
+        <Typography>Username *</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          required
+          sx={{ backgroundColor: COLOR.white }}
+          value={form.username}
+          onChange={e =>
+            setForm(prev => ({ ...prev, username: e.target.value }))
+          }
+        />
+
+        <Typography>Email *</Typography>
         <TextField
           id="outlined-basic"
           variant="outlined"
@@ -85,7 +100,7 @@ const SignUpForm: React.FC<IProps> = () => {
           value={form.email}
           onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
         />
-        <Typography>Role</Typography>
+        <Typography>Role *</Typography>
         <Select
           label=""
           fullWidth
@@ -100,140 +115,6 @@ const SignUpForm: React.FC<IProps> = () => {
           <MenuItem value={'owner'}>Accommodation Owner</MenuItem>
         </Select>
 
-        <Typography>Username</Typography>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          fullWidth
-          required
-          sx={{ backgroundColor: COLOR.white }}
-          value={form.username}
-          onChange={e =>
-            setForm(prev => ({ ...prev, username: e.target.value }))
-          }
-        />
-
-        <Typography>First Name</Typography>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          fullWidth
-          required
-          sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
-        />
-
-        <Typography>Last Name</Typography>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          fullWidth
-          required
-          sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
-        />
-
-        <Typography>Middle Name</Typography>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
-        />
-
-        <Typography>Birthday</Typography>
-        <DatePicker
-          onChange={value => {
-            const date = value as { $d: string }
-            const strDate = date.$d
-            console.log({ strDate })
-          }}
-        />
-
-        <Typography>Current Address</Typography>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          fullWidth
-          required
-          sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
-        />
-
-        <Typography>Home Address</Typography>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          fullWidth
-          required
-          sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
-        />
-
-        <Typography>Gender</Typography>
-        <Select
-          label=""
-          fullWidth
-          required
-          sx={{ backgroundColor: COLOR.white }}
-          size="small"
-          value={form.role}
-          onChange={e => setForm(prev => ({ ...prev, role: e.target.value }))}
-        >
-          <MenuItem value={'male'}>Male</MenuItem>
-          <MenuItem value={'female'}>Female</MenuItem>
-          <MenuItem value={'non_binary'}>Non-Binary</MenuItem>
-          <MenuItem value={'prefer_not_to_say'}>Prefer not to say</MenuItem>
-        </Select>
-
-        <Typography>Landline</Typography>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
-        />
-
-        <Typography>Phone</Typography>
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
-        />
-
         <Typography>Organization</Typography>
         <TextField
           id="outlined-basic"
@@ -247,12 +128,129 @@ const SignUpForm: React.FC<IProps> = () => {
           //   }
         />
 
-        <Typography>Last Name</Typography>
+        <Grid container spacing={1} sx={{flexDirection:{xs:
+    'column', md:'row'}}}>
+          <Grid item xs={12} lg={4} >
+            <Typography>First Name*</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              size="small"
+              fullWidth
+              required
+              sx={{ backgroundColor: COLOR.white }}
+              //   value={form.firstname}
+              //   onChange={e =>
+              //     setForm(prev => ({ ...prev, username: e.target.value }))
+              //   }
+            />
+          </Grid>
+
+          <Grid item xs={12} lg={4}>
+            <Typography>Last Name*</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              size="small"
+              fullWidth
+              required
+              sx={{ backgroundColor: COLOR.white }}
+              //   value={form.firstname}
+              //   onChange={e =>
+              //     setForm(prev => ({ ...prev, username: e.target.value }))
+              //   }
+            />
+          </Grid>
+
+          <Grid item xs={12} lg={4}>
+            <Typography>Middle Name</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              size="small"
+              fullWidth
+              sx={{ backgroundColor: COLOR.white }}
+              //   value={form.firstname}
+              //   onChange={e =>
+              //     setForm(prev => ({ ...prev, username: e.target.value }))
+              //   }
+            />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={1}>
+          <Grid item xs={7}>
+            <Typography>Gender *</Typography>
+            <Select
+              label=""
+              fullWidth
+              required
+              sx={{ backgroundColor: COLOR.white }}
+              size="small"
+              value={form.role}
+              onChange={e =>
+                setForm(prev => ({ ...prev, role: e.target.value }))
+              }
+            >
+              <MenuItem value={'male'}>Male</MenuItem>
+              <MenuItem value={'female'}>Female</MenuItem>
+              <MenuItem value={'non_binary'}>Non-Binary</MenuItem>
+              <MenuItem value={'prefer_not_to_say'}>Prefer not to say</MenuItem>
+            </Select>
+          </Grid>
+
+          <Grid item xs={5}>
+            <Typography>Birthday</Typography>
+            <DatePicker
+              slotProps={{ textField: { size: 'small' } }}
+              onChange={value => {
+                const date = value as { $d: string }
+                const strDate = date.$d
+                console.log({ strDate })
+              }}
+            />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <Typography>Phone</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              size="small"
+              fullWidth
+              sx={{ backgroundColor: COLOR.white }}
+              //   value={form.firstname}
+              //   onChange={e =>
+              //     setForm(prev => ({ ...prev, username: e.target.value }))
+              //   }
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <Typography>Landline</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              size="small"
+              fullWidth
+              sx={{ backgroundColor: COLOR.white }}
+              //   value={form.firstname}
+              //   onChange={e =>
+              //     setForm(prev => ({ ...prev, username: e.target.value }))
+              //   }
+            />
+          </Grid>
+        </Grid>
+
+        <Typography>Current Address *</Typography>
         <TextField
           id="outlined-basic"
           variant="outlined"
           size="small"
           fullWidth
+          required
           sx={{ backgroundColor: COLOR.white }}
           //   value={form.firstname}
           //   onChange={e =>
@@ -260,26 +258,42 @@ const SignUpForm: React.FC<IProps> = () => {
           //   }
         />
 
-        <Typography>Password</Typography>
+        <Typography>Home Address *</Typography>
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          size="small"
+          fullWidth
+          required
+          sx={{ backgroundColor: COLOR.white }}
+          //   value={form.firstname}
+          //   onChange={e =>
+          //     setForm(prev => ({ ...prev, username: e.target.value }))
+          //   }
+        />
+
+        <Typography>Password *</Typography>
         <TextField
           id="outlined-basic"
           variant="outlined"
           size="small"
           type="password"
           fullWidth
+          required
           sx={{ backgroundColor: COLOR.white }}
           value={form.password}
           onChange={e =>
             setForm(prev => ({ ...prev, password: e.target.value }))
           }
         />
-        <Typography>Confirm Password</Typography>
+        <Typography>Confirm Password *</Typography>
         <TextField
           id="outlined-basic"
           variant="outlined"
           size="small"
           type="password"
           fullWidth
+          required
           sx={{ backgroundColor: COLOR.white }}
           value={form.confirm}
           onChange={e =>
@@ -305,6 +319,7 @@ const SignUpForm: React.FC<IProps> = () => {
                 {' '}
                 Data Privacy Act of 2012
               </Link>
+              .
             </Typography>
           }
         />

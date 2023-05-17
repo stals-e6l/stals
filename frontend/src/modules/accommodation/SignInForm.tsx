@@ -166,7 +166,7 @@ const SignInForm: React.FC<IProps> = () => {
               open={open}
               onClose={handleClose}
               sx={{
-                width: '30%',
+                width: '40%',
                 margin: '0 auto',
                 [theme.breakpoints.down('sm')]: {
                   width: '100%',    
