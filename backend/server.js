@@ -5,11 +5,11 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerJsdoc = require('swagger-jsdoc')
 const cors = require('cors')
 const { connectDb } = require('./db')
-var bodyParser = require("body-parser");
+var bodyParser = require('body-parser')
 
 const server = express()
-const PORT = 5000
-const HOST = 'localhost'
+const PORT = process.env.PORT
+const HOST = process.env.HOST
 
 const MORGAN_STYLE = process.env.MORGAN_STYLE
 const SWAGGER_PATH = '/docs'
@@ -34,7 +34,7 @@ server.use(
   )
 )
 
-server.use(bodyParser.json());
+server.use(bodyParser.json())
 
 /** INSERT API BELOW */
 server.use('/api/ping', require('./api/ping'))

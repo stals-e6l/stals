@@ -1,20 +1,21 @@
-const { Router } = require('express')
+const { Router, static } = require('express')
 resolve = require('path').resolve
 
 const { ERRORS, BAD_REQUEST, NOT_FOUND } = require('../handler/error_handler')
-const { CREATED, OK } = require('../handler/success_handler');
+const { CREATED, OK } = require('../handler/success_handler')
 
-const multer  = require('multer')
+const multer = require('multer')
 
 const assetsRouter = Router()
+const ASSETS_DIR = resolve('../assets/')
 
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, resolve('../assets/'))
+    cb(null, ASSETS_DIR)
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)
-  }
+  },
 })
 
 const upload = multer({ storage: storage })
@@ -49,14 +50,16 @@ const upload = multer({ storage: storage })
  *              - Assets
  *
  */
-assetsRouter.post("/asset", upload.single('fileName'), async (req, res) => {
-try {
-    let path = resolve(req.file.path)
+assetsRouter.post('/asset', upload.single('fileName'), async (req, res) => {
+  try {
+    const path = `http://${process.env.HOST}:${process.env.PORT}/api/asset/${req.file.filename}`
 
     res.status(CREATED).json({ success: true, data: path })
-} catch (err) {
+  } catch (err) {
     res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
-}
+  }
 })
 
-module.exports = assetsRouter;
+assetsRouter.use('/asset', static(ASSETS_DIR))
+
+module.exports = assetsRouter
