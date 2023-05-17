@@ -8,10 +8,8 @@ import {
   OutlinedInputProps,
   Select,
   TextField,
-  TextFieldProps,
 } from '@mui/material'
 import { useTheme } from '@mui/material'
-import { alpha, createTheme, styled } from '@mui/material/styles'
 import { COLOR } from '../../theme/'
 
 interface IProps {
@@ -21,16 +19,7 @@ interface IProps {
 
 const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
   // hooks
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: COLOR.blue,
-      },
-      secondary: {
-        main: COLOR.green,
-      },
-    },
-  })
+  const theme = useTheme()
 
   // state
   const [form, setForm] = React.useState<IAccommodation>({
@@ -69,58 +58,6 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
   // immediate
   const values = React.useMemo(() => form, [form])
 
-  const textColors = {
-    onPrimary: '#5B7B90',
-    inputFilled: '#8AA1B0',
-  }
-
-  const textFieldSx = {
-    root: {
-      '& .MuiAutocomplete-inputRoot': {
-        paddingTop: '9px',
-        paddingBottom: '9px',
-      },
-
-      '& .MuiInputLabel-root': {
-        color: textColors.onPrimary,
-        '&.MuiInputLabel-shrink': {
-          color: textColors.inputFilled,
-        },
-        '&.Mui-focused': {
-          color: COLOR.green,
-        },
-      },
-
-      '& .MuiChip-root': {
-        color: '#1E4028',
-        backgroundColor: COLOR.green,
-      },
-
-      '& .MuiFilledInput-root': {
-        overflow: 'hidden',
-        color: COLOR.white,
-        borderRadius: 2,
-        backgroundColor: 'transparent',
-        border: '1px solid',
-        borderColor:
-          theme.palette.mode === 'light' ? textColors.onPrimary : '#2D3843',
-        transition: theme.transitions.create([
-          'border-color',
-          'background-color',
-          'box-shadow',
-        ]),
-        '&:hover': {
-          borderColor: theme.palette.mode === 'light' ? COLOR.white : '#2D3843',
-        },
-        '&.Mui-focused': {
-          backgroundColor: 'transparent',
-          boxShadow: `${alpha(theme.palette.secondary.main, 0.3)} 0 0 0 2px`,
-          borderColor: theme.palette.secondary,
-        },
-      },
-    },
-  }
-
   const numFieldSx = {
     root: {
       '& input[type=number]': {
@@ -134,82 +71,11 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         '-webkit-appearance': 'none',
         margin: 0,
       },
-
-      '& .MuiInputLabel-root': {
-        color: textColors.onPrimary,
-        '&.MuiInputLabel-shrink': {
-          color: textColors.inputFilled,
-        },
-        '&.Mui-focused': {
-          color: COLOR.green,
-        },
-      },
-
-      '& .MuiFilledInput-root': {
-        overflow: 'hidden',
-        color: COLOR.white,
-        borderRadius: 2,
-        backgroundColor: 'transparent',
-        border: '1px solid',
-        borderColor:
-          theme.palette.mode === 'light' ? textColors.onPrimary : '#2D3843',
-        transition: theme.transitions.create([
-          'border-color',
-          'background-color',
-          'box-shadow',
-        ]),
-        '&:hover': {
-          borderColor: theme.palette.mode === 'light' ? COLOR.white : '#2D3843',
-        },
-        '&.Mui-focused': {
-          backgroundColor: 'transparent',
-          boxShadow: `${alpha(theme.palette.secondary.main, 0.3)} 0 0 0 2px`,
-          borderColor: theme.palette.secondary,
-        },
-      },
-    },
-  }
-
-  const selectSx = {
-    root: {
-      '& .MuiInputLabel-root': {
-        color: textColors.onPrimary,
-        '&.MuiInputLabel-shrink': {
-          color: textColors.inputFilled,
-        },
-        '&.Mui-focused': {
-          color: COLOR.green,
-          disableUnderline: 'true',
-        },
-      },
-
-      '&.MuiInputBase-root': {
-        overflow: 'hidden',
-        color: COLOR.white,
-        borderRadius: 2,
-        backgroundColor: 'transparent',
-        border: '1px solid',
-        borderColor:
-          theme.palette.mode === 'light' ? textColors.onPrimary : '#2D3843',
-        transition: theme.transitions.create([
-          'border-color',
-          'background-color',
-          'box-shadow',
-        ]),
-        '&:hover': {
-          borderColor: theme.palette.mode === 'light' ? COLOR.white : '#2D3843',
-        },
-        '&.Mui-focused': {
-          backgroundColor: 'transparent',
-          boxShadow: `${alpha(theme.palette.secondary.main, 0.3)} 0 0 0 2px`,
-          borderColor: COLOR.green,
-        },
-      },
     },
   }
 
   return (
-    <Box sx={{ backgroundColor: '#0c2c44' }}>
+    <Box sx={{}}>
       <TextField
         value={values.name}
         onChange={e => setFieldValue('name', e.target.value)}
@@ -217,10 +83,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         fullWidth
         label="Name"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
-        sx={textFieldSx.root}
       />
       <TextField
         value={values.description}
@@ -230,10 +94,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         multiline
         label="Description"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
-        sx={textFieldSx.root}
       />
       <TextField
         value={values.address}
@@ -242,10 +104,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         fullWidth
         label="Address"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
-        sx={textFieldSx.root}
       />
       <Select
         label="Type"
@@ -254,10 +114,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         value={values.type}
         onChange={e => setFieldValue('type', e.target.value)}
         required
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
-        sx={selectSx.root}
       >
         <MenuItem value="hotel">Hotel</MenuItem>
         <MenuItem value="apartment">Apartment</MenuItem>
@@ -286,7 +144,6 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         label="Size sqm"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
@@ -305,7 +162,6 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         label="Meters from UPLB"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
@@ -318,7 +174,6 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         label="Minimum capacity"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
@@ -331,10 +186,9 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         label="Maximum capacity"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
-        sx={textFieldSx.root}
+        sx={numFieldSx.root}
       />
       <TextField
         value={Number(values.num_rooms) == 0 ? '' : Number(values.num_rooms)}
@@ -344,10 +198,9 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         label="Number of rooms"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
-        sx={textFieldSx.root}
+        sx={numFieldSx.root}
       />
       <TextField
         value={Number(values.num_beds) == 0 ? '' : Number(values.num_beds)}
@@ -357,10 +210,9 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         label="Number of beds"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20 }}
-        sx={textFieldSx.root}
+        sx={numFieldSx.root}
       />
       <Select
         label="Furnishing"
@@ -369,10 +221,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         value={values.furnishing}
         onChange={e => setFieldValue('furnishing', e.target.value)}
         required
-        color="secondary"
         variant="filled"
         style={{ marginTop: 20, marginBottom: 20 }}
-        sx={selectSx.root}
       >
         <MenuItem value="unfurnished">Unfurnished</MenuItem>
         <MenuItem value="semifurnished">Semi-furnished</MenuItem>
@@ -388,10 +238,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         onChange={(e, value) => {
           setFieldValue('landmarks', value)
         }}
-        renderInput={params => (
-          <TextField variant="filled" {...params} sx={textFieldSx.root} />
-        )}
-        style={{ marginTop: 10, marginBottom: 20 }}
+        renderInput={params => <TextField variant="filled" {...params} />}
+        style={{ marginTop: 5, marginBottom: 20 }}
       />
 
       <FormLabel sx={{ color: COLOR.white }}>Cooking rules</FormLabel>
@@ -403,10 +251,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         onChange={(e, value) => {
           setFieldValue('cooking_rules', value)
         }}
-        renderInput={params => (
-          <TextField variant="filled" {...params} sx={textFieldSx.root} />
-        )}
-        style={{ marginTop: 10, marginBottom: 20 }}
+        renderInput={params => <TextField variant="filled" {...params} />}
+        style={{ marginTop: 5, marginBottom: 20 }}
       />
 
       <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
@@ -420,10 +266,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         onChange={(e, value) => {
           setFieldValue('pet_rules', value)
         }}
-        renderInput={params => (
-          <TextField variant="filled" {...params} sx={textFieldSx.root} />
-        )}
-        style={{ marginTop: 10, marginBottom: 20 }}
+        renderInput={params => <TextField variant="filled" {...params} />}
+        style={{ marginTop: 5, marginBottom: 20 }}
       />
 
       <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
@@ -437,10 +281,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         onChange={(e, value) => {
           setFieldValue('safety_and_security', value)
         }}
-        renderInput={params => (
-          <TextField variant="filled" {...params} sx={textFieldSx.root} />
-        )}
-        style={{ marginTop: 10, marginBottom: 20 }}
+        renderInput={params => <TextField variant="filled" {...params} />}
+        style={{ marginTop: 5, marginBottom: 20 }}
       />
 
       <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
@@ -454,10 +296,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         onChange={(e, value) => {
           setFieldValue('appliances', value)
         }}
-        renderInput={params => (
-          <TextField variant="filled" {...params} sx={textFieldSx.root} />
-        )}
-        style={{ marginTop: 10, marginBottom: 20 }}
+        renderInput={params => <TextField variant="filled" {...params} />}
+        style={{ marginTop: 5, marginBottom: 20 }}
       />
 
       <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
@@ -471,10 +311,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         onChange={(e, value) => {
           setFieldValue('amenities', value)
         }}
-        renderInput={params => (
-          <TextField variant="filled" {...params} sx={textFieldSx.root} />
-        )}
-        style={{ marginTop: 10, marginBottom: 20 }}
+        renderInput={params => <TextField variant="filled" {...params} />}
+        style={{ marginTop: 5, marginBottom: 20 }}
       />
 
       <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
@@ -488,10 +326,8 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         onChange={(e, value) => {
           setFieldValue('other_rules', value)
         }}
-        renderInput={params => (
-          <TextField variant="filled" {...params} sx={textFieldSx.root} />
-        )}
-        style={{ marginTop: 10, marginBottom: 20 }}
+        renderInput={params => <TextField variant="filled" {...params} />}
+        style={{ marginTop: 5, marginBottom: 20 }}
       />
     </Box>
   )

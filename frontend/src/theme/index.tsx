@@ -1,4 +1,5 @@
-import { colors, createTheme } from '@mui/material'
+import { Palette } from '@mui/icons-material'
+import { Autocomplete, alpha, colors, createTheme } from '@mui/material'
 
 declare module '@mui/material/styles' {}
 
@@ -9,6 +10,8 @@ export const COLOR: IColor = {
   black: '#1d1d15',
   blue: '#154360',
   green: '#60ce80',
+  darkGreen: '#1E4028',
+  negativeRed: '#B00020',
   textBlack: '#1d1d1f',
   textGray: '#6e6e73',
 }
@@ -75,29 +78,28 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          color: COLOR.gray2
-        }
+          color: COLOR.gray2,
+        },
       },
     },
     MuiRadio: {
       styleOverrides: {
         checked: {
           color: COLOR.green,
-        }
-      }
+        },
+      },
     },
     MuiCheckbox: {
       styleOverrides: {
         checked: {
           color: COLOR.green,
-        }
-      }
+        },
+      },
     },
 
     MuiSlider: {
       styleOverrides: {
-        root: {
-        },
+        root: {},
         thumb: {
           color: COLOR.green,
         },
@@ -111,9 +113,97 @@ const theme = createTheme({
         },
         active: {
           color: COLOR.gray1,
-        }
-      }
-    }
+        },
+      },
+    },
+
+    MuiAutocomplete: {
+      styleOverrides: {
+        inputRoot: {
+          paddingTop: SPACING,
+          paddingBottom: SPACING,
+          borderBottom: 'none',
+        },
+      },
+    },
+
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: COLOR.blue,
+          '&.Mui-focused': {
+            color: COLOR.darkGreen,
+          },
+        },
+      },
+    },
+
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          color: COLOR.darkGreen,
+          backgroundColor: COLOR.green,
+        },
+      },
+    },
+
+    MuiFilledInput: {
+      styleOverrides: {
+        root: {
+          overflow: 'hidden',
+          color: COLOR.textBlack,
+          borderRadius: '8px',
+          backgroundColor: COLOR.white,
+          border: '1px solid',
+          borderColor: COLOR.darkGreen,
+          '&:hover': {
+            backgroundColor: COLOR.white,
+          },
+          '&.Mui-focused': {
+            disableUnderline: 'true',
+            backgroundColor: COLOR.white,
+            boxShadow: `${alpha(COLOR.green, 0.5)} 0 0 3px 3px`,
+            borderColor: COLOR.green,
+          },
+          '&&&:before': {
+            borderBottom: 'none',
+          },
+          '&&:after': {
+            borderBottom: 'none',
+          },
+        },
+      },
+    },
+
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          overflow: 'hidden',
+          color: COLOR.textBlack,
+          borderRadius: '8px',
+          backgroundColor: COLOR.white,
+          border: '1px solid',
+          // borderColor: COLOR.darkGreen,
+          '&:hover': {
+            backgroundColor: COLOR.white,
+          },
+          '&.Mui-focused': {
+            boxShadow: `${alpha(COLOR.green, 0.5)} 0 0 3px 3px`,
+            borderColor: COLOR.green,
+          },
+        },
+      },
+    },
+
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            boxShadow: `${alpha(COLOR.green, 0.3)} 0 0 9px 3px`,
+          },
+        },
+      },
+    },
   },
 })
 
