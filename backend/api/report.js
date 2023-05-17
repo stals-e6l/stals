@@ -2,7 +2,12 @@ const { RESTRouter } = require('../handler/rest_router')
 
 const Report = require("../models/v2/report");
 
-const reportRouter = RESTRouter('/report', Report)
+const reportRouter = RESTRouter('/report', Report, {
+    create: ["admin", "owner", "tenant"],
+    retrieve: ["admin"],
+    update: ["admin"],
+    delete: ["admin"],
+})
 
 module.exports = reportRouter;
 
