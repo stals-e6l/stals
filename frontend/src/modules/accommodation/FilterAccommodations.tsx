@@ -13,13 +13,85 @@ import {
   Checkbox,
   Rating,
   FormGroup,
+  useTheme,
 } from '@mui/material'
+import { COLOR, FONT } from '../../theme'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const FilterAccommodations: React.FC<IProps> = () => {
+
+  const theme = useTheme()
+
+  const types = [
+    { type: "Hotel", value: "hotel" },
+    { type: "Apartment", value: "apartment" },
+    { type: "Bed Space", value: "bedspace" },
+    { type: "Dormitory", value: "dormitory" },
+    { type: "Transient Space", value: "transient" },
+  ]
+
+  const ratings = []
+  for (var i = 0; i <= 5; i++) ratings.push(i)
+
+  const furnishing = [
+    { option: "Unfurnished", value: "unfurnished" },
+    { option: "Semifurnished", value: "semifurnished" },
+    { option: "Fully-furnished", value: "fully_furnished" },
+  ]
+
+  const h6_breakpoint = {
+    [theme.breakpoints.down('md')]: {
+      fontSize: theme.spacing(2)
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: theme.spacing(1.85)
+    },
+  }
+
+  const body1_breakpoint = {
+    marginTop: theme.spacing(-0.5),
+    [theme.breakpoints.down('md')]: {
+      fontSize: theme.spacing(1.7)
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: theme.spacing(1.5)
+    },
+  }
+
+  const body2_breakpoint = {
+    marginTop: theme.spacing(-1.5),
+    marginBottom: theme.spacing(2),
+    [theme.breakpoints.down('md')]: {
+      fontSize: theme.spacing(1.75),
+      marginTop: theme.spacing(-1.75),
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: theme.spacing(1.5),
+      marginTop: theme.spacing(-2),
+    },
+  }
+
+  const icon_breakpoints = {
+    marginTop: theme.spacing(-0.5),
+
+    "&.Mui-checked": {
+      color: COLOR.green
+    }
+  }
+
+  const slider_space = {
+    marginTop: theme.spacing(-0.5),
+    [theme.breakpoints.down('md')]: {
+      marginTop: theme.spacing(-1),
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(-1.75),
+    },
+  }
+
   // TODO: all comments here are PM's job to integrate, for now refine the styling
   // hooks
   // const filterHandler = filterAccommodations()
@@ -45,27 +117,30 @@ const FilterAccommodations: React.FC<IProps> = () => {
   // immediates
   // const pax = [filter.min_pax as number, filter.max_pax as number]
 
+
+
   return (
     <>
       <Grid container>
         <Grid item xs={12}>
-          <Typography
+          {/* | Filters */}
+          <Typography variant='h5'
             sx={{
-              color: 'black',
-              fontFamily: sourceSansPro,
-              fontWeight: 'bold',
-              fontSize: '22px',
+              color: COLOR.black,
               display: 'flex',
-              marginTop: '5%',
+              [theme.breakpoints.down('md')]: {
+                fontSize: theme.spacing(2.5)
+              },
+              [theme.breakpoints.down('sm')]: {
+                fontSize: theme.spacing(2)
+              },
             }}
           >
-            <Typography
+            <Typography variant='h5'
               sx={{
-                color: green,
-                fontFamily: 'inherit',
-                fontWeight: 'inherit',
-                fontSize: 'inherit',
-                marginRight: '10px',
+                color: COLOR.green,
+                marginRight: theme.spacing(1),
+                fontSize: "inherit"
               }}
             >
               |
@@ -77,14 +152,15 @@ const FilterAccommodations: React.FC<IProps> = () => {
           <Grid
             container
             direction="column"
-            paddingLeft={'15px'}
-            paddingRight={'15px'}
+            paddingLeft={theme.spacing(2)}
+            paddingRight={theme.spacing(2)}
           >
             {/* Type */}
             <Grid item>
               <FormControl>
                 <FormLabel id="type">
-                  <Typography sx={CustomLabelStyle}>Type</Typography>
+                  <Typography variant='h6' color={COLOR.black} sx={h6_breakpoint}
+                  >Type</Typography>
                 </FormLabel>
                 <RadioGroup
                   aria-labelledby="hotel"
@@ -93,136 +169,92 @@ const FilterAccommodations: React.FC<IProps> = () => {
                   // onChange={handleType}
                   name="type-group"
                 >
-                  <FormControlLabel
-                    value="hotel"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>Hotel</Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="apartment"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Apartment
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="bedspace"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Bed Space
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="dormitory"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Dormitory
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="transient"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Transient Space
-                      </Typography>
-                    }
-                  />
+                  {
+                    types.map((type) =>
+                      <FormControlLabel
+                        value={type.value}
+                        control={<Radio size="small" sx={icon_breakpoints} />}
+                        label={
+                          <Typography variant='body1' sx={body1_breakpoint}>{type.type}</Typography>
+                        }
+                      />
+                    )
+                  }
+
                 </RadioGroup>
               </FormControl>
             </Grid>
 
             {/*  Ratings */}
             <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Ratings</Typography>
+              <Typography variant='h6' sx={h6_breakpoint}>Ratings</Typography>
               <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={5} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={4} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={3} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={2} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={1} readOnly sx={CustomRatingStyle} />}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={CustomChecboxStyle} />}
-                  label={<Rating value={0} readOnly sx={CustomRatingStyle} />}
-                />
+                {
+                  ratings.map((rating) => <FormControlLabel
+                    control={<Checkbox size="small" sx={icon_breakpoints}/>}
+                    label={<Rating value={rating} readOnly sx={{
+                      color: COLOR.blue,
+                      [theme.breakpoints.down('md')]: {
+                        fontSize: theme.spacing(2.25)
+                      },
+                    }} />}
+                  />)
+                }
               </FormGroup>
             </Grid>
 
             {/* Price */}
             <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Price Range</Typography>
+              <Typography variant='h6' sx={h6_breakpoint}>Price Range</Typography>
               <Slider
-                sx={CustomSliderStyles}
                 max={1000}
                 // value={filter.price}
                 // onChange={handlePrice}
+                sx={slider_space}
                 disableSwap
               />
-              <Typography sx={CustomCaptionStyle}>
+              <Typography variant='body2' sx={body2_breakpoint}>
                 Php 123123 - Php {1000}
               </Typography>
             </Grid>
 
             {/* Room size */}
-            <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Room Size</Typography>
+            <Grid item>
+              <Typography variant='h6' sx={h6_breakpoint}>Room Size</Typography>
               <Slider
-                sx={CustomSliderStyles}
                 max={10}
-                // value={filter.size_sqm}
-                // onChange={handleRoomSize}
+                sx={slider_space}
+              // value={filter.size_sqm}
+              // onChange={handleRoomSize}
               />
-              <Typography sx={CustomCaptionStyle}>14 square meters</Typography>
+              <Typography variant='body2' sx={body2_breakpoint}>14 square meters</Typography>
             </Grid>
 
             {/*Meters from UPLB */}
             <Grid item>
-              <Typography sx={CustomLabelStyle}>Meters from UPLB</Typography>
+              <Typography variant='h6' sx={h6_breakpoint}>Meters from UPLB</Typography>
               <Slider
                 max={1000}
-                // value={filter.meters_from_uplb}
-                // onChange={handleMeters}
-                sx={CustomSliderStyles}
+                sx={slider_space}
+              // value={filter.meters_from_uplb}
+              // onChange={handleMeters}
               />
-              <Typography sx={CustomCaptionStyle}>600 meters</Typography>
+              <Typography variant='body2' sx={body2_breakpoint}>600 meters</Typography>
             </Grid>
 
             {/* Number of Occupants */}
             <Grid item>
-              <Typography sx={CustomLabelStyle}>Number of Occupants</Typography>
+              <Typography variant='h6' sx={h6_breakpoint}>Number of Occupants</Typography>
               <Slider
-                sx={CustomSliderStyles}
                 min={0}
                 max={1000}
+                sx={slider_space}
                 // value={pax}
                 defaultValue={0}
                 // onChange={handlePax}
                 disableSwap
               />
-              <Typography sx={CustomCaptionStyle}>4 persons</Typography>
+              <Typography variant='body2' sx={body2_breakpoint}>4 persons</Typography>
               {/* {
                 // if both minimum and maximum are equal
                 pax[0] === pax[1] && pax[0] != 1 ? (
@@ -250,17 +282,17 @@ const FilterAccommodations: React.FC<IProps> = () => {
             </Grid>
 
             {/*  Number of Room */}
-            <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Number of Rooms</Typography>
+            <Grid item>
+              <Typography variant='h6' sx={h6_breakpoint}>Number of Rooms</Typography>
               <Slider
                 max={10}
                 min={0}
+                sx={slider_space}
                 defaultValue={0}
-                // value={filter.num_rooms}
-                // onChange={handleNumRooms}
-                sx={CustomSliderStyles}
+              // value={filter.num_rooms}
+              // onChange={handleNumRooms}
               />
-              <Typography sx={CustomCaptionStyle}>1 room</Typography>
+              <Typography variant='body2' sx={body2_breakpoint}>1 room</Typography>
               {/* {filter.num_rooms == 1 ? (
                 <>
                   <Typography sx={CustomCaptionStyle}>
@@ -278,18 +310,18 @@ const FilterAccommodations: React.FC<IProps> = () => {
 
             {/* TODO: in model, num_beds is not range. change it to number */}
             {/*Number of Beds */}
-            <Grid item xs={12}>
-              <Typography sx={CustomLabelStyle}>Number of Beds</Typography>
+            <Grid item>
+              <Typography variant='h6' sx={h6_breakpoint}>Number of Beds</Typography>
               <Slider
-                sx={CustomSliderStyles}
                 min={0}
+                sx={slider_space}
                 // max={maxBed}
                 defaultValue={0}
                 // value={num_beds}
                 // onChange={handleBed}
                 disableSwap
               />
-              <Typography sx={CustomCaptionStyle}>2 beds</Typography>
+              <Typography variant='body2' sx={body2_breakpoint}>2 beds</Typography>
               {/* {
                 // if both minimum and maximum are equal
                 num_beds[0] == pax[1] && num_beds[0] != 1 ? (
@@ -320,7 +352,7 @@ const FilterAccommodations: React.FC<IProps> = () => {
             <Grid item>
               <FormControl>
                 <FormLabel id="furnishing">
-                  <Typography sx={CustomLabelStyle}>Furnishing</Typography>
+                  <Typography variant='h6' sx={h6_breakpoint}>Furnishing</Typography>
                 </FormLabel>
 
                 <RadioGroup
@@ -330,58 +362,56 @@ const FilterAccommodations: React.FC<IProps> = () => {
                   // onChange={handleFurnishing}
                   name="furnishing-group"
                 >
-                  <FormControlLabel
-                    value="unfurnished"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Unfurnished
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="semifurnished"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Semifurnished
-                      </Typography>
-                    }
-                  />
-                  <FormControlLabel
-                    value="fully_furnished"
-                    control={<Radio sx={CustomRadioStyle} />}
-                    label={
-                      <Typography sx={CustomRadioLabelStyle}>
-                        Fully-furnished
-                      </Typography>
-                    }
-                  />
+                  {
+                    furnishing.map((option) =>
+                      <FormControlLabel
+                        value={option.value}
+                        control={<Radio size="small" sx={icon_breakpoints} />}
+                        label={
+                          <Typography variant='body1' sx={body1_breakpoint}>
+                            {option.option}
+                          </Typography>
+                        }
+                      />
+                    )
+                  }
+
                 </RadioGroup>
               </FormControl>
             </Grid>
           </Grid>
         </Grid>
 
+        {/* Filter Search btn */}
         <Grid item xs={12}>
+          <br />
           <Button
             // onClick={onFilter}
             variant="contained"
             fullWidth
             sx={{
-              backgroundColor: green,
-              fontFamily: sourceSansPro,
-              fontWeight: 'bold',
-              borderRadius: '10px',
+              textTransform: 'none',
+              backgroundColor: COLOR.green,
+              borderRadius: theme.spacing(1),
+              boxShadow: '1px 2px 4px #6e6e73',
               ':hover': {
-                backgroundColor: grey,
-                border: '2px solid',
-                borderColor: green,
-                color: 'black',
+                color: COLOR.green,
+                backgroundColor: COLOR.gray1
               },
             }}
           >
-            Filter Search
+            <Typography variant='h6' sx={{
+              fontSize: theme.spacing(2.15),
+              [theme.breakpoints.down('md')]: {
+                fontSize: theme.spacing(2)
+              },
+              [theme.breakpoints.down('sm')]: {
+                fontSize: theme.spacing(1.85)
+              },
+            }}>
+              Filter Search
+            </Typography>
+
           </Button>
         </Grid>
       </Grid>
@@ -390,62 +420,3 @@ const FilterAccommodations: React.FC<IProps> = () => {
 }
 
 export default FilterAccommodations
-
-const blue = '#154360'
-const green = '#60ce80'
-const grey = '#f0f0f0'
-const darkGrey = '#f5f5f7'
-const quicksand = 'Quicksand'
-const sourceSansPro = 'Source Sans Pro'
-
-// Setting custom styles
-const CustomLabelStyle = {
-  color: 'black',
-  fontFamily: sourceSansPro,
-  fontSize: '20px',
-  marginTop: '7px',
-}
-
-const CustomCaptionStyle = {
-  color: 'black',
-  fontFamily: quicksand,
-  fontSize: '15px',
-}
-
-const CustomSliderStyles = {
-  '& .MuiSlider-thumb': {
-    color: green,
-  },
-  '& .MuiSlider-track': {
-    color: blue,
-  },
-  '& .MuiSlider-rail': {
-    color: grey,
-    border: '2px solid',
-    borderColor: 'black',
-  },
-  '& .MuiSlider-active': {
-    color: darkGrey,
-  },
-}
-
-const CustomRadioLabelStyle = {
-  fontFamily: quicksand,
-  color: 'black',
-}
-
-const CustomRadioStyle = {
-  '&.Mui-checked': {
-    color: green,
-  },
-}
-
-const CustomChecboxStyle = {
-  '&.Mui-checked': {
-    color: green,
-  },
-}
-
-const CustomRatingStyle = {
-  color: blue,
-}

@@ -1,14 +1,16 @@
-import { Button, Grid, Box, Typography, TextField } from '@mui/material'
+import { Grid, Typography, TextField, } from '@mui/material'
 import React from 'react'
-// import { useNavigate } from 'react-router-dom'
 // import accommodation from '../../store/accommodation'
 // import { deleteAccommodation } from '../../store/accommodation/actions'
 
 interface IProps {
   children?: React.ReactNode
+  input: string
+  setField: React.Dispatch<React.SetStateAction<string>>
+  isSoftDelete: boolean
 }
 
-const DeleteAccommodationForm: React.FC<IProps> = () => {
+const DeleteAccommodationForm: React.FC<IProps> = ({input, setField, isSoftDelete}) => {
   // TODO: PM's job to integrate state, for now refine the styling
 
   // const navigate = useNavigate()
@@ -20,92 +22,35 @@ const DeleteAccommodationForm: React.FC<IProps> = () => {
     // )
   }
 
-  // const handleClose = () => {
-  //   setState(false)
-  // }
-
-  // const handleOpen = () => {
-  //   setState(false)
-  // }
-
   return (
     <>
-      <Button
-        onClick={() => {
-          // setState(true)
-        }}
-      >
-        Delete
-      </Button>
-      <Grid sx={{ flexGrow: 1 }} container spacing={0}>
-        <Grid
-          item
-          xs
-          sx={{
-            backgroundColor: '#696969',
-          }}
-        >
-          <Box sx={{}} />
+      <Grid sx={{ flexGrow: 1, height: '100%', width: '100%'}} container spacing={0} flexDirection="column" alignItems="center" justifyContent="center" alignContent="center">
+        <Grid item xs={'auto'} sx={{ width: '80%' }}>
+            <Typography id="delete-text" variant="body1" sx={{ width: '100%', }}>
+                {isSoftDelete ? "Are you sure you want to archive accommodation?" : "Are you sure you want to delete accommodation?"}
+            </Typography>
         </Grid>
-        <Grid
-          item
-          xs
-          sx={{
-            padding: 5,
-          }}
-        >
-          <Typography
-            id="delete-text"
-            variant="body1"
-            sx={{
-              p: 1,
-            }}
-          >
-            Are you sure that you want to delete accommodation?
-          </Typography>
-          <TextField
-            id="confirmation-field"
-            required
-            placeholder="Confirm"
-            sx={{
-              boxShadow: 2,
-              m: 1,
-            }}
-          ></TextField>
-          <Typography variant="body1">
-            Type Confirm to delete the listing.
-          </Typography>
 
-          <Button
-            id="cancel-button"
-            onClick={() => {
-              // setState(false)
-            }}
+        <Grid item xs={'auto'} sx={{ width: '80%' }}>
+            <TextField
+            id="confirmation-field"
+            placeholder="Confirm"
+            autoComplete="off"
+            value={input}
+            onChange={e => setField(e.target.value)}
             sx={{
-              border: 2,
-              borderColor: '#154360',
-              borderRadius: 2,
-              backgroundColor: '#fff',
-              color: '#154360',
-              m: 1,
+               boxShadow: 2,
+               mt: 1,
+               mb: 1,
+               width: '100%'
             }}
-          >
-            Cancel
-          </Button>
-          <Button
-            id="delete-button"
-            onClick={handleDelete}
-            sx={{
-              border: 2,
-              borderColor: '#154360',
-              borderRadius: 2,
-              backgroundColor: '#154360',
-              color: '#fff',
-              m: 1,
-            }}
-          >
-            Delete
-          </Button>
+         />
+         </Grid>
+
+        <Grid item xs={'auto'} sx={{}}>
+            <Typography variant="body1" sx={{  }}>
+            Type<b> Confirm </b> {isSoftDelete ? "to archive listing." : "to delete listing."}
+            </Typography>
         </Grid>
       </Grid>
     </>
