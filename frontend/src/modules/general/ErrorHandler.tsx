@@ -28,7 +28,13 @@ const ErrorHandler: React.FC<IProps> = ({ children }) => {
     >
       {children}
       {open && (
-        <Snackbar open={Boolean(state.error)} autoHideDuration={HIDE_DURATION}>
+        <Snackbar
+          open={Boolean(state.error)}
+          autoHideDuration={HIDE_DURATION}
+          sx={{
+            maxWidth: '30%',
+          }}
+        >
           <Alert severity="error">{state.error}</Alert>
         </Snackbar>
       )}

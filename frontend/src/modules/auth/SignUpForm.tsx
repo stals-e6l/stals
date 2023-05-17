@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom'
 import { COLOR } from '../../theme'
 import { signUp } from './AuthProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -27,6 +28,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
   // hooks
   const theme = useTheme()
   const onSignUp = signUp()
+  const onShowError = showErrorSnackbar()
 
   // state
   const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
@@ -55,7 +57,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
 
   // events
   const handleSignUp = () => {
-    if (onSignUp) {
+    if (onSignUp && onShowError) {
       onSignUp({
         ...form,
         phone: {
@@ -69,7 +71,9 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             form.address.current === '' ? undefined : form.address.current,
           home: form.address.home === '' ? undefined : form.address.home,
         },
-      }).then(() => onClose())
+      })
+        .then(() => onClose())
+        .catch(err => onShowError(String(err)))
     }
   }
 
