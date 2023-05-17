@@ -4,6 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Fab,
   useMediaQuery,
   useTheme,
 } from '@mui/material'
@@ -11,6 +12,7 @@ import React from 'react'
 import AccommodationForm from './AccommodationForm'
 import useDialog from '../../hooks/useDialog'
 import { COLOR } from '../../theme'
+import PublishIcon from '@mui/icons-material/Publish'
 
 interface IProps {
   children?: React.ReactNode
@@ -45,7 +47,7 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
     root: {
       backgroundColor: COLOR.green,
       color: COLOR.darkGreen,
-      borderRadius: '4px',
+      borderRadius: theme.spacing(0.5),
       padding: '10px 20px',
       '&:hover': {
         backgroundColor: '#93dba4',
@@ -54,9 +56,12 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   }
   return (
     <React.Fragment>
-      <Button onClick={toggleDialog} sx={submitBtnSx.root}>
-        {defaultValues ? 'Update accommodation' : 'Create accommodation'}
-      </Button>
+      <Fab
+        onClick={toggleDialog}
+        sx={{ ...submitBtnSx.root, borderRadius: '50%' }}
+      >
+        <PublishIcon />
+      </Fab>
       {open && (
         <Dialog fullScreen={isMobile} open={open} onClose={toggleDialog}>
           <DialogTitle sx={{ backgroundColor: '#0c2c44', color: COLOR.white }}>
