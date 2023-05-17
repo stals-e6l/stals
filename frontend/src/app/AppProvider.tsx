@@ -3,6 +3,7 @@ import AuthProvider from '../modules/auth/AuthProvider'
 import AccommodationsProvider from '../modules/accommodation/AccommodationsProvider'
 import ReviewsProvider from '../modules/review/ReviewsProvider'
 import ReportsProvider from '../modules/report/ReportsProvider'
+import ErrorHandler from '../modules/general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -10,13 +11,15 @@ interface IProps {
 
 const AppProvider: React.FC<IProps> = ({ children }) => {
   return (
-    <AuthProvider>
-      <AccommodationsProvider>
-        <ReviewsProvider>
-          <ReportsProvider>{children}</ReportsProvider>
-        </ReviewsProvider>
-      </AccommodationsProvider>
-    </AuthProvider>
+    <ErrorHandler>
+      <AuthProvider>
+        <AccommodationsProvider>
+          <ReviewsProvider>
+            <ReportsProvider>{children}</ReportsProvider>
+          </ReviewsProvider>
+        </AccommodationsProvider>
+      </AuthProvider>
+    </ErrorHandler>
   )
 }
 

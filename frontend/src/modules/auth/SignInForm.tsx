@@ -16,6 +16,7 @@ import { COLOR } from '../../theme'
 import { signIn } from './AuthProvider'
 import useDialog from '../../hooks/useDialog'
 import { ROUTES } from '../../app/AppRouter'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -28,6 +29,7 @@ const SignInForm: React.FC<IProps> = () => {
   const { open, toggleDialog } = useDialog()
   const navigate = useNavigate()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const onShowError = showErrorSnackbar()
 
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
@@ -39,10 +41,12 @@ const SignInForm: React.FC<IProps> = () => {
   const handleOpen = () => toggleDialog()
   const handleClose = () => toggleDialog()
   const handleSignIn = () => {
-    if (onSignIn) {
-      onSignIn(form).then(() => {
-        navigate(ROUTES.explore)
-      })
+    if (onSignIn && onShowError) {
+      onSignIn(form)
+        .then(() => {
+          navigate(ROUTES.explore)
+        })
+        .catch(err => onShowError(String(err)))
     }
   }
 
