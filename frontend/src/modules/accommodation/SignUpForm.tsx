@@ -8,8 +8,9 @@ import {
   Checkbox,
   Button,
   useTheme,
-  colors,
   Grid,
+  FormLabel,
+  InputLabel,
 } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -62,7 +63,7 @@ const SignUpForm: React.FC<IProps> = () => {
           height: '100%',
           padding: theme.spacing(2),
           borderRadius: theme.spacing(1),
-        }}  
+        }}
       >
         <Typography
           variant="h6"
@@ -75,9 +76,8 @@ const SignUpForm: React.FC<IProps> = () => {
           Create an Account
         </Typography>
 
-        <Typography>Username *</Typography>
+        <FormLabel required>Username</FormLabel>
         <TextField
-          id="outlined-basic"
           variant="outlined"
           size="small"
           fullWidth
@@ -89,9 +89,8 @@ const SignUpForm: React.FC<IProps> = () => {
           }
         />
 
-        <Typography>Email *</Typography>
+        <FormLabel required>Email</FormLabel>
         <TextField
-          id="outlined-basic"
           variant="outlined"
           size="small"
           fullWidth
@@ -100,7 +99,7 @@ const SignUpForm: React.FC<IProps> = () => {
           value={form.email}
           onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
         />
-        <Typography>Role *</Typography>
+        <FormLabel required>Role</FormLabel>
         <Select
           label=""
           fullWidth
@@ -115,9 +114,8 @@ const SignUpForm: React.FC<IProps> = () => {
           <MenuItem value={'owner'}>Accommodation Owner</MenuItem>
         </Select>
 
-        <Typography>Organization</Typography>
+        <FormLabel>Organization</FormLabel>
         <TextField
-          id="outlined-basic"
           variant="outlined"
           size="small"
           fullWidth
@@ -128,12 +126,14 @@ const SignUpForm: React.FC<IProps> = () => {
           //   }
         />
 
-        <Grid container spacing={1} sx={{flexDirection:{xs:
-    'column', md:'row'}}}>
-          <Grid item xs={12} lg={4} >
-            <Typography>First Name*</Typography>
+        <Grid
+          container
+          spacing={1}
+          sx={{ flexDirection: { xs: 'column', md: 'row' } }}
+        >
+          <Grid item xs={12} lg={4}>
+            <FormLabel required>First Name</FormLabel>
             <TextField
-              id="outlined-basic"
               variant="outlined"
               size="small"
               fullWidth
@@ -147,9 +147,8 @@ const SignUpForm: React.FC<IProps> = () => {
           </Grid>
 
           <Grid item xs={12} lg={4}>
-            <Typography>Last Name*</Typography>
+            <FormLabel required>Last Name</FormLabel>
             <TextField
-              id="outlined-basic"
               variant="outlined"
               size="small"
               fullWidth
@@ -163,9 +162,8 @@ const SignUpForm: React.FC<IProps> = () => {
           </Grid>
 
           <Grid item xs={12} lg={4}>
-            <Typography>Middle Name</Typography>
+            <FormLabel>Middle Name</FormLabel>
             <TextField
-              id="outlined-basic"
               variant="outlined"
               size="small"
               fullWidth
@@ -180,7 +178,7 @@ const SignUpForm: React.FC<IProps> = () => {
 
         <Grid container spacing={1}>
           <Grid item xs={7}>
-            <Typography>Gender *</Typography>
+            <FormLabel required>Gender</FormLabel>
             <Select
               label=""
               fullWidth
@@ -200,7 +198,7 @@ const SignUpForm: React.FC<IProps> = () => {
           </Grid>
 
           <Grid item xs={5}>
-            <Typography>Birthday</Typography>
+            <InputLabel>Birthday</InputLabel>
             <DatePicker
               slotProps={{ textField: { size: 'small' } }}
               onChange={value => {
@@ -214,9 +212,8 @@ const SignUpForm: React.FC<IProps> = () => {
 
         <Grid container spacing={1}>
           <Grid item xs={6}>
-            <Typography>Phone</Typography>
+            <FormLabel>Phone</FormLabel>
             <TextField
-              id="outlined-basic"
               variant="outlined"
               size="small"
               fullWidth
@@ -229,9 +226,8 @@ const SignUpForm: React.FC<IProps> = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography>Landline</Typography>
+            <FormLabel>Landline</FormLabel>
             <TextField
-              id="outlined-basic"
               variant="outlined"
               size="small"
               fullWidth
@@ -244,9 +240,8 @@ const SignUpForm: React.FC<IProps> = () => {
           </Grid>
         </Grid>
 
-        <Typography>Current Address *</Typography>
+        <FormLabel required>Current Address</FormLabel>
         <TextField
-          id="outlined-basic"
           variant="outlined"
           size="small"
           fullWidth
@@ -258,9 +253,8 @@ const SignUpForm: React.FC<IProps> = () => {
           //   }
         />
 
-        <Typography>Home Address *</Typography>
+        <FormLabel required>Home Address</FormLabel>
         <TextField
-          id="outlined-basic"
           variant="outlined"
           size="small"
           fullWidth
@@ -272,9 +266,8 @@ const SignUpForm: React.FC<IProps> = () => {
           //   }
         />
 
-        <Typography>Password *</Typography>
+        <FormLabel required>Password</FormLabel>
         <TextField
-          id="outlined-basic"
           variant="outlined"
           size="small"
           type="password"
@@ -286,9 +279,8 @@ const SignUpForm: React.FC<IProps> = () => {
             setForm(prev => ({ ...prev, password: e.target.value }))
           }
         />
-        <Typography>Confirm Password *</Typography>
+        <FormLabel required>Confirm Password</FormLabel>
         <TextField
-          id="outlined-basic"
           variant="outlined"
           size="small"
           type="password"
