@@ -4,12 +4,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material'
 import React from 'react'
 import AccommodationForm from './AccommodationForm'
 import useDialog from '../../hooks/useDialog'
 import { COLOR } from '../../theme'
-import { useTheme } from '@emotion/react'
 
 interface IProps {
   children?: React.ReactNode
@@ -18,6 +19,7 @@ interface IProps {
 
 const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   // hooks
   const { open, toggleDialog } = useDialog()
@@ -43,8 +45,8 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
     root: {
       backgroundColor: COLOR.green,
       color: COLOR.darkGreen,
-      borderRadius: '4px', 
-      padding: '10px 20px', 
+      borderRadius: '4px',
+      padding: '10px 20px',
       '&:hover': {
         backgroundColor: '#93dba4',
       },
@@ -56,16 +58,22 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
         {defaultValues ? 'Update accommodation' : 'Create accommodation'}
       </Button>
       {open && (
-        <Dialog open={open} onClose={toggleDialog}>
-          <DialogTitle sx={{backgroundColor: '#0c2c44', color: COLOR.white }}> {/*TEMP COLOR*/}
+        <Dialog fullScreen={isMobile} open={open} onClose={toggleDialog}>
+          <DialogTitle sx={{ backgroundColor: '#0c2c44', color: COLOR.white }}>
+            {' '}
+            {/*TEMP COLOR*/}
             {defaultValues ? 'Update accommodation' : 'Create accommodation'}
           </DialogTitle>
 
-          <DialogContent sx={{backgroundColor: '#0c2c44' }}>  {/*TEMP COLOR*/}
+          <DialogContent sx={{ backgroundColor: '#0c2c44' }}>
+            {' '}
+            {/*TEMP COLOR*/}
             <AccommodationForm defaultValues={defaultValues} />
           </DialogContent>
 
-          <DialogActions sx={{backgroundColor: '#0c2c44' }}>  {/*TEMP COLOR*/}
+          <DialogActions sx={{ backgroundColor: '#0c2c44' }}>
+            {' '}
+            {/*TEMP COLOR*/}
             <Button onClick={toggleDialog} sx={cancelBtnSx.root}>
               Cancel
             </Button>
