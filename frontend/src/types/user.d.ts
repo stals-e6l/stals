@@ -15,10 +15,15 @@ interface IUserSignUp extends IUserSignIn {
   }
   gender: TUserGender
   address: {
-    home: string
-    current: string
+    home?: string
+    current?: string
   }
   birthday: string
+  organization?: string
+  phone: {
+    landline?: string
+    mobile?: string
+  }
 }
 
 type TUserGender = 'male' | 'female' | 'non_binary' | 'prefer_not_to_say'
@@ -26,17 +31,11 @@ type TUserGender = 'male' | 'female' | 'non_binary' | 'prefer_not_to_say'
 interface IUser extends IUserSignUp {
   _id: string
 
-  phone: {
-    landline?: string
-    mobile?: string
-  }
-
   biography?: string
 
   avatar: {
     url?: string
   }
-  organization?: string
   createdAt?: string
   updatedAt?: string
 }

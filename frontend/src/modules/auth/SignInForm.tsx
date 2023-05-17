@@ -5,6 +5,7 @@ import {
   Button,
   useTheme,
   Dialog,
+  useMediaQuery,
 } from '@mui/material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -26,6 +27,7 @@ const SignInForm: React.FC<IProps> = () => {
   const onSignIn = signIn()
   const { open, toggleDialog } = useDialog()
   const navigate = useNavigate()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
@@ -170,19 +172,20 @@ const SignInForm: React.FC<IProps> = () => {
             >
               Create new account
             </Button>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              sx={{
-                width: '30%',
-                margin: '0 auto',
-                [theme.breakpoints.down('sm')]: {
-                  width: '100%',
-                },
-              }}
-            >
-              <SignUpForm onClose={handleClose} />
-            </Dialog>
+            {open && (
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                fullScreen={isMobile}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    width: '100%',
+                  },
+                }}
+              >
+                <SignUpForm onClose={handleClose} />
+              </Dialog>
+            )}
           </Box>
         </Box>
       </Box>
