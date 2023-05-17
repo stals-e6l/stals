@@ -25,6 +25,8 @@ const upload = multer({ storage: storage })
  * /api/asset:
  *      post:
  *          description: Adds image
+ *          security:
+ *              -   bearerAuth: []
  *          requestBody:
  *              required: true
  *              content:
