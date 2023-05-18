@@ -25,7 +25,7 @@ const AddReviewForm: React.FC<IProps> = ({ input, setField }) => {
         <Rating sx={{
             '& .MuiRating-iconFilled': {
                 color: theme.palette.secondary.main
-            }
+            },
         }}/>
         </Grid>
     </Grid>

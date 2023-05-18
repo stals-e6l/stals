@@ -15,12 +15,13 @@ const AddReviewModal: React.FC<IProps> = ({ forumId }) => {
     const [inputField, setField] = useState<string>('')
 
     const theme = useTheme()
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
     return (
         <React.Fragment>
             <Button variant="contained" onClick={toggleDialog}>Add Review</Button>
 
-            <Dialog open={open} onClose={toggleDialog} fullWidth={true} maxWidth={'sm'}>
+            <Dialog open={open} onClose={toggleDialog} fullScreen={fullScreen} fullWidth={true} maxWidth={'sm'}>
                 <DialogTitle>
                     <Grid container sx={{ 
                         flexDirection: 'row',
@@ -50,6 +51,8 @@ const AddReviewModal: React.FC<IProps> = ({ forumId }) => {
                         onClick={toggleDialog}
                         sx={{
                             width: '100%',
+                            minWidth: '60%',
+                            maxWidth: '100%',
                            ':hover': {
                                 backgroundColor: theme.palette.secondary.main,
                            }
