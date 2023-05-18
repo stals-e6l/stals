@@ -1,5 +1,4 @@
-import { Palette } from '@mui/icons-material'
-import { Autocomplete, alpha, colors, createTheme } from '@mui/material'
+import { alpha, createTheme } from '@mui/material'
 
 declare module '@mui/material/styles' {}
 
@@ -93,6 +92,19 @@ const theme = createTheme({
       styleOverrides: {
         checked: {
           color: COLOR.green,
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        h6: {
+          xs: SPACING * 2,
+        },
+        body1: {
+          xs: SPACING * 1.5,
+        },
+        body2: {
+          xs: SPACING * 1.75,
         },
       },
     },

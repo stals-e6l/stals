@@ -14,133 +14,94 @@ import {
   Rating,
   FormGroup,
   useTheme,
+  Divider,
 } from '@mui/material'
-import { COLOR, FONT } from '../../theme'
+import { COLOR } from '../../theme'
+import { buildQueryString, extractQueryString } from '../../helpers/queryString'
+import { filterAccommodations } from './AccommodationsProvider'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const FilterAccommodations: React.FC<IProps> = () => {
-
+  //hook
   const theme = useTheme()
-
-  const types = [
-    { type: "Hotel", value: "hotel" },
-    { type: "Apartment", value: "apartment" },
-    { type: "Bed Space", value: "bedspace" },
-    { type: "Dormitory", value: "dormitory" },
-    { type: "Transient Space", value: "transient" },
-  ]
-
-  const ratings = []
-  for (var i = 0; i <= 5; i++) ratings.push(i)
-
-  const furnishing = [
-    { option: "Unfurnished", value: "unfurnished" },
-    { option: "Semifurnished", value: "semifurnished" },
-    { option: "Fully-furnished", value: "fully_furnished" },
-  ]
-
-  const h6_breakpoint = {
-    [theme.breakpoints.down('md')]: {
-      fontSize: theme.spacing(2)
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: theme.spacing(1.85)
-    },
-  }
-
-  const body1_breakpoint = {
-    marginTop: theme.spacing(-0.5),
-    [theme.breakpoints.down('md')]: {
-      fontSize: theme.spacing(1.7)
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: theme.spacing(1.5)
-    },
-  }
-
-  const body2_breakpoint = {
-    marginTop: theme.spacing(-1.5),
-    marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('md')]: {
-      fontSize: theme.spacing(1.75),
-      marginTop: theme.spacing(-1.75),
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: theme.spacing(1.5),
-      marginTop: theme.spacing(-2),
-    },
-  }
-
-  const icon_breakpoints = {
-    marginTop: theme.spacing(-0.5),
-
-    "&.Mui-checked": {
-      color: COLOR.green
-    }
-  }
-
-  const slider_space = {
-    marginTop: theme.spacing(-0.5),
-    [theme.breakpoints.down('md')]: {
-      marginTop: theme.spacing(-1),
-    },
-    [theme.breakpoints.down('sm')]: {
-      marginTop: theme.spacing(-1.75),
-    },
-  }
-
-  // TODO: all comments here are PM's job to integrate, for now refine the styling
-  // hooks
-  // const filterHandler = filterAccommodations()
+  const navigate = useNavigate()
+  const onFilterAccommodations = filterAccommodations()
+  const location = useLocation()
 
   // state
-  // const [filter, setFilter] = React.useState<IAccommodationsFilter>({})
+  const [filter, setFilter] = React.useState<IAccommodationsFilter>({
+    name: extractQueryString(location.search).name || '',
+    type: '',
+    min_price: 0,
+    max_price: 10000,
+    size_sqm: 0,
+    meters_from_uplb: 0,
+    min_pax: 0,
+    max_pax: 10000,
+    num_rooms: 0,
+    num_beds: 0,
+    furnishing: '',
+  })
 
   // events
-  // const handleChange = (key: keyof IAccommodationsFilter, e: IEvent) => {
-  //   const _filter = { ...filter }
-  //   _filter[key] = e.target.value
-  //   setFilter(_filter)
-  // }
-  // const handleType = (e: IEvent) => handleChange('type', e)
-  // const handlePrice = (e: IEvent) => handleChange('price', e)
-  // const handleRoomSize = (e: IEvent) => handleChange('size_sqm', e)
-  // const handleMeters = (e: IEvent) => handleChange('meters_from_uplb', e)
-  // const handlePax = (e: IEvent) => handleChange('min_pax', e)
-  // const handleNumRooms = (e: IEvent) => handleChange('num_rooms', e)
-  // const handleFurnishing = (e: IEvent) => handleChange('furnishing', e)
-  // const onFilter = () => {}
+  const onChange = (
+    key: keyof IAccommodationsFilter,
+    val: undefined | string | number
+  ) => {
+    setFilter(prev => ({ ...prev, [key]: val }))
+  }
 
-  // immediates
-  // const pax = [filter.min_pax as number, filter.max_pax as number]
+  React.useEffect(() => {
+    const queryString = buildQueryString({
+      name: filter.name === '' ? undefined : filter.name,
+      type: filter.type === '' ? undefined : filter.type,
+      min_price: filter.min_price === 0 ? undefined : filter.min_price,
+      max_price: filter.max_price === 10000 ? undefined : filter.max_price,
+      size_sqm: filter.size_sqm === 0 ? undefined : filter.size_sqm,
+      meters_from_uplb:
+        filter.meters_from_uplb === 0 ? undefined : filter.meters_from_uplb,
+      min_pax: filter.min_pax === 0 ? undefined : filter.min_pax,
+      max_pax: filter.max_pax === 10000 ? undefined : filter.max_pax,
+      num_rooms: filter.num_rooms === 0 ? undefined : filter.num_rooms,
+      num_beds: filter.num_beds === 0 ? undefined : filter.num_beds,
+      furnishing: filter.furnishing === '' ? undefined : filter.furnishing,
+    })
 
-
+    navigate(`${ROUTES.result}?${queryString}`)
+    if (onFilterAccommodations) {
+      onFilterAccommodations(queryString)
+    }
+  }, [filter])
 
   return (
     <>
       <Grid container>
         <Grid item xs={12}>
           {/* | Filters */}
-          <Typography variant='h5'
+          <Typography
+            variant="h5"
             sx={{
               color: COLOR.black,
               display: 'flex',
               [theme.breakpoints.down('md')]: {
-                fontSize: theme.spacing(2.5)
+                fontSize: theme.spacing(2.5),
               },
               [theme.breakpoints.down('sm')]: {
-                fontSize: theme.spacing(2)
+                fontSize: theme.spacing(2),
               },
             }}
           >
-            <Typography variant='h5'
+            <Typography
+              variant="h5"
               sx={{
                 color: COLOR.green,
                 marginRight: theme.spacing(1),
-                fontSize: "inherit"
+                fontSize: 'inherit',
               }}
             >
               |
@@ -159,223 +120,171 @@ const FilterAccommodations: React.FC<IProps> = () => {
             <Grid item>
               <FormControl>
                 <FormLabel id="type">
-                  <Typography variant='h6' color={COLOR.black} sx={h6_breakpoint}
-                  >Type</Typography>
+                  <Typography variant="h6" color={COLOR.black}>
+                    Type
+                  </Typography>
                 </FormLabel>
                 <RadioGroup
                   aria-labelledby="hotel"
-                  defaultValue={undefined}
-                  // value={filter.type}
-                  // onChange={handleType}
-                  name="type-group"
+                  value={filter.type}
+                  onChange={(e, val) => {
+                    onChange('type', val)
+                  }}
                 >
-                  {
-                    types.map((type) =>
-                      <FormControlLabel
-                        value={type.value}
-                        control={<Radio size="small" sx={icon_breakpoints} />}
-                        label={
-                          <Typography variant='body1' sx={body1_breakpoint}>{type.type}</Typography>
-                        }
-                      />
-                    )
-                  }
-
+                  {ACCOMMODATION_TYPES.map(type => (
+                    <FormControlLabel
+                      key={type.label}
+                      value={type.value}
+                      control={<Radio size="small" />}
+                      label={
+                        <Typography variant="body1">{type.label}</Typography>
+                      }
+                    />
+                  ))}
                 </RadioGroup>
               </FormControl>
             </Grid>
 
             {/*  Ratings */}
             <Grid item xs={12}>
-              <Typography variant='h6' sx={h6_breakpoint}>Ratings</Typography>
+              <Typography variant="h6">Ratings</Typography>
               <FormGroup>
-                {
-                  ratings.map((rating) => <FormControlLabel
-                    control={<Checkbox size="small" sx={icon_breakpoints}/>}
-                    label={<Rating value={rating} readOnly sx={{
-                      color: COLOR.blue,
-                      [theme.breakpoints.down('md')]: {
-                        fontSize: theme.spacing(2.25)
-                      },
-                    }} />}
-                  />)
-                }
+                {ACCOMMODATION_RATINGS.map(rating => (
+                  <FormControlLabel
+                    disabled
+                    key={rating}
+                    control={<Checkbox size="small" />}
+                    label={
+                      <Rating
+                        value={rating}
+                        readOnly
+                        sx={{
+                          color: COLOR.blue,
+                          [theme.breakpoints.down('md')]: {
+                            fontSize: theme.spacing(2.25),
+                          },
+                        }}
+                      />
+                    }
+                  />
+                ))}
               </FormGroup>
             </Grid>
 
             {/* Price */}
             <Grid item xs={12}>
-              <Typography variant='h6' sx={h6_breakpoint}>Price Range</Typography>
+              <Typography variant="h6">Price Range</Typography>
               <Slider
-                max={1000}
-                // value={filter.price}
-                // onChange={handlePrice}
-                sx={slider_space}
+                min={0}
+                max={10000}
                 disableSwap
+                value={[filter.min_price as number, filter.max_price as number]}
+                onChange={(e, val) => {
+                  const range = [...(val as number[])]
+                  onChange('min_price', range[0])
+                  onChange('max_price', range[1])
+                }}
               />
-              <Typography variant='body2' sx={body2_breakpoint}>
-                Php 123123 - Php {1000}
+              <Typography variant="body2">
+                Php {filter.min_price} - Php {filter.max_price}
               </Typography>
             </Grid>
 
             {/* Room size */}
             <Grid item>
-              <Typography variant='h6' sx={h6_breakpoint}>Room Size</Typography>
+              <Typography variant="h6">Room Size</Typography>
               <Slider
                 max={10}
-                sx={slider_space}
-              // value={filter.size_sqm}
-              // onChange={handleRoomSize}
+                value={filter.size_sqm}
+                onChange={(e, val) => onChange('size_sqm', val as number)}
               />
-              <Typography variant='body2' sx={body2_breakpoint}>14 square meters</Typography>
+              <Typography variant="body2">{filter.size_sqm} sqm.</Typography>
             </Grid>
 
             {/*Meters from UPLB */}
             <Grid item>
-              <Typography variant='h6' sx={h6_breakpoint}>Meters from UPLB</Typography>
+              <Typography variant="h6">Meters from UPLB</Typography>
               <Slider
-                max={1000}
-                sx={slider_space}
-              // value={filter.meters_from_uplb}
-              // onChange={handleMeters}
+                max={10000}
+                value={filter.meters_from_uplb}
+                onChange={(e, val) =>
+                  onChange('meters_from_uplb', val as number)
+                }
               />
-              <Typography variant='body2' sx={body2_breakpoint}>600 meters</Typography>
+              <Typography variant="body2">
+                {filter.meters_from_uplb} meters
+              </Typography>
             </Grid>
 
             {/* Number of Occupants */}
             <Grid item>
-              <Typography variant='h6' sx={h6_breakpoint}>Number of Occupants</Typography>
+              <Typography variant="h6">Number of occupants</Typography>
               <Slider
                 min={0}
-                max={1000}
-                sx={slider_space}
-                // value={pax}
-                defaultValue={0}
-                // onChange={handlePax}
+                max={10000}
+                value={[filter.min_pax as number, filter.max_pax as number]}
+                onChange={(e, val) => {
+                  const range = [...(val as number[])]
+                  onChange('min_pax', range[0])
+                  onChange('max_pax', range[1])
+                }}
                 disableSwap
               />
-              <Typography variant='body2' sx={body2_breakpoint}>4 persons</Typography>
-              {/* {
-                // if both minimum and maximum are equal
-                pax[0] === pax[1] && pax[0] != 1 ? (
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {pax[0]} persons
-                    </Typography>
-                  </>
-                ) : // if both min and max pax are equal and both 1
-                pax[0] === pax[1] && pax[0] == 1 ? (
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {pax[0]} person
-                    </Typography>
-                  </>
-                ) : (
-                  // by default
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {pax[0]} - {pax[1]} persons
-                    </Typography>
-                  </>
-                )
-              } */}
+              <Typography variant="body2">
+                {filter.min_pax} - {filter.max_pax} persons
+              </Typography>
             </Grid>
 
             {/*  Number of Room */}
             <Grid item>
-              <Typography variant='h6' sx={h6_breakpoint}>Number of Rooms</Typography>
+              <Typography variant="h6">Number of rooms</Typography>
               <Slider
-                max={10}
                 min={0}
-                sx={slider_space}
-                defaultValue={0}
-              // value={filter.num_rooms}
-              // onChange={handleNumRooms}
+                max={10}
+                value={filter.num_rooms}
+                onChange={(e, val) => {
+                  onChange('num_rooms', val as number)
+                }}
               />
-              <Typography variant='body2' sx={body2_breakpoint}>1 room</Typography>
-              {/* {filter.num_rooms == 1 ? (
-                <>
-                  <Typography sx={CustomCaptionStyle}>
-                    {filter.num_rooms} room
-                  </Typography>
-                </>
-              ) : (
-                <>
-                  <Typography sx={CustomCaptionStyle}>
-                    {filter.num_rooms} rooms
-                  </Typography>
-                </>
-              )} */}
+              <Typography variant="body2">{filter.num_rooms} room</Typography>
             </Grid>
-
-            {/* TODO: in model, num_beds is not range. change it to number */}
             {/*Number of Beds */}
             <Grid item>
-              <Typography variant='h6' sx={h6_breakpoint}>Number of Beds</Typography>
+              <Typography variant="h6">Number of beds</Typography>
               <Slider
                 min={0}
-                sx={slider_space}
-                // max={maxBed}
-                defaultValue={0}
-                // value={num_beds}
-                // onChange={handleBed}
+                value={filter.num_beds}
+                onChange={(e, val) => {
+                  onChange('num_beds', val as number)
+                }}
                 disableSwap
               />
-              <Typography variant='body2' sx={body2_breakpoint}>2 beds</Typography>
-              {/* {
-                // if both minimum and maximum are equal
-                num_beds[0] == pax[1] && num_beds[0] != 1 ? (
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {num_beds[0]} beds
-                    </Typography>
-                  </>
-                ) : // if both min and max bed are equal and both 1
-                num_beds[0] == num_beds[1] && num_beds[0] == 1 ? (
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {num_beds[0]} bed
-                    </Typography>
-                  </>
-                ) : (
-                  // by default
-                  <>
-                    <Typography sx={CustomCaptionStyle}>
-                      {num_beds[0]} - {num_beds[1]} beds
-                    </Typography>
-                  </>
-                )
-              } */}
+              <Typography variant="body2">{filter.num_beds} beds</Typography>
             </Grid>
 
             {/* Furnishing */}
             <Grid item>
               <FormControl>
-                <FormLabel id="furnishing">
-                  <Typography variant='h6' sx={h6_breakpoint}>Furnishing</Typography>
+                <FormLabel>
+                  <Typography variant="h6">Furnishing</Typography>
                 </FormLabel>
 
                 <RadioGroup
-                  aria-labelledby="furnishing"
-                  defaultValue={'unfurnished'}
-                  // value={filter.furnishing}
-                  // onChange={handleFurnishing}
-                  name="furnishing-group"
+                  value={filter.furnishing}
+                  onChange={(e, val) => onChange('furnishing', val)}
                 >
-                  {
-                    furnishing.map((option) =>
-                      <FormControlLabel
-                        value={option.value}
-                        control={<Radio size="small" sx={icon_breakpoints} />}
-                        label={
-                          <Typography variant='body1' sx={body1_breakpoint}>
-                            {option.option}
-                          </Typography>
-                        }
-                      />
-                    )
-                  }
-
+                  {ACCOMMODATION_FURNISHING.map(furnishing => (
+                    <FormControlLabel
+                      key={furnishing.value}
+                      value={furnishing.value}
+                      control={<Radio size="small" />}
+                      label={
+                        <Typography variant="body1">
+                          {furnishing.label}
+                        </Typography>
+                      }
+                    />
+                  ))}
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -384,9 +293,8 @@ const FilterAccommodations: React.FC<IProps> = () => {
 
         {/* Filter Search btn */}
         <Grid item xs={12}>
-          <br />
+          <Divider />
           <Button
-            // onClick={onFilter}
             variant="contained"
             fullWidth
             sx={{
@@ -396,22 +304,24 @@ const FilterAccommodations: React.FC<IProps> = () => {
               boxShadow: '1px 2px 4px #6e6e73',
               ':hover': {
                 color: COLOR.green,
-                backgroundColor: COLOR.gray1
+                backgroundColor: COLOR.gray1,
               },
             }}
           >
-            <Typography variant='h6' sx={{
-              fontSize: theme.spacing(2.15),
-              [theme.breakpoints.down('md')]: {
-                fontSize: theme.spacing(2)
-              },
-              [theme.breakpoints.down('sm')]: {
-                fontSize: theme.spacing(1.85)
-              },
-            }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: theme.spacing(2.15),
+                [theme.breakpoints.down('md')]: {
+                  fontSize: theme.spacing(2),
+                },
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: theme.spacing(1.85),
+                },
+              }}
+            >
               Filter Search
             </Typography>
-
           </Button>
         </Grid>
       </Grid>
@@ -420,3 +330,21 @@ const FilterAccommodations: React.FC<IProps> = () => {
 }
 
 export default FilterAccommodations
+
+const ACCOMMODATION_TYPES = [
+  { label: 'Hotel', value: 'hotel' },
+  { label: 'Apartment', value: 'apartment' },
+  { label: 'Bed Space', value: 'bedspace' },
+  { label: 'Dormitory', value: 'dormitory' },
+  { label: 'Transient Space', value: 'transient' },
+  { label: 'Any type', value: '' },
+]
+
+const ACCOMMODATION_RATINGS = [0, 1, 2, 3, 4, 5]
+
+const ACCOMMODATION_FURNISHING = [
+  { label: 'Unfurnished', value: 'unfurnished' },
+  { label: 'Semifurnished', value: 'semifurnished' },
+  { label: 'Fully-furnished', value: 'fully_furnished' },
+  { label: 'Any type', value: '' },
+]

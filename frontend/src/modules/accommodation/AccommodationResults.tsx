@@ -57,7 +57,10 @@ const AccommodationResults: React.FC<IProps> = () => {
       >
         {accommodations.map((accommodation, key: number) => (
           <Grid item lg={3} sx={{}} key={key}>
-            <AccommodationCard accommodation={accommodation} isPublicView={true}/>
+            <AccommodationCard
+              accommodation={accommodation}
+              isPublicView={false}
+            />
           </Grid>
         ))}
       </Grid>
