@@ -39,7 +39,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
 
   // events
   const handleSubmit = () => {
-    if (onShowError) {
+    if (onShowError && onDeleteAccommodation && onArchiveAccommodation) {
       if (isSoftDelete) {
         onArchiveAccommodation({
           _id: accommodationId,

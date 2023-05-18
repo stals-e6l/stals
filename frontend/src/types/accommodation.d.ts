@@ -84,6 +84,9 @@ interface IAccommodationsState {
   > | null
 }
 
-type TAccommodationActionType = 'SET_ACCOMMODATIONS'
+type TAccommodationActionType =
+  | 'SET_ACCOMMODATIONS'
+  | 'ADD_ACCOMMODATION'
+  | 'DELETE_ACCOMMODATION'
 
-type TAccommodationPayload = IAccommodation[]
+type TAccommodationPayload = IAccommodation[] | IAccommodation | string
