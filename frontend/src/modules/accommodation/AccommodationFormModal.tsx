@@ -14,6 +14,7 @@ import useDialog from '../../hooks/useDialog'
 import { createAccommodation } from './AccommodationsProvider'
 import { COLOR } from '../../theme'
 import PublishIcon from '@mui/icons-material/Publish'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -27,35 +28,54 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
   const onCreateAccommodation = createAccommodation()
+  const onShowError = showErrorSnackbar()
+
+  // state
+  const [form, setForm] = React.useState<IAccommodation>({
+    image: {
+      url: (defaultValues && defaultValues.image.url) || '',
+    },
+    name: (defaultValues && defaultValues.name) || '',
+    address: (defaultValues && defaultValues.address) || '',
+    type: (defaultValues && defaultValues.type) || 'hotel',
+    min_price: (defaultValues && defaultValues.min_price) || 0,
+    max_price: (defaultValues && defaultValues.max_price) || 0,
+    size_sqm: (defaultValues && defaultValues.size_sqm) || 0,
+    meters_from_uplb: (defaultValues && defaultValues.meters_from_uplb) || 0,
+    min_pax: (defaultValues && defaultValues.min_pax) || 0,
+    max_pax: (defaultValues && defaultValues.max_pax) || 0,
+    num_rooms: (defaultValues && defaultValues.num_rooms) || 0,
+    num_beds: (defaultValues && defaultValues.num_beds) || 0,
+    num_views: (defaultValues && defaultValues.num_views) || 1,
+    furnishing:
+      (defaultValues && defaultValues.furnishing) || 'fully_furnished',
+    landmarks: (defaultValues && defaultValues.landmarks) || [],
+    cooking_rules: (defaultValues && defaultValues.cooking_rules) || [],
+    pet_rules: (defaultValues && defaultValues.pet_rules) || [],
+    other_rules: (defaultValues && defaultValues.other_rules) || [],
+    safety_and_security:
+      (defaultValues && defaultValues.safety_and_security) || [],
+    appliances: (defaultValues && defaultValues.appliances) || [],
+    amenities: (defaultValues && defaultValues.amenities) || [],
+    is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
+  })
+
+  // events
+  const setFieldValue = (
+    key: keyof IAccommodation,
+    val: string | number | string[]
+  ) => {
+    setForm(prev => ({ ...prev, [key]: val }))
+  }
 
   // events
   const handleSubmit = () => {
-    onCreateAccommodation({
-      name: 'Yooooooowww',
-      image: {
-        url: '',
-      },
-      address: 'Some address',
-      type: 'hotel',
-      furnishing: 'unfurnished',
-      min_price: 1000,
-      max_price: 3000,
-      size_sqm: 20,
-      meters_from_uplb: 400,
-      min_pax: 1,
-      max_pax: 4,
-      num_rooms: 1,
-      num_beds: 1,
-      num_views: 1,
-      landmarks: [],
-      cooking_rules: [],
-      pet_rules: [],
-      other_rules: [],
-      safety_and_security: [],
-      appliances: [],
-      amenities: [],
-      is_soft_deleted: false,
-    })
+    if (onCreateAccommodation && onShowError)
+      onCreateAccommodation(form)
+        .then(() => {
+          toggleDialog()
+        })
+        .catch(err => onShowError(String(err)))
   }
 
   const cancelBtnSx = {
@@ -85,7 +105,13 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
     <React.Fragment>
       <Fab
         onClick={toggleDialog}
-        sx={{ ...submitBtnSx.root, borderRadius: '50%' }}
+        sx={{
+          ...submitBtnSx.root,
+          borderRadius: '50%',
+          position: 'absolute',
+          bottom: '5%',
+          right: '5%',
+        }}
       >
         <PublishIcon />
       </Fab>
@@ -100,7 +126,7 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
           <DialogContent sx={{ backgroundColor: '#0c2c44' }}>
             {' '}
             {/*TEMP COLOR*/}
-            <AccommodationForm defaultValues={defaultValues} />
+            <AccommodationForm form={form} setFieldValue={setFieldValue} />
           </DialogContent>
 
           <DialogActions sx={{ backgroundColor: '#0c2c44' }}>

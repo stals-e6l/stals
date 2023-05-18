@@ -3,6 +3,7 @@ import React from 'react'
 import Navbar from '../modules/general/Navbar'
 import Banner from '../modules/general/Banner'
 import AccommodationResults from '../modules/accommodation/AccommodationResults'
+import AccommodationFormModal from '../modules/accommodation/AccommodationFormModal'
 
 interface IProps {
   children?: React.ReactNode
@@ -15,8 +16,10 @@ const ExplorePage: React.FC<IProps> = ({ isPublic }) => {
       sx={{
         height: '100vh',
         width: '100vw',
+        position: 'relative',
       }}
     >
+      <AccommodationFormModal />
       <Navbar />
       <Banner />
       <AccommodationResults />

@@ -9,52 +9,18 @@ import {
   Select,
   TextField,
 } from '@mui/material'
-import { useTheme } from '@mui/material'
 import { COLOR } from '../../theme/'
 
 interface IProps {
   children?: React.ReactNode
-  defaultValues?: IAccommodation
-}
-
-const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
-  // hooks
-  const theme = useTheme()
-
-  // state
-  const [form, setForm] = React.useState<IAccommodation>({
-    name: (defaultValues && defaultValues.name) || '',
-    address: (defaultValues && defaultValues.address) || '',
-    type: (defaultValues && defaultValues.type) || 'hotel',
-    price: (defaultValues && defaultValues.price) || 0,
-    size_sqm: (defaultValues && defaultValues.size_sqm) || 0,
-    meters_from_uplb: (defaultValues && defaultValues.meters_from_uplb) || 0,
-    min_pax: (defaultValues && defaultValues.min_pax) || 0,
-    max_pax: (defaultValues && defaultValues.max_pax) || 0,
-    num_rooms: (defaultValues && defaultValues.num_rooms) || 0,
-    num_beds: (defaultValues && defaultValues.num_beds) || 0,
-    num_views: (defaultValues && defaultValues.num_views) || 0,
-    furnishing:
-      (defaultValues && defaultValues.furnishing) || 'fully_furnished',
-    landmarks: (defaultValues && defaultValues.landmarks) || [],
-    cooking_rules: (defaultValues && defaultValues.cooking_rules) || [],
-    pet_rules: (defaultValues && defaultValues.pet_rules) || [],
-    other_rules: (defaultValues && defaultValues.other_rules) || [],
-    safety_and_security:
-      (defaultValues && defaultValues.safety_and_security) || [],
-    appliances: (defaultValues && defaultValues.appliances) || [],
-    amenities: (defaultValues && defaultValues.amenities) || [],
-    is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
-  })
-
-  // events
-  const setFieldValue = (
+  form: IAccommodation
+  setFieldValue: (
     key: keyof IAccommodation,
     val: string | number | string[]
-  ) => {
-    setForm(prev => ({ ...prev, [key]: val }))
-  }
+  ) => void
+}
 
+const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
   // immediate
   const values = React.useMemo(() => form, [form])
 
@@ -124,11 +90,24 @@ const AccommodationForm: React.FC<IProps> = ({ defaultValues }) => {
         <MenuItem value="transient">Transient</MenuItem>
       </Select>
       <TextField
-        value={Number(values.price) == 0 ? '' : Number(values.price)}
-        onChange={e => setFieldValue('price', e.target.value)}
+        value={Number(values.min_price) == 0 ? '' : Number(values.min_price)}
+        onChange={e => setFieldValue('min_price', e.target.value)}
         required
         fullWidth
-        label="Price"
+        label="Minimum price"
+        type="number"
+        InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
+        color="secondary"
+        variant="filled"
+        style={{ marginTop: 20 }}
+        sx={numFieldSx.root}
+      />
+      <TextField
+        value={Number(values.max_price) == 0 ? '' : Number(values.max_price)}
+        onChange={e => setFieldValue('max_price', e.target.value)}
+        required
+        fullWidth
+        label="Maximum price"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         color="secondary"
