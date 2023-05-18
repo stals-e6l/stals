@@ -13,11 +13,10 @@ const ResultPage: React.FC<IProps> = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
-        width: '100vw',
+        height: 'calc(100vh - 60px)',
+        width: '100%',
       }}
     >
-      <Navbar />
       <Grid container>
         <Grid item xs={3}>
           <SearchAccommodations />

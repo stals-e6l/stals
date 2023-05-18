@@ -1,21 +1,11 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import AccommodationCard from '../modules/accommodation/AccommodationCard'
-import AccommodationForm from '../modules/accommodation/AccommodationForm'
-import AccommodationFormModal from '../modules/accommodation/AccommodationFormModal'
-import AccommodationResults from '../modules/accommodation/AccommodationResults'
-import DeleteAccommodationForm from '../modules/accommodation/DeleteAccommodationForm'
-import DeleteAccommodationFormModal from '../modules/accommodation/DeleteAccommodationFormModal'
-import DownloadAccommodations from '../modules/accommodation/DownloadAccommodations'
-import FilterAccommodations from '../modules/accommodation/FilterAccommodations'
-import SearchAccommodations from '../modules/accommodation/SearchAccommodations'
-import SignInForm from '../modules/auth/SignInForm'
-import SignUpForm from '../modules/auth/SignUpForm'
 import ModulesViewer from '../modules'
 import AuthPage from '../pages/AuthPage'
 import { AuthGuard } from '../modules/auth/AuthProvider'
 import ExplorePage from '../pages/ExplorePage'
 import ResultPage from '../pages/ResultPage'
+import IndexPage from '../pages'
 
 export const ROUTES = {
   auth: '/auth',
@@ -38,7 +28,7 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <AuthGuard>
-        <ModulesViewer />
+        <IndexPage />
       </AuthGuard>
     ),
     children: [
@@ -53,71 +43,6 @@ const router = createBrowserRouter([
       {
         path: ROUTES.result,
         element: <ResultPage />,
-      },
-      {
-        path: '/AccommodationCard',
-        element: (
-          <AccommodationCard isPublicView={false} accommodation={{} as any} />
-        ),
-      },
-      {
-        path: '/AccommodationForm',
-        element: <AccommodationForm />,
-      },
-      {
-        path: '/AccommodationFormModal',
-        element: <AccommodationFormModal />,
-      },
-      {
-        path: '/AccommodationResults',
-        element: <AccommodationResults />,
-      },
-      {
-        path: '/DeleteAccommodationForm',
-        element: (
-          <DeleteAccommodationForm
-            input={''}
-            setField={() => {
-              return -1
-            }}
-            isSoftDelete={false}
-          />
-        ),
-      },
-      {
-        path: '/DeleteAccommodationFormModal',
-        element: (
-          <DeleteAccommodationFormModal
-            accommodationId={''}
-            isSoftDelete={false}
-          />
-        ),
-      },
-      {
-        path: '/DownloadAccommodations',
-        element: <DownloadAccommodations />,
-      },
-      {
-        path: '/FilterAccommodations',
-        element: <FilterAccommodations />,
-      },
-      {
-        path: '/SearchAccommodations',
-        element: <SearchAccommodations />,
-      },
-      {
-        path: '/SignInForm',
-        element: <SignInForm />,
-      },
-      {
-        path: '/SignUpForm',
-        element: (
-          <SignUpForm
-            onClose={() => {
-              return 1
-            }}
-          />
-        ),
       },
     ],
   },
