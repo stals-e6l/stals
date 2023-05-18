@@ -4,6 +4,8 @@ const { ERRORS, BAD_REQUEST, NOT_FOUND } = require('./error_handler')
 const { ErrorHandler } = require('./error_handler')
 const { CREATED, OK } = require('./success_handler')
 
+const Accommodation = require('../models/v2/accommodation')
+
 const RESTRouter = function (name, model) {
   // create router
   const router = Router()
@@ -28,10 +30,14 @@ const RESTRouter = function (name, model) {
     try {
       let query = { ...req.query }
       delete query['limit'] //delete every query that's not part of the database model
+      delete query['search']
 
       const limit = Number(req.query.limit) || 100
       const data = await model.find(query).limit(limit)
 
+      if(model == Accommodation){
+        console.log("HELLOOOOOOO")
+      }
       console.log(req.query)
       const data2 = await model.find({$text: {$search: req.query.search}});
 
