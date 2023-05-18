@@ -20,13 +20,14 @@ import {
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 import Pluralize from 'react-pluralize'
 import { NumericFormat } from 'react-number-format'
-import { downloadPdf } from '../../store/report/actions'
+import { downloadPdf, createReport } from '../report/ReportsProvider'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import DownloadAccommodationsIncludeFields from './DownloadAccommodationsIncludeFields'
 import useMenu from '../../hooks/useMenu'
+import { getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -42,6 +43,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   const { open: openDialog, toggleDialog } = useDialog()
   const { anchorEl, onClose, onOpen } = useMenu()
   const accommodations = retrieveAccommodations()
+  const onCreateReport = createReport()
+  const me = getMe()
 
   // state
 
@@ -99,28 +102,30 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   // events
   const handleDownload = () => {
-    downloadPdf(`#${tableId}`)
-      .then(() => {
-        toggleDialog()
+    const id = downloadPdf(`#${tableId}`)
+    if (me && onCreateReport) {
+      onCreateReport({
+        user_id: me._id,
+        pdf_url: `http://localhost:5173/DownloadAccommodations-${id}.pdf`,
       })
-      .catch(err => {
-        // TODO: PM's job (track error)
-        console.error(err)
-      })
-      .finally(() => {
-        setFields({
-          name: true,
-          type: true,
-          price: true,
-          size_sqm: true,
-          meters_from_uplb: true,
-          min_pax: true,
-          max_pax: true,
-          num_rooms: true,
-          num_beds: true,
-          furnishing: true,
+        .then(() => {
+          toggleDialog()
         })
-      })
+        .finally(() => {
+          setFields({
+            name: true,
+            type: true,
+            price: true,
+            size_sqm: true,
+            meters_from_uplb: true,
+            min_pax: true,
+            max_pax: true,
+            num_rooms: true,
+            num_beds: true,
+            furnishing: true,
+          })
+        })
+    }
   }
 
   return (
@@ -154,21 +159,14 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               },
             }}
           >
-            {/* <DialogTitle
-                sx={{
-                  '&.MuiTypography-root': {
-                    color: theme.palette.primary.main,
-                  },
-                }}
-              >
-                PDF Preview
-              </DialogTitle> */}
-            <Box sx={{
-              display: 'inline-flex',
-              justifyContent: 'space-between',
-              paddingRight: theme.spacing(2),
-              paddingLeft: theme.spacing(1),
-            }}>
+            <Box
+              sx={{
+                display: 'inline-flex',
+                justifyContent: 'space-between',
+                paddingRight: theme.spacing(2),
+                paddingLeft: theme.spacing(1),
+              }}
+            >
               <DialogTitle
                 sx={{
                   '&.MuiTypography-root': {
@@ -187,7 +185,6 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 />
               </IconButton>
             </Box>
-            
 
             <Divider />
 
@@ -266,7 +263,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                             >
                               <NumericFormat
                                 displayType="text"
-                                value={accommodation.price}
+                                value={accommodation.min_price}
                                 prefix={'₱ '}
                                 thousandSeparator=","
                               />

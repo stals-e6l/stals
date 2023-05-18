@@ -1,10 +1,15 @@
 const { RESTRouter } = require('../handler/rest_router')
 
-const Report = require("../models/v2/report");
+const Report = require('../models/v2/report')
 
-const reportRouter = RESTRouter('/report', Report)
+const reportRouter = RESTRouter('/report', Report, {
+    create: ["admin", "owner", "tenant"],
+    retrieve: ["admin"],
+    update: ["admin"],
+    delete: ["admin"],
+})
 
-module.exports = reportRouter;
+module.exports = reportRouter
 
 /**
  * @openapi
@@ -54,9 +59,8 @@ module.exports = reportRouter;
  *                  description: Internal Server error.
  *          tags:
  *              - Report
- *              
+ *
  */
-
 
 /**
  * @openapi
@@ -87,9 +91,8 @@ module.exports = reportRouter;
  *                  description: Not found.
  *          tags:
  *              - Report
- *              
+ *
  */
-
 
 /**
  * @openapi
@@ -131,10 +134,9 @@ module.exports = reportRouter;
  *                  description: Internal Server error.
  *          tags:
  *              - Report
- *              
- *              
+ *
+ *
  */
-
 
 /**
  * @openapi
@@ -163,9 +165,8 @@ module.exports = reportRouter;
  *                  description: Internal Server error.
  *          tags:
  *              - Report
- *              
+ *
  */
-
 
 /**
  * @openapi
@@ -202,5 +203,5 @@ module.exports = reportRouter;
  *                  description: Internal Server error.
  *          tags:
  *              - Report
- *              
+ *
  */
