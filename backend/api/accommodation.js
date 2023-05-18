@@ -194,6 +194,10 @@ const accommodationRouter = RESTRouter('/accommodation', Accommodation)
  *              -   bearerAuth: []
  *          parameters:
  *              -   in: query
+ *                  name: search
+ *                  schema:
+ *                      type: string
+ *              -   in: query
  *                  name: user_id
  *                  schema:
  *                      type: string

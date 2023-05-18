@@ -32,6 +32,11 @@ const RESTRouter = function (name, model) {
       const limit = Number(req.query.limit) || 100
       const data = await model.find(query).limit(limit)
 
+      console.log(req.query)
+      const data2 = await model.find({$text: {$search: req.query.search}});
+
+      console.log(data2)
+
       if (!data) {
         throw Error(ERRORS[BAD_REQUEST])
       }
