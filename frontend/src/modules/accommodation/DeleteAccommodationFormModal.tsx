@@ -14,6 +14,7 @@ import {
   archiveAccommodation,
   deleteAccommodation,
 } from './AccommodationsProvider'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -29,6 +30,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
   const { open, toggleDialog } = useDialog()
   const onArchiveAccommodation = archiveAccommodation()
   const onDeleteAccommodation = deleteAccommodation()
+  const onShowError = showErrorSnackbar()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -37,19 +39,27 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
 
   // events
   const handleSubmit = () => {
-    if (isSoftDelete) {
-      onArchiveAccommodation({
-        _id: '64629aa5150cc28f3cf80810',
-        is_soft_deleted: true,
-      })
-    } else {
-      onDeleteAccommodation('64629aa5150cc28f3cf80810')
+    if (onShowError) {
+      if (isSoftDelete) {
+        onArchiveAccommodation({
+          _id: accommodationId,
+          is_soft_deleted: true,
+        })
+          .then(() => toggleDialog())
+          .catch(err => String(onShowError(err)))
+      } else {
+        onDeleteAccommodation(accommodationId)
+          .then(() => toggleDialog())
+          .catch(err => String(onShowError(err)))
+      }
     }
   }
 
   return (
     <React.Fragment>
-      <Button onClick={toggleDialog}>Delete</Button>
+      <Button variant="contained" onClick={toggleDialog}>
+        {isSoftDelete ? 'Archive' : 'Delete'}
+      </Button>
       {open && (
         <Dialog
           open={open}
@@ -103,7 +113,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
                 },
               }}
             >
-              Delete
+              {isSoftDelete ? 'Archive' : 'Delete'}
             </Button>
           </DialogActions>
         </Dialog>
