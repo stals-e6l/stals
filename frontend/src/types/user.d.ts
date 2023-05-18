@@ -1,3 +1,5 @@
+type TUserRole = 'admin' | 'owner' | 'tenant'
+
 interface IUserSignIn {
   username: string
   password: string
@@ -5,18 +7,47 @@ interface IUserSignIn {
 
 interface IUserSignUp extends IUserSignIn {
   email: string
-  role: string
+  role: TUserRole
+  full_name: {
+    first_name: string
+    middle_name?: string
+    last_name: string
+  }
+  gender: TUserGender
+  address: {
+    home?: string
+    current?: string
+  }
+  birthday: string
+  organization?: string
+  phone: {
+    landline?: string
+    mobile?: string
+  }
 }
+
+type TUserGender = 'male' | 'female' | 'non_binary' | 'prefer_not_to_say'
 
 interface IUser extends IUserSignUp {
   _id: string
+
+  biography?: string
+
+  avatar: {
+    url?: string
+  }
+  createdAt?: string
+  updatedAt?: string
 }
 
 interface IAuthState {
+  user: IUser | null
+  token: string | null
   loaded: boolean
-  user?: IUser
-  dispatch: React.Dispatch<IReducerAction<TAuthActionType, TAuthActionPayload>>
+  dispatch: React.Dispatch<
+    IReducerAction<TAuthActionType, TAuthActionPayload>
+  > | null
 }
 
-type TAuthActionType = 'SIGN_IN' | 'SIGN_UP' | 'SIGN_OUT' | 'ME'
-type TAuthActionPayload = IUserSignIn | IUserSignUp | IUser | undefined
+type TAuthActionType = 'SET_USER' | 'SET_TOKEN' | 'SET_LOADED'
+type TAuthActionPayload = IUser | null | string | boolean

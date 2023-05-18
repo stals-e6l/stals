@@ -1,0 +1,22 @@
+[
+  [
+    {
+      "user_id": "user1",
+      "pdf_url": "https://example.com/reports/report1.pdf",
+      "createdAt": "2023-05-13T12:00:00.000Z",
+      "updatedAt": "2023-05-13T12:00:00.000Z"
+    },
+    {
+      "user_id": "user2",
+      "pdf_url": "https://example.com/reports/report2.pdf",
+      "createdAt": "2023-05-13T12:30:00.000Z",
+      "updatedAt": "2023-05-13T12:30:00.000Z"
+    },
+    {
+      "user_id": "user3",
+      "pdf_url": "https://example.com/reports/report3.pdf",
+      "createdAt": "2023-05-13T13:00:00.000Z",
+      "updatedAt": "2023-05-13T13:00:00.000Z"
+    }
+  ]
+]

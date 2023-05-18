@@ -6,8 +6,10 @@ type TColor =
   | 'black'
   | 'blue'
   | 'green'
+  | 'darkGreen'
   | 'textBlack'
   | 'textGray'
+  | 'negativeRed'
 
 type IColor = {
   [key in TColor]: string
