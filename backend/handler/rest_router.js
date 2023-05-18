@@ -28,20 +28,18 @@ const RESTRouter = function (name, model) {
   // GET /[resource]
   router.get(name, async (req, res) => {
     try {
+      let data;
       let query = { ...req.query }
       delete query['limit'] //delete every query that's not part of the database model
       delete query['search']
 
       const limit = Number(req.query.limit) || 100
-      const data = await model.find(query).limit(limit)
-
-      if(model == Accommodation){
-        console.log("HELLOOOOOOO")
+      if(!req.query.search){
+        data = await model.find(query).limit(limit)
       }
-      console.log(req.query)
-      const data2 = await model.find({$text: {$search: req.query.search}});
-
-      console.log(data2)
+      else{
+        data = await model.find({$text: {$search: req.query.search}}).limit(limit)
+      }
 
       if (!data) {
         throw Error(ERRORS[BAD_REQUEST])
