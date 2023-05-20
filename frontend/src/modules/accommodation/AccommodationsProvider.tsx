@@ -73,16 +73,11 @@ const accommodationReducer = (
       }
     case 'DELETE_ACCOMMODATION':
       // eslint-disable-next-line no-case-declarations
+      const temp = { ...state.accommodations }
+      delete temp[action.payload as string]
       return {
         ...state,
-        accommodations: toMap<IAccommodation>(
-          (
-            toArray<IAccommodation>(
-              state.accommodations as IMap<IAccommodation>
-            ) as IAccommodation[]
-          ).filter(p => p._id !== (action.payload as string)),
-          '_id'
-        ),
+        accommodations: temp,
       }
 
     default:
@@ -191,7 +186,7 @@ export const deleteAccommodation = () => {
   if (!dispatch) return
   return async (id: string) => {
     const res = await apiDelete<string>(`accommodation/${id}`)
-    if (res.success && res.data) {
+    if (res.success) {
       dispatch({
         type: 'DELETE_ACCOMMODATION',
         payload: id as string,
