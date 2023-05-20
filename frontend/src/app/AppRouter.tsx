@@ -6,11 +6,13 @@ import { AuthGuard } from '../modules/auth/AuthProvider'
 import ExplorePage from '../pages/ExplorePage'
 import ResultPage from '../pages/ResultPage'
 import IndexPage from '../pages'
+import ProfilePage from '../pages/ProfilePage'
 
 export const ROUTES = {
   auth: '/auth',
   explore: '/explore',
   result: '/result',
+  profile: '/profile'
 }
 
 interface IProps {
@@ -43,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.result,
         element: <ResultPage />,
+      },
+      {
+        path: ROUTES.profile,
+        element: <ProfilePage />,
       },
     ],
   },

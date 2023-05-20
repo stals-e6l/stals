@@ -66,7 +66,13 @@ const Navbar: React.FC<IProps> = () => {
             anchorEl={anchorlEl2}
             onClose={onClose2}
           >
-            <MenuItem>My profile</MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigate(ROUTES.profile)
+              }}
+            >
+              My profile
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 if (onSignOut) onSignOut().then(toAuth)
