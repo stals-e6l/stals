@@ -2,14 +2,13 @@ const { RESTRouter } = require('../handler/rest_router')
 
 const Accommodation = require('../models/v2/accommodation')
 const accommodationRouter = RESTRouter('/accommodation', Accommodation, {
-    create: ["admin", "owner"],
-    retrieve: ["admin", "owner", "tenant"],
-    update: ["admin", "owner"],
-    delete: ["admin", "owner"]
+  create: ['admin', 'owner'],
+  retrieve: ['admin', 'owner', 'tenant'],
+  update: ['admin', 'owner'],
+  delete: ['admin', 'owner'],
 })
 
 module.exports = accommodationRouter
-
 
 /**
  * @openapi
@@ -201,7 +200,7 @@ module.exports = accommodationRouter
  *          security:
  *              -   bearerAuth: []
  *          parameters:
- *              -   in: path
+ *              -   in: query
  *                  name: search
  *                  schema:
  *                      type: string
