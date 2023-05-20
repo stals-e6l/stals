@@ -1,7 +1,12 @@
 const { RESTRouter } = require('../handler/rest_router')
 
 const Review = require('../models/v2/review')
-const reviewRouter = RESTRouter('/review', Review)
+const reviewRouter = RESTRouter('/review', Review, {
+    create: ["admin", "owner", "tenant"],
+    retrieve: ["admin", "owner", "tenant"],
+    update: ["admin", "owner", "tenant"],
+    delete: ["admin", "owner", "tenant"]
+})
 
 module.exports = reviewRouter
 

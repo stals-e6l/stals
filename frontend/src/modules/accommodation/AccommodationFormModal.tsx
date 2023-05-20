@@ -4,10 +4,17 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Fab,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material'
 import React from 'react'
 import AccommodationForm from './AccommodationForm'
 import useDialog from '../../hooks/useDialog'
+import { createAccommodation } from './AccommodationsProvider'
+import { COLOR } from '../../theme'
+import PublishIcon from '@mui/icons-material/Publish'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -15,32 +22,122 @@ interface IProps {
 }
 
 const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
   // hooks
   const { open, toggleDialog } = useDialog()
+  const onCreateAccommodation = createAccommodation()
+  const onShowError = showErrorSnackbar()
+
+  // state
+  const [form, setForm] = React.useState<IAccommodation>({
+    image: {
+      url: (defaultValues && defaultValues.image.url) || '',
+    },
+    name: (defaultValues && defaultValues.name) || '',
+    address: (defaultValues && defaultValues.address) || '',
+    type: (defaultValues && defaultValues.type) || 'hotel',
+    min_price: (defaultValues && defaultValues.min_price) || 0,
+    max_price: (defaultValues && defaultValues.max_price) || 0,
+    size_sqm: (defaultValues && defaultValues.size_sqm) || 0,
+    meters_from_uplb: (defaultValues && defaultValues.meters_from_uplb) || 0,
+    min_pax: (defaultValues && defaultValues.min_pax) || 0,
+    max_pax: (defaultValues && defaultValues.max_pax) || 0,
+    num_rooms: (defaultValues && defaultValues.num_rooms) || 0,
+    num_beds: (defaultValues && defaultValues.num_beds) || 0,
+    num_views: (defaultValues && defaultValues.num_views) || 1,
+    furnishing:
+      (defaultValues && defaultValues.furnishing) || 'fully_furnished',
+    landmarks: (defaultValues && defaultValues.landmarks) || [],
+    cooking_rules: (defaultValues && defaultValues.cooking_rules) || [],
+    pet_rules: (defaultValues && defaultValues.pet_rules) || [],
+    other_rules: (defaultValues && defaultValues.other_rules) || [],
+    safety_and_security:
+      (defaultValues && defaultValues.safety_and_security) || [],
+    appliances: (defaultValues && defaultValues.appliances) || [],
+    amenities: (defaultValues && defaultValues.amenities) || [],
+    is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
+  })
+
+  // events
+  const setFieldValue = (
+    key: keyof IAccommodation,
+    val: string | number | string[]
+  ) => {
+    setForm(prev => ({ ...prev, [key]: val }))
+  }
 
   // events
   const handleSubmit = () => {
-    // TODO: PM's job
+    if (onCreateAccommodation && onShowError)
+      onCreateAccommodation(form)
+        .then(() => {
+          toggleDialog()
+        })
+        .catch(err => onShowError(String(err)))
   }
 
+  const cancelBtnSx = {
+    root: {
+      backgroundColor: COLOR.negativeRed,
+      color: COLOR.white,
+      borderRadius: '4px',
+      padding: '10px 20px',
+      '&:hover': {
+        backgroundColor: '#cc1d33',
+      },
+    },
+  }
+
+  const submitBtnSx = {
+    root: {
+      backgroundColor: COLOR.green,
+      color: COLOR.darkGreen,
+      borderRadius: theme.spacing(0.5),
+      padding: '10px 20px',
+      '&:hover': {
+        backgroundColor: '#93dba4',
+      },
+    },
+  }
   return (
     <React.Fragment>
-      <Button onClick={toggleDialog}>
-        {defaultValues ? 'Update accommodation' : 'Create accommodation'}
-      </Button>
+      <Fab
+        onClick={toggleDialog}
+        sx={{
+          ...submitBtnSx.root,
+          borderRadius: '50%',
+          position: 'absolute',
+          bottom: '5%',
+          right: '5%',
+        }}
+      >
+        <PublishIcon />
+      </Fab>
       {open && (
-        <Dialog open={open} onClose={toggleDialog}>
-          <DialogTitle>
+        <Dialog fullScreen={isMobile} open={open} onClose={toggleDialog}>
+          <DialogTitle sx={{ backgroundColor: '#0c2c44', color: COLOR.white }}>
+            {' '}
+            {/*TEMP COLOR*/}
             {defaultValues ? 'Update accommodation' : 'Create accommodation'}
           </DialogTitle>
 
-          <DialogContent>
-            <AccommodationForm defaultValues={defaultValues} />
+          <DialogContent sx={{ backgroundColor: '#0c2c44' }}>
+            {' '}
+            {/*TEMP COLOR*/}
+            <AccommodationForm form={form} setFieldValue={setFieldValue} />
           </DialogContent>
 
-          <DialogActions>
-            <Button onClick={toggleDialog}>Cancel</Button>
-            <Button onClick={handleSubmit}>Submit</Button>
+          <DialogActions sx={{ backgroundColor: '#0c2c44' }}>
+            {' '}
+            {/*TEMP COLOR*/}
+            <Button onClick={toggleDialog} sx={cancelBtnSx.root}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} sx={submitBtnSx.root}>
+              Submit
+            </Button>
           </DialogActions>
         </Dialog>
       )}

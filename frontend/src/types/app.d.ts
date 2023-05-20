@@ -9,3 +9,7 @@
 // }
 
 type IEvent = any
+
+type IMap<T> = {
+  [key: string]: T
+}
