@@ -12,13 +12,18 @@ type TAccommodationFurnishing =
 interface IAccommodation {
   // nullable
   _id?: string // why? this is only available when created
-  owner_id?: string // why? same with _id
+  user_id?: string // why? same with _id
   description?: string // an accommodation can have no description
   // required
   name: string
+  image: {
+    url: string
+  }
   address: string
   type: TAccommodationType
-  price: number
+  furnishing: TAccommodationFurnishing
+  min_price: number
+  max_price: number
   size_sqm: number
   meters_from_uplb: number
   min_pax: number
@@ -26,7 +31,6 @@ interface IAccommodation {
   num_rooms: number
   num_beds: number //string // e.g. 2-3 beds
   num_views: number
-  furnishing: TAccommodationFurnishing
   landmarks: string[]
   cooking_rules: string[]
   pet_rules: string[]
@@ -34,22 +38,28 @@ interface IAccommodation {
   safety_and_security: string[]
   appliances: string[]
   amenities: string[]
-  created_at?: string
-  updated_at?: string
+  createdAt?: string
+  updatedAt?: string
+  is_soft_deleted: boolean
+}
+
+interface IArchiveAccomodationPayload {
+  _id: string
   is_soft_deleted: boolean
 }
 
 interface IAccommodationsFilter {
   name?: string
-  type?: TAccommodationType
-  price?: number
+  type?: TAccommodationType | ''
+  min_price?: number
+  max_price?: number
   size_sqm?: number
   meters_from_uplb?: number
   min_pax?: number
   max_pax?: number
   num_rooms?: number
   num_beds?: number //string // e.g. 2-3 beds
-  furnishing?: TAccommodationFurnishing
+  furnishing?: TAccommodationFurnishing | ''
 }
 
 interface IDownloadAccommodations {
@@ -68,12 +78,15 @@ interface IDownloadAccommodations {
 type IDownloadAccommodationsField = keyof IDownloadAccommodations
 
 interface IAccommodationsState {
-  accommodations: IAccommodation[] | null
+  accommodations: IMap<IAccommodation> | null
   dispatch: React.Dispatch<
     IReducerAction<TAccommodationActionType, TAccommodationPayload>
   > | null
 }
 
-type TAccommodationActionType = 'INIT_ACCOMMODATIONS'
+type TAccommodationActionType =
+  | 'SET_ACCOMMODATIONS'
+  | 'ADD_ACCOMMODATION'
+  | 'DELETE_ACCOMMODATION'
 
-type TAccommodationPayload = IAccommodation[]
+type TAccommodationPayload = IAccommodation[] | IAccommodation | string

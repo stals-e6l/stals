@@ -15,7 +15,9 @@ import {
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { COLOR } from '../../theme'
+import { signUp } from './AuthProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -23,29 +25,57 @@ interface IProps {
 }
 
 const SignUpForm: React.FC<IProps> = ({ onClose }) => {
-  // const signUpHandler = signUp()
+  // hooks
+  const theme = useTheme()
+  const onSignUp = signUp()
+  const onShowError = showErrorSnackbar()
+
   // state
   const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
     username: '',
     password: '',
     email: '',
     role: 'admin',
+    full_name: {
+      first_name: '',
+      middle_name: '',
+      last_name: '',
+    },
+    gender: 'male',
+    address: {
+      home: '',
+      current: '',
+    },
+    phone: {
+      landline: '',
+      mobile: '',
+    },
+    birthday: String(new Date()),
+    organization: '',
     confirm: '',
   })
 
+  // events
   const handleSignUp = () => {
-    // TODO: PM's job, for now refine the styling
-    // signUpHandler({
-    //   username: form.username,
-    //   password: form.password,
-    //   email: form.email,
-    //   role: form.role,
-    // }).then(() => {
-    //   onClose()
-    // })
+    if (onSignUp && onShowError) {
+      onSignUp({
+        ...form,
+        phone: {
+          mobile: form.phone.mobile === '' ? undefined : form.phone.mobile,
+          landline:
+            form.phone.landline === '' ? undefined : form.phone.landline,
+        },
+        organization: form.organization === '' ? undefined : form.organization,
+        address: {
+          current:
+            form.address.current === '' ? undefined : form.address.current,
+          home: form.address.home === '' ? undefined : form.address.home,
+        },
+      })
+        .then(() => onClose())
+        .catch(err => onShowError(String(err)))
+    }
   }
-
-  const theme = useTheme()
 
   React.useEffect(() => {
     return () =>
@@ -54,7 +84,23 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         password: '',
         email: '',
         role: 'admin',
+        full_name: {
+          first_name: '',
+          middle_name: '',
+          last_name: '',
+        },
+        gender: 'male',
+        address: {
+          home: '',
+          current: '',
+        },
+        phone: {
+          landline: '',
+          mobile: '',
+        },
+        birthday: String(new Date()),
         confirm: '',
+        organization: '',
       })
   }, [])
 
@@ -118,7 +164,9 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           sx={{ backgroundColor: COLOR.white }}
           size="small"
           value={form.role}
-          onChange={e => setForm(prev => ({ ...prev, role: e.target.value }))}
+          onChange={e =>
+            setForm(prev => ({ ...prev, role: e.target.value as TUserRole }))
+          }
         >
           <MenuItem value={'admin'}>Admin</MenuItem>
           <MenuItem value={'tenant'}>Student</MenuItem>
@@ -131,10 +179,10 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           size="small"
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
+          value={form.organization}
+          onChange={e =>
+            setForm(prev => ({ ...prev, organization: e.target.value }))
+          }
         />
 
         <Grid
@@ -150,10 +198,16 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               fullWidth
               required
               sx={{ backgroundColor: COLOR.white }}
-              //   value={form.firstname}
-              //   onChange={e =>
-              //     setForm(prev => ({ ...prev, username: e.target.value }))
-              //   }
+              value={form.full_name.first_name}
+              onChange={e =>
+                setForm(prev => ({
+                  ...prev,
+                  full_name: {
+                    ...prev.full_name,
+                    first_name: e.target.value,
+                  },
+                }))
+              }
             />
           </Grid>
 
@@ -165,10 +219,16 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               fullWidth
               required
               sx={{ backgroundColor: COLOR.white }}
-              //   value={form.firstname}
-              //   onChange={e =>
-              //     setForm(prev => ({ ...prev, username: e.target.value }))
-              //   }
+              value={form.full_name.last_name}
+              onChange={e =>
+                setForm(prev => ({
+                  ...prev,
+                  full_name: {
+                    ...prev.full_name,
+                    last_name: e.target.value,
+                  },
+                }))
+              }
             />
           </Grid>
 
@@ -179,10 +239,16 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
-              //   value={form.firstname}
-              //   onChange={e =>
-              //     setForm(prev => ({ ...prev, username: e.target.value }))
-              //   }
+              value={form.full_name.middle_name}
+              onChange={e =>
+                setForm(prev => ({
+                  ...prev,
+                  full_name: {
+                    ...prev.full_name,
+                    middle_name: e.target.value,
+                  },
+                }))
+              }
             />
           </Grid>
         </Grid>
@@ -196,9 +262,12 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               required
               sx={{ backgroundColor: COLOR.white }}
               size="small"
-              value={form.role}
+              value={form.gender}
               onChange={e =>
-                setForm(prev => ({ ...prev, role: e.target.value }))
+                setForm(prev => ({
+                  ...prev,
+                  gender: e.target.value as TUserGender,
+                }))
               }
             >
               <MenuItem value={'male'}>Male</MenuItem>
@@ -211,11 +280,15 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           <Grid item xs={5}>
             <InputLabel>Birthday</InputLabel>
             <DatePicker
+              // value={form.birthday as string}
               slotProps={{ textField: { size: 'small' } }}
               onChange={value => {
                 const date = value as { $d: string }
-                const strDate = date.$d
-                console.log({ strDate })
+                const birthday = new Date(date.$d).toISOString().split('T')[0]
+                setForm(prev => ({
+                  ...prev,
+                  birthday,
+                }))
               }}
             />
           </Grid>
@@ -229,10 +302,16 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
-              //   value={form.firstname}
-              //   onChange={e =>
-              //     setForm(prev => ({ ...prev, username: e.target.value }))
-              //   }
+              value={form.phone.mobile}
+              onChange={e =>
+                setForm(prev => ({
+                  ...prev,
+                  phone: {
+                    ...prev.phone,
+                    mobile: e.target.value,
+                  },
+                }))
+              }
             />
           </Grid>
 
@@ -243,10 +322,16 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
-              //   value={form.firstname}
-              //   onChange={e =>
-              //     setForm(prev => ({ ...prev, username: e.target.value }))
-              //   }
+              value={form.phone.landline}
+              onChange={e =>
+                setForm(prev => ({
+                  ...prev,
+                  phone: {
+                    ...prev.phone,
+                    landline: e.target.value,
+                  },
+                }))
+              }
             />
           </Grid>
         </Grid>
@@ -258,10 +343,16 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           fullWidth
           required
           sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
+          value={form.address.current}
+          onChange={e =>
+            setForm(prev => ({
+              ...prev,
+              address: {
+                ...prev.address,
+                current: e.target.value,
+              },
+            }))
+          }
         />
 
         <FormLabel required>Home Address</FormLabel>
@@ -271,10 +362,16 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           fullWidth
           required
           sx={{ backgroundColor: COLOR.white }}
-          //   value={form.firstname}
-          //   onChange={e =>
-          //     setForm(prev => ({ ...prev, username: e.target.value }))
-          //   }
+          value={form.address.home}
+          onChange={e =>
+            setForm(prev => ({
+              ...prev,
+              address: {
+                ...prev.address,
+                home: e.target.value,
+              },
+            }))
+          }
         />
 
         <FormLabel required>Password</FormLabel>

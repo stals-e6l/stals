@@ -1,6 +1,6 @@
 import React from 'react'
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import theme from '.'
+import theme from '../theme'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 

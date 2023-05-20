@@ -8,11 +8,15 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../assets/Images/Logo_Green.png'
 
 import SignUpForm from './SignUpForm'
 import { COLOR } from '../../theme'
+import { signIn } from './AuthProvider'
+import useDialog from '../../hooks/useDialog'
+import { ROUTES } from '../../app/AppRouter'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -20,24 +24,30 @@ interface IProps {
 
 const SignInForm: React.FC<IProps> = () => {
   // hooks
-  // const signInHandler = signIn()
-  // const navigate = useNavigate()
   const theme = useTheme()
+  const onSignIn = signIn()
+  const { open, toggleDialog } = useDialog()
+  const navigate = useNavigate()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const onShowError = showErrorSnackbar()
+
   // states
   const [form, setForm] = React.useState<IUserSignIn>({
     username: '',
     password: '',
   })
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
 
+  // events
+  const handleOpen = () => toggleDialog()
+  const handleClose = () => toggleDialog()
   const handleSignIn = () => {
-    // TODO: PM's job, refine the styling for now
-    // signInHandler(form).then(() => {
-    //   navigate('/accommodations')
-    // })
+    if (onSignIn && onShowError) {
+      onSignIn(form)
+        .then(() => {
+          navigate(ROUTES.explore)
+        })
+        .catch(err => onShowError(String(err)))
+    }
   }
 
   return (
