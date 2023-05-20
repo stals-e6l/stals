@@ -21,39 +21,59 @@ interface IAccommodation {
   price: number
   size_sqm: number
   meters_from_uplb: number
-  landmarks: string[]
   min_pax: number
   max_pax: number
   num_rooms: number
-  num_beds: string // e.g. 2-3 beds
+  num_beds: number //string // e.g. 2-3 beds
   num_views: number
   furnishing: TAccommodationFurnishing
+  landmarks: string[]
   cooking_rules: string[]
   pet_rules: string[]
   other_rules: string[]
   safety_and_security: string[]
   appliances: string[]
   amenities: string[]
-  created_at: string
-  updated_at: string
+  created_at?: string
+  updated_at?: string
   is_soft_deleted: boolean
 }
 
-interface IAccommodationState {
-  accommodations: IAccommodation[] // why nullable? nullable during fetching/init
-  dispatch: React.Dispatch<
-    IReducerAction<TAccommodationActionType, TAccommodationPayload>
-  >
+interface IAccommodationsFilter {
+  name?: string
+  type?: TAccommodationType
+  price?: number
+  size_sqm?: number
+  meters_from_uplb?: number
+  min_pax?: number
+  max_pax?: number
+  num_rooms?: number
+  num_beds?: number //string // e.g. 2-3 beds
+  furnishing?: TAccommodationFurnishing
 }
 
-// ACTIONS
+interface IDownloadAccommodations {
+  name: boolean
+  type: boolean
+  price: boolean
+  size_sqm: boolean
+  meters_from_uplb: boolean
+  min_pax: boolean
+  max_pax: boolean
+  num_rooms: boolean
+  num_beds: boolean
+  furnishing: boolean
+}
 
-type TAccommodationActionType =
-  | 'AC_INIT'
-  | 'AC_CREATE'
-  | 'AC_RETRIEVE_ALL'
-  | 'AC_RETRIEVE_BY_ID'
-  | 'AC_UPDATE'
-  | 'AC_DELETE'
+type IDownloadAccommodationsField = keyof IDownloadAccommodations
 
-type TAccommodationPayload = IAccommodation | IAccommodation[] | string
+interface IAccommodationsState {
+  accommodations: IAccommodation[] | null
+  dispatch: React.Dispatch<
+    IReducerAction<TAccommodationActionType, TAccommodationPayload>
+  > | null
+}
+
+type TAccommodationActionType = 'INIT_ACCOMMODATIONS'
+
+type TAccommodationPayload = IAccommodation[]

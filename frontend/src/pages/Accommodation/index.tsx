@@ -1,6 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { retrieveAccommodations } from '../../store/accommodation/actions'
+import {
+  createAccommodation,
+  retrieveAccommodations,
+} from '../../store/accommodation/actions'
+// import DeleteAccom from './deleteAccomodation'
 
 interface IProps {
   children?: React.ReactNode
@@ -8,7 +12,33 @@ interface IProps {
 
 const AccommodationPage: React.FC<IProps> = () => {
   const accommodations = retrieveAccommodations()
+  const createAccommodationHandler = createAccommodation()
   const navigate = useNavigate()
+
+  const handleSampleCreate = () => {
+    createAccommodationHandler({
+      name: 'asdfasdfsadf',
+      address: 'sdfsdfs',
+      type: 'hotel',
+      price: 0,
+      size_sqm: 0,
+      meters_from_uplb: 0,
+      landmarks: [],
+      min_pax: 0,
+      max_pax: 0,
+      num_rooms: 0,
+      num_beds: 5,
+      num_views: 0,
+      furnishing: 'unfurnished',
+      cooking_rules: [],
+      pet_rules: [],
+      other_rules: [],
+      safety_and_security: [],
+      appliances: [],
+      amenities: [],
+      is_soft_deleted: false,
+    })
+  }
 
   return (
     <div>
@@ -23,6 +53,10 @@ const AccommodationPage: React.FC<IProps> = () => {
           </li>
         ))}
       </ul>
+      <button onClick={() => handleSampleCreate()}>
+        sample create accommodation
+      </button>
+      {/* < DeleteAccom /> */}
     </div>
   )
 }

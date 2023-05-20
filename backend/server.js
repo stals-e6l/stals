@@ -5,11 +5,18 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerJsdoc = require('swagger-jsdoc')
 const cors = require('cors')
 const { connectDb } = require('./db')
-var bodyParser = require("body-parser");
+var bodyParser = require('body-parser')
+const { authGuard } = require('./handler/auth_middleware')
+const {
+  signUpEndpoint,
+  signInEndpoint,
+  signOutEndpoint,
+  meEndpoint,
+} = require('./api/auth')
 
 const server = express()
-const PORT = 5000
-const HOST = 'localhost'
+const PORT = process.env.PORT
+const HOST = process.env.HOST
 
 const MORGAN_STYLE = process.env.MORGAN_STYLE
 const SWAGGER_PATH = '/docs'
@@ -34,11 +41,19 @@ server.use(
   )
 )
 
-server.use(bodyParser.json());
+server.use(bodyParser.json())
 
 /** INSERT API BELOW */
+server.use('/api/sign-up', signUpEndpoint)
+server.use('/api/sign-in', signInEndpoint)
+server.use(authGuard)
+server.use('/api/me', meEndpoint)
+server.use('/api/sign-out', signOutEndpoint)
 server.use('/api/ping', require('./api/ping'))
-server.use('/api/accomodation', require('./api/accomodation'))
+server.use('/api', require('./api/accommodation'))
+server.use('/api', require('./api/review'))
+server.use('/api', require('./api/report'))
+server.use('/api', require('./api/assets'))
 
 /** END API */
 

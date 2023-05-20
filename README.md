@@ -4,13 +4,19 @@ Student Accommodation and Lodging System
 
 ## Getting started
 
-1. Install ```nvm``` to manage Node.js versions. Refer to this [link](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/) to download.
-
-2. To verify that you have downloaded ```nvm```, type ```nvm --version```. This should print your version.
-
-4. Inside the ```stals``` directory, type the command ```nvm use```. You should see the result ```Now using node v18.15.0 (npm v9.5.0)```.
+1. Install ```volta``` Node.js version manager using this [link](https://docs.volta.sh/guide/getting-started).
+2. Verify successful installation using the command ```volta --version```.
+3. Inside the ```stals``` directory, run ```volta install node```. This will install the stable version of Node.js.
+4. Verify Node.js using the command ```volta list```. You should see ```Node: v18.16.0 (default)```. 
+5. You are good to go!
 
 3. You are now good to go!
+
+## Additional setup
+1. Please install MongoDB using this [link](https://www.mongodb.com/docs/manual/administration/install-community/).
+2. Follow the steps correctly. Use the guide based on the recommended OS.
+3. To verify that the MongoDB is installed, run the command ```mongosh```.
+
 
 ## For backend devs
 
@@ -52,3 +58,4 @@ Student Accommodation and Lodging System
 - Use ```feat: [message]``` if you are implementing a new feature.
 - Use ```refactor: [message]``` if you are improving an existing implementation/feature/
 - Use ```fix: [message]``` if you are addressing bugs.
+- Or for full details, you can follow this [cheatsheet](https://www.conventionalcommits.org/en/v1.0.0/).

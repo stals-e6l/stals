@@ -1,5 +1,5 @@
 import React from 'react'
-import { mockAccommodations } from './mock'
+import { apiGet } from '../../api'
 
 interface IProps {
   children?: React.ReactNode
@@ -8,20 +8,29 @@ interface IProps {
 const AccommodationProvider: React.FC<IProps> = ({ children }) => {
   const [state, dispatch] = React.useReducer(accommodationReducer, {
     accommodations: [],
+    results: [],
     dispatch: () => undefined,
   })
 
   // init accommodations
+  const initAccommodations = async () => {
+    const res = await apiGet<IAccommodation[]>('accommodation')
+    if (res.success && res.data) {
+      console.log({ loaded: true })
+      dispatch({
+        type: 'AC_INIT',
+        payload: res.data,
+      })
+    }
+  }
   React.useEffect(() => {
-    dispatch({
-      type: 'AC_INIT',
-      payload: mockAccommodations,
-    })
+    initAccommodations()
   }, [])
 
   return (
     <accommodationContext.Provider
       value={{
+        results: state.results,
         accommodations: state.accommodations,
         dispatch,
       }}
@@ -35,6 +44,7 @@ export default AccommodationProvider
 
 export const accommodationContext = React.createContext<IAccommodationState>({
   accommodations: [],
+  results: [],
   dispatch: () => undefined,
 })
 
@@ -74,6 +84,12 @@ const accommodationReducer = (
           el => el._id !== (action.payload as string)
         ),
       }
+    case 'AC_SEARCH': {
+      return {
+        ...state,
+        results: action.payload as IAccommodation[],
+      }
+    }
     default:
       return state
   }
