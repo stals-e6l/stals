@@ -108,6 +108,7 @@ export const initAuth = async () => {
 
 export const signIn = () => {
   const { dispatch } = useAuth()
+  const onFetchMe = fetchMe()
 
   if (!dispatch) return null
 
@@ -116,9 +117,10 @@ export const signIn = () => {
       payload: user,
     })
 
-    if (res.success && res.data) {
+    if (res.success && res.data && onFetchMe) {
       saveToken(res.data)
       dispatch({ type: 'SET_TOKEN', payload: res.data })
+      onFetchMe()
     } else {
       if (res.messages) {
         throw new Error(res.messages[0])

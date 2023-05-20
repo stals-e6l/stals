@@ -2,6 +2,7 @@ import React from 'react'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
 import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
+import { getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -9,6 +10,7 @@ interface IProps {
 
 const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   // state
+  const me = getMe()
   const [state, dispatch] = React.useReducer(accommodationReducer, {
     accommodations: null,
     dispatch: null,
@@ -16,13 +18,15 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
 
   // events
   React.useEffect(() => {
-    initAccommodations().then(data => {
-      dispatch({
-        type: 'SET_ACCOMMODATIONS',
-        payload: data as IAccommodation[],
+    if (me) {
+      initAccommodations().then(data => {
+        dispatch({
+          type: 'SET_ACCOMMODATIONS',
+          payload: data as IAccommodation[],
+        })
       })
-    })
-  }, [])
+    }
+  }, [me])
 
   console.log({ accommodationsState: state })
 
