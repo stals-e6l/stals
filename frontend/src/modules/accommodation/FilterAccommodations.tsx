@@ -72,7 +72,7 @@ const FilterAccommodations: React.FC<IProps> = () => {
       furnishing: filter.furnishing === '' ? undefined : filter.furnishing,
     })
 
-    navigate(`${ROUTES.result}?${queryString}`)
+    navigate(`${ROUTES.appResult}?${queryString}`)
     if (onFilterAccommodations) {
       onFilterAccommodations(queryString)
     }
