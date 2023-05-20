@@ -201,7 +201,7 @@ module.exports = accommodationRouter
  *          security:
  *              -   bearerAuth: []
  *          parameters:
- *              -   in: query
+ *              -   in: path
  *                  name: search
  *                  schema:
  *                      type: string
