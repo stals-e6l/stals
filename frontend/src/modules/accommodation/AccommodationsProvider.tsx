@@ -3,6 +3,7 @@ import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
 import { apiDelete, apiGet, apiPost, apiPut } from '../../services/api'
 import { getMe } from '../auth/AuthProvider'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -89,19 +90,21 @@ const accommodationReducer = (
 
 export const initAccommodations = async () => {
   const res = await apiGet<IAccommodation[]>('accommodation')
+  const onShowError = showErrorSnackbar()
   if (res.data && res.success) {
     return res.data
   }
 
-  if (res.messages) {
-    throw new Error(res.messages[0]) // TODO: error snackbar
+  if (res.messages && onShowError) {
+    onShowError(res.messages[0])
   }
 }
 
 export const createAccommodation = () => {
   const { dispatch } =
     React.useContext<IAccommodationsState>(accommodationContext)
-  if (!dispatch) return
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
   return async (accommodation: IAccommodation) => {
     const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
       payload: accommodation,
@@ -112,8 +115,10 @@ export const createAccommodation = () => {
         type: 'ADD_ACCOMMODATION',
         payload: res.data as IAccommodation,
       })
+      return true
     } else {
-      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+      if (res.messages) onShowError(res.messages[0])
+      return false
     }
   }
 }
@@ -137,7 +142,8 @@ export const filterAccommodations = () => {
   const { dispatch } =
     React.useContext<IAccommodationsState>(accommodationContext)
 
-  if (!dispatch) return
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
 
   return async (qs: string) => {
     // call api
@@ -150,8 +156,10 @@ export const filterAccommodations = () => {
         type: 'SET_ACCOMMODATIONS',
         payload: res.data,
       })
+      return true
     } else {
-      if (res.messages) throw new Error(res.messages[0])
+      if (res.messages) onShowError(res.messages[0])
+      return false
     }
   }
 }
@@ -159,7 +167,8 @@ export const filterAccommodations = () => {
 export const archiveAccommodation = () => {
   const { dispatch } =
     React.useContext<IAccommodationsState>(accommodationContext)
-  if (!dispatch) return
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
   return async (payload: IArchiveAccomodationPayload) => {
     const res = await apiPut<IArchiveAccomodationPayload, IAccommodation>(
       `accommodation/${payload._id}`,
@@ -169,13 +178,14 @@ export const archiveAccommodation = () => {
     )
 
     if (res.success && res.data) {
-      // dispatch
       dispatch({
         type: 'DELETE_ACCOMMODATION',
         payload: res.data._id as string,
       })
+      return true
     } else {
-      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+      if (res.messages) onShowError(res.messages[0])
+      return false
     }
   }
 }
@@ -183,7 +193,8 @@ export const archiveAccommodation = () => {
 export const deleteAccommodation = () => {
   const { dispatch } =
     React.useContext<IAccommodationsState>(accommodationContext)
-  if (!dispatch) return
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
   return async (id: string) => {
     const res = await apiDelete<string>(`accommodation/${id}`)
     if (res.success) {
@@ -191,8 +202,10 @@ export const deleteAccommodation = () => {
         type: 'DELETE_ACCOMMODATION',
         payload: id as string,
       })
+      return true
     } else {
-      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+      if (res.messages) onShowError(res.messages[0])
+      return false
     }
   }
 }

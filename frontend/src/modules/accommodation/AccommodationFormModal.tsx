@@ -14,7 +14,6 @@ import useDialog from '../../hooks/useDialog'
 import { createAccommodation } from './AccommodationsProvider'
 import { COLOR } from '../../theme'
 import PublishIcon from '@mui/icons-material/Publish'
-import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -28,7 +27,6 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
   const onCreateAccommodation = createAccommodation()
-  const onShowError = showErrorSnackbar()
 
   // state
   const [form, setForm] = React.useState<IAccommodation>({
@@ -70,12 +68,10 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
 
   // events
   const handleSubmit = () => {
-    if (onCreateAccommodation && onShowError)
-      onCreateAccommodation(form)
-        .then(() => {
-          toggleDialog()
-        })
-        .catch(err => onShowError(String(err)))
+    if (onCreateAccommodation)
+      onCreateAccommodation(form).then(status => {
+        if (status) toggleDialog()
+      })
   }
 
   const cancelBtnSx = {
