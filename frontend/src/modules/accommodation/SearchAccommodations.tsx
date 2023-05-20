@@ -10,7 +10,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import React from 'react'
 import { COLOR } from '../../theme'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { buildQueryString } from '../../helpers/queryString'
+import { buildQueryString } from '../../utils/queryString'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import { ROUTES } from '../../app/AppRouter'
 
@@ -33,7 +33,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
     setName(event.target.value)
   }
   const handleSearch = () => {
-    navigate(`${ROUTES.result}?${buildQueryString({ name })}`)
+    navigate(`${ROUTES.appResult}?${buildQueryString({ name })}`)
   }
 
   React.useEffect(() => {

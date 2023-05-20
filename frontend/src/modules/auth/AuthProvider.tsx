@@ -1,7 +1,7 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
 import { useNavigate } from 'react-router-dom'
-import { apiGet, apiPost } from '../../api'
+import { apiGet, apiPost } from '../../services/api'
 import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
@@ -53,10 +53,10 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     if (onFetchMe && dispatch && !loaded && onSetAuthLoaded)
       onFetchMe()
         .then(() => {
-          navigate(ROUTES.explore)
+          navigate(ROUTES.appExplore)
         })
         .catch(() => {
-          navigate(ROUTES.auth)
+          navigate(ROUTES.appAuth)
         })
         .finally(() => {
           onSetAuthLoaded(true)
@@ -108,6 +108,7 @@ export const initAuth = async () => {
 
 export const signIn = () => {
   const { dispatch } = useAuth()
+  const onFetchMe = fetchMe()
 
   if (!dispatch) return null
 
@@ -116,9 +117,10 @@ export const signIn = () => {
       payload: user,
     })
 
-    if (res.success && res.data) {
+    if (res.success && res.data && onFetchMe) {
       saveToken(res.data)
       dispatch({ type: 'SET_TOKEN', payload: res.data })
+      onFetchMe()
     } else {
       if (res.messages) {
         throw new Error(res.messages[0])
@@ -152,6 +154,7 @@ export const signOut = () => {
 
     // remove user
     dispatch({ type: 'SET_USER', payload: null })
+    dispatch({ type: 'SET_TOKEN', payload: null })
   }
 }
 

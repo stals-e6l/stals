@@ -17,7 +17,7 @@ import {
   Divider,
 } from '@mui/material'
 import { COLOR } from '../../theme'
-import { buildQueryString, extractQueryString } from '../../helpers/queryString'
+import { buildQueryString, extractQueryString } from '../../utils/queryString'
 import { filterAccommodations } from './AccommodationsProvider'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'

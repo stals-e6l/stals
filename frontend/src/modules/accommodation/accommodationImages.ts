@@ -1,7 +1,7 @@
-import EllensImage from "../../assets/Ellens.jpg"
+import EllensImage from '../../assets/Ellens.jpg'
 
 const AccommodationImages = {
-    ellens: EllensImage
+  ellens: EllensImage,
 }
 
 export default AccommodationImages
