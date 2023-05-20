@@ -18,11 +18,22 @@ import {
   Menu,
   IconButton,
 } from '@mui/material'
-import { DataGrid, GridValueGetterParams } from '@mui/x-data-grid';
+import { 
+  DataGrid, 
+  GridColDef, 
+  GridValueGetterParams, 
+  GridValueFormatterParams, 
+  GridToolbar,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarExport,
+  GridToolbarDensitySelector,
+} from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close';
-
+import toSentenceCase from '../../helpers/toSentenceCase';
 import { NumericFormat } from 'react-number-format'
 import { downloadPdf } from '../../store/report/actions'
 import { retrieveAccommodations } from './AccommodationsProvider'
@@ -99,30 +110,84 @@ const DownloadAccommodations: React.FC<IProps> = () => {
     'furnishing',
   ]
 
-  const columns = [
-    { field: "name", headerName: "Name", width: 150 },
-    { field: "type", headerName: "Type", width: 150 },
-    { field: "price", headerName: "Price", width: 150 },
-    { field: "size_sqm", headerName: "Room Size", width: 150 },
-    { field: "meters_from_uplb", headerName: "Distance from UPLB", width: 150 },
-    { field: "min_pax", headerName: "Minimum Tenants", width: 150 },
-    { field: "max_pax", headerName: "Minimum Tenants", width: 150 },
-    { field: "num_rooms", headerName: "Number of Rooms", width: 150 },
-    { field: "num_beds", headerName: "Number of Beds", width: 150 },
-    { field: "furnishing", headerName: "Furnishing Type", width: 150 },
+  const CustomNowRowsOverlay = () => (
+    <img src="/no-items-found.jpg" alt="no-item" />
+  );
+
+  const columns: GridColDef[] = [
+    { field: "name", headerName: "Name", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<string>) => {
+        if (params.value == null) {
+          return '';
+        }
+        return toSentenceCase(params.value);
+      },
+    },
+    { field: "type", headerName: "Type", align: "center", headerAlign: "center", width: 150 },
+    { field: "price", headerName: "Price", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        }
+        return `₱ ${params.value.toLocaleString('en')}`;
+      },
+    },
+    { field: "size_sqm", headerName: "Room Size", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        }
+        return `${params.value.toLocaleString('en')} sqm.`;
+      },
+    },
+    { field: "meters_from_uplb", headerName: "Distance from UPLB", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        }
+        return `${params.value.toLocaleString('en')} meters`;
+      },
+    },
+    { field: "min_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", width: 150 },
+    { field: "max_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", width: 150 },
+    { field: "num_rooms", headerName: "Number of Rooms", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        } else if (params.value == 1){
+          return `${params.value.toLocaleString('en')} room`;
+        }else{
+          return `${params.value.toLocaleString('en')} rooms`;
+        }
+      },
+    },
+    { field: "num_beds", headerName: "Number of Beds", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        } else if (params.value == 1){
+          return `${params.value.toLocaleString('en')} bed`;
+        }else{
+          return `${params.value.toLocaleString('en')} beds`;
+        }
+      },
+    },
+    { field: "furnishing", headerName: "Furnishing Type", align: "center", headerAlign: "center", width: 150 },
   ];
+
+  console.log(accommodations);
 
   const gridRows = accommodations ? accommodations.map((accommodations) => {
     return{
       id: accommodations._id,
       name: accommodations.name,
-      type: accommodations.type,
+      type: accommType[accommodations.type],
       price: accommodations.price,
       size_sqm: accommodations.size_sqm,
-      maters_from_uplb: accommodations.meters_from_uplb,
+      meters_from_uplb: accommodations.meters_from_uplb,
       min_pax: accommodations.min_pax,
       max_pax: accommodations.max_pax,
-      num_rows: accommodations.num_rooms,
+      num_rooms: accommodations.num_rooms,
       num_beds: accommodations.num_beds,
       furnishing: furnishing[accommodations.furnishing],
     }
@@ -185,15 +250,6 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               },
             }}
           >
-            {/* <DialogTitle
-                sx={{
-                  '&.MuiTypography-root': {
-                    color: theme.palette.primary.main,
-                  },
-                }}
-              >
-                PDF Preview
-              </DialogTitle> */}
             <Box sx={{
               display: 'inline-flex',
               justifyContent: 'space-between',
@@ -223,182 +279,59 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             <Divider />
 
             <DialogContent>
-              <Box>
-                <Button onClick={onOpen} variant="text">
-                  <MenuIcon
-                    sx={{
-                      color: theme.palette.secondary.main,
-                      marginRight: theme.spacing(),
-                    }}
-                  />
-                  Include fields
-                </Button>
-              </Box>
-              {/* Which fields to include */}
-              <Menu
-                open={Boolean(anchorEl)}
-                anchorEl={anchorEl}
-                onClose={onClose}
-              >
-                <DownloadAccommodationsIncludeFields
-                  downloadFields={downloadFields}
-                  tableHeaders={tableHeaders}
-                  fields={fields}
-                  setFields={setFields}
-                />
-              </Menu>
-
               {/* Preview table */}
-              <Box>
-                {/* <TableContainer>
-                  <Table id={tableId}>
-                    <TableHead
-                      sx={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      <TableRow>
-                        {Object.entries(fields as object)
-                          .filter(field => field[1])
-                          .map(field => (
-                            <TableCell
-                              key={field[0]}
-                              sx={{ textAlign: 'center' }}
-                            >
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  color: theme.palette.primary.main,
-                                  fontSize: theme.spacing(2),
-                                }}
-                              >
-                                {tableHeaders[field[0]]}
-                              </Typography>
-                            </TableCell>
-                          ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {accommodations.map(accommodation => (
-                        <TableRow key={accommodation._id}>
-                          {fields.name && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              {accommodation.name}
-                            </TableCell>
-                          )}
-                          {fields.type && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              {accommType[accommodation.type]}
-                            </TableCell>
-                          )}
-                          {fields.price && (
-                            <TableCell
-                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
-                            >
-                              <NumericFormat
-                                displayType="text"
-                                value={accommodation.price}
-                                prefix={'₱ '}
-                                thousandSeparator=","
-                              />
-                            </TableCell>
-                          )}
-                          {fields.size_sqm && (
-                            <TableCell
-                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
-                            >
-                              <NumericFormat
-                                displayType="text"
-                                value={accommodation.size_sqm}
-                                thousandSeparator=","
-                                suffix={' sqm.'}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.meters_from_uplb && (
-                            <TableCell
-                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
-                            >
-                              <NumericFormat
-                                displayType="text"
-                                value={accommodation.meters_from_uplb}
-                                thousandSeparator=","
-                                suffix={' meters'}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.min_pax && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              <Pluralize
-                                singular={'tenant'}
-                                plural={'tenants'}
-                                count={accommodation.min_pax}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.max_pax && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              <Pluralize
-                                singular={'tenant'}
-                                plural={'tenants'}
-                                count={accommodation.max_pax}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.num_rooms && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              <Pluralize
-                                singular={'room'}
-                                plural={'rooms'}
-                                count={accommodation.num_rooms}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.num_beds && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              <Pluralize
-                                singular={'bed'}
-                                plural={'beds'}
-                                count={accommodation.num_beds}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.furnishing && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              {furnishing[accommodation.furnishing]}
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer> */}
-                <DataGrid 
-                  rows={gridRows}
-                  columns={columns}
-                />
-              </Box>
+              <DataGrid 
+                rows={gridRows}
+                columns={columns}
+                slots={{
+                  noRowsOverlay: CustomNowRowsOverlay,
+                  toolbar: CustomToolbar,
+                }}
+                slotProps={{
+                  toolbar: { background: 'red'},
+                }}
+                sx={{
+                  textAlign: 'center',
+                  '.MuiDataGrid-columnSeparator': {
+                    display: 'none',
+                  },
+                  '&.MuiDataGrid-root': {
+                    border: 'none',
+                  },
+                }}
+              />
             </DialogContent>
 
-            <DialogActions
+            {/* <DialogActions
               sx={{
                 paddingRight: theme.spacing(4.5),
                 paddingBottom: theme.spacing(1.5),
               }}
             >
-              {/* Action buttons */}
               <Button variant="contained" onClick={handleDownload}>
                 Save PDF
               </Button>
               <Button variant="outlined" onClick={toggleDialog}>
                 Cancel
               </Button>
-            </DialogActions>
+            </DialogActions> */}
           </Dialog>
         </Box>
       )}
     </React.Fragment>
   )
+}
+
+function CustomToolbar() {
+  const theme = useTheme()
+  return (
+    <GridToolbarContainer >
+      <GridToolbarColumnsButton style={{backgroundColor: theme.palette.primary.main}} />
+      <GridToolbarFilterButton style={{backgroundColor: theme.palette.primary.main}} />
+      <GridToolbarDensitySelector style={{backgroundColor: theme.palette.primary.main}} />
+      <GridToolbarExport style={{backgroundColor: theme.palette.primary.main}} />
+    </GridToolbarContainer>
+  );
 }
 
 export default DownloadAccommodations
