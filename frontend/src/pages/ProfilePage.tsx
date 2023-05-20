@@ -23,7 +23,13 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
+import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined'
+import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined'
+import PhoneAndroidOutlinedIcon from '@mui/icons-material/PhoneAndroidOutlined'
+import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 // import { getUser } from '../../store/auth/action'
 import { COLOR } from '../theme/index'
 
@@ -48,7 +54,9 @@ const EditProfile: React.FC<IProps> = () => {
       sx={{
         display: 'flex',
         justifyContent: 'center',
+        pb: theme.spacing(1),
         alignItems: 'center',
+        pb: theme.spacing(1),
         width: '100%',
         backdropFilter: 'blur(5px)',
       }}
@@ -88,7 +96,9 @@ const EditProfile: React.FC<IProps> = () => {
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
+                pb: theme.spacing(1),
                 alignItems: 'center',
+                pb: theme.spacing(1),
                 maxWidth: '100%',
                 paddingBottom: '20%',
                 paddingTop: '20%',
@@ -272,7 +282,6 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           {user.username}
         </Typography>
-
         <Typography
           variant="h6"
           sx={{
@@ -295,7 +304,6 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           {user.role}{' '}
         </Typography>
-
         <Typography
           variant="body2"
           sx={{
@@ -306,99 +314,151 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           {user.bio}{' '}
         </Typography>
-
         <Divider sx={{ background: COLOR.white }} />
-
         <Typography
           variant="h6"
           sx={{ fontWeight: 'light', color: COLOR.white }}
         >
           Basic Info
         </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
+        <Box
+          sx={{
+            display: 'flex',
+            color: COLOR.white,
+            alignItems: 'center',
+            pb: theme.spacing(1),
+          }}
         >
-          {user.gender}
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
+          <PersonOutlineOutlinedIcon />
+          <Typography variant="body2" sx={{ fontWeight: 'light' }}>
+            {user.gender}
+          </Typography>
+        </Box>
+        
+        <Box
+          sx={{
+            display: 'flex',
+            color: COLOR.white,
+            alignItems: 'center',
+            pb: theme.spacing(1),
+          }}
         >
-          {user.birthday}
-        </Typography>
+          <CakeOutlinedIcon />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 'light', color: COLOR.white }}
+          >
+            {user.birthday}
+          </Typography>
+        </Box>
 
         <Divider sx={{ background: COLOR.white }} />
-
         <Typography
           variant="h6"
           sx={{ fontWeight: 'light', color: COLOR.white }}
         >
           Contact Details
         </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
+        <Box
+          sx={{
+            display: 'flex',
+            color: COLOR.white,
+            alignItems: 'center',
+            pb: theme.spacing(1),
+          }}
         >
-          {user.email}
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
+          <MailOutlineOutlinedIcon />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 'light', color: COLOR.white }}
+          >
+            {user.email}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            color: COLOR.white,
+            alignItems: 'center',
+            pb: theme.spacing(1),
+          }}
         >
-          {user.phone}
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
+          <PhoneAndroidOutlinedIcon />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 'light', color: COLOR.white }}
+          >
+            {user.phone}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            color: COLOR.white,
+            alignItems: 'center',
+            pb: theme.spacing(1),
+          }}
         >
-          {user.landline}
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
+          <LocalPhoneOutlinedIcon />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 'light', color: COLOR.white }}
+          >
+            {user.landline}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            color: COLOR.white,
+            alignItems: 'center',
+            pb: theme.spacing(1),
+          }}
         >
-          {user.homeAddress}
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
+          <HomeOutlinedIcon />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 'light', color: COLOR.white }}
+          >
+            {user.homeAddress}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            color: COLOR.white,
+            alignItems: 'center',
+            pb: theme.spacing(1),
+          }}
         >
-          {user.currAddress}
-        </Typography>
-
+          <PlaceOutlinedIcon />
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 'light', color: COLOR.white }}
+          >
+            {user.currAddress}
+          </Typography>
+        </Box>
         <Divider sx={{ background: COLOR.white }} />
-
         <Typography
           variant="h6"
           sx={{ fontWeight: 'light', color: COLOR.white }}
         >
           Organization
         </Typography>
-
         <Typography
           variant="body2"
           sx={{ fontWeight: 'light', color: COLOR.white }}
         >
           {user.organization}
         </Typography>
-
         <Button
           onClick={handleOpen}
           sx={{
             backgroundColor: COLOR.white,
             color: theme.palette.primary.main,
             fontWeight: 'bold',
-            //   position: 'absolute',
-            //   right: '0',
-            //   bottom: '0',
+            mt: theme.spacing(3),
           }}
         >
           Edit Profile
