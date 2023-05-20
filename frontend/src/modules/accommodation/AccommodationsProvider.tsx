@@ -12,6 +12,7 @@ interface IProps {
 const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   // state
   const me = getMe()
+  const onShowError = showErrorSnackbar()
   const [state, dispatch] = React.useReducer(accommodationReducer, {
     accommodations: null,
     dispatch: null,
@@ -19,13 +20,15 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
 
   // events
   React.useEffect(() => {
-    if (me) {
-      initAccommodations().then(data => {
-        dispatch({
-          type: 'SET_ACCOMMODATIONS',
-          payload: data as IAccommodation[],
+    if (me && onShowError) {
+      initAccommodations()
+        .then(data => {
+          dispatch({
+            type: 'SET_ACCOMMODATIONS',
+            payload: data as IAccommodation[],
+          })
         })
-      })
+        .catch(err => onShowError(String(err)))
     }
   }, [me])
 
@@ -90,13 +93,12 @@ const accommodationReducer = (
 
 export const initAccommodations = async () => {
   const res = await apiGet<IAccommodation[]>('accommodation')
-  const onShowError = showErrorSnackbar()
   if (res.data && res.success) {
     return res.data
   }
 
-  if (res.messages && onShowError) {
-    onShowError(res.messages[0])
+  if (res.messages) {
+    throw new Error(res.messages[0])
   }
 }
 
