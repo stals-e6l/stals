@@ -154,6 +154,7 @@ export const signOut = () => {
 
     // remove user
     dispatch({ type: 'SET_USER', payload: null })
+    dispatch({ type: 'SET_TOKEN', payload: null })
   }
 }
 
