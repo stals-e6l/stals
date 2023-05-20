@@ -5,11 +5,13 @@ import { AuthGuard } from '../modules/auth/AuthProvider'
 import ExplorePage from '../pages/ExplorePage'
 import ResultPage from '../pages/ResultPage'
 import IndexPage from '../pages'
+import PublicPage from '../pages/PublicPage'
 
 export const ROUTES = {
-  auth: '/auth',
-  explore: '/explore',
-  result: '/result',
+  public: '/public',
+  appAuth: '/app/auth',
+  appExplore: '/app/explore',
+  appResult: '/app/result',
 }
 
 interface IProps {
@@ -25,6 +27,10 @@ export default AppRouter
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <PublicPage />,
+  },
+  {
+    path: '/app',
     element: (
       <AuthGuard>
         <IndexPage />
@@ -32,15 +38,15 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: ROUTES.auth,
+        path: ROUTES.appAuth,
         element: <AuthPage />,
       },
       {
-        path: ROUTES.explore,
+        path: ROUTES.appExplore,
         element: <ExplorePage />,
       },
       {
-        path: ROUTES.result,
+        path: ROUTES.appResult,
         element: <ResultPage />,
       },
     ],

@@ -27,7 +27,7 @@ const Navbar: React.FC<IProps> = () => {
   const onSignOut = signOut()
 
   // events
-  const toAuth = () => navigate(ROUTES.auth)
+  const toAuth = () => navigate(ROUTES.appAuth)
 
   return (
     <Grid

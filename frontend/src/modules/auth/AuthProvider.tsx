@@ -53,10 +53,10 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     if (onFetchMe && dispatch && !loaded && onSetAuthLoaded)
       onFetchMe()
         .then(() => {
-          navigate(ROUTES.explore)
+          navigate(ROUTES.appExplore)
         })
         .catch(() => {
-          navigate(ROUTES.auth)
+          navigate(ROUTES.appAuth)
         })
         .finally(() => {
           onSetAuthLoaded(true)
