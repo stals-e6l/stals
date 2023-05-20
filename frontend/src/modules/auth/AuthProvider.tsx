@@ -1,7 +1,7 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
 import { useNavigate } from 'react-router-dom'
-import { apiGet, apiPost } from '../../api'
+import { apiGet, apiPost } from '../../services/api'
 import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {

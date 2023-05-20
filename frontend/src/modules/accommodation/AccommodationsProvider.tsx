@@ -1,7 +1,7 @@
 import React from 'react'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
-import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
+import { apiDelete, apiGet, apiPost, apiPut } from '../../services/api'
 import { getMe } from '../auth/AuthProvider'
 
 interface IProps {

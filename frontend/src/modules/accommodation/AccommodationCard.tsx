@@ -18,8 +18,8 @@ import DeleteAccommodationFormModal from './DeleteAccommodationFormModal'
 import StarPurple500SharpIcon from '@mui/icons-material/StarPurple500Sharp'
 import MoreHorizSharpIcon from '@mui/icons-material/MoreHorizSharp'
 import AccommodationImages from './accommodationImages'
-import toSentenceCase from '../../helpers/toSentenceCase'
-import toPhp from '../../helpers/toPhp'
+import toSentenceCase from '../../utils/toSentenceCase'
+import toPhp from '../../utils/toPhp'
 import { COLOR } from '../../theme/index'
 
 interface IProps {

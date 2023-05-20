@@ -1,6 +1,6 @@
 import React from 'react'
 import toArray from '../../utils/toArray'
-import { apiPost } from '../../api'
+import { apiPost } from '../../services/api'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import theme from '../../theme'

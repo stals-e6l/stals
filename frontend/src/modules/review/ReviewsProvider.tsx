@@ -1,5 +1,5 @@
 import React from 'react'
-import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
+import { apiDelete, apiGet, apiPost, apiPut } from '../../services/api'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
 
