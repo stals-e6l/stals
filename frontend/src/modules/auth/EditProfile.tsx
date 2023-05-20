@@ -2,19 +2,13 @@ import React from 'react'
 import {
   Box,
   Typography,
-  IconButton,
   useTheme,
-  Input,
   Button,
-  Avatar,
-  Dialog,
   TextField,
-  Link,
   Card,
   CardActionArea,
   CardContent,
   FormLabel,
-  Divider,
   Grid,
   MenuItem,
   Select,
@@ -23,15 +17,16 @@ import {
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { COLOR } from '../../theme/index'
+import { userInfo } from 'os'
 
 interface IProps {
   children?: React.ReactNode
+  user: IUser
 }
 
-const EditProfile: React.FC<IProps> = () => {
+const EditProfile: React.FC<IProps> = ({ user }) => {
   const theme = useTheme()
   const handleUploadImage = () => {
-    // execute code to open file input
     const fileInput = document.querySelector(
       'input[type=file]'
     ) as HTMLInputElement
@@ -99,20 +94,16 @@ const EditProfile: React.FC<IProps> = () => {
           <input hidden accept="image/png, image/jpeg" type="file" />
         </Card>
 
-        <FormLabel>Username</FormLabel>
-        <TextField
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white }}
-        />
-
         <FormLabel>Biography</FormLabel>
         <TextField
           variant="outlined"
           size="small"
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
+          multiline
+          rows={3}
+          name="biography"
+          defaultValue={user.biography}
         />
 
         <Grid container spacing={1}>
@@ -123,11 +114,13 @@ const EditProfile: React.FC<IProps> = () => {
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
               size="small"
+              name="gender"
+              defaultValue={user.gender}
             >
-              <MenuItem value={'male'}>Male</MenuItem>
-              <MenuItem value={'female'}>Female</MenuItem>
-              <MenuItem value={'non_binary'}>Non-Binary</MenuItem>
-              <MenuItem value={'prefer_not_to_say'}>Prefer not to say</MenuItem>
+              <MenuItem value='male'>Male</MenuItem>
+              <MenuItem value='female'>Female</MenuItem>
+              <MenuItem value='non_binary'>Non-Binary</MenuItem>
+              <MenuItem value='prefer_not_to_say'>Prefer not to say</MenuItem>
             </Select>
           </Grid>
 
@@ -140,14 +133,6 @@ const EditProfile: React.FC<IProps> = () => {
           </Grid>
         </Grid>
 
-        <FormLabel>Email</FormLabel>
-        <TextField
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white }}
-        />
-
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <FormLabel>Phone</FormLabel>
@@ -156,6 +141,8 @@ const EditProfile: React.FC<IProps> = () => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
+              name="mobile"
+              defaultValue={user.phone.mobile}
             />
           </Grid>
 
@@ -166,6 +153,8 @@ const EditProfile: React.FC<IProps> = () => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
+              name="landline"
+              defaultValue={user.phone.landline}
             />
           </Grid>
         </Grid>
@@ -176,6 +165,8 @@ const EditProfile: React.FC<IProps> = () => {
           size="small"
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
+          name="home"
+          defaultValue={user.address.home}
         />
 
         <FormLabel>Current Address</FormLabel>
@@ -184,6 +175,8 @@ const EditProfile: React.FC<IProps> = () => {
           size="small"
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
+          name="current"
+          defaultValue={user.address.current}
         />
 
         <FormLabel>Organization</FormLabel>
@@ -192,31 +185,38 @@ const EditProfile: React.FC<IProps> = () => {
           size="small"
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
+          name="organization"
+          defaultValue={user.organization}
         />
 
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            backgroundColor: theme.palette.primary.main,
-            marginTop: theme.spacing(2),
-            marginBottom: theme.spacing(1),
-          }}
-        >
-          Cancel
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              marginTop: theme.spacing(2),
+              marginBottom: theme.spacing(1),
+              width: 'fit-content',
+              mr: theme.spacing(1),
+            }}
+          >
+            Cancel
+          </Button>
 
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            backgroundColor: theme.palette.primary.main,
-            marginTop: theme.spacing(2),
-            marginBottom: theme.spacing(1),
-          }}
-        >
-          Save Changes
-        </Button>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              marginTop: theme.spacing(2),
+              marginBottom: theme.spacing(1),
+              width: 'fit-content',
+            }}
+          >
+            Save Changes
+          </Button>
+        </Box>
       </Box>
     </Box>
   )

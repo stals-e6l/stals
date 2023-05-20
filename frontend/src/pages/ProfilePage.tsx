@@ -38,22 +38,36 @@ const ProfilePage: React.FC<IProps> = () => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const user = {
+  const user: IUser = {
     username: 'Pogi',
-    fname: 'Rodge Miguel',
-    mname: 'Magpantay',
-    lname: 'De Luna',
     email: 'test@up.edu.ph',
-    role: 'Admin',
-    bio: 'You miss 100% shots you dont take.',
-    gender: 'Male',
+    role: 'admin',
+    full_name: {
+      first_name: 'Rodge Miguel',
+      middle_name: 'Magpantay',
+      last_name: 'De Luna',
+    },
+    gender: 'male',
+    address: {
+      home: 'Cainta, Rizal',
+      current: 'Carrot Place',
+    },
     birthday: '07/26/2001',
-    phone: '09163342585',
-    landline: '212 7388',
-    homeAddress: 'Cainta, Rizal',
-    currAddress: 'Carrot Place',
+    phone: {
+      landline: '212 7388',
+      mobile: '09163342585',
+    },
     organization: 'COSS',
+    biography: 'You miss 100% shots you dont take.',
+    _id: '',
+    password: '',
+    avatar: {
+      url: '',
+    },
   }
+
+  const formattedRole = user.role[0].toUpperCase() + user.role.slice(1)
+  const formattedGender = user.gender[0].toUpperCase() + user.gender.slice(1)
 
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>
@@ -86,18 +100,33 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           {user.username}
         </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: 'light',
-            color: COLOR.white,
-            mt: theme.spacing(3),
-          }}
-        >
-          {user.fname} {user.mname[0]}
-          {'. '}
-          {user.lname}
-        </Typography>
+
+        {user.full_name.middle_name === undefined ? (
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 'light',
+              color: COLOR.white,
+              mt: theme.spacing(3),
+            }}
+          >
+            {user.full_name.first_name}
+            {user.full_name.last_name}
+          </Typography>
+        ) : (
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 'light',
+              color: COLOR.white,
+              mt: theme.spacing(3),
+            }}
+          >
+            {user.full_name.first_name} {user.full_name.middle_name[0]}{'. '}
+            {user.full_name.last_name}
+          </Typography>
+        )}
+
         <Typography
           variant="body2"
           sx={{
@@ -106,7 +135,7 @@ const ProfilePage: React.FC<IProps> = () => {
             mt: theme.spacing(-1),
           }}
         >
-          {user.role}{' '}
+          {formattedRole}
         </Typography>
         <Typography
           variant="body2"
@@ -116,7 +145,7 @@ const ProfilePage: React.FC<IProps> = () => {
             color: COLOR.white,
           }}
         >
-          {user.bio}{' '}
+          {user.biography}
         </Typography>
         <Divider sx={{ background: COLOR.white }} />
         <Typography
@@ -135,7 +164,7 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           <PersonOutlineOutlinedIcon />
           <Typography variant="body2" sx={{ fontWeight: 'light' }}>
-            {user.gender}
+            {formattedGender}
           </Typography>
         </Box>
         {user.birthday === '' ? (
@@ -183,7 +212,7 @@ const ProfilePage: React.FC<IProps> = () => {
           </Typography>
         </Box>
 
-        {user.phone === '' ? (
+        {user.phone.mobile === '' ? (
           <></>
         ) : (
           <Box
@@ -199,12 +228,12 @@ const ProfilePage: React.FC<IProps> = () => {
               variant="body2"
               sx={{ fontWeight: 'light', color: COLOR.white }}
             >
-              {user.phone}
+              {user.phone.mobile}
             </Typography>
           </Box>
         )}
 
-        {user.landline === '' ? (
+        {user.phone.landline === '' ? (
           <></>
         ) : (
           <Box
@@ -220,12 +249,12 @@ const ProfilePage: React.FC<IProps> = () => {
               variant="body2"
               sx={{ fontWeight: 'light', color: COLOR.white }}
             >
-              {user.landline}
+              {user.phone.landline}
             </Typography>
           </Box>
         )}
 
-        {user.homeAddress === '' ? (
+        {user.address.home === '' ? (
           <></>
         ) : (
           <Box
@@ -241,12 +270,12 @@ const ProfilePage: React.FC<IProps> = () => {
               variant="body2"
               sx={{ fontWeight: 'light', color: COLOR.white }}
             >
-              {user.homeAddress}
+              {user.address.home}
             </Typography>
           </Box>
         )}
 
-        {user.currAddress === '' ? (
+        {user.address.current === '' ? (
           <></>
         ) : (
           <Box
@@ -262,13 +291,13 @@ const ProfilePage: React.FC<IProps> = () => {
               variant="body2"
               sx={{ fontWeight: 'light', color: COLOR.white }}
             >
-              {user.currAddress}
+              {user.address.current}
             </Typography>
           </Box>
         )}
 
         <Divider sx={{ background: COLOR.white }} />
-        
+
         <Typography
           variant="h6"
           sx={{ fontWeight: 'light', color: COLOR.white }}
@@ -303,7 +332,7 @@ const ProfilePage: React.FC<IProps> = () => {
             },
           }}
         >
-          <EditProfile />
+          <EditProfile user={user} />
         </Dialog>
       </Box>
       {/* <Box sx={{backgroundColor:'red', width:'70%'}}></Box> */}

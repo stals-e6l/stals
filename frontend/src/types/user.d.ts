@@ -24,6 +24,7 @@ interface IUserSignUp extends IUserSignIn {
     landline?: string
     mobile?: string
   }
+  biography?: string
 }
 
 type TUserGender = 'male' | 'female' | 'non_binary' | 'prefer_not_to_say'
