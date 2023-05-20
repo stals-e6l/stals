@@ -1,6 +1,6 @@
 # stals 
 
-Student Accommodation and Lodging System (main-dev)
+Student Accommodation and Lodging System (main-dev-dev)
 
 ## Getting started
 
