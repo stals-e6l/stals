@@ -19,7 +19,9 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 // import { getUser } from '../../store/auth/action'
 import { COLOR } from '../theme/index'
-import EditProfile from '../modules/auth/EditProfile'
+import EditProfileModal from '../modules/auth/EditProfileModal'
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Fullscreen } from '@mui/icons-material'
 
 interface IProps {
   children?: React.ReactNode
@@ -68,6 +70,8 @@ const ProfilePage: React.FC<IProps> = () => {
 
   const formattedRole = user.role[0].toUpperCase() + user.role.slice(1)
   const formattedGender = user.gender[0].toUpperCase() + user.gender.slice(1)
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
 
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>
@@ -76,6 +80,9 @@ const ProfilePage: React.FC<IProps> = () => {
           backgroundColor: COLOR.blue,
           width: '30%',
           padding: theme.spacing(5),
+          [theme.breakpoints.down('sm')]: {
+            width: '100%',
+          },
         }}
       >
         <Box sx={{ display: 'flex' }}>
@@ -324,6 +331,7 @@ const ProfilePage: React.FC<IProps> = () => {
         <Dialog
           open={open}
           onClose={handleClose}
+          fullScreen={fullScreen}
           sx={{
             width: '40%',
             margin: '0 auto',
@@ -332,10 +340,9 @@ const ProfilePage: React.FC<IProps> = () => {
             },
           }}
         >
-          <EditProfile user={user} />
+          <EditProfileModal user={user} />
         </Dialog>
       </Box>
-      {/* <Box sx={{backgroundColor:'red', width:'70%'}}></Box> */}
     </Box>
   )
 }

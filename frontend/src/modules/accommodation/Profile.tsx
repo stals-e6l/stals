@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { COLOR } from '../../theme'
-import EditProfile from '../auth/EditProfile'
+import EditProfile from '../auth/EditProfileModal'
 
 interface IProps {
   children?: React.ReactNode
