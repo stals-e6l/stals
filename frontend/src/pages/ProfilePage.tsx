@@ -56,7 +56,6 @@ const EditProfile: React.FC<IProps> = () => {
         justifyContent: 'center',
         pb: theme.spacing(1),
         alignItems: 'center',
-        pb: theme.spacing(1),
         width: '100%',
         backdropFilter: 'blur(5px)',
       }}
@@ -98,7 +97,6 @@ const EditProfile: React.FC<IProps> = () => {
                 justifyContent: 'center',
                 pb: theme.spacing(1),
                 alignItems: 'center',
-                pb: theme.spacing(1),
                 maxWidth: '100%',
                 paddingBottom: '20%',
                 paddingTop: '20%',
@@ -334,23 +332,26 @@ const ProfilePage: React.FC<IProps> = () => {
             {user.gender}
           </Typography>
         </Box>
-        
-        <Box
-          sx={{
-            display: 'flex',
-            color: COLOR.white,
-            alignItems: 'center',
-            pb: theme.spacing(1),
-          }}
-        >
-          <CakeOutlinedIcon />
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 'light', color: COLOR.white }}
+        {user.birthday === '' ? (
+          <div></div>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              color: COLOR.white,
+              alignItems: 'center',
+              pb: theme.spacing(1),
+            }}
           >
-            {user.birthday}
-          </Typography>
-        </Box>
+            <CakeOutlinedIcon />
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 'light', color: COLOR.white }}
+            >
+              {user.birthday}
+            </Typography>
+          </Box>
+        )}
 
         <Divider sx={{ background: COLOR.white }} />
         <Typography
@@ -375,71 +376,93 @@ const ProfilePage: React.FC<IProps> = () => {
             {user.email}
           </Typography>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            color: COLOR.white,
-            alignItems: 'center',
-            pb: theme.spacing(1),
-          }}
-        >
-          <PhoneAndroidOutlinedIcon />
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 'light', color: COLOR.white }}
+
+        {user.phone === '' ? (
+          <div></div>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              color: COLOR.white,
+              alignItems: 'center',
+              pb: theme.spacing(1),
+            }}
           >
-            {user.phone}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            color: COLOR.white,
-            alignItems: 'center',
-            pb: theme.spacing(1),
-          }}
-        >
-          <LocalPhoneOutlinedIcon />
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 'light', color: COLOR.white }}
+            <PhoneAndroidOutlinedIcon />
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 'light', color: COLOR.white }}
+            >
+              {user.phone}
+            </Typography>
+          </Box>
+        )}
+
+        {user.landline === '' ? (
+          <div></div>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              color: COLOR.white,
+              alignItems: 'center',
+              pb: theme.spacing(1),
+            }}
           >
-            {user.landline}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            color: COLOR.white,
-            alignItems: 'center',
-            pb: theme.spacing(1),
-          }}
-        >
-          <HomeOutlinedIcon />
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 'light', color: COLOR.white }}
+            <LocalPhoneOutlinedIcon />
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 'light', color: COLOR.white }}
+            >
+              {user.landline}
+            </Typography>
+          </Box>
+        )}
+
+        {user.homeAddress === '' ? (
+          <div></div>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              color: COLOR.white,
+              alignItems: 'center',
+              pb: theme.spacing(1),
+            }}
           >
-            {user.homeAddress}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            color: COLOR.white,
-            alignItems: 'center',
-            pb: theme.spacing(1),
-          }}
-        >
-          <PlaceOutlinedIcon />
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 'light', color: COLOR.white }}
+            <HomeOutlinedIcon />
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 'light', color: COLOR.white }}
+            >
+              {user.homeAddress}
+            </Typography>
+          </Box>
+        )}
+
+        {user.currAddress === '' ? (
+          <div></div>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              color: COLOR.white,
+              alignItems: 'center',
+              pb: theme.spacing(1),
+            }}
           >
-            {user.currAddress}
-          </Typography>
-        </Box>
+            <PlaceOutlinedIcon />
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 'light', color: COLOR.white }}
+            >
+              {user.currAddress}
+            </Typography>
+          </Box>
+        )}
+
         <Divider sx={{ background: COLOR.white }} />
+        
         <Typography
           variant="h6"
           sx={{ fontWeight: 'light', color: COLOR.white }}
