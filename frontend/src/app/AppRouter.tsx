@@ -1,6 +1,5 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import ModulesViewer from '../modules'
 import AuthPage from '../pages/AuthPage'
 import { AuthGuard } from '../modules/auth/AuthProvider'
 import ExplorePage from '../pages/ExplorePage'
