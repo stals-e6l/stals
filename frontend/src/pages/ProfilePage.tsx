@@ -333,7 +333,7 @@ const ProfilePage: React.FC<IProps> = () => {
           </Typography>
         </Box>
         {user.birthday === '' ? (
-          <div></div>
+          <></>
         ) : (
           <Box
             sx={{
@@ -378,7 +378,7 @@ const ProfilePage: React.FC<IProps> = () => {
         </Box>
 
         {user.phone === '' ? (
-          <div></div>
+          <></>
         ) : (
           <Box
             sx={{
@@ -399,7 +399,7 @@ const ProfilePage: React.FC<IProps> = () => {
         )}
 
         {user.landline === '' ? (
-          <div></div>
+          <></>
         ) : (
           <Box
             sx={{
@@ -420,7 +420,7 @@ const ProfilePage: React.FC<IProps> = () => {
         )}
 
         {user.homeAddress === '' ? (
-          <div></div>
+          <></>
         ) : (
           <Box
             sx={{
@@ -441,7 +441,7 @@ const ProfilePage: React.FC<IProps> = () => {
         )}
 
         {user.currAddress === '' ? (
-          <div></div>
+          <></>
         ) : (
           <Box
             sx={{
