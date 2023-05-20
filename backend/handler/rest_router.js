@@ -44,11 +44,9 @@ const RESTRouter = function (name, model, restriction) {
 
       let query = { ...req.query }
       delete query['limit'] //delete every query that's not part of the database model
-      //delete query['search']
 
       const limit = Number(req.query.limit) || 100
 
-      console.log({ search: query.search })
       if (!query.search) {
         data = await model.find(query).limit(limit)
       } else {
