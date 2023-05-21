@@ -1,8 +1,13 @@
-FROM node:alpine
+FROM node:18-alpine3.17
+
 RUN mkdir -p /server
-COPY package.json /server
+
 WORKDIR /server
-RUN npm i 
-COPY . /server
+
+COPY . .
+
 EXPOSE 5000
-CMD ['npm', 'start:dev']
+RUN npm install
+RUN npm run start:dev
+
+
