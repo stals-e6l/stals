@@ -1,18 +1,15 @@
-import { Box, Grid, Typography, useTheme } from '@mui/material'
+import { Grid, Typography,  } from '@mui/material'
 import React from 'react'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
-import { COLOR } from '../../theme/index'
 
 interface IProps {
   children?: React.ReactNode
   isPublicView?: boolean
 }
 
-const AccommodationResults: React.FC<IProps> = (isPublicView) => {
+const AccommodationResults: React.FC<IProps> = () => {
   const accommodations = retrieveAccommodations()
-  const numOfAccomm = accommodations?.length
-  const theme = useTheme()
 
   if (!accommodations) {
     return <div>
