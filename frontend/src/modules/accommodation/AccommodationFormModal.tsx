@@ -13,7 +13,7 @@ import AccommodationForm from './AccommodationForm'
 import useDialog from '../../hooks/useDialog'
 import { createAccommodation } from './AccommodationsProvider'
 import { COLOR } from '../../theme'
-import PublishIcon from '@mui/icons-material/Publish'
+import AddIcon from '@mui/icons-material/Add'
 import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
@@ -108,12 +108,12 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
         sx={{
           ...submitBtnSx.root,
           borderRadius: '50%',
-          position: 'absolute',
+          position: 'fixed',
           bottom: '5%',
           right: '5%',
         }}
       >
-        <PublishIcon />
+        <AddIcon />
       </Fab>
       {open && (
         <Dialog fullScreen={isMobile} open={open} onClose={toggleDialog}>
