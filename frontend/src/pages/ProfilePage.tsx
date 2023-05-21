@@ -19,6 +19,8 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import { COLOR } from '../theme/index'
 import useMediaQuery from '@mui/material/useMediaQuery';
+import EditProfile from '../modules/auth/EditProfile'
+import { getMe } from '../modules/auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -39,8 +41,6 @@ const ProfilePage: React.FC<IProps> = () => {
 
   const formattedRole = user.role[0].toUpperCase() + user.role.slice(1)
   const formattedGender = user.gender[0].toUpperCase() + user.gender.slice(1)
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
 
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>

@@ -59,7 +59,9 @@ const Navbar: React.FC<IProps> = () => {
         </Grid>
       )}
       <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={onClose}>
-        <MenuItem>My profile</MenuItem>
+        <MenuItem onClick={()=>{
+            navigate(ROUTES.profile)
+        }}>My profile</MenuItem>
         <MenuItem
           onClick={() => {
             if (onSignOut) {

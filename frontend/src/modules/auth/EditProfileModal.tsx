@@ -218,7 +218,7 @@ const EditProfileModal: React.FC<IProps> = () => {
           </Typography>
         </Box>
 
-        {user.phone.mobile === '' ? (
+        {user.phone === undefined ? (
           <></>
         ) : (
           <Box
@@ -239,7 +239,7 @@ const EditProfileModal: React.FC<IProps> = () => {
           </Box>
         )}
 
-        {user.phone.landline === '' ? (
+        {user.phone === undefined ? (
           <></>
         ) : (
           <Box
@@ -260,7 +260,7 @@ const EditProfileModal: React.FC<IProps> = () => {
           </Box>
         )}
 
-        {user.address.home === '' ? (
+        {user.address === undefined ? (
           <></>
         ) : (
           <Box
@@ -281,7 +281,7 @@ const EditProfileModal: React.FC<IProps> = () => {
           </Box>
         )}
 
-        {user.address.current === '' ? (
+        {user.address === undefined ? (
           <></>
         ) : (
           <Box

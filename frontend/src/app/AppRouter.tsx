@@ -13,7 +13,7 @@ export const ROUTES = {
   appAuth: '/app/auth',
   appExplore: '/app/explore',
   appResult: '/app/result',
-  profile: '/profile'
+  profile: '/app/profile'
 }
 
 interface IProps {

@@ -141,7 +141,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
               name="mobile"
-              defaultValue={user.phone.mobile}
+              defaultValue={user.phone === undefined ? (""):(user.phone.mobile)}
             />
           </Grid>
 
@@ -153,7 +153,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
               name="landline"
-              defaultValue={user.phone.landline}
+              defaultValue={user.phone === undefined ? (""):(user.phone.landline)}
             />
           </Grid>
         </Grid>
@@ -165,7 +165,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
           name="home"
-          defaultValue={user.address.home}
+          defaultValue={user.address === undefined ? (""):(user.address.home)}
         />
 
         <FormLabel>Current Address</FormLabel>
@@ -175,7 +175,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
           name="current"
-          defaultValue={user.address.current}
+          defaultValue={user.address === undefined ? (""):(user.address.current)}
         />
 
         <FormLabel>Organization</FormLabel>
