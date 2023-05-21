@@ -30,6 +30,7 @@ import {
   GridToolbarExport,
   GridToolbarDensitySelector,
   GridPrintExportOptions,
+  GridColumnHeaderParams,
 } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -42,6 +43,7 @@ import DownloadAccommodationsIncludeFields from './DownloadAccommodationsInclude
 import useMenu from '../../hooks/useMenu'
 import { getMe } from '../auth/AuthProvider'
 import toSentenceCase from '../../helpers/toSentenceCase';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface IProps {
   children?: React.ReactNode
@@ -55,10 +57,10 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   // hooks
   const theme = useTheme()
   const { open: openDialog, toggleDialog } = useDialog()
-  const { anchorEl, onClose, onOpen } = useMenu()
   const accommodations = retrieveAccommodations()
   const onCreateReport = createReport()
   const me = getMe()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
   // state
   const [fields, setFields] = React.useState<IDownloadAccommodations>({
@@ -76,18 +78,18 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   // immediates
   const tableId = 'accommodations-table'
-  // const tableHeaders: header = {
-  //   name: 'Name',
-  //   type: 'Type',
-  //   price: 'Price',
-  //   size_sqm: 'Room Size',
-  //   meters_from_uplb: 'Distance from UPLB',
-  //   min_pax: 'Minimum Tenants',
-  //   max_pax: 'Maximum Tenants',
-  //   num_rooms: 'Number of Rooms',
-  //   num_beds: 'Number of Beds',
-  //   furnishing: 'Furnishing Type ',
-  // }
+  const tableHeaders: header = {
+    name: 'Name',
+    type: 'Type',
+    price: 'Price',
+    size_sqm: 'Room Size',
+    meters_from_uplb: 'Distance from UPLB',
+    min_pax: 'Minimum Tenants',
+    max_pax: 'Maximum Tenants',
+    num_rooms: 'Number of Rooms',
+    num_beds: 'Number of Beds',
+    furnishing: 'Furnishing Type ',
+  }
   const accommType: header = {
     hotel: 'Hotel',
     apartment: 'Apartment',
@@ -100,31 +102,36 @@ const DownloadAccommodations: React.FC<IProps> = () => {
     semifurnished: 'Semi-furnished',
     fully_furnished: 'Fully Furnished',
   }
-  // const downloadFields: IDownloadAccommodationsField[] = [
-  //   'name',
-  //   'type',
-  //   'price',
-  //   'size_sqm',
-  //   'meters_from_uplb',
-  //   'min_pax',
-  //   'max_pax',
-  //   'num_rooms',
-  //   'num_beds',
-  //   'furnishing',
-  // ]
+  const downloadFields: IDownloadAccommodationsField[] = [
+    'name',
+    'type',
+    'price',
+    'size_sqm',
+    'meters_from_uplb',
+    'min_pax',
+    'max_pax',
+    'num_rooms',
+    'num_beds',
+    'furnishing',
+  ]
 
   const CustomNowRowsOverlay = () => (
     <img src="/no-items-found.jpg" alt="no-item" />
   );
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", align: "center", headerAlign: "center", width: 150,
+    { field: "name", align: "center", headerAlign: "center", width: 150,
       valueFormatter: (params: GridValueFormatterParams<string>) => {
         if (params.value == null) {
           return '';
         }
         return toSentenceCase(params.value);
       },
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography>
+          Name
+        </Typography>
+      ),
     },
     { field: "type", headerName: "Type", align: "center", headerAlign: "center", width: 150 },
     { field: "price", headerName: "Price", align: "center", headerAlign: "center", width: 150,
@@ -229,16 +236,139 @@ const DownloadAccommodations: React.FC<IProps> = () => {
       <Button
         disabled={!accommodations}
         variant="contained"
-        onClick={toggleDialog}
+        onClick={matches? toggleDialog:handleDownload}
       >
         Download
       </Button>
+      <TableContainer sx={{ display: 'none' }}>
+        <Table id={tableId}>
+          <TableHead
+            sx={{
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <TableRow>
+              {Object.entries(fields as object)
+                .filter(field => field[1])
+                .map(field => (
+                  <TableCell
+                    key={field[0]}
+                    sx={{ textAlign: 'center' }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontSize: theme.spacing(2),
+                      }}
+                    >
+                      {tableHeaders[field[0]]}
+                    </Typography>
+                  </TableCell>
+                ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {accommodations? accommodations.map(accommodation => (
+              <TableRow key={accommodation._id}>
+                {fields.name && (
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    {accommodation.name}
+                  </TableCell>
+                )}
+                {fields.type && (
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    {accommType[accommodation.type]}
+                  </TableCell>
+                )}
+                {fields.price && (
+                  <TableCell
+                    sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                  >
+                    <NumericFormat
+                      displayType="text"
+                      value={accommodation.max_price}
+                      prefix={'₱ '}
+                      thousandSeparator=","
+                    />
+                  </TableCell>
+                )}
+                {fields.size_sqm && (
+                  <TableCell
+                    sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                  >
+                    <NumericFormat
+                      displayType="text"
+                      value={accommodation.size_sqm}
+                      thousandSeparator=","
+                      suffix={' sqm.'}
+                    />
+                  </TableCell>
+                )}
+                {fields.meters_from_uplb && (
+                  <TableCell
+                    sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
+                  >
+                    <NumericFormat
+                      displayType="text"
+                      value={accommodation.meters_from_uplb}
+                      thousandSeparator=","
+                      suffix={' meters'}
+                    />
+                  </TableCell>
+                )}
+                {fields.min_pax && (
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    <Pluralize
+                      singular={'tenant'}
+                      plural={'tenants'}
+                      count={accommodation.min_pax}
+                    />
+                  </TableCell>
+                )}
+                {fields.max_pax && (
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    <Pluralize
+                      singular={'tenant'}
+                      plural={'tenants'}
+                      count={accommodation.max_pax}
+                    />
+                  </TableCell>
+                )}
+                {fields.num_rooms && (
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    <Pluralize
+                      singular={'room'}
+                      plural={'rooms'}
+                      count={accommodation.num_rooms}
+                    />
+                  </TableCell>
+                )}
+                {fields.num_beds && (
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    <Pluralize
+                      singular={'bed'}
+                      plural={'beds'}
+                      count={accommodation.num_beds}
+                    />
+                  </TableCell>
+                )}
+                {fields.furnishing && (
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    {furnishing[accommodation.furnishing]}
+                  </TableCell>
+                )}
+              </TableRow>
+            )) : []}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {openDialog && accommodations && (
         <Box>
           <Dialog
             fullScreen
-            open={openDialog}
+            open={matches? openDialog:false}
             onClose={toggleDialog}
             sx={{
               '& .MuiPaper-root': {
@@ -285,156 +415,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             <Divider />
 
             <DialogContent>
-              {/* <Box>
-                <Button onClick={onOpen} variant="text">
-                  <MenuIcon
-                    sx={{
-                      color: theme.palette.secondary.main,
-                      marginRight: theme.spacing(),
-                    }}
-                  />
-                  Include fields
-                </Button>
-              </Box> */}
-              {/* Which fields to include */}
-              {/* <Menu
-                open={Boolean(anchorEl)}
-                anchorEl={anchorEl}
-                onClose={onClose}
-              >
-                <DownloadAccommodationsIncludeFields
-                  downloadFields={downloadFields}
-                  tableHeaders={tableHeaders}
-                  fields={fields}
-                  setFields={setFields}
-                />
-              </Menu> */}
-
               {/* Preview table */}
               <Box>
-                {/* <TableContainer>
-                  <Table id={tableId}>
-                    <TableHead
-                      sx={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      <TableRow>
-                        {Object.entries(fields as object)
-                          .filter(field => field[1])
-                          .map(field => (
-                            <TableCell
-                              key={field[0]}
-                              sx={{ textAlign: 'center' }}
-                            >
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  color: theme.palette.primary.main,
-                                  fontSize: theme.spacing(2),
-                                }}
-                              >
-                                {tableHeaders[field[0]]}
-                              </Typography>
-                            </TableCell>
-                          ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {accommodations.map(accommodation => (
-                        <TableRow key={accommodation._id}>
-                          {fields.name && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              {accommodation.name}
-                            </TableCell>
-                          )}
-                          {fields.type && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              {accommType[accommodation.type]}
-                            </TableCell>
-                          )}
-                          {fields.price && (
-                            <TableCell
-                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
-                            >
-                              <NumericFormat
-                                displayType="text"
-                                value={accommodation.min_price}
-                                prefix={'₱ '}
-                                thousandSeparator=","
-                              />
-                            </TableCell>
-                          )}
-                          {fields.size_sqm && (
-                            <TableCell
-                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
-                            >
-                              <NumericFormat
-                                displayType="text"
-                                value={accommodation.size_sqm}
-                                thousandSeparator=","
-                                suffix={' sqm.'}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.meters_from_uplb && (
-                            <TableCell
-                              sx={{ textAlign: 'center', whiteSpace: 'nowrap' }}
-                            >
-                              <NumericFormat
-                                displayType="text"
-                                value={accommodation.meters_from_uplb}
-                                thousandSeparator=","
-                                suffix={' meters'}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.min_pax && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              <Pluralize
-                                singular={'tenant'}
-                                plural={'tenants'}
-                                count={accommodation.min_pax}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.max_pax && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              <Pluralize
-                                singular={'tenant'}
-                                plural={'tenants'}
-                                count={accommodation.max_pax}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.num_rooms && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              <Pluralize
-                                singular={'room'}
-                                plural={'rooms'}
-                                count={accommodation.num_rooms}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.num_beds && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              <Pluralize
-                                singular={'bed'}
-                                plural={'beds'}
-                                count={accommodation.num_beds}
-                              />
-                            </TableCell>
-                          )}
-                          {fields.furnishing && (
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              {furnishing[accommodation.furnishing]}
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer> */}
                 <DataGrid 
                   rows={gridRows}
                   columns={columns}
@@ -457,21 +439,6 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                 />
               </Box>
             </DialogContent>
-
-            {/* <DialogActions
-              sx={{
-                paddingRight: theme.spacing(4.5),
-                paddingBottom: theme.spacing(1.5),
-              }}
-            > */}
-              {/* Action buttons */}
-              {/* <Button variant="contained" onClick={handleDownload}>
-                Save PDF
-              </Button>
-              <Button variant="outlined" onClick={toggleDialog}>
-                Cancel
-              </Button>
-            </DialogActions> */}
           </Dialog>
         </Box>
       )}
