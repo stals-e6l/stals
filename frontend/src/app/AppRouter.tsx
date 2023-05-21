@@ -6,6 +6,7 @@ import ExplorePage from '../pages/ExplorePage'
 import ResultPage from '../pages/ResultPage'
 import IndexPage from '../pages'
 import PublicPage from '../pages/PublicPage'
+import LandingPage from '../modules/landing/LandingPage'
 
 export const ROUTES = {
   public: '/public',
@@ -27,7 +28,7 @@ export default AppRouter
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <PublicPage />,
+    element: <LandingPage />,
   },
   {
     path: '/app',
