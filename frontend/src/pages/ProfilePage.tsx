@@ -17,61 +17,30 @@ import PhoneAndroidOutlinedIcon from '@mui/icons-material/PhoneAndroidOutlined'
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
-// import { getUser } from '../../store/auth/action'
 import { COLOR } from '../theme/index'
 import EditProfileModal from '../modules/auth/EditProfileModal'
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { Fullscreen } from '@mui/icons-material'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { getMe } from '../modules/auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const ProfilePage: React.FC<IProps> = () => {
-  //   const user = getUser()
-
-  //   if (!user) {
-  //     return <div>no user</div>
-  //   }
+  const user = getMe()
   const theme = useTheme()
-  const [image, setImage] = React.useState<any>(null)
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   const [open, setOpen] = React.useState(false)
+  const [image, setImage] = React.useState<any>(null)
+
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const user: IUser = {
-    username: 'Pogi',
-    email: 'test@up.edu.ph',
-    role: 'admin',
-    full_name: {
-      first_name: 'Rodge Miguel',
-      middle_name: 'Magpantay',
-      last_name: 'De Luna',
-    },
-    gender: 'male',
-    address: {
-      home: 'Cainta, Rizal',
-      current: 'Carrot Place',
-    },
-    birthday: '07/26/2001',
-    phone: {
-      landline: '212 7388',
-      mobile: '09163342585',
-    },
-    organization: 'COSS',
-    biography: 'You miss 100% shots you dont take.',
-    _id: '',
-    password: '',
-    avatar: {
-      url: '',
-    },
-  }
+  if (!user) return <></>
 
   const formattedRole = user.role[0].toUpperCase() + user.role.slice(1)
   const formattedGender = user.gender[0].toUpperCase() + user.gender.slice(1)
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
 
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>
@@ -129,7 +98,8 @@ const ProfilePage: React.FC<IProps> = () => {
               mt: theme.spacing(3),
             }}
           >
-            {user.full_name.first_name} {user.full_name.middle_name[0]}{'. '}
+            {user.full_name.first_name} {user.full_name.middle_name[0]}
+            {'. '}
             {user.full_name.last_name}
           </Typography>
         )}
@@ -219,9 +189,7 @@ const ProfilePage: React.FC<IProps> = () => {
           </Typography>
         </Box>
 
-        {user.phone.mobile === '' ? (
-          <></>
-        ) : (
+        {user.phone && user.phone.mobile && (
           <Box
             sx={{
               display: 'flex',
@@ -240,9 +208,7 @@ const ProfilePage: React.FC<IProps> = () => {
           </Box>
         )}
 
-        {user.phone.landline === '' ? (
-          <></>
-        ) : (
+        {user.phone && user.phone.landline && (
           <Box
             sx={{
               display: 'flex',
@@ -261,9 +227,7 @@ const ProfilePage: React.FC<IProps> = () => {
           </Box>
         )}
 
-        {user.address.home === '' ? (
-          <></>
-        ) : (
+        {user.address && user.address.home && (
           <Box
             sx={{
               display: 'flex',
@@ -282,9 +246,7 @@ const ProfilePage: React.FC<IProps> = () => {
           </Box>
         )}
 
-        {user.address.current === '' ? (
-          <></>
-        ) : (
+        {user.address && user.address.current && (
           <Box
             sx={{
               display: 'flex',

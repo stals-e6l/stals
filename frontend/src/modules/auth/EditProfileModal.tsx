@@ -17,7 +17,6 @@ import {
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { COLOR } from '../../theme/index'
-import { userInfo } from 'os'
 
 interface IProps {
   children?: React.ReactNode
@@ -117,10 +116,10 @@ const EditProfileModal: React.FC<IProps> = ({ user }) => {
               name="gender"
               defaultValue={user.gender}
             >
-              <MenuItem value='male'>Male</MenuItem>
-              <MenuItem value='female'>Female</MenuItem>
-              <MenuItem value='non_binary'>Non-Binary</MenuItem>
-              <MenuItem value='prefer_not_to_say'>Prefer not to say</MenuItem>
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+              <MenuItem value="non_binary">Non-Binary</MenuItem>
+              <MenuItem value="prefer_not_to_say">Prefer not to say</MenuItem>
             </Select>
           </Grid>
 
@@ -142,7 +141,7 @@ const EditProfileModal: React.FC<IProps> = ({ user }) => {
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
               name="mobile"
-              defaultValue={user.phone.mobile}
+              defaultValue={(user.phone && user.phone.mobile) || ''}
             />
           </Grid>
 
@@ -154,7 +153,7 @@ const EditProfileModal: React.FC<IProps> = ({ user }) => {
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
               name="landline"
-              defaultValue={user.phone.landline}
+              defaultValue={(user.phone && user.phone.landline) || ''}
             />
           </Grid>
         </Grid>
@@ -166,7 +165,7 @@ const EditProfileModal: React.FC<IProps> = ({ user }) => {
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
           name="home"
-          defaultValue={user.address.home}
+          defaultValue={(user.address && user.address.home) || ''}
         />
 
         <FormLabel>Current Address</FormLabel>
@@ -176,7 +175,7 @@ const EditProfileModal: React.FC<IProps> = ({ user }) => {
           fullWidth
           sx={{ backgroundColor: COLOR.white }}
           name="current"
-          defaultValue={user.address.current}
+          defaultValue={(user.address && user.address.current) || ''}
         />
 
         <FormLabel>Organization</FormLabel>

@@ -14,13 +14,13 @@ interface IUserSignUp extends IUserSignIn {
     last_name: string
   }
   gender: TUserGender
-  address: {
+  address?: {
     home?: string
     current?: string
   }
   birthday: string
   organization?: string
-  phone: {
+  phone?: {
     landline?: string
     mobile?: string
   }
