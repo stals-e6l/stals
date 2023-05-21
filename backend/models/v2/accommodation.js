@@ -118,4 +118,6 @@ const accommodationSchema = new mongoose.Schema(
   },
   { timestamps: true })
 
+accommodationSchema.index({'$**': 'text'});
+
 module.exports = mongoose.model('Accommodation', accommodationSchema)

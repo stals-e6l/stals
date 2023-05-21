@@ -1,6 +1,5 @@
 import { Box, Grid } from '@mui/material'
 import React from 'react'
-import Navbar from '../modules/general/Navbar'
 import FilterAccommodations from '../modules/accommodation/FilterAccommodations'
 import SearchAccommodations from '../modules/accommodation/SearchAccommodations'
 import AccommodationResults from '../modules/accommodation/AccommodationResults'

@@ -19,6 +19,17 @@ const AccommodationResults: React.FC<IProps> = () => {
     <Box id="Retrieve-All-BoxGrid">
       <Typography
         sx={{
+          color: COLOR.green,
+          fontFamily: 'inherit',
+          fontWeight: 'inherit',
+          fontSize: 'inherit',
+          marginRight: '0.25%',
+        }}
+      >
+        |
+      </Typography>{' '}
+      <Typography
+        sx={{
           color: 'black',
           fontFamily: FONT.sourceSansPro,
           fontWeight: 'bold',
@@ -28,21 +39,8 @@ const AccommodationResults: React.FC<IProps> = () => {
           marginLeft: '10%',
         }}
       >
-        {' '}
-        <Typography
-          sx={{
-            color: COLOR.green,
-            fontFamily: 'inherit',
-            fontWeight: 'inherit',
-            fontSize: 'inherit',
-            marginRight: '0.25%',
-          }}
-        >
-          |
-        </Typography>{' '}
         Most Viewed
       </Typography>
-
       <Grid
         container
         id="Retrieve-All-Grid"

@@ -17,7 +17,7 @@ import {
   Divider,
 } from '@mui/material'
 import { COLOR } from '../../theme'
-import { buildQueryString, extractQueryString } from '../../helpers/queryString'
+import { buildQueryString, extractQueryString } from '../../utils/queryString'
 import { filterAccommodations } from './AccommodationsProvider'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
@@ -56,7 +56,7 @@ const FilterAccommodations: React.FC<IProps> = () => {
     setFilter(prev => ({ ...prev, [key]: val }))
   }
 
-  React.useEffect(() => {
+  const onFilter = (filter: IAccommodationsFilter) => {
     const queryString = buildQueryString({
       name: filter.name === '' ? undefined : filter.name,
       type: filter.type === '' ? undefined : filter.type,
@@ -72,11 +72,12 @@ const FilterAccommodations: React.FC<IProps> = () => {
       furnishing: filter.furnishing === '' ? undefined : filter.furnishing,
     })
 
-    navigate(`${ROUTES.result}?${queryString}`)
     if (onFilterAccommodations) {
       onFilterAccommodations(queryString)
     }
-  }, [filter])
+
+    navigate(`${ROUTES.appResult}?${queryString}`) // ux
+  }
 
   return (
     <>
@@ -310,6 +311,7 @@ const FilterAccommodations: React.FC<IProps> = () => {
           >
             <Typography
               variant="h6"
+              onClick={() => onFilter(filter)}
               sx={{
                 fontSize: theme.spacing(2.15),
                 [theme.breakpoints.down('md')]: {

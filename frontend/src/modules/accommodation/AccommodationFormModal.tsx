@@ -13,8 +13,8 @@ import AccommodationForm from './AccommodationForm'
 import useDialog from '../../hooks/useDialog'
 import { createAccommodation } from './AccommodationsProvider'
 import { COLOR } from '../../theme'
-import PublishIcon from '@mui/icons-material/Publish'
-import { showErrorSnackbar } from '../general/ErrorHandler'
+import { AddRounded } from '@mui/icons-material'
+import { getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -24,11 +24,11 @@ interface IProps {
 const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const me = getMe()
 
   // hooks
   const { open, toggleDialog } = useDialog()
   const onCreateAccommodation = createAccommodation()
-  const onShowError = showErrorSnackbar()
 
   // state
   const [form, setForm] = React.useState<IAccommodation>({
@@ -70,12 +70,10 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
 
   // events
   const handleSubmit = () => {
-    if (onCreateAccommodation && onShowError)
-      onCreateAccommodation(form)
-        .then(() => {
-          toggleDialog()
-        })
-        .catch(err => onShowError(String(err)))
+    if (onCreateAccommodation)
+      onCreateAccommodation(form).then(status => {
+        if (status) toggleDialog()
+      })
   }
 
   const cancelBtnSx = {
@@ -103,18 +101,20 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   }
   return (
     <React.Fragment>
-      <Fab
-        onClick={toggleDialog}
-        sx={{
-          ...submitBtnSx.root,
-          borderRadius: '50%',
-          position: 'absolute',
-          bottom: '5%',
-          right: '5%',
-        }}
-      >
-        <PublishIcon />
-      </Fab>
+      {me && me.role !== 'tenant' && (
+        <Fab
+          onClick={toggleDialog}
+          sx={{
+            ...submitBtnSx.root,
+            borderRadius: '50%',
+            position: 'absolute',
+            bottom: '5%',
+            right: '5%',
+          }}
+        >
+          <AddRounded />
+        </Fab>
+      )}
       {open && (
         <Dialog fullScreen={isMobile} open={open} onClose={toggleDialog}>
           <DialogTitle sx={{ backgroundColor: '#0c2c44', color: COLOR.white }}>
