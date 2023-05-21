@@ -19,9 +19,8 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 // import { getUser } from '../../store/auth/action'
 import { COLOR } from '../theme/index'
-import EditProfileModal from '../modules/auth/EditProfileModal'
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { Fullscreen } from '@mui/icons-material'
+import EditProfile from '../modules/auth/EditProfile'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 interface IProps {
   children?: React.ReactNode
@@ -70,8 +69,7 @@ const ProfilePage: React.FC<IProps> = () => {
 
   const formattedRole = user.role[0].toUpperCase() + user.role.slice(1)
   const formattedGender = user.gender[0].toUpperCase() + user.gender.slice(1)
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <Box sx={{ display: 'flex', height: '100%' }}>
@@ -129,7 +127,8 @@ const ProfilePage: React.FC<IProps> = () => {
               mt: theme.spacing(3),
             }}
           >
-            {user.full_name.first_name} {user.full_name.middle_name[0]}{'. '}
+            {user.full_name.first_name} {user.full_name.middle_name[0]}
+            {'. '}
             {user.full_name.last_name}
           </Typography>
         )}
@@ -324,6 +323,9 @@ const ProfilePage: React.FC<IProps> = () => {
             color: theme.palette.primary.main,
             fontWeight: 'bold',
             mt: theme.spacing(3),
+            '&:hover': {
+              backgroundColor: COLOR.white,
+            },
           }}
         >
           Edit Profile
@@ -340,7 +342,7 @@ const ProfilePage: React.FC<IProps> = () => {
             },
           }}
         >
-          <EditProfileModal user={user} />
+          <EditProfile user={user} />
         </Dialog>
       </Box>
     </Box>
