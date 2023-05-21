@@ -112,7 +112,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   // ]
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", align: "center", headerAlign: "center", width: 150,
+    { field: "name", headerName: "Name", align: "center", headerAlign: "center", flex: 1, hideable: false,
       valueFormatter: (params: GridValueFormatterParams<string>) => {
         if (params.value == null) {
           return '';
@@ -125,14 +125,14 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         </Typography>
       ),
     },
-    { field: "type", headerName: "Type", align: "center", headerAlign: "center", width: 150,
+    { field: "type", headerName: "Type", align: "center", headerAlign: "center", flex: 1,
       renderHeader: (params: GridColumnHeaderParams) => (
         <Typography sx={{ color:theme.palette.primary.main, }}>
           Type
         </Typography>
       ),
     },
-    { field: "price", headerName: "Price", align: "center", headerAlign: "center", width: 150,
+    { field: "price", headerName: "Price", align: "center", headerAlign: "center", flex: 1,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
         if (params.value == null) {
           return '';
@@ -145,7 +145,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         </Typography>
       ),
     },
-    { field: "size_sqm", headerName: "Room Size", align: "center", headerAlign: "center", width: 150,
+    { field: "size_sqm", headerName: "Room Size", align: "center", headerAlign: "center", flex: 1,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
         if (params.value == null) {
           return '';
@@ -158,7 +158,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         </Typography>
       ),
     },
-    { field: "meters_from_uplb", headerName: "Distance from UPLB", align: "center", headerAlign: "center", width: 180,
+    { field: "meters_from_uplb", headerName: "Distance from UPLB", align: "center", headerAlign: "center", flex: 1,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
         if (params.value == null) {
           return '';
@@ -171,21 +171,21 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         </Typography>
       ),
     },
-    { field: "min_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", width: 150,
+    { field: "min_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", flex: 1,
       renderHeader: (params: GridColumnHeaderParams) => (
         <Typography sx={{ color:theme.palette.primary.main, }}>
           Minimum Tenants
         </Typography>
       ),
     },
-    { field: "max_pax", headerName: "Maximum Tenants", align: "center", headerAlign: "center", width: 150,
+    { field: "max_pax", headerName: "Maximum Tenants", align: "center", headerAlign: "center", flex: 1,
       renderHeader: (params: GridColumnHeaderParams) => (
         <Typography sx={{ color:theme.palette.primary.main, }}>
           Maximum Tenants
         </Typography>
       ),
     },
-    { field: "num_rooms", headerName: "Number of Rooms", align: "center", headerAlign: "center", width: 150,
+    { field: "num_rooms", headerName: "Number of Rooms", align: "center", headerAlign: "center", flex: 1,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
         if (params.value == null) {
           return '';
@@ -201,7 +201,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         </Typography>
       ),
     },
-    { field: "num_beds", headerName: "Number of Beds", align: "center", headerAlign: "center", width: 150,
+    { field: "num_beds", headerName: "Number of Beds", align: "center", headerAlign: "center", flex: 1,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
         if (params.value == null) {
           return '';
@@ -217,7 +217,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         </Typography>
       ),
     },
-    { field: "furnishing", headerName: "Furnishing Type", align: "center", headerAlign: "center", width: 150,
+    { field: "furnishing", headerName: "Furnishing Type", align: "center", headerAlign: "center", flex: 1,
       renderHeader: (params: GridColumnHeaderParams) => (
         <Typography sx={{ color:theme.palette.primary.main, }}>
           Furnishing Type
@@ -233,11 +233,9 @@ const DownloadAccommodations: React.FC<IProps> = () => {
       type: accommType[accommodations.type],
       price: accommodations.max_price,
       size_sqm: accommodations.size_sqm,
-      maters_from_uplb: accommodations.meters_from_uplb,
       meters_from_uplb: accommodations.meters_from_uplb,
       min_pax: accommodations.min_pax,
       max_pax: accommodations.max_pax,
-      num_rows: accommodations.num_rooms,
       num_rooms: accommodations.num_rooms,
       num_beds: accommodations.num_beds,
       furnishing: furnishing[accommodations.furnishing],
@@ -457,17 +455,12 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
             <DialogContent>
               {/* Preview table */}
-              <Box sx={{height: '100%'}}>
+              <Box sx={{height: '100%', width: '100%'}}>
                 <DataGrid 
                   rows={gridRows}
                   columns={columns}
                   slots={{
                     noRowsOverlay: CustomNoRowsOverlay,
-                    // () => (
-                    //   <Stack height="100%" alignItems="center" justifyContent="center">
-                    //     No rows in DataGrid
-                    //   </Stack>
-                    // ),
                     toolbar: CustomToolbar,
                   }}
                   slotProps={{
@@ -482,6 +475,20 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                       border: 'none',
                       maxHeight: '100%',
                       height: '100%',
+                    },
+                  }}
+                  initialState={{
+                    columns: {
+                      columnVisibilityModel: {
+                        // Hide columns status and traderName, the other columns will remain visible
+                        size_sqm: false,
+                        meters_from_uplb: false,
+                        min_pax: false,
+                        max_pax:false,
+                        num_rooms: false,
+                        num_beds: false,
+                        furnishing: false,
+                      },
                     },
                   }}
                 />
