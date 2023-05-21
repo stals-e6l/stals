@@ -18,6 +18,19 @@ import {
   Menu,
   IconButton,
 } from '@mui/material'
+import { 
+  DataGrid, 
+  GridColDef, 
+  GridValueGetterParams, 
+  GridValueFormatterParams, 
+  GridToolbar,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarExport,
+  GridToolbarDensitySelector,
+  GridPrintExportOptions,
+} from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
@@ -28,6 +41,7 @@ import { retrieveAccommodations } from './AccommodationsProvider'
 import DownloadAccommodationsIncludeFields from './DownloadAccommodationsIncludeFields'
 import useMenu from '../../hooks/useMenu'
 import { getMe } from '../auth/AuthProvider'
+import toSentenceCase from '../../helpers/toSentenceCase';
 
 interface IProps {
   children?: React.ReactNode
@@ -47,7 +61,6 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   const me = getMe()
 
   // state
-
   const [fields, setFields] = React.useState<IDownloadAccommodations>({
     name: true,
     type: true,
@@ -63,18 +76,18 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   // immediates
   const tableId = 'accommodations-table'
-  const tableHeaders: header = {
-    name: 'Name',
-    type: 'Type',
-    price: 'Price',
-    size_sqm: 'Room Size',
-    meters_from_uplb: 'Distance from UPLB',
-    min_pax: 'Minimum Tenants',
-    max_pax: 'Maximum Tenants',
-    num_rooms: 'Number of Rooms',
-    num_beds: 'Number of Beds',
-    furnishing: 'Furnishing Type ',
-  }
+  // const tableHeaders: header = {
+  //   name: 'Name',
+  //   type: 'Type',
+  //   price: 'Price',
+  //   size_sqm: 'Room Size',
+  //   meters_from_uplb: 'Distance from UPLB',
+  //   min_pax: 'Minimum Tenants',
+  //   max_pax: 'Maximum Tenants',
+  //   num_rooms: 'Number of Rooms',
+  //   num_beds: 'Number of Beds',
+  //   furnishing: 'Furnishing Type ',
+  // }
   const accommType: header = {
     hotel: 'Hotel',
     apartment: 'Apartment',
@@ -87,18 +100,101 @@ const DownloadAccommodations: React.FC<IProps> = () => {
     semifurnished: 'Semi-furnished',
     fully_furnished: 'Fully Furnished',
   }
-  const downloadFields: IDownloadAccommodationsField[] = [
-    'name',
-    'type',
-    'price',
-    'size_sqm',
-    'meters_from_uplb',
-    'min_pax',
-    'max_pax',
-    'num_rooms',
-    'num_beds',
-    'furnishing',
-  ]
+  // const downloadFields: IDownloadAccommodationsField[] = [
+  //   'name',
+  //   'type',
+  //   'price',
+  //   'size_sqm',
+  //   'meters_from_uplb',
+  //   'min_pax',
+  //   'max_pax',
+  //   'num_rooms',
+  //   'num_beds',
+  //   'furnishing',
+  // ]
+
+  const CustomNowRowsOverlay = () => (
+    <img src="/no-items-found.jpg" alt="no-item" />
+  );
+
+  const columns: GridColDef[] = [
+    { field: "name", headerName: "Name", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<string>) => {
+        if (params.value == null) {
+          return '';
+        }
+        return toSentenceCase(params.value);
+      },
+    },
+    { field: "type", headerName: "Type", align: "center", headerAlign: "center", width: 150 },
+    { field: "price", headerName: "Price", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        }
+        return `₱ ${params.value.toLocaleString('en')}`;
+      },
+    },
+    { field: "size_sqm", headerName: "Room Size", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        }
+        return `${params.value.toLocaleString('en')} sqm.`;
+      },
+    },
+    { field: "meters_from_uplb", headerName: "Distance from UPLB", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        }
+        return `${params.value.toLocaleString('en')} meters`;
+      },
+    },
+    { field: "min_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", width: 150 },
+    { field: "max_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", width: 150 },
+    { field: "num_rooms", headerName: "Number of Rooms", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        } else if (params.value == 1){
+          return `${params.value.toLocaleString('en')} room`;
+        }else{
+          return `${params.value.toLocaleString('en')} rooms`;
+        }
+      },
+    },
+    { field: "num_beds", headerName: "Number of Beds", align: "center", headerAlign: "center", width: 150,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return '';
+        } else if (params.value == 1){
+          return `${params.value.toLocaleString('en')} bed`;
+        }else{
+          return `${params.value.toLocaleString('en')} beds`;
+        }
+      },
+    },
+    { field: "furnishing", headerName: "Furnishing Type", align: "center", headerAlign: "center", width: 150 },
+  ];
+
+  const gridRows = accommodations ? accommodations.map((accommodations) => {
+    return{
+      id: accommodations._id,
+      name: accommodations.name,
+      type: accommType[accommodations.type],
+      price: accommodations.max_price,
+      size_sqm: accommodations.size_sqm,
+      maters_from_uplb: accommodations.meters_from_uplb,
+      meters_from_uplb: accommodations.meters_from_uplb,
+      min_pax: accommodations.min_pax,
+      max_pax: accommodations.max_pax,
+      num_rows: accommodations.num_rooms,
+      num_rooms: accommodations.num_rooms,
+      num_beds: accommodations.num_beds,
+      furnishing: furnishing[accommodations.furnishing],
+    }
+  }) : []
 
   // events
   const handleDownload = () => {
@@ -189,7 +285,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
             <Divider />
 
             <DialogContent>
-              <Box>
+              {/* <Box>
                 <Button onClick={onOpen} variant="text">
                   <MenuIcon
                     sx={{
@@ -199,9 +295,9 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                   />
                   Include fields
                 </Button>
-              </Box>
+              </Box> */}
               {/* Which fields to include */}
-              <Menu
+              {/* <Menu
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
                 onClose={onClose}
@@ -212,11 +308,11 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                   fields={fields}
                   setFields={setFields}
                 />
-              </Menu>
+              </Menu> */}
 
               {/* Preview table */}
               <Box>
-                <TableContainer>
+                {/* <TableContainer>
                   <Table id={tableId}>
                     <TableHead
                       sx={{
@@ -338,29 +434,61 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                       ))}
                     </TableBody>
                   </Table>
-                </TableContainer>
+                </TableContainer> */}
+                <DataGrid 
+                  rows={gridRows}
+                  columns={columns}
+                  slots={{
+                    noRowsOverlay: CustomNowRowsOverlay,
+                    toolbar: CustomToolbar,
+                  }}
+                  slotProps={{
+                    toolbar: { background: 'red'},
+                  }}
+                  sx={{
+                    textAlign: 'center',
+                    '.MuiDataGrid-columnSeparator': {
+                      display: 'none',
+                    },
+                    '&.MuiDataGrid-root': {
+                      border: 'none',
+                    },
+                  }}
+                />
               </Box>
             </DialogContent>
 
-            <DialogActions
+            {/* <DialogActions
               sx={{
                 paddingRight: theme.spacing(4.5),
                 paddingBottom: theme.spacing(1.5),
               }}
-            >
+            > */}
               {/* Action buttons */}
-              <Button variant="contained" onClick={handleDownload}>
+              {/* <Button variant="contained" onClick={handleDownload}>
                 Save PDF
               </Button>
               <Button variant="outlined" onClick={toggleDialog}>
                 Cancel
               </Button>
-            </DialogActions>
+            </DialogActions> */}
           </Dialog>
         </Box>
       )}
     </React.Fragment>
   )
+}
+
+function CustomToolbar() {
+  const theme = useTheme()
+  return (
+    <GridToolbarContainer >
+      <GridToolbarColumnsButton style={{backgroundColor: theme.palette.primary.main}} />
+      <GridToolbarFilterButton style={{backgroundColor: theme.palette.primary.main}} />
+      <GridToolbarDensitySelector style={{backgroundColor: theme.palette.primary.main}} />
+      <GridToolbarExport style={{backgroundColor: theme.palette.primary.main}} printOptions={{ hideToolbar: true, hideFooter: true }} csvOptions={{ disableToolbarButton: true }}/>
+    </GridToolbarContainer>
+  );
 }
 
 export default DownloadAccommodations
