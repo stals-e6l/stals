@@ -11,36 +11,29 @@ import {
   DialogTitle,
   DialogContent,
   Divider,
-  DialogActions,
   Button,
   Box,
   Typography,
-  Menu,
   IconButton,
+  Stack,
 } from '@mui/material'
 import { 
   DataGrid, 
   GridColDef, 
-  GridValueGetterParams, 
   GridValueFormatterParams, 
-  GridToolbar,
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
   GridToolbarExport,
   GridToolbarDensitySelector,
-  GridPrintExportOptions,
   GridColumnHeaderParams,
 } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles'
-import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import Pluralize from 'react-pluralize'
 import { NumericFormat } from 'react-number-format'
 import { downloadPdf, createReport } from '../report/ReportsProvider'
 import { retrieveAccommodations } from './AccommodationsProvider'
-import DownloadAccommodationsIncludeFields from './DownloadAccommodationsIncludeFields'
-import useMenu from '../../hooks/useMenu'
 import { getMe } from '../auth/AuthProvider'
 import toSentenceCase from '../../helpers/toSentenceCase';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -102,25 +95,25 @@ const DownloadAccommodations: React.FC<IProps> = () => {
     semifurnished: 'Semi-furnished',
     fully_furnished: 'Fully Furnished',
   }
-  const downloadFields: IDownloadAccommodationsField[] = [
-    'name',
-    'type',
-    'price',
-    'size_sqm',
-    'meters_from_uplb',
-    'min_pax',
-    'max_pax',
-    'num_rooms',
-    'num_beds',
-    'furnishing',
-  ]
+  // const downloadFields: IDownloadAccommodationsField[] = [
+  //   'name',
+  //   'type',
+  //   'price',
+  //   'size_sqm',
+  //   'meters_from_uplb',
+  //   'min_pax',
+  //   'max_pax',
+  //   'num_rooms',
+  //   'num_beds',
+  //   'furnishing',
+  // ]
 
-  const CustomNowRowsOverlay = () => (
+  const CustomNoRowsOverlay = () => (
     <img src="/no-items-found.jpg" alt="no-item" />
   );
 
   const columns: GridColDef[] = [
-    { field: "name", align: "center", headerAlign: "center", width: 150,
+    { field: "name", headerName: "Name", align: "center", headerAlign: "center", width: 150,
       valueFormatter: (params: GridValueFormatterParams<string>) => {
         if (params.value == null) {
           return '';
@@ -128,12 +121,18 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         return toSentenceCase(params.value);
       },
       renderHeader: (params: GridColumnHeaderParams) => (
-        <Typography>
+        <Typography sx={{ color:theme.palette.primary.main, }}>
           Name
         </Typography>
       ),
     },
-    { field: "type", headerName: "Type", align: "center", headerAlign: "center", width: 150 },
+    { field: "type", headerName: "Type", align: "center", headerAlign: "center", width: 150,
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Type
+        </Typography>
+      ),
+    },
     { field: "price", headerName: "Price", align: "center", headerAlign: "center", width: 150,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
         if (params.value == null) {
@@ -141,6 +140,11 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         }
         return `₱ ${params.value.toLocaleString('en')}`;
       },
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Price
+        </Typography>
+      ),
     },
     { field: "size_sqm", headerName: "Room Size", align: "center", headerAlign: "center", width: 150,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
@@ -149,17 +153,39 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         }
         return `${params.value.toLocaleString('en')} sqm.`;
       },
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Room Size
+        </Typography>
+      ),
     },
-    { field: "meters_from_uplb", headerName: "Distance from UPLB", align: "center", headerAlign: "center", width: 150,
+    { field: "meters_from_uplb", headerName: "Distance from UPLB", align: "center", headerAlign: "center", width: 180,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
         if (params.value == null) {
           return '';
         }
         return `${params.value.toLocaleString('en')} meters`;
       },
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Distance from UPLB
+        </Typography>
+      ),
     },
-    { field: "min_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", width: 150 },
-    { field: "max_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", width: 150 },
+    { field: "min_pax", headerName: "Minimum Tenants", align: "center", headerAlign: "center", width: 150,
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Minimum Tenants
+        </Typography>
+      ),
+    },
+    { field: "max_pax", headerName: "Maximum Tenants", align: "center", headerAlign: "center", width: 150,
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Maximum Tenants
+        </Typography>
+      ),
+    },
     { field: "num_rooms", headerName: "Number of Rooms", align: "center", headerAlign: "center", width: 150,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
         if (params.value == null) {
@@ -170,6 +196,11 @@ const DownloadAccommodations: React.FC<IProps> = () => {
           return `${params.value.toLocaleString('en')} rooms`;
         }
       },
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Number of Rooms
+        </Typography>
+      ),
     },
     { field: "num_beds", headerName: "Number of Beds", align: "center", headerAlign: "center", width: 150,
       valueFormatter: (params: GridValueFormatterParams<number>) => {
@@ -181,8 +212,19 @@ const DownloadAccommodations: React.FC<IProps> = () => {
           return `${params.value.toLocaleString('en')} beds`;
         }
       },
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Number of Beds
+        </Typography>
+      ),
     },
-    { field: "furnishing", headerName: "Furnishing Type", align: "center", headerAlign: "center", width: 150 },
+    { field: "furnishing", headerName: "Furnishing Type", align: "center", headerAlign: "center", width: 150,
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <Typography sx={{ color:theme.palette.primary.main, }}>
+          Furnishing Type
+        </Typography>
+      ),
+    },
   ];
 
   const gridRows = accommodations ? accommodations.map((accommodations) => {
@@ -421,7 +463,11 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                   rows={gridRows}
                   columns={columns}
                   slots={{
-                    noRowsOverlay: CustomNowRowsOverlay,
+                    noRowsOverlay: () => (
+                      <Stack height="100%" alignItems="center" justifyContent="center">
+                        No rows in DataGrid
+                      </Stack>
+                    ),
                     toolbar: CustomToolbar,
                   }}
                   slotProps={{
@@ -434,6 +480,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                     },
                     '&.MuiDataGrid-root': {
                       border: 'none',
+                      maxHeight: '100%',
+                      height: '100%',
                     },
                   }}
                 />
@@ -450,10 +498,10 @@ function CustomToolbar() {
   const theme = useTheme()
   return (
     <GridToolbarContainer >
-      <GridToolbarColumnsButton style={{backgroundColor: theme.palette.primary.main}} />
-      <GridToolbarFilterButton style={{backgroundColor: theme.palette.primary.main}} />
-      <GridToolbarDensitySelector style={{backgroundColor: theme.palette.primary.main}} />
-      <GridToolbarExport style={{backgroundColor: theme.palette.primary.main}} printOptions={{ hideToolbar: true, hideFooter: true }} csvOptions={{ disableToolbarButton: true }}/>
+      <GridToolbarColumnsButton style={{backgroundColor: theme.palette.primary.main, paddingLeft: theme.spacing(1.5), paddingRight: theme.spacing(1.5)}} />
+      <GridToolbarFilterButton style={{backgroundColor: theme.palette.primary.main, paddingLeft: theme.spacing(1.5), paddingRight: theme.spacing(1.5)}} />
+      <GridToolbarDensitySelector style={{backgroundColor: theme.palette.primary.main, paddingLeft: theme.spacing(1.5), paddingRight: theme.spacing(1.5)}} />
+      <GridToolbarExport style={{backgroundColor: theme.palette.primary.main, paddingLeft: theme.spacing(1.5), paddingRight: theme.spacing(1.5)}} printOptions={{ hideToolbar: true, hideFooter: true }} csvOptions={{ disableToolbarButton: true }}/>
     </GridToolbarContainer>
   );
 }
