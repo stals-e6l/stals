@@ -110,6 +110,8 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
             position: 'absolute',
             bottom: '5%',
             right: '5%',
+            background: theme.palette.primary.main,
+            color: theme.palette.common.white,
           }}
         >
           <AddIcon />
