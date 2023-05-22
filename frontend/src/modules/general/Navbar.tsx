@@ -38,6 +38,10 @@ const Navbar: React.FC<IProps> = () => {
     onClose()
   }
 
+  const toExplore = () => {
+    navigate(ROUTES.appExplore)
+  }
+
   return (
     <Grid
       container
@@ -52,8 +56,14 @@ const Navbar: React.FC<IProps> = () => {
     >
       <Grid item xs={6}>
         <Box
+          onClick={toExplore}
           sx={{
             height: theme.spacing(60 / 8),
+            cursor: 'pointer',
+            transition: '0.3s all',
+            '&:hover': {
+              height: theme.spacing(62 / 8),
+            },
           }}
           component="img"
           src={assets.logoWhite}
