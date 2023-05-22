@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  Box,
-  useTheme,
-  Button,
-  Dialog,
-} from '@mui/material'
+import { Box, useTheme, Button, Dialog } from '@mui/material'
 
 // import { getUser } from '../../store/auth/action'
 import { COLOR } from '../../theme/index'
@@ -86,36 +81,38 @@ const EditProfileModal: React.FC<IProps> = () => {
           },
         }}
       >
-        <EditProfile user={user} />
+        <Box>
+          <EditProfile user={user} />
 
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button
-            variant="contained"
-            fullWidth
+          <Box
             sx={{
-              backgroundColor: theme.palette.primary.main,
-              marginTop: theme.spacing(2),
-              marginBottom: theme.spacing(1),
-              width: 'fit-content',
-              mr: theme.spacing(1),
-            }}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              backgroundColor: theme.palette.primary.main,
-              marginTop: theme.spacing(2),
-              marginBottom: theme.spacing(1),
-              width: 'fit-content',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              margin: theme.spacing(1),
             }}
           >
-            Save Changes
-          </Button>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                width: 'fit-content',
+                mr: theme.spacing(1),
+              }}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                width: 'fit-content',
+              }}
+            >
+              Save Changes
+            </Button>
+          </Box>
         </Box>
       </Dialog>
     </React.Fragment>
