@@ -152,9 +152,9 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         if (params.value == null) {
           return ''
         } else if (params.value == 1) {
-          return `${params.value.toLocaleString('en')} Tenant`
+          return `${params.value.toLocaleString('en')} tenant`
         } else {
-          return `${params.value.toLocaleString('en')} Tenants`
+          return `${params.value.toLocaleString('en')} tenants`
         }
       },
       renderHeader: () => (
@@ -173,9 +173,9 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         if (params.value == null) {
           return ''
         } else if (params.value == 1) {
-          return `${params.value.toLocaleString('en')} Tenant`
+          return `${params.value.toLocaleString('en')} tenant`
         } else {
-          return `${params.value.toLocaleString('en')} Tenants`
+          return `${params.value.toLocaleString('en')} tenants`
         }
       },
       renderHeader: () => (
