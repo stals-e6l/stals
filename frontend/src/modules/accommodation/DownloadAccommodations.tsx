@@ -324,7 +324,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginTop: theme.spacing(1),
+                  marginTop: theme.spacing(1.5),
+                  marginRight: theme.spacing(1.5),
                 }}
               >
                 <CloseIcon
