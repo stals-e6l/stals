@@ -17,7 +17,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import PinDropIcon from '@mui/icons-material/PinDrop'
 import toPhp from '../../helpers/toPhp'
 import { COLOR } from '../../theme/index'
-import Navbar from '../general/Navbar'
 import Title from './TitleComponent'
 
 interface IProps {
@@ -64,7 +63,6 @@ const AccommodationDetail: React.FC<IProps> = () => {
 
   return (
     <React.Fragment>
-      <Navbar />
       <Box
         component="img"
         sx={{

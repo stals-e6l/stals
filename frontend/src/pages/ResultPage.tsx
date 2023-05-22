@@ -1,12 +1,5 @@
-import { 
-  useTheme, 
-  Grid,
-  Fab,
-  Button,
-  Typography
-} from '@mui/material'
+import { useTheme, Grid, Fab, Button, Typography } from '@mui/material'
 import React from 'react'
-import Navbar from '../modules/general/Navbar'
 import FilterAccommodations from '../modules/accommodation/FilterAccommodations'
 import SearchAccommodations from '../modules/accommodation/SearchAccommodations'
 import AccommodationResults from '../modules/accommodation/AccommodationResults'
@@ -21,12 +14,9 @@ interface IProps {
 }
 
 const ResultPage: React.FC<IProps> = () => {
-
   const theme = useTheme()
   return (
     <React.Fragment>
-      <Navbar />
-
       {/*Print PDF Floating Action Button*/}
       <Fab
         sx={{
