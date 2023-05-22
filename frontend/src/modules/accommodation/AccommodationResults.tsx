@@ -1,4 +1,4 @@
-import { Grid, Typography,  } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import React from 'react'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
@@ -12,14 +12,15 @@ const AccommodationResults: React.FC<IProps> = () => {
   const accommodations = retrieveAccommodations()
 
   if (!accommodations) {
-    return <div>
-      <br /><br />
-      <Typography variant='body1'>
-        No accommodations to show.
-      </Typography>
-    </div>
+    return (
+      <div>
+        <br />
+        <br />
+        <Typography variant="body1">No accommodations to show.</Typography>
+      </div>
+    )
   }
-  // TODO: PM's job to integrate , for now refine the styling
+
   return (
     <React.Fragment>
       <Grid
@@ -44,13 +45,13 @@ const AccommodationResults: React.FC<IProps> = () => {
         {}
         <Grid item lg={3} visibility={'hidden'}>
           <AccommodationCard
-            accommodation={accommodations[0]} 
+            accommodation={accommodations[0]}
             isPublicView={true}
           />
         </Grid>
         <Grid item lg={3} visibility={'hidden'}>
           <AccommodationCard
-            accommodation={accommodations[0]} 
+            accommodation={accommodations[0]}
             isPublicView={true}
           />
         </Grid>

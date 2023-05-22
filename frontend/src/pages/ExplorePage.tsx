@@ -1,23 +1,21 @@
-import { Grid, Fab, useTheme, } from '@mui/material'
+import { Grid, Fab, useTheme } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import React from 'react'
 import Banner from '../modules/general/Banner'
 import AccommodationResults from '../modules/accommodation/AccommodationResults'
-import AccommodationFormModal from '../modules/accommodation/AccommodationFormModal'
 import Title from '../modules/accommodation/TitleComponent'
 
 interface IProps {
   children?: React.ReactNode
-  isPublic?: boolean
 }
 
-const ExplorePage: React.FC<IProps> = ( ) => {
+const ExplorePage: React.FC<IProps> = () => {
   const theme = useTheme()
 
   return (
     <>
-      <Fab >
-        <AddIcon sx={{color: 'inherit'}}/>
+      <Fab>
+        <AddIcon sx={{ color: 'inherit' }} />
       </Fab>
       <Banner />
       <br />
