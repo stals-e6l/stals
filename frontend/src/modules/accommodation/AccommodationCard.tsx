@@ -20,6 +20,8 @@ import AccommodationImages from './accommodationImages'
 import toSentenceCase from '../../helpers/toSentenceCase'
 import toPhp from '../../helpers/toPhp'
 import { COLOR } from '../../theme/index'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -31,20 +33,33 @@ const AccommodationCard: React.FC<IProps> = ({
   accommodation,
   isPublicView,
 }) => {
+  // hooks
+  const theme = useTheme()
+  const navigate = useNavigate()
+
+  // state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
+
+  // events
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
+  const toDetailPage = () => {
+    navigate(
+      `${ROUTES.appAccommodationDetail.replace(':id', accommodation._id || '')}`
+    )
+  }
 
-  const theme = useTheme()
+  // immediate
+  const open = Boolean(anchorEl)
 
   return (
     // Initialize card
     <Card
+      onClick={toDetailPage}
       sx={{
         backgroundColor: COLOR.gray1,
         width: theme.spacing(35),
