@@ -27,7 +27,20 @@ const Navbar: React.FC<IProps> = () => {
   const onSignOut = signOut()
 
   // events
-  const toAuth = () => navigate(ROUTES.appAuth)
+  const toSignOut = () => {
+    if (onSignOut) {
+      onClose()
+      onSignOut().then(() => navigate(ROUTES.appAuth))
+    }
+  }
+  const toProfile = () => {
+    navigate(ROUTES.profile)
+    onClose()
+  }
+
+  const toExplore = () => {
+    navigate(ROUTES.appExplore)
+  }
 
   return (
     <Grid
@@ -43,8 +56,14 @@ const Navbar: React.FC<IProps> = () => {
     >
       <Grid item xs={6}>
         <Box
+          onClick={toExplore}
           sx={{
             height: theme.spacing(60 / 8),
+            cursor: 'pointer',
+            transition: '0.3s all',
+            '&:hover': {
+              height: theme.spacing(62 / 8),
+            },
           }}
           component="img"
           src={assets.logoWhite}
@@ -59,17 +78,8 @@ const Navbar: React.FC<IProps> = () => {
         </Grid>
       )}
       <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={onClose}>
-        <MenuItem>My profile</MenuItem>
-        <MenuItem
-          onClick={() => {
-            if (onSignOut) {
-              onClose()
-              onSignOut().then(toAuth)
-            }
-          }}
-        >
-          Log out
-        </MenuItem>
+        <MenuItem onClick={toProfile}>My profile</MenuItem>
+        <MenuItem onClick={toSignOut}>Log out</MenuItem>
       </Menu>
     </Grid>
   )
