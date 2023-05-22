@@ -1,6 +1,6 @@
 import React from 'react'
-import DeleteCommentFromForum from '../../pages/Forum/DeleteCommentFromForum'
-import UpdateCommentFromForum from '../../pages/Forum/UpdateCommentFromForum'
+import DeleteCommentFromForum from './DeleteCommentFromForum'
+import UpdateCommentFromForum from './UpdateCommentFromForum'
 import {
   Box,
   Typography,
