@@ -1,4 +1,4 @@
-import { useTheme, Grid, Fab, Button, Typography } from '@mui/material'
+import { useTheme, Grid, Button, Typography } from '@mui/material'
 import React from 'react'
 import FilterAccommodations from '../modules/accommodation/FilterAccommodations'
 import SearchAccommodations from '../modules/accommodation/SearchAccommodations'
@@ -8,6 +8,7 @@ import SortIcon from '@mui/icons-material/Sort'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { COLOR } from '../theme/index'
 import Title from '../modules/accommodation/TitleComponent'
+import DownloadAccommodations from '../modules/accommodation/DownloadAccommodations'
 
 interface IProps {
   children?: React.ReactNode
@@ -18,15 +19,7 @@ const ResultPage: React.FC<IProps> = () => {
   return (
     <React.Fragment>
       {/*Print PDF Floating Action Button*/}
-      <Fab
-        sx={{
-          [theme.breakpoints.down('md')]: {
-            display: 'none',
-          },
-        }}
-      >
-        <PrintIcon sx={{ color: 'inherit' }} />
-      </Fab>
+      <DownloadAccommodations />
 
       <Grid container>
         {/* Filters */}

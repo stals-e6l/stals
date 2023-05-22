@@ -17,6 +17,7 @@ import {
   Typography,
   Menu,
   IconButton,
+  Fab,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -28,6 +29,7 @@ import { retrieveAccommodations } from './AccommodationsProvider'
 import DownloadAccommodationsIncludeFields from './DownloadAccommodationsIncludeFields'
 import useMenu from '../../hooks/useMenu'
 import { getMe } from '../auth/AuthProvider'
+import PrintIcon from '@mui/icons-material/Print'
 
 interface IProps {
   children?: React.ReactNode
@@ -130,13 +132,17 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
   return (
     <React.Fragment>
-      <Button
+      <Fab
         disabled={!accommodations}
-        variant="contained"
         onClick={toggleDialog}
+        sx={{
+          [theme.breakpoints.down('md')]: {
+            display: 'none',
+          },
+        }}
       >
-        Download
-      </Button>
+        <PrintIcon sx={{ color: 'inherit' }} />
+      </Fab>
 
       {openDialog && accommodations && (
         <Box>
