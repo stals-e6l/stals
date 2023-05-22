@@ -56,20 +56,24 @@ const EditProfileModal: React.FC<IProps> = () => {
   return (
     <React.Fragment>
       <Button
+        variant="text"
         onClick={handleOpen}
         sx={{
-          backgroundColor: COLOR.white,
-          color: theme.palette.primary.main,
-          fontWeight: 'bold',
+          backgroundColor: theme.palette.primary.main,
+          color: COLOR.white,
+          //   fontWeight: 'bold',
           mt: theme.spacing(3),
+          textTransform: 'none',
           width: 'fit-content',
           '&:hover': {
             backgroundColor: theme.palette.primary.main,
           },
         }}
       >
-        <Box sx={{ display:'flex', alignItems: 'center' }}>
-          <EditIcon sx={{ fontSize: theme.spacing(2.2) }} />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <EditIcon
+            sx={{ fontSize: theme.spacing(2), mb: theme.spacing(0.3) }}
+          />
           Edit Profile
         </Box>
       </Button>
