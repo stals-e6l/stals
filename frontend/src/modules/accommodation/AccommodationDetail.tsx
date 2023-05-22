@@ -24,7 +24,7 @@ interface IProps {
   children?: React.ReactNode
 }
 
-const AccommodationDetailPage: React.FC<IProps> = () => {
+const AccommodationDetail: React.FC<IProps> = () => {
   //
   const theme = useTheme()
 
@@ -610,4 +610,4 @@ const AccommodationDetailPage: React.FC<IProps> = () => {
   )
 }
 
-export default AccommodationDetailPage
+export default AccommodationDetail

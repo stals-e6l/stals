@@ -1,16 +1,17 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import ModulesViewer from '../modules'
 import AuthPage from '../pages/AuthPage'
 import { AuthGuard } from '../modules/auth/AuthProvider'
 import ExplorePage from '../pages/ExplorePage'
 import ResultPage from '../pages/ResultPage'
 import IndexPage from '../pages'
+import AccommodationDetailPage from '../pages/AccommodationDetailPage'
 
 export const ROUTES = {
   auth: '/auth',
   explore: '/explore',
   result: '/result',
+  appAccommodationDetail: '/accommodations/:id',
 }
 
 interface IProps {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.result,
         element: <ResultPage />,
+      },
+      {
+        path: ROUTES.appAccommodationDetail,
+        element: <AccommodationDetailPage />,
       },
     ],
   },
