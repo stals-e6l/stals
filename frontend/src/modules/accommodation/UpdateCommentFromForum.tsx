@@ -32,7 +32,7 @@ const UpdateCommentFromForum: React.FC<IProps> = ({
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <Button variant="contained" onClick={handleClickOpen} sx={{ backgroundColor: '#fff', color: '#000' }}>Update</Button>
+        <Button variant="contained" onClick={handleClickOpen} sx={{ backgroundColor: '#fff', color: '#000', ':hover': { color: '#fff' } }}>Update</Button>
 
         <Dialog fullWidth fullScreen={fullScreen} maxWidth='sm' open={open} sx={mainDialog}>
 
