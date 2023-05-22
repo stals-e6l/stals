@@ -7,10 +7,9 @@ import { addCommentToForum } from '../../store/forum/actions'
 
 interface IProps {
     children?: React.ReactNode
-    forumId: string
 }
 
-const AddReviewModal: React.FC<IProps> = ({ forumId }) => {
+const AddReviewModal: React.FC<IProps> = () => {
     const { open, toggleDialog } = useDialog()
     const [inputField, setField] = useState<string>('')
 
