@@ -27,7 +27,16 @@ const Navbar: React.FC<IProps> = () => {
   const onSignOut = signOut()
 
   // events
-  const toAuth = () => navigate(ROUTES.appAuth)
+  const toSignOut = () => {
+    if (onSignOut) {
+      onClose()
+      onSignOut().then(() => navigate(ROUTES.appAuth))
+    }
+  }
+  const toProfile = () => {
+    navigate(ROUTES.profile)
+    onClose()
+  }
 
   return (
     <Grid
@@ -59,19 +68,8 @@ const Navbar: React.FC<IProps> = () => {
         </Grid>
       )}
       <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={onClose}>
-        <MenuItem onClick={()=>{
-            navigate(ROUTES.profile)
-        }}>My profile</MenuItem>
-        <MenuItem
-          onClick={() => {
-            if (onSignOut) {
-              onClose()
-              onSignOut().then(toAuth)
-            }
-          }}
-        >
-          Log out
-        </MenuItem>
+        <MenuItem onClick={toProfile}>My profile</MenuItem>
+        <MenuItem onClick={toSignOut}>Log out</MenuItem>
       </Menu>
     </Grid>
   )
