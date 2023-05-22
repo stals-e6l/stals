@@ -9,6 +9,8 @@ import {
   Rating,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import ForumIcon from '@mui/icons-material/Forum'
@@ -28,6 +30,9 @@ const Reviews: React.FC<IProps> = () => {
   const grey = '#f0f0f0'
   const quicksand = 'Quicksand'
   const sourceSansPro = 'Source Sans Pro'
+
+  const theme = useTheme()
+  const move = useMediaQuery(theme.breakpoints.down('sm'))
 
   //Temporary static data
   const rating = 4.5
@@ -63,26 +68,6 @@ const Reviews: React.FC<IProps> = () => {
     </Typography>
   )
 
-  // Add Review Button
-  const AddReviewButton = () => (
-    <Button
-      sx={{
-        backgroundColor: blue,
-        color: 'white',
-        fontWeight: 'bold',
-        fontFamily: sourceSansPro,
-        fontSize: '1rem',
-        textTransform: 'none',
-        ':hover': {
-          backgroundColor: grey,
-          color: blue,
-        },
-      }}
-    >
-      Add Review
-    </Button>
-  )
-
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -111,9 +96,9 @@ const Reviews: React.FC<IProps> = () => {
             direction="row"
             sx={{
               backgroundColor: grey,
-              marginLeft: '10px',
               padding: '15px 30px',
               alignContent: 'center',
+              flexWrap: 'wrap'
             }}
           >
             {/* Rating text */}
@@ -175,16 +160,19 @@ const Reviews: React.FC<IProps> = () => {
               </Grid>
             </Grid>
 
-            <Grid item xs={9}>
+            <Grid item xs>
               {/* Add review button */}
-              <Box display="flex" justifyContent="flex-end" marginTop="20px">
-                <AddReviewModal />
-              </Box>
+                <Grid container justifyContent={ move ? "flex-start" : "flex-end" } sx={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                    <Grid item >
+                        <AddReviewModal />
+                    </Grid>
+                </Grid>
             </Grid>
           </Grid>
         </Grid>
 
         <Grid item xs>
+            <Review />
             <Review />
         </Grid>
       </Grid>
@@ -304,7 +292,8 @@ const Reviews: React.FC<IProps> = () => {
             </Grid>
             {/* End of grid container for ratings */}
 
-            <Grid item>
+            <Grid item xs>
+                <Review />
                 <Review />
             </Grid>
           </Grid>

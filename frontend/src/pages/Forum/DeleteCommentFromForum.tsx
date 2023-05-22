@@ -28,7 +28,7 @@ const DeleteCommentFromForum: React.FC<IProps> = ({ forumId, comment }) => {
 
   return (
     <>
-        <Button onClick={ () => {setOpen(true)} }>Delete</Button>
+        <Button variant="contained" onClick={ () => {setOpen(true)} } sx={{ backgroundColor: '#fff', color: '#000', ':hover': { color: '#fff' } }}>Delete</Button>
         <Dialog open={open} onClose={ () => {setOpen(false)} } fullWidth={true} maxWidth={'xs'}>
             <DialogTitle>
                 <Grid sx={{ flexGrow: 1 }} container spacing={0}>

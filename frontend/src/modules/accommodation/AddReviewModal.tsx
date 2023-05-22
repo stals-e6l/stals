@@ -18,7 +18,7 @@ const AddReviewModal: React.FC<IProps> = () => {
 
     return (
         <React.Fragment>
-            <Button variant="contained" onClick={toggleDialog}>Add Review</Button>
+            <Button variant="contained" onClick={toggleDialog} sx={{ maxWidth: '200px' }}><b>Add Review</b></Button>
 
             <Dialog open={open} onClose={toggleDialog} fullScreen={fullScreen} fullWidth={true} maxWidth={'sm'}>
                 <DialogTitle>

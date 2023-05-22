@@ -9,6 +9,7 @@ import {
   Popover,
   Button,
   ButtonGroup,
+  useTheme
 } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
@@ -24,6 +25,12 @@ interface IProps {
 const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
   const [anchor, setAnchor] = useState(null)
 
+  const getDate = new Date()
+  const date = getDate.toLocaleDateString()
+  const theme = useTheme()
+
+  const ratingVal = 4.0
+
   const openOptions = event => {
     setAnchor(event.currentTarget)
   }
@@ -34,10 +41,9 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
       <Box
         sx={{
           borderTop: '1px solid gray',
-          borderBottom: '1px solid gray',
-          marginTop: '-1px',
-          paddingTop: '2px',
+          paddingTop: '10px',
           paddingBottom: '5px',
+          mt: '1em'
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -48,7 +54,7 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
             <Box>
               <Typography sx={{ marginLeft: '3px' }}>Von Arellano</Typography>
               <Box sx={{ display: 'flex' }}>
-                <Rating></Rating>
+                <Rating value={ratingVal} precision={0.5} readOnly sx={{ color: theme.palette.secondary.main }}/>
                 <Typography
                   sx={{
                     marginLeft: '5px',
@@ -65,7 +71,7 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
             </Box>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'start' }}>
-            <Typography>April 25, 2023</Typography>
+            <Typography>{date}</Typography>
             <IconButton
               sx={{ marginTop: '-8px', color: '#000000' }}
               onClick={openOptions}
@@ -79,7 +85,7 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
               transformOrigin={{ vertical: 'center', horizontal: 'center' }}
               onClose={() => setAnchor(null)}
             >
-              <ButtonGroup orientation="vertical">
+              <ButtonGroup orientation="vertical" sx={{ backgroundColor: '#fff', p: '2px' }}>
                 <DeleteCommentFromForum forumId={forumId} comment={comment} />
                 <UpdateCommentFromForum
                   forumId={forumId}
@@ -91,8 +97,8 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
           </Box>
         </Box>
 
-        <Typography sx={{ marginLeft: '50px', paddingTop: '10px', width: '100%' }}>
-            This is definitely one of the comments of all time.
+        <Typography sx={{ marginLeft: '50px', paddingTop: '10px', maxWidth: '90%', textAlign: 'justify' }}>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentumleo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortisfeugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massasapien faucibus et molestie ac.
         </Typography>
       </Box>
     </React.Fragment>
