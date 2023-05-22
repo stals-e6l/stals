@@ -1,22 +1,11 @@
 import React from 'react'
 import {
   Box,
-  Typography,
-  IconButton,
   useTheme,
   Button,
-  Avatar,
   Dialog,
-  Divider,
 } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
-import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined'
-import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined'
-import PhoneAndroidOutlinedIcon from '@mui/icons-material/PhoneAndroidOutlined'
-import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
+
 // import { getUser } from '../../store/auth/action'
 import { COLOR } from '../../theme/index'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -33,7 +22,6 @@ const EditProfileModal: React.FC<IProps> = () => {
   //     return <div>no user</div>
   //   }
   const theme = useTheme()
-  const [image, setImage] = React.useState<any>(null)
 
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
@@ -67,8 +55,6 @@ const EditProfileModal: React.FC<IProps> = () => {
     },
   }
 
-  const formattedRole = user.role[0].toUpperCase() + user.role.slice(1)
-  const formattedGender = user.gender[0].toUpperCase() + user.gender.slice(1)
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (

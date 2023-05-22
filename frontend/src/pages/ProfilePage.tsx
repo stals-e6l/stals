@@ -4,9 +4,7 @@ import {
   Typography,
   IconButton,
   useTheme,
-  Button,
   Avatar,
-  Dialog,
   Divider,
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -18,8 +16,6 @@ import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import { COLOR } from '../theme/index'
-import useMediaQuery from '@mui/material/useMediaQuery';
-import EditProfile from '../modules/auth/EditProfile'
 import { getMe } from '../modules/auth/AuthProvider'
 import EditProfileModal from '../modules/auth/EditProfileModal'
 
@@ -30,13 +26,7 @@ interface IProps {
 const ProfilePage: React.FC<IProps> = () => {
   const user = getMe()
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-
-  const [open, setOpen] = React.useState(false)
   const [image, setImage] = React.useState<any>(null)
-
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
 
   if (!user) return <></>
 
