@@ -5,6 +5,7 @@ import { Box, useTheme, Button, Dialog } from '@mui/material'
 import { COLOR } from '../../theme/index'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import EditProfile from './EditProfile'
+import EditIcon from '@mui/icons-material/Edit'
 
 interface IProps {
   children?: React.ReactNode
@@ -63,11 +64,14 @@ const EditProfileModal: React.FC<IProps> = () => {
           mt: theme.spacing(3),
           width: 'fit-content',
           '&:hover': {
-            backgroundColor: COLOR.white,
+            backgroundColor: theme.palette.primary.main,
           },
         }}
       >
-        Edit Profile
+        <Box sx={{ display:'flex', alignItems: 'center' }}>
+          <EditIcon sx={{ fontSize: theme.spacing(2.2) }} />
+          Edit Profile
+        </Box>
       </Button>
       <Dialog
         open={open}

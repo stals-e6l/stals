@@ -43,6 +43,7 @@ const ProfilePage: React.FC<IProps> = () => {
           [theme.breakpoints.down('sm')]: {
             width: '100%',
           },
+          position: 'relative'
         }}
       >
         <Box sx={{ display: 'flex' }}>
@@ -68,7 +69,8 @@ const ProfilePage: React.FC<IProps> = () => {
           {user.username}
         </Typography>
 
-        {user.full_name.middle_name === undefined || user.full_name.middle_name === ''? (
+        {user.full_name.middle_name === undefined ||
+        user.full_name.middle_name === '' ? (
           <Typography
             variant="h6"
             sx={{
@@ -269,7 +271,9 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           {user.organization}
         </Typography>
-        <EditProfileModal />
+        <Box sx={{position: 'absolute', bottom: theme.spacing(3), right: theme.spacing(3)}}>
+          <EditProfileModal />
+        </Box>
       </Box>
     </Box>
   )
