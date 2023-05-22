@@ -21,6 +21,7 @@ import { COLOR } from '../theme/index'
 import useMediaQuery from '@mui/material/useMediaQuery';
 import EditProfile from '../modules/auth/EditProfile'
 import { getMe } from '../modules/auth/AuthProvider'
+import EditProfileModal from '../modules/auth/EditProfileModal'
 
 interface IProps {
   children?: React.ReactNode
@@ -77,7 +78,7 @@ const ProfilePage: React.FC<IProps> = () => {
           {user.username}
         </Typography>
 
-        {user.full_name.middle_name === undefined ? (
+        {user.full_name.middle_name === undefined || user.full_name.middle_name === ''? (
           <Typography
             variant="h6"
             sx={{
@@ -86,8 +87,7 @@ const ProfilePage: React.FC<IProps> = () => {
               mt: theme.spacing(3),
             }}
           >
-            {user.full_name.first_name}
-            {user.full_name.last_name}
+            {user.full_name.first_name} {user.full_name.last_name}
           </Typography>
         ) : (
           <Typography
@@ -279,34 +279,7 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           {user.organization}
         </Typography>
-        <Button
-          onClick={handleOpen}
-          sx={{
-            backgroundColor: COLOR.white,
-            color: theme.palette.primary.main,
-            fontWeight: 'bold',
-            mt: theme.spacing(3),
-            '&:hover': {
-              backgroundColor: COLOR.white,
-            },
-          }}
-        >
-          Edit Profile
-        </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          fullScreen={fullScreen}
-          sx={{
-            width: '40%',
-            margin: '0 auto',
-            [theme.breakpoints.down('sm')]: {
-              width: '100%',
-            },
-          }}
-        >
-          <EditProfile user={user} />
-        </Dialog>
+        <EditProfileModal />
       </Box>
     </Box>
   )

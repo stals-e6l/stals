@@ -72,6 +72,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
             minHeight: '50%',
             border: 'solid 1px green',
             backgroundColor: COLOR.white,
+            mb:theme.spacing(1)
           }}
           onClick={handleUploadImage}
         >
@@ -98,7 +99,8 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ backgroundColor: COLOR.white }}
+          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1)
+         }}
           multiline
           rows={3}
           name="biography"
@@ -106,12 +108,12 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
         />
 
         <Grid container spacing={1}>
-          <Grid item xs={7}>
-            <FormLabel>Gender</FormLabel>
+          <Grid item xs={7} sx={{mb:theme.spacing(1)}}>
+            <FormLabel >Gender</FormLabel>
             <Select
               label=""
               fullWidth
-              sx={{ backgroundColor: COLOR.white }}
+              sx={{ backgroundColor: COLOR.white}}
               size="small"
               name="gender"
               defaultValue={user.gender}
@@ -123,8 +125,8 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
             </Select>
           </Grid>
 
-          <Grid item xs={5}>
-            <InputLabel>Birthday</InputLabel>
+          <Grid item xs={5} >
+            <InputLabel >Birthday</InputLabel>
             <DatePicker
               // value={form.birthday as string}w}
               slotProps={{ textField: { size: 'small' } }}
@@ -133,8 +135,8 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
         </Grid>
 
         <Grid container spacing={1}>
-          <Grid item xs={6}>
-            <FormLabel>Phone</FormLabel>
+          <Grid item xs={6} sx={{mb:theme.spacing(1)}}>
+            <FormLabel >Phone</FormLabel>
             <TextField
               variant="outlined"
               size="small"
@@ -146,7 +148,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           </Grid>
 
           <Grid item xs={6}>
-            <FormLabel>Landline</FormLabel>
+            <FormLabel >Landline</FormLabel>
             <TextField
               variant="outlined"
               size="small"
@@ -163,7 +165,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ backgroundColor: COLOR.white }}
+          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1)}}
           name="home"
           defaultValue={user.address === undefined ? (""):(user.address.home)}
         />
@@ -173,7 +175,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ backgroundColor: COLOR.white }}
+          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1) }}
           name="current"
           defaultValue={user.address === undefined ? (""):(user.address.current)}
         />
@@ -187,35 +189,6 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           name="organization"
           defaultValue={user.organization}
         />
-
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              backgroundColor: theme.palette.primary.main,
-              marginTop: theme.spacing(2),
-              marginBottom: theme.spacing(1),
-              width: 'fit-content',
-              mr: theme.spacing(1),
-            }}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              backgroundColor: theme.palette.primary.main,
-              marginTop: theme.spacing(2),
-              marginBottom: theme.spacing(1),
-              width: 'fit-content',
-            }}
-          >
-            Save Changes
-          </Button>
-        </Box>
       </Box>
     </Box>
   )

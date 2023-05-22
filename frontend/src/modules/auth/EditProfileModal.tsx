@@ -72,280 +72,67 @@ const EditProfileModal: React.FC<IProps> = () => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
-    <Box sx={{ display: 'flex', height: '100%' }}>
-      <Box
+    <React.Fragment>
+      <Button
+        onClick={handleOpen}
         sx={{
-          backgroundColor: COLOR.blue,
-          width: '30%',
-          padding: theme.spacing(5),
+          backgroundColor: COLOR.white,
+          color: theme.palette.primary.main,
+          fontWeight: 'bold',
+          mt: theme.spacing(3),
+          width: 'fit-content',
+          '&:hover': {
+            backgroundColor: COLOR.white,
+          },
+        }}
+      >
+        Edit Profile
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullScreen={fullScreen}
+        sx={{
+          width: '40%',
+          margin: '0 auto',
           [theme.breakpoints.down('sm')]: {
             width: '100%',
           },
         }}
       >
-        <Box sx={{ display: 'flex' }}>
-          <IconButton>
-            <ArrowBackIcon sx={{ fontSize: '5vh', color: COLOR.white }} />
-          </IconButton>
-          <Avatar
+        <EditProfile user={user} />
+
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            variant="contained"
+            fullWidth
             sx={{
-              width: theme.spacing(6),
-              height: theme.spacing(6),
+              backgroundColor: theme.palette.primary.main,
+              marginTop: theme.spacing(2),
+              marginBottom: theme.spacing(1),
+              width: 'fit-content',
+              mr: theme.spacing(1),
             }}
-            alt="profile"
-            src={image}
-          />
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              marginTop: theme.spacing(2),
+              marginBottom: theme.spacing(1),
+              width: 'fit-content',
+            }}
+          >
+            Save Changes
+          </Button>
         </Box>
-        <Typography variant="h3" sx={{ color: COLOR.white }}>
-          Greetings,
-        </Typography>
-        <Typography
-          variant="h4"
-          sx={{ color: COLOR.white, fontWeight: 'normal' }}
-        >
-          {user.username}
-        </Typography>
-
-        {user.full_name.middle_name === undefined ? (
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: 'light',
-              color: COLOR.white,
-              mt: theme.spacing(3),
-            }}
-          >
-            {user.full_name.first_name}
-            {user.full_name.last_name}
-          </Typography>
-        ) : (
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: 'light',
-              color: COLOR.white,
-              mt: theme.spacing(3),
-            }}
-          >
-            {user.full_name.first_name} {user.full_name.middle_name[0]}
-            {'. '}
-            {user.full_name.last_name}
-          </Typography>
-        )}
-
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 'light',
-            color: COLOR.white,
-            mt: theme.spacing(-1),
-          }}
-        >
-          {formattedRole}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 'light',
-            fontStyle: 'italic',
-            color: COLOR.white,
-          }}
-        >
-          {user.biography}
-        </Typography>
-        <Divider sx={{ background: COLOR.white }} />
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
-        >
-          Basic Info
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            color: COLOR.white,
-            alignItems: 'center',
-            pb: theme.spacing(1),
-          }}
-        >
-          <PersonOutlineOutlinedIcon />
-          <Typography variant="body2" sx={{ fontWeight: 'light' }}>
-            {formattedGender}
-          </Typography>
-        </Box>
-        {user.birthday === '' ? (
-          <></>
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              color: COLOR.white,
-              alignItems: 'center',
-              pb: theme.spacing(1),
-            }}
-          >
-            <CakeOutlinedIcon />
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 'light', color: COLOR.white }}
-            >
-              {user.birthday}
-            </Typography>
-          </Box>
-        )}
-
-        <Divider sx={{ background: COLOR.white }} />
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
-        >
-          Contact Details
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            color: COLOR.white,
-            alignItems: 'center',
-            pb: theme.spacing(1),
-          }}
-        >
-          <MailOutlineOutlinedIcon />
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 'light', color: COLOR.white }}
-          >
-            {user.email}
-          </Typography>
-        </Box>
-
-        {user.phone === undefined ? (
-          <></>
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              color: COLOR.white,
-              alignItems: 'center',
-              pb: theme.spacing(1),
-            }}
-          >
-            <PhoneAndroidOutlinedIcon />
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 'light', color: COLOR.white }}
-            >
-              {user.phone.mobile}
-            </Typography>
-          </Box>
-        )}
-
-        {user.phone === undefined ? (
-          <></>
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              color: COLOR.white,
-              alignItems: 'center',
-              pb: theme.spacing(1),
-            }}
-          >
-            <LocalPhoneOutlinedIcon />
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 'light', color: COLOR.white }}
-            >
-              {user.phone.landline}
-            </Typography>
-          </Box>
-        )}
-
-        {user.address === undefined ? (
-          <></>
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              color: COLOR.white,
-              alignItems: 'center',
-              pb: theme.spacing(1),
-            }}
-          >
-            <HomeOutlinedIcon />
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 'light', color: COLOR.white }}
-            >
-              {user.address.home}
-            </Typography>
-          </Box>
-        )}
-
-        {user.address === undefined ? (
-          <></>
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              color: COLOR.white,
-              alignItems: 'center',
-              pb: theme.spacing(1),
-            }}
-          >
-            <PlaceOutlinedIcon />
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 'light', color: COLOR.white }}
-            >
-              {user.address.current}
-            </Typography>
-          </Box>
-        )}
-
-        <Divider sx={{ background: COLOR.white }} />
-
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
-        >
-          Organization
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'light', color: COLOR.white }}
-        >
-          {user.organization}
-        </Typography>
-        <Button
-          onClick={handleOpen}
-          sx={{
-            backgroundColor: COLOR.white,
-            color: theme.palette.primary.main,
-            fontWeight: 'bold',
-            mt: theme.spacing(3),
-            '&:hover': {
-              backgroundColor: COLOR.white,
-            },
-          }}
-        >
-          Edit Profile
-        </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          fullScreen={fullScreen}
-          sx={{
-            width: '40%',
-            margin: '0 auto',
-            [theme.breakpoints.down('sm')]: {
-              width: '100%',
-            },
-          }}
-        >
-          <EditProfile user={user} />
-        </Dialog>
-      </Box>
-    </Box>
+      </Dialog>
+    </React.Fragment>
   )
 }
 
