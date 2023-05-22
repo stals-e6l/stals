@@ -79,6 +79,17 @@ const FilterAccommodations: React.FC<IProps> = () => {
     navigate(`${ROUTES.appResult}?${queryString}`) // ux
   }
 
+  React.useEffect(() => {
+    onFilter(filter)
+  }, [filter.name])
+
+  React.useEffect(() => {
+    const qs = extractQueryString(location.search)
+    if (qs.name) {
+      setFilter(prev => ({ ...prev, name: qs.name }))
+    }
+  }, [location.search])
+
   return (
     <>
       <Grid container>
