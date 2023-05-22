@@ -10,7 +10,7 @@ function btnAction(){
     active.style.backgroundColor = "#FFFFFF"
     active.style.borderRadius = "1em 0 0 1em";
     active.style.margin = "0.25em -2.75em .25em 0";
-    active.style.color = "#1543606a";
+    active.style.color = "#154360";
 
     activeBubble.style.display = "block";
     activeBubble.style.zIndex = "2";
