@@ -13,6 +13,7 @@ import {
   Rating,
   FormGroup,
   useTheme,
+  Button,
 } from '@mui/material'
 import { COLOR } from '../../theme'
 import { buildQueryString, extractQueryString } from '../../utils/queryString'
@@ -263,6 +264,12 @@ const FilterAccommodations: React.FC<IProps> = () => {
                   ))}
                 </RadioGroup>
               </FormControl>
+            </Grid>
+
+            <Grid item>
+              <Button variant="contained" onClick={() => onFilter(filter)}>
+                Filter
+              </Button>
             </Grid>
           </Grid>
         </Grid>

@@ -52,6 +52,8 @@ const AccommodationCard: React.FC<IProps> = ({
     )
   }
 
+  if (!accommodation) return <></>
+
   // immediate
   const open = Boolean(anchorEl)
 
