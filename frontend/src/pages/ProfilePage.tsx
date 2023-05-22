@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React from 'react'
 import {
   Box,
@@ -34,7 +35,7 @@ const ProfilePage: React.FC<IProps> = () => {
   const formattedGender = user.gender[0].toUpperCase() + user.gender.slice(1)
 
   return (
-    <Box sx={{ display: 'flex', height: '100%' }}>
+    <Box sx={{ display: 'flex', height: 'calc(100vh - 60px)' }}>
       <Box
         sx={{
           backgroundColor: COLOR.blue,
@@ -43,7 +44,7 @@ const ProfilePage: React.FC<IProps> = () => {
           [theme.breakpoints.down('sm')]: {
             width: '100%',
           },
-          position: 'relative'
+          position: 'relative',
         }}
       >
         <Box sx={{ display: 'flex' }}>
@@ -271,7 +272,13 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           {user.organization}
         </Typography>
-        <Box sx={{position: 'absolute', bottom: theme.spacing(3), right: theme.spacing(3)}}>
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: theme.spacing(3),
+            right: theme.spacing(3),
+          }}
+        >
           <EditProfileModal />
         </Box>
       </Box>
