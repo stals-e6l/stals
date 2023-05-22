@@ -1,4 +1,4 @@
-import { Button, TextField, Dialog, Typography, Grid, createTheme, ThemeProvider } from '@mui/material'
+import { Button, TextField, Dialog, Typography, Grid, createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
 import React from 'react'
 import { updateCommentFromForum } from '../../store/forum/actions'
 import { Height } from '@mui/icons-material'
@@ -27,13 +27,14 @@ const UpdateCommentFromForum: React.FC<IProps> = ({
   };
 
   const [comment, setComment] = React.useState<string>(initComment)
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <ThemeProvider theme={theme}>
       <div>
         <Button variant="contained" onClick={handleClickOpen} sx={{ backgroundColor: '#fff', color: '#000' }}>Update</Button>
 
-        <Dialog fullWidth maxWidth='sm' open={open} sx={mainDialog}>
+        <Dialog fullWidth fullScreen={fullScreen} maxWidth='sm' open={open} sx={mainDialog}>
 
           <Typography variant='h5'>Edit Comment</Typography>
 
