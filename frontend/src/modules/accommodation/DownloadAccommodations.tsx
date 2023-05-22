@@ -20,6 +20,7 @@ import {
   GridToolbarFilterButton,
   GridToolbarExport,
   GridToolbarDensitySelector,
+  useGridApiRef,
 } from '@mui/x-data-grid'
 import { useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
@@ -349,7 +350,10 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                     toolbar: CustomToolbar,
                   }}
                   slotProps={{
-                    toolbar: { background: 'red' },
+                    columnsPanel: {
+                      disableHideAllButton: true,
+                      disableShowAllButton: true,
+                    },
                   }}
                   sx={{
                     textAlign: 'center',
@@ -388,38 +392,56 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
 function CustomToolbar() {
   const theme = useTheme()
+  // const apiRef = useGridApiRef();
+
+  // const printDataGrid = () => apiRef.current.exportDataAsPrint();
   return (
     <GridToolbarContainer>
       <GridToolbarColumnsButton
-        style={{
+        sx={{
           backgroundColor: theme.palette.primary.main,
           paddingLeft: theme.spacing(1.5),
           paddingRight: theme.spacing(1.5),
+          '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+          },
         }}
       />
       <GridToolbarFilterButton
-        style={{
+        sx={{
           backgroundColor: theme.palette.primary.main,
           paddingLeft: theme.spacing(1.5),
           paddingRight: theme.spacing(1.5),
+          '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+          },
         }}
       />
       <GridToolbarDensitySelector
-        style={{
+        sx={{
           backgroundColor: theme.palette.primary.main,
           paddingLeft: theme.spacing(1.5),
           paddingRight: theme.spacing(1.5),
+          '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+          },
         }}
       />
       <GridToolbarExport
-        style={{
+        sx={{
           backgroundColor: theme.palette.primary.main,
           paddingLeft: theme.spacing(1.5),
           paddingRight: theme.spacing(1.5),
+          '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+          },
         }}
         printOptions={{ hideToolbar: true, hideFooter: true }}
         csvOptions={{ disableToolbarButton: true }}
       />
+      {/* <Button variant='contained' onClick={printDataGrid}>
+        Print 
+      </Button> */}
     </GridToolbarContainer>
   )
 }

@@ -28,4 +28,17 @@ export const theme = createTheme({
       fontFamily: 'Quicksand',
     },
   },
+  // components: {
+  //   MuiButton: {
+  //     defaultProps: {
+  //       variant: 'contained',
+  //       color: '#154360'
+  //     },
+  //     styleOverrides: {
+  //       root: {
+  //         backgroundColor: '#154360',
+  //       },
+  //     }, 
+  //   }, 
+  // },
 })
