@@ -286,7 +286,7 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               sx={{
                 display: 'inline-flex',
                 justifyContent: 'space-between',
-                paddingRight: theme.spacing(2),
+                paddingRight: theme.spacing(1),
                 paddingLeft: theme.spacing(1),
               }}
             >
@@ -299,11 +299,19 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               >
                 PDF Preview
               </DialogTitle>
-              <IconButton onClick={toggleDialog}>
+              <IconButton onClick={toggleDialog} 
+                sx={{
+                  width: theme.spacing(5),
+                  height: theme.spacing(5),
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: theme.spacing(1),
+                }}
+              >
                 <CloseIcon
                   sx={{
                     color: theme.palette.primary.main,
-                    marginRight: theme.spacing(),
                   }}
                 />
               </IconButton>
