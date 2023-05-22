@@ -148,6 +148,15 @@ const DownloadAccommodations: React.FC<IProps> = () => {
       align: 'center',
       headerAlign: 'center',
       flex: 1,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return ''
+        } else if (params.value == 1) {
+          return `${params.value.toLocaleString('en')} Tenant`
+        } else {
+          return `${params.value.toLocaleString('en')} Tenants`
+        }
+      },
       renderHeader: () => (
         <Typography sx={{ color: theme.palette.primary.main }}>
           Minimum Tenants
@@ -160,6 +169,15 @@ const DownloadAccommodations: React.FC<IProps> = () => {
       align: 'center',
       headerAlign: 'center',
       flex: 1,
+      valueFormatter: (params: GridValueFormatterParams<number>) => {
+        if (params.value == null) {
+          return ''
+        } else if (params.value == 1) {
+          return `${params.value.toLocaleString('en')} Tenant`
+        } else {
+          return `${params.value.toLocaleString('en')} Tenants`
+        }
+      },
       renderHeader: () => (
         <Typography sx={{ color: theme.palette.primary.main }}>
           Maximum Tenants
