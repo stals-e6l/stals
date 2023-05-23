@@ -20,14 +20,13 @@ import {
   GridToolbarFilterButton,
   GridToolbarExport,
   GridToolbarDensitySelector,
-  useGridApiRef,
 } from '@mui/x-data-grid'
 import { useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
 import { downloadPdf, createReport } from '../report/ReportsProvider'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import { getMe } from '../auth/AuthProvider'
-import toSentenceCase from '../../helpers/toSentenceCase'
+import toSentenceCase from '../../utils/toSentenceCase'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { styled } from '@mui/material/styles'
 import theme from '../../theme'
@@ -318,7 +317,8 @@ const DownloadAccommodations: React.FC<IProps> = () => {
               >
                 PDF Preview
               </DialogTitle>
-              <IconButton onClick={toggleDialog} 
+              <IconButton
+                onClick={toggleDialog}
                 sx={{
                   width: theme.spacing(5),
                   height: theme.spacing(5),
