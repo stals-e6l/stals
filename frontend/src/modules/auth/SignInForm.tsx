@@ -44,7 +44,7 @@ const SignInForm: React.FC<IProps> = () => {
     if (onSignIn && onShowError) {
       onSignIn(form)
         .then(() => {
-          navigate(ROUTES.explore)
+          navigate(ROUTES.appExplore)
         })
         .catch(err => onShowError(String(err)))
     }

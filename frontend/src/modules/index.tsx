@@ -21,6 +21,7 @@ const ModulesViewer: React.FC<IProps> = () => {
     '/SignUpForm',
     '/AddReviewForm',
     '/AddReviewModal',
+    '/Profile',
   ]
   return (
     <div>
