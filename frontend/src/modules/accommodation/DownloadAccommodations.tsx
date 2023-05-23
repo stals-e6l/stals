@@ -10,6 +10,7 @@ import {
   Box,
   Typography,
   IconButton,
+  Fab,
 } from '@mui/material'
 import {
   DataGrid,
@@ -26,6 +27,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { downloadPdf, createReport } from '../report/ReportsProvider'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import { getMe } from '../auth/AuthProvider'
+import PrintIcon from '@mui/icons-material/Print'
 import toSentenceCase from '../../utils/toSentenceCase'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { styled } from '@mui/material/styles'
@@ -256,28 +258,19 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         furnishing: furnishing[accommodations.furnishing],
       }))
 
-  // events
-  const handleDownload = () => {
-    const id = downloadPdf(`#${tableId}`)
-    if (me && onCreateReport) {
-      onCreateReport({
-        user_id: me._id,
-        pdf_url: `http://localhost:5173/DownloadAccommodations-${id}.pdf`,
-      }).then(() => {
-        toggleDialog()
-      })
-    }
-  }
-
   return (
     <React.Fragment>
-      <Button
+      <Fab
         disabled={!accommodations}
-        variant="contained"
-        onClick={matches ? toggleDialog : handleDownload}
+        onClick={toggleDialog}
+        sx={{
+          [theme.breakpoints.down('md')]: {
+            display: 'none',
+          },
+        }}
       >
-        Download
-      </Button>
+        <PrintIcon sx={{ color: 'inherit' }} />
+      </Fab>
 
       {openDialog && accommodations && (
         <Box>
