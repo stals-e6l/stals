@@ -1,6 +1,6 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { apiGet, apiPost } from '../../services/api'
 import { ROUTES } from '../../app/AppRouter'
 
@@ -47,10 +47,15 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const onFetchMe = fetchMe()
   const navigate = useNavigate()
   const loaded = getAuthLoaded()
-  const { dispatch } = useAuth()
+  const location = useLocation()
 
   React.useEffect(() => {
-    if (onFetchMe && dispatch && !loaded && onSetAuthLoaded)
+    if (
+      onFetchMe &&
+      location.pathname !== ROUTES.appAuth &&
+      onSetAuthLoaded &&
+      !loaded
+    )
       onFetchMe()
         .then(() => {
           navigate(ROUTES.appExplore)
