@@ -43,6 +43,7 @@ const reviewsReducer = (
   action: IReducerAction<TReviewActionType, TReviewActionPayload>
 ): IReviewsState => {
   let reviews
+  let review
   switch (action.type) {
     case 'SET_REVIEWS':
       return {
@@ -50,7 +51,6 @@ const reviewsReducer = (
         reviews: toMap<IReview>(action.payload as IReview[], '_id'),
       }
     case 'DELETE_REVIEW':
-      // eslint-disable-next-line no-case-declarations
       reviews = { ...state.reviews }
       delete reviews[action.payload as string]
       return {
@@ -58,10 +58,16 @@ const reviewsReducer = (
         reviews: reviews,
       }
     case 'UPDATE_REVIEW':
-      // eslint-disable-next-line no-case-declarations
       reviews = { ...state.reviews }
-      // eslint-disable-next-line no-case-declarations
-      const review = action.payload as IReview
+      review = action.payload as IReview
+      reviews[review._id as string] = review
+      return {
+        ...state,
+        reviews: reviews,
+      }
+    case 'ADD_REVIEW':
+      reviews = { ...state.reviews }
+      review = action.payload as IReview
       reviews[review._id as string] = review
       return {
         ...state,
@@ -99,14 +105,17 @@ export const retrieveReviews = () => {
 
 export const createReview = () => {
   const { dispatch } = useReviews()
-  if (!dispatch) return null
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return null
   return async (review: IReview) => {
     const res = await apiPost<IReview, IReview>('review', {
       payload: review,
     })
 
-    if (!res.success && res.messages) {
-      throw new Error(res.messages[0])
+    if (res.success && res.data) {
+      dispatch({ type: 'ADD_REVIEW', payload: res.data })
+    } else if (!res.success && res.messages) {
+      onShowError(res.messages[0])
     }
   }
 }

@@ -10,7 +10,11 @@ interface IReview {
 }
 
 // STORE
-type TReviewActionType = 'SET_REVIEWS' | 'DELETE_REVIEW' | 'UPDATE_REVIEW'
+type TReviewActionType =
+  | 'SET_REVIEWS'
+  | 'DELETE_REVIEW'
+  | 'UPDATE_REVIEW'
+  | 'ADD_REVIEW'
 
 type TReviewActionPayload = IReview[] | string | IReview
 

@@ -143,7 +143,7 @@ const Reviews: React.FC<IProps> = () => {
                 sx={{ width: '100%', height: '100%', alignItems: 'center' }}
               >
                 <Grid item>
-                  <AddReviewModal />
+                  <AddReviewModal accommodationId={params.id || ''} />
                 </Grid>
               </Grid>
             </Grid>
