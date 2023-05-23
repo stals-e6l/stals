@@ -14,7 +14,6 @@ import {
   archiveAccommodation,
   deleteAccommodation,
 } from './AccommodationsProvider'
-import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -30,7 +29,6 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
   const { open, toggleDialog } = useDialog()
   const onArchiveAccommodation = archiveAccommodation()
   const onDeleteAccommodation = deleteAccommodation()
-  const onShowError = showErrorSnackbar()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -39,18 +37,18 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
 
   // events
   const handleSubmit = () => {
-    if (onShowError && onDeleteAccommodation && onArchiveAccommodation) {
+    if (onDeleteAccommodation && onArchiveAccommodation) {
       if (isSoftDelete) {
         onArchiveAccommodation({
           _id: accommodationId,
           is_soft_deleted: true,
+        }).then(status => {
+          if (status) toggleDialog()
         })
-          .then(() => toggleDialog())
-          .catch(err => String(onShowError(err)))
       } else {
-        onDeleteAccommodation(accommodationId)
-          .then(() => toggleDialog())
-          .catch(err => String(onShowError(err)))
+        onDeleteAccommodation(accommodationId).then(status => {
+          if (status) toggleDialog()
+        })
       }
     }
   }

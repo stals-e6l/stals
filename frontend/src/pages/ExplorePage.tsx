@@ -6,10 +6,9 @@ import AccommodationFormModal from '../modules/accommodation/AccommodationFormMo
 
 interface IProps {
   children?: React.ReactNode
-  isPublic?: boolean
 }
 
-const ExplorePage: React.FC<IProps> = ({ isPublic }) => {
+const ExplorePage: React.FC<IProps> = () => {
   return (
     <Box
       sx={{

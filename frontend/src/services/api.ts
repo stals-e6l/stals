@@ -1,4 +1,4 @@
-import { getToken } from '../services/localStorage'
+import { getToken } from './localStorage'
 
 export const API_URL = 'http://localhost:5000/api'
 
