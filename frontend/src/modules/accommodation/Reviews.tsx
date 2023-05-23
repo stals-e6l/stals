@@ -1,91 +1,45 @@
 import React from 'react'
-import { retrieveForumByCurrentAccommodation } from '../../store/forum/actions'
 import {
   Box,
   Button,
-  Drawer,
   Grid,
-  IconButton,
   Rating,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import ForumIcon from '@mui/icons-material/Forum'
 import AddReviewModal from './AddReviewModal'
 import Review from './Review'
+import {
+  averageReviewRating,
+  fetchReviews,
+  retrieveReviews,
+} from '../review/ReviewsProvider'
+import { COLOR, FONT } from '../../theme'
+import { useParams } from 'react-router-dom'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const Reviews: React.FC<IProps> = () => {
-  const forum = retrieveForumByCurrentAccommodation()
-
-  type Anchor = 'right'
-  const blue = '#154360'
-  const green = '#60ce80'
-  const grey = '#f0f0f0'
-  const quicksand = 'Quicksand'
-  const sourceSansPro = 'Source Sans Pro'
-
+  // hooks
+  const onFetchReviews = fetchReviews()
+  const params = useParams()
+  const reviews = retrieveReviews()
   const theme = useTheme()
   const move = useMediaQuery(theme.breakpoints.down('sm'))
+  const averageRating = averageReviewRating()
 
-  //Temporary static data
-  const rating = 4.5
-  const numReviews = 20
+  // events
 
-  const [state, setState] = React.useState({
-    right: false,
-  })
-
-  // Rating Text
-  const RatingText = () => (
-    <Typography
-      sx={{
-        fontFamily: sourceSansPro,
-        fontSize: '3rem',
-        fontWeight: 'bold',
-        color: green,
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      {rating}
-      <Typography
-        sx={{
-          color: blue,
-          fontFamily: quicksand,
-          fontSize: '1.75rem',
-          marginLeft: '5px',
-        }}
-      >
-        /5
-      </Typography>
-    </Typography>
-  )
-
-  const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
-      ) {
-        return
-      }
-
-      setState({ ...state, [anchor]: open })
+  React.useEffect(() => {
+    if (onFetchReviews && params.id) {
+      onFetchReviews(params.id)
     }
+  }, [])
 
-  // TODO: handle the ui when the forum is empty!
-
-  // TODO: create the ui of the forum
-  // TODO: please see forum.d.ts to know its contents
   return (
     <Box>
       <Grid container>
@@ -95,15 +49,36 @@ const Reviews: React.FC<IProps> = () => {
             container
             direction="row"
             sx={{
-              backgroundColor: grey,
+              backgroundColor: COLOR.gray1,
               padding: '15px 30px',
               alignContent: 'center',
-              flexWrap: 'wrap'
+              flexWrap: 'wrap',
             }}
           >
             {/* Rating text */}
             <Grid item>
-              <RatingText />
+              <Typography
+                sx={{
+                  fontFamily: FONT.sourceSansPro,
+                  fontSize: '3rem',
+                  fontWeight: 'bold',
+                  color: theme.palette.secondary.main,
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                {averageRating || 0}
+                <Typography
+                  sx={{
+                    color: theme.palette.primary.main,
+                    fontFamily: FONT.quicksand,
+                    fontSize: '1.75rem',
+                    marginLeft: '5px',
+                  }}
+                >
+                  /5
+                </Typography>
+              </Typography>
             </Grid>
 
             {/* Star rating and drawer button */}
@@ -120,10 +95,10 @@ const Reviews: React.FC<IProps> = () => {
                 {/* Star Rating */}
                 <Grid item>
                   <Rating
-                    value={rating}
+                    value={averageRating || 0}
                     precision={0.5}
                     sx={{
-                      color: green,
+                      color: theme.palette.secondary.main,
                       marginTop: '15px',
                     }}
                     readOnly
@@ -140,20 +115,20 @@ const Reviews: React.FC<IProps> = () => {
                       padding: '0px 3px',
                       marginTop: '-10px',
                       ':hover': {
-                        backgroundColor: grey,
+                        backgroundColor: COLOR.gray1,
                         color: 'black',
                       },
                     }}
-                    onClick={toggleDrawer('right', true)}
+                    // onClick={toggleDrawer('right', true)}
                   >
                     <Typography
                       sx={{
-                        fontFamily: quicksand,
+                        fontFamily: FONT.quicksand,
                         textDecoration: 'underline',
                         color: 'black',
                       }}
                     >
-                      {numReviews} reviews
+                      {reviews && reviews.length} reviews
                     </Typography>
                   </Button>
                 </Tooltip>
@@ -162,23 +137,32 @@ const Reviews: React.FC<IProps> = () => {
 
             <Grid item xs>
               {/* Add review button */}
-                <Grid container justifyContent={ move ? "flex-start" : "flex-end" } sx={{ width: '100%', height: '100%', alignItems: 'center' }}>
-                    <Grid item >
-                        <AddReviewModal />
-                    </Grid>
+              <Grid
+                container
+                justifyContent={move ? 'flex-start' : 'flex-end'}
+                sx={{ width: '100%', height: '100%', alignItems: 'center' }}
+              >
+                <Grid item>
+                  <AddReviewModal />
                 </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
 
-        <Grid item xs>
-            <Review />
-            <Review />
+        <Grid item xs={12}>
+          {reviews &&
+            reviews.map(review => <Review key={review._id} review={review} />)}
         </Grid>
       </Grid>
+    </Box>
+  )
+}
 
-      {/* Drawer */}
-      <Drawer
+export default Reviews
+
+{
+  /* <Drawer
         anchor={'right'}
         open={state['right']}
         onClose={toggleDrawer('right', false)}
@@ -189,118 +173,118 @@ const Reviews: React.FC<IProps> = () => {
             paddingLeft: '5%',
           }}
         >
-          {/* This is where Close button is enclosed */}
-          <IconButton
-            onClick={toggleDrawer('right', false)}
-            sx={{ position: 'sticky' }}
-          >
-            <CloseIcon />
-          </IconButton>
-
-          <Grid
-            container
-            sx={{
-              paddingLeft: '2%',
-            }}
-          >
-            <Grid item xs={12}>
-              {/* This is where review header is enclosed */}
-              <Box>
-                <Typography
-                  sx={{
-                    display: 'flex',
-                    fontFamily: sourceSansPro,
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: 'inherit',
-                      fontWeight: 'inherit',
-                      fontFamily: 'inherit',
-                      color: green,
-                    }}
-                  >
-                    |
-                  </Typography>
-                  Reviews
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              {/* This is where Ratings are enclosed */}
-              <Grid
-                container
-                sx={{}}
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-              >
-                {/* Rating text */}
-                <Grid item>
-                  <RatingText />
-                </Grid>
-
-                <Grid item>
-                  {/* This is where star rating and number of reviews are contained */}
-                  <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="flex-start"
-                    sx={{
-                      paddingLeft: '5%',
-                    }}
-                  >
-                    {/* Star Rating */}
-                    <Grid item>
-                      <Rating
-                        value={rating}
-                        precision={0.5}
-                        sx={{
-                          color: green,
-                          marginTop: '15px',
-                        }}
-                        readOnly
-                      />
-                    </Grid>
-
-                    {/* Number of reviews */}
-                    <Grid item>
-                      <Typography
-                        sx={{
-                          fontFamily: quicksand,
-                          marginTop: '-10px',
-                          textDecoration: 'underline',
-                        }}
-                      >
-                        {numReviews} reviews
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  {/* End of grid container for star rating and number of reviews */}
-                </Grid>
-
-                {/* Grid component for add review button */}
-                <Grid item xs={6}>
-                  <Box display="flex" justifyContent="flex-end">
-                    <AddReviewModal />
-                  </Box>
-                </Grid>
-              </Grid>
-            </Grid>
-            {/* End of grid container for ratings */}
-
-            <Grid item xs>
-                <Review />
-                <Review />
-            </Grid>
-          </Grid>
-        </Box>
-      </Drawer>
-    </Box>
-  )
+          {/* This is where Close button is enclosed */
 }
+//     <IconButton
+//       onClick={toggleDrawer('right', false)}
+//       sx={{ position: 'sticky' }}
+//     >
+//       <CloseIcon />
+//     </IconButton>
 
-export default Reviews
+//     <Grid
+//       container
+//       sx={{
+//         paddingLeft: '2%',
+//       }}
+//     >
+//       <Grid item xs={12}>
+//         {/* This is where review header is enclosed */}
+//         <Box>
+//           <Typography
+//             sx={{
+//               display: 'flex',
+//               fontFamily: FONT.sourceSansPro,
+//               fontSize: '1.5rem',
+//               fontWeight: 'bold',
+//             }}
+//           >
+//             <Typography
+//               sx={{
+//                 fontSize: 'inherit',
+//                 fontWeight: 'inherit',
+//                 fontFamily: 'inherit',
+//                 color: theme.palette.secondary.main,
+//               }}
+//             >
+//               |
+//             </Typography>
+//             Reviews
+//           </Typography>
+//         </Box>
+//       </Grid>
+//       <Grid item xs={12}>
+//         {/* This is where Ratings are enclosed */}
+//         <Grid
+//           container
+//           sx={{}}
+//           direction="row"
+//           justifyContent="flex-start"
+//           alignItems="center"
+//         >
+//           {/* Rating text */}
+//           <Grid item>
+//             <RatingText />
+//           </Grid>
+
+//           <Grid item>
+//             {/* This is where star rating and number of reviews are contained */}
+//             <Grid
+//               container
+//               direction="column"
+//               justifyContent="center"
+//               alignItems="flex-start"
+//               sx={{
+//                 paddingLeft: '5%',
+//               }}
+//             >
+//               {/* Star Rating */}
+//               <Grid item>
+//                 <Rating
+//                   value={rating}
+//                   precision={0.5}
+//                   sx={{
+//                     color: theme.palette.secondary.main,
+//                     marginTop: '15px',
+//                   }}
+//                   readOnly
+//                 />
+//               </Grid>
+
+//               {/* Number of reviews */}
+//               <Grid item>
+//                 <Typography
+//                   sx={{
+//                     fontFamily: FONT.quicksand,
+//                     marginTop: '-10px',
+//                     textDecoration: 'underline',
+//                   }}
+//                 >
+//                   {numReviews} reviews
+//                 </Typography>
+//               </Grid>
+//             </Grid>
+//             {/* End of grid container for star rating and number of reviews */}
+//           </Grid>
+
+//           {/* Grid component for add review button */}
+//           <Grid item xs={6}>
+//             <Box display="flex" justifyContent="flex-end">
+//               <AddReviewModal />
+//             </Box>
+//           </Grid>
+//         </Grid>
+//       </Grid>
+//       {/* End of grid container for ratings */}
+
+//       <Grid item xs>
+//         {/* <Review />
+//         <Review /> */}
+//         {reviews &&
+//           reviews.map(review => (
+//             <Review key={review._id} review={review} />
+//           ))}
+//       </Grid>
+//     </Grid>
+//   </Box>
+// </Drawer> */}

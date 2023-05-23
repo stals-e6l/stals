@@ -18,6 +18,7 @@ import PinDropIcon from '@mui/icons-material/PinDrop'
 import toPhp from '../../utils/toPhp'
 import { COLOR } from '../../theme/index'
 import Title from './TitleComponent'
+import Reviews from './Reviews'
 
 interface IProps {
   children?: React.ReactNode
@@ -602,6 +603,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
         </Grid>
         <Grid item>
           <Title text="Reviews" />
+          <Reviews />
         </Grid>
       </Grid>
     </React.Fragment>

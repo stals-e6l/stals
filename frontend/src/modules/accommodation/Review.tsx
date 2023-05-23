@@ -7,9 +7,7 @@ import {
   Rating,
   IconButton,
   Popover,
-  Button,
-  ButtonGroup,
-  useTheme
+  useTheme,
 } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
@@ -17,21 +15,17 @@ import { useState } from 'react'
 
 interface IProps {
   children?: React.ReactNode
-  forumId: string
-  comment: string
-  commentIndex: number
+  review: IReview
 }
 
-const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
+const Review: React.FC<IProps> = ({ review }) => {
   const [anchor, setAnchor] = useState(null)
 
   const getDate = new Date()
   const date = getDate.toLocaleDateString()
   const theme = useTheme()
 
-  const ratingVal = 4.0
-
-  const openOptions = event => {
+  const openOptions = (event: any) => {
     setAnchor(event.currentTarget)
   }
 
@@ -43,7 +37,8 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
           borderTop: '1px solid gray',
           paddingTop: '10px',
           paddingBottom: '5px',
-          mt: '1em'
+          mt: '1em',
+          width: '100%',
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -52,9 +47,16 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
               sx={{ color: '#154360', fontSize: 'xxx-large' }}
             />
             <Box>
-              <Typography sx={{ marginLeft: '3px' }}>Von Arellano</Typography>
+              <Typography sx={{ marginLeft: '3px' }}>
+                {review.user_id}
+              </Typography>
               <Box sx={{ display: 'flex' }}>
-                <Rating value={ratingVal} precision={0.5} readOnly sx={{ color: theme.palette.secondary.main }}/>
+                <Rating
+                  value={review.rating}
+                  precision={0.5}
+                  readOnly
+                  sx={{ color: theme.palette.secondary.main }}
+                />
                 <Typography
                   sx={{
                     marginLeft: '5px',
@@ -62,7 +64,7 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
                     color: '#60ce80',
                   }}
                 >
-                  5
+                  {review.rating}
                 </Typography>
                 <Typography sx={{ fontWeight: 'bold', color: '#000000' }}>
                   /5
@@ -85,20 +87,27 @@ const Review: React.FC<IProps> = ({ forumId, comment, commentIndex }) => {
               transformOrigin={{ vertical: 'center', horizontal: 'center' }}
               onClose={() => setAnchor(null)}
             >
-              <ButtonGroup orientation="vertical" sx={{ backgroundColor: '#fff', p: '2px' }}>
+              {/* <ButtonGroup orientation="vertical" sx={{ backgroundColor: '#fff', p: '2px' }}>
                 <DeleteCommentFromForum forumId={forumId} comment={comment} />
                 <UpdateCommentFromForum
                   forumId={forumId}
                   comment={comment}
                   commentIndex={commentIndex}
                 />
-              </ButtonGroup>
+              </ButtonGroup> */}
             </Popover>
           </Box>
         </Box>
 
-        <Typography sx={{ marginLeft: '50px', paddingTop: '10px', maxWidth: '90%', textAlign: 'justify' }}>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentumleo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortisfeugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massasapien faucibus et molestie ac.
+        <Typography
+          sx={{
+            marginLeft: '50px',
+            paddingTop: '10px',
+            maxWidth: '90%',
+            textAlign: 'justify',
+          }}
+        >
+          {review.comment}
         </Typography>
       </Box>
     </React.Fragment>
