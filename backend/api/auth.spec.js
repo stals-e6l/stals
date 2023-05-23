@@ -53,8 +53,8 @@ describe('auth.spec.js', () => {
     expect(response.body.data.username).toBe("useruser");
   })
 
-  // sign up with invalid fields
-  it('sign up with invalid password', async function () {
+  // signing up with password not matching criteria
+  it('does not sign up due to invalid password', async function () {
     const payload = 
     {
         full_name: {
