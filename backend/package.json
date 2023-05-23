@@ -11,7 +11,8 @@
     "dev": "nodemon --exec npm run start:dev",
     "dev:windows": "nodemon --exec npm run start:dev:windows",
     "seed": "NODE_ENV=development node seeder",
-    "seed:windows": "set NODE_ENV=development&&node seeder"
+    "seed:windows": "set NODE_ENV=development&&node seeder",
+    "start": "NODE_ENV=production node ."
   },
   "keywords": [],
   "author": "",

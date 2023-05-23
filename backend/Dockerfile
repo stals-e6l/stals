@@ -1,13 +1,14 @@
-FROM node:18-alpine3.17
-
-RUN mkdir -p /server
+FROM node
 
 WORKDIR /server
 
-COPY . .
+COPY package.json .
 
-EXPOSE 5000
 RUN npm install
-RUN npm run start:dev
 
+COPY . ./
+
+EXPOSE 3001 
+
+CMD ["npm", "start"]
 
