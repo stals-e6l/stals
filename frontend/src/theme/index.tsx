@@ -95,8 +95,8 @@ const theme = createTheme({
             backgroundColor: COLOR.white,
             color: COLOR.blue,
           },
-        }
-      }
+        },
+      },
     },
     MuiRadio: {
       styleOverrides: {
@@ -230,6 +230,18 @@ const theme = createTheme({
           '&:hover': {
             boxShadow: `${alpha(COLOR.green, 0.3)} 0 0 9px 3px`,
           },
+        },
+      },
+    },
+
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: COLOR.gray1,
+          width: '300px',
+          height: '360px',
+          borderRadius: '8px',
+          boxShadow: `${alpha(COLOR.black, 0.5)} 0 2px 5px 2px`,
         },
       },
     },

@@ -10,6 +10,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  alpha,
 } from '@mui/material'
 import React from 'react'
 import DeleteAccommodationFormModal from './DeleteAccommodationFormModal'
@@ -62,36 +63,36 @@ const AccommodationCard: React.FC<IProps> = ({
     <Card
       onClick={toDetailPage}
       sx={{
-        backgroundColor: COLOR.gray1,
-        width: theme.spacing(35),
-        borderRadius: theme.spacing(2),
-        boxShadow: '0px 4px 4px #6e6e73',
+        // backgroundColor: COLOR.gray1,
+        // width: theme.spacing(35),
+        // borderRadius: theme.spacing(2),
+        // boxShadow: '0px 4px 4px #6e6e73',
+        // cursor: 'pointer',
+        // ':hover': {
+        //   boxShadow: '0px 4px 15px #6e6e73',
+        // },
+        // transition: '0.3s all',
+        // [theme.breakpoints.down('md')]: {
+        //   width: theme.spacing(28),
+        // },
+        // [theme.breakpoints.down('sm')]: {
+        //   width: theme.spacing(19),
+        // },
+        position: 'relative',
         cursor: 'pointer',
+        // transition: '0.3s all',
         ':hover': {
-          boxShadow: '0px 4px 15px #6e6e73',
-        },
-        transition: '0.3s all',
-        [theme.breakpoints.down('md')]: {
-          width: theme.spacing(28),
-        },
-        [theme.breakpoints.down('sm')]: {
-          width: theme.spacing(19),
+          top: '-3px',
+          boxShadow: `${alpha(COLOR.black, 0.3)} 0 1px 30px 3px`,
+          // boxShadow: '0px 4px 15px #6e6e73',
         },
       }}
     >
       {/* Accommodation Image */}
       <CardMedia
         component="img"
-        height={theme.spacing(23)}
+        height={'180px'}
         image={AccommodationImages.ellens}
-        sx={{
-          [theme.breakpoints.down('md')]: {
-            height: theme.spacing(20),
-          },
-          [theme.breakpoints.down('sm')]: {
-            height: theme.spacing(13),
-          },
-        }}
       />
 
       <CardContent sx={{ wordSpacing: '10' }}>
@@ -99,12 +100,12 @@ const AccommodationCard: React.FC<IProps> = ({
         <Typography
           variant="body1"
           sx={{
-            [theme.breakpoints.down('md')]: {
-              fontSize: theme.spacing(1.75),
-            },
-            [theme.breakpoints.down('sm')]: {
-              fontSize: theme.spacing(1.5),
-            },
+            // [theme.breakpoints.down('md')]: {
+            //   fontSize: theme.spacing(1.75),
+            // },
+            // [theme.breakpoints.down('sm')]: {
+            //   fontSize: theme.spacing(1.5),
+            // },
           }}
         >
           {toSentenceCase(accommodation.type)}
@@ -118,12 +119,12 @@ const AccommodationCard: React.FC<IProps> = ({
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            [theme.breakpoints.down('md')]: {
-              fontSize: theme.spacing(2.5),
-            },
-            [theme.breakpoints.down('sm')]: {
-              fontSize: theme.spacing(2),
-            },
+            // [theme.breakpoints.down('md')]: {
+            //   fontSize: theme.spacing(2.5),
+            // },
+            // [theme.breakpoints.down('sm')]: {
+            //   fontSize: theme.spacing(2),
+            // },
           }}
         >
           {toSentenceCase(accommodation.name)}
@@ -143,9 +144,9 @@ const AccommodationCard: React.FC<IProps> = ({
                 readOnly
                 sx={{
                   color: COLOR.green,
-                  [theme.breakpoints.down('md')]: {
-                    fontSize: theme.spacing(2.25),
-                  },
+                  // [theme.breakpoints.down('md')]: {
+                  //   fontSize: theme.spacing(2.25),
+                  // },
                   [theme.breakpoints.down('sm')]: {
                     display: 'none',
                   },
@@ -158,7 +159,7 @@ const AccommodationCard: React.FC<IProps> = ({
                   [theme.breakpoints.down('sm')]: {
                     display: 'inherit',
                     color: COLOR.green,
-                    fontSize: theme.spacing(2),
+                    // fontSize: theme.spacing(2),
                   },
                 }}
               />
@@ -169,12 +170,12 @@ const AccommodationCard: React.FC<IProps> = ({
                 sx={{
                   fontWeight: 'bold',
                   color: COLOR.green,
-                  [theme.breakpoints.down('md')]: {
-                    fontSize: theme.spacing(1.75),
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    fontSize: theme.spacing(1.65),
-                  },
+                  // [theme.breakpoints.down('md')]: {
+                  //   fontSize: theme.spacing(1.75),
+                  // },
+                  // [theme.breakpoints.down('sm')]: {
+                  //   fontSize: theme.spacing(1.65),
+                  // },
                 }}
               >
                 {4.5}
@@ -184,13 +185,13 @@ const AccommodationCard: React.FC<IProps> = ({
               <Typography
                 variant="body1"
                 sx={{
-                  marginLeft: '1%',
-                  [theme.breakpoints.down('md')]: {
-                    fontSize: theme.spacing(1.75),
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    fontSize: theme.spacing(1.65),
-                  },
+                  marginLeft: '3%',
+                  // [theme.breakpoints.down('md')]: {
+                  //   fontSize: theme.spacing(1.75),
+                  // },
+                  // [theme.breakpoints.down('sm')]: {
+                  //   fontSize: theme.spacing(1.65),
+                  // },
                 }}
               >
                 ({10} reviews)
@@ -204,12 +205,12 @@ const AccommodationCard: React.FC<IProps> = ({
               variant="h6"
               sx={{
                 color: COLOR.blue,
-                [theme.breakpoints.down('md')]: {
-                  fontSize: theme.spacing(2),
-                },
-                [theme.breakpoints.down('sm')]: {
-                  fontSize: theme.spacing(1.75),
-                },
+                // [theme.breakpoints.down('md')]: {
+                //   fontSize: theme.spacing(2),
+                // },
+                // [theme.breakpoints.down('sm')]: {
+                //   fontSize: theme.spacing(1.75),
+                // },
               }}
             >
               {/* Formats the number to currency format */}
