@@ -61,15 +61,25 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
       onSignUp({
         ...form,
         phone: {
-          mobile: form.phone.mobile === '' ? undefined : form.phone.mobile,
+          mobile:
+            !form.phone || form.phone.mobile === ''
+              ? undefined
+              : form.phone.mobile,
           landline:
-            form.phone.landline === '' ? undefined : form.phone.landline,
+            !form.phone || form.phone.landline === ''
+              ? undefined
+              : form.phone.landline,
         },
         organization: form.organization === '' ? undefined : form.organization,
         address: {
           current:
-            form.address.current === '' ? undefined : form.address.current,
-          home: form.address.home === '' ? undefined : form.address.home,
+            !form.address || form.address.current === ''
+              ? undefined
+              : form.address.current,
+          home:
+            !form.address || form.address.home === ''
+              ? undefined
+              : form.address.home,
         },
       })
         .then(() => onClose())
@@ -302,7 +312,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
-              value={form.phone.mobile}
+              value={(form.phone && form.phone.mobile) || ''}
               onChange={e =>
                 setForm(prev => ({
                   ...prev,
@@ -322,7 +332,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
-              value={form.phone.landline}
+              value={(form.phone && form.phone.landline) || ''}
               onChange={e =>
                 setForm(prev => ({
                   ...prev,
@@ -343,7 +353,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           fullWidth
           required
           sx={{ backgroundColor: COLOR.white }}
-          value={form.address.current}
+          value={(form.address && form.address.current) || ''}
           onChange={e =>
             setForm(prev => ({
               ...prev,
@@ -362,7 +372,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           fullWidth
           required
           sx={{ backgroundColor: COLOR.white }}
-          value={form.address.home}
+          value={(form.address && form.address.home) || ''}
           onChange={e =>
             setForm(prev => ({
               ...prev,
