@@ -14,16 +14,17 @@ interface IUserSignUp extends IUserSignIn {
     last_name: string
   }
   gender: TUserGender
-  address: {
+  address?: {
     home?: string
     current?: string
   }
   birthday: string
   organization?: string
-  phone: {
+  phone?: {
     landline?: string
     mobile?: string
   }
+  biography?: string
 }
 
 type TUserGender = 'male' | 'female' | 'non_binary' | 'prefer_not_to_say'

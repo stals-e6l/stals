@@ -10,9 +10,13 @@ interface IReview {
 }
 
 // STORE
-type TReviewActionType = 'SET_REVIEWS'
+type TReviewActionType =
+  | 'SET_REVIEWS'
+  | 'DELETE_REVIEW'
+  | 'UPDATE_REVIEW'
+  | 'ADD_REVIEW'
 
-type TReviewActionPayload = IReview[]
+type TReviewActionPayload = IReview[] | string | IReview
 
 interface IReviewsState {
   reviews: IMap<IReview> | null

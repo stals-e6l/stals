@@ -78,8 +78,25 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           color: COLOR.gray2,
+          textTransform: 'none',
         },
       },
+    },
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          backgroundColor: COLOR.blue,
+          color: COLOR.white,
+          borderRadius: '50%',
+          position: 'fixed',
+          bottom: '5%',
+          right: '5%',
+          '&:hover': {
+            backgroundColor: COLOR.white,
+            color: COLOR.blue,
+          },
+        }
+      }
     },
     MuiRadio: {
       styleOverrides: {
