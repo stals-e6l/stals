@@ -9,18 +9,18 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  Button,
   Checkbox,
   Rating,
   FormGroup,
   useTheme,
-  Divider,
+  Button,
 } from '@mui/material'
 import { COLOR } from '../../theme'
 import { buildQueryString, extractQueryString } from '../../utils/queryString'
 import { filterAccommodations } from './AccommodationsProvider'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
+import Title from './TitleComponent'
 
 interface IProps {
   children?: React.ReactNode
@@ -79,36 +79,23 @@ const FilterAccommodations: React.FC<IProps> = () => {
     navigate(`${ROUTES.appResult}?${queryString}`) // ux
   }
 
+  React.useEffect(() => {
+    onFilter(filter)
+  }, [filter.name])
+
+  React.useEffect(() => {
+    const qs = extractQueryString(location.search)
+    if (qs.name) {
+      setFilter(prev => ({ ...prev, name: qs.name }))
+    }
+  }, [location.search])
+
   return (
     <>
       <Grid container>
         <Grid item xs={12}>
           {/* | Filters */}
-          <Typography
-            variant="h5"
-            sx={{
-              color: COLOR.black,
-              display: 'flex',
-              [theme.breakpoints.down('md')]: {
-                fontSize: theme.spacing(2.5),
-              },
-              [theme.breakpoints.down('sm')]: {
-                fontSize: theme.spacing(2),
-              },
-            }}
-          >
-            <Typography
-              variant="h5"
-              sx={{
-                color: COLOR.green,
-                marginRight: theme.spacing(1),
-                fontSize: 'inherit',
-              }}
-            >
-              |
-            </Typography>{' '}
-            Filters
-          </Typography>
+          <Title text="Filters" />
         </Grid>
         <Grid item xs={12}>
           <Grid
@@ -289,42 +276,13 @@ const FilterAccommodations: React.FC<IProps> = () => {
                 </RadioGroup>
               </FormControl>
             </Grid>
-          </Grid>
-        </Grid>
 
-        {/* Filter Search btn */}
-        <Grid item xs={12}>
-          <Divider />
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              textTransform: 'none',
-              backgroundColor: COLOR.green,
-              borderRadius: theme.spacing(1),
-              boxShadow: '1px 2px 4px #6e6e73',
-              ':hover': {
-                color: COLOR.green,
-                backgroundColor: COLOR.gray1,
-              },
-            }}
-          >
-            <Typography
-              variant="h6"
-              onClick={() => onFilter(filter)}
-              sx={{
-                fontSize: theme.spacing(2.15),
-                [theme.breakpoints.down('md')]: {
-                  fontSize: theme.spacing(2),
-                },
-                [theme.breakpoints.down('sm')]: {
-                  fontSize: theme.spacing(1.85),
-                },
-              }}
-            >
-              Filter Search
-            </Typography>
-          </Button>
+            <Grid item>
+              <Button variant="contained" onClick={() => onFilter(filter)}>
+                Filter
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </>
