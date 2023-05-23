@@ -35,6 +35,7 @@ const ResultPage: React.FC<IProps> = () => {
           }}
         >
           <FilterAccommodations />
+          <DownloadAccommodations />
         </Grid>
 
         <Grid item xs={12} md={9}>
