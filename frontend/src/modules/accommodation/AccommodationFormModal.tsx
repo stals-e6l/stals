@@ -13,7 +13,7 @@ import AccommodationForm from './AccommodationForm'
 import useDialog from '../../hooks/useDialog'
 import { createAccommodation } from './AccommodationsProvider'
 import { COLOR } from '../../theme'
-import { AddRounded } from '@mui/icons-material'
+import AddIcon from '@mui/icons-material/Add'
 import { getMe } from '../auth/AuthProvider'
 
 interface IProps {
@@ -110,9 +110,11 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
             position: 'absolute',
             bottom: '5%',
             right: '5%',
+            background: theme.palette.primary.main,
+            color: theme.palette.common.white,
           }}
         >
-          <AddRounded />
+          <AddIcon />
         </Fab>
       )}
       {open && (
