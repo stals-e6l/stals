@@ -9,13 +9,13 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material'
-import AddReviewModal from './AddReviewModal'
+import AddReviewModal from '../accommodation/AddReviewModal'
 import Review from './Review'
 import {
   averageReviewRating,
   fetchReviews,
   retrieveReviews,
-} from '../review/ReviewsProvider'
+} from './ReviewsProvider'
 import { COLOR, FONT } from '../../theme'
 import { useParams } from 'react-router-dom'
 

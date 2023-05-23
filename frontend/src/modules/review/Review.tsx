@@ -1,6 +1,4 @@
 import React from 'react'
-import DeleteCommentFromForum from './DeleteCommentFromForum'
-import UpdateCommentFromForum from './UpdateCommentFromForum'
 import {
   Box,
   Typography,
@@ -8,10 +6,13 @@ import {
   IconButton,
   Popover,
   useTheme,
+  ButtonGroup,
 } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { useState } from 'react'
+import DeleteReview from './DeleteReview'
+import EditReview from './EditReview'
+import useMenu from '../../hooks/useMenu'
 
 interface IProps {
   children?: React.ReactNode
@@ -19,18 +20,11 @@ interface IProps {
 }
 
 const Review: React.FC<IProps> = ({ review }) => {
-  const [anchor, setAnchor] = useState(null)
-
-  const getDate = new Date()
-  const date = getDate.toLocaleDateString()
+  // hooks
   const theme = useTheme()
-
-  const openOptions = (event: any) => {
-    setAnchor(event.currentTarget)
-  }
+  const { anchorEl: anchor, onClose, onOpen } = useMenu()
 
   return (
-    // TODO: everything is setup for you, maybe add the styling for it
     <React.Fragment>
       <Box
         sx={{
@@ -73,10 +67,10 @@ const Review: React.FC<IProps> = ({ review }) => {
             </Box>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'start' }}>
-            <Typography>{date}</Typography>
+            <Typography>{review.createdAt}</Typography>
             <IconButton
               sx={{ marginTop: '-8px', color: '#000000' }}
-              onClick={openOptions}
+              onClick={onOpen}
             >
               <MoreHorizIcon />
             </IconButton>
@@ -85,16 +79,15 @@ const Review: React.FC<IProps> = ({ review }) => {
               anchorEl={anchor}
               anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
               transformOrigin={{ vertical: 'center', horizontal: 'center' }}
-              onClose={() => setAnchor(null)}
+              onClose={onClose}
             >
-              {/* <ButtonGroup orientation="vertical" sx={{ backgroundColor: '#fff', p: '2px' }}>
-                <DeleteCommentFromForum forumId={forumId} comment={comment} />
-                <UpdateCommentFromForum
-                  forumId={forumId}
-                  comment={comment}
-                  commentIndex={commentIndex}
-                />
-              </ButtonGroup> */}
+              <ButtonGroup
+                orientation="vertical"
+                sx={{ backgroundColor: '#fff', p: '2px' }}
+              >
+                <DeleteReview reviewId={review._id as string} />
+                <EditReview review={review} />
+              </ButtonGroup>
             </Popover>
           </Box>
         </Box>

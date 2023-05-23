@@ -18,7 +18,7 @@ import PinDropIcon from '@mui/icons-material/PinDrop'
 import toPhp from '../../utils/toPhp'
 import { COLOR } from '../../theme/index'
 import Title from './TitleComponent'
-import Reviews from './Reviews'
+import Reviews from '../review/Reviews'
 
 interface IProps {
   children?: React.ReactNode
