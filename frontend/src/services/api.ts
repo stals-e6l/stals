@@ -1,7 +1,7 @@
 import { getToken } from './localStorage'
 
 export const API_URL = import.meta.env.PROD
-  ? 'http://159.223.36.171/api'
+  ? 'https://159.223.36.171/api'
   : 'http://0.0.0.0:3001/api'
 
 export async function apiGet<D>(resource: string, authToken?: string) {
