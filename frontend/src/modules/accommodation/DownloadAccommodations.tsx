@@ -22,7 +22,7 @@ import {
   GridToolbarExport,
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid'
-import { useTheme } from '@mui/material/styles'
+import { alpha, useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
 import { downloadPdf, createReport } from '../report/ReportsProvider'
 import { retrieveAccommodations } from './AccommodationsProvider'
@@ -31,7 +31,7 @@ import PrintIcon from '@mui/icons-material/Print'
 import toSentenceCase from '../../utils/toSentenceCase'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { styled } from '@mui/material/styles'
-import theme from '../../theme'
+import theme, { COLOR } from '../../theme'
 
 interface IProps {
   children?: React.ReactNode
@@ -385,50 +385,30 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
 function CustomToolbar() {
   const theme = useTheme()
+
+  const toolbarButtonSx = {
+    root: {
+      backgroundColor: theme.palette.primary.main,
+      paddingLeft: theme.spacing(1.5),
+      paddingRight: theme.spacing(1.5),
+      '&:hover': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
+        top: '-1px',
+        boxShadow: `${alpha(COLOR.black, 0.3)} 0 1px 6px 2px`,
+      },
+    },
+  }
   // const apiRef = useGridApiRef();
 
   // const printDataGrid = () => apiRef.current.exportDataAsPrint();
   return (
     <GridToolbarContainer>
-      <GridToolbarColumnsButton
-        sx={{
-          backgroundColor: theme.palette.primary.main,
-          paddingLeft: theme.spacing(1.5),
-          paddingRight: theme.spacing(1.5),
-          '&:hover': {
-            backgroundColor: theme.palette.primary.main,
-          },
-        }}
-      />
-      <GridToolbarFilterButton
-        sx={{
-          backgroundColor: theme.palette.primary.main,
-          paddingLeft: theme.spacing(1.5),
-          paddingRight: theme.spacing(1.5),
-          '&:hover': {
-            backgroundColor: theme.palette.primary.main,
-          },
-        }}
-      />
-      <GridToolbarDensitySelector
-        sx={{
-          backgroundColor: theme.palette.primary.main,
-          paddingLeft: theme.spacing(1.5),
-          paddingRight: theme.spacing(1.5),
-          '&:hover': {
-            backgroundColor: theme.palette.primary.main,
-          },
-        }}
-      />
+      <GridToolbarColumnsButton sx={toolbarButtonSx.root} />
+      <GridToolbarFilterButton sx={toolbarButtonSx.root} />
+      <GridToolbarDensitySelector sx={toolbarButtonSx.root} />
       <GridToolbarExport
-        sx={{
-          backgroundColor: theme.palette.primary.main,
-          paddingLeft: theme.spacing(1.5),
-          paddingRight: theme.spacing(1.5),
-          '&:hover': {
-            backgroundColor: theme.palette.primary.main,
-          },
-        }}
+        sx={toolbarButtonSx.root}
         printOptions={{ hideToolbar: true, hideFooter: true }}
         csvOptions={{ disableToolbarButton: true }}
       />

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -94,6 +95,7 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
       color: COLOR.darkGreen,
       borderRadius: theme.spacing(0.5),
       padding: '10px 20px',
+      marginRight: '20px',
       '&:hover': {
         backgroundColor: '#93dba4',
       },
@@ -102,36 +104,25 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   return (
     <React.Fragment>
       {me && me.role !== 'tenant' && (
-        <Fab
-          onClick={toggleDialog}
-          sx={{
-            ...submitBtnSx.root,
-            borderRadius: '50%',
-            position: 'absolute',
-            bottom: '5%',
-            right: '5%',
-            background: theme.palette.primary.main,
-            color: theme.palette.common.white,
-          }}
-        >
+        <Fab onClick={toggleDialog}>
           <AddIcon />
         </Fab>
       )}
       {open && (
         <Dialog fullScreen={isMobile} open={open} onClose={toggleDialog}>
-          <DialogTitle sx={{ backgroundColor: '#0c2c44', color: COLOR.white }}>
+          <DialogTitle sx={{ color: COLOR.blue }}>
             {' '}
             {/*TEMP COLOR*/}
             {defaultValues ? 'Update accommodation' : 'Create accommodation'}
           </DialogTitle>
 
-          <DialogContent sx={{ backgroundColor: '#0c2c44' }}>
+          <DialogContent sx={{}}>
             {' '}
             {/*TEMP COLOR*/}
             <AccommodationForm form={form} setFieldValue={setFieldValue} />
           </DialogContent>
 
-          <DialogActions sx={{ backgroundColor: '#0c2c44' }}>
+          <DialogActions sx={{ }}>
             {' '}
             {/*TEMP COLOR*/}
             <Button onClick={toggleDialog} sx={cancelBtnSx.root}>

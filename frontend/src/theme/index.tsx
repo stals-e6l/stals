@@ -85,14 +85,13 @@ const theme = createTheme({
     MuiFab: {
       styleOverrides: {
         root: {
-          backgroundColor: COLOR.blue,
-          color: COLOR.white,
-          borderRadius: '50%',
-          position: 'fixed',
+          position: 'absolute',
           bottom: '5%',
           right: '5%',
-          '&:hover': {
-            backgroundColor: COLOR.white,
+          background: COLOR.blue,
+          color: COLOR.white,
+          ':hover': {
+            background: COLOR.green,
             color: COLOR.blue,
           },
         },
@@ -195,7 +194,7 @@ const theme = createTheme({
             borderColor: COLOR.green,
           },
           '&&&:before': {
-            borderBottom: 'none',
+            // borderBottom: 'none',
           },
           '&&:after': {
             borderBottom: 'none',
@@ -245,6 +244,34 @@ const theme = createTheme({
         },
       },
     },
+
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          
+        },
+        paper:{
+          backgroundColor: COLOR.gray1,
+          borderRadius: '8px',
+        }
+      }
+    },
+
+    // MuiFab: {
+    //   styleOverrides: {
+    //     root: {
+    //       position: 'absolute',
+    //       bottom: '5%',
+    //       right: '5%',
+    //       background: COLOR.blue,
+    //       color: COLOR.white,
+    //       ':hover': {
+    //         background: COLOR.green,
+    //         color: COLOR.blue,
+    //       },
+    //     },
+    //   },
+    // },
   },
 })
 

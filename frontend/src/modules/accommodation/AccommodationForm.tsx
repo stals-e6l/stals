@@ -216,7 +216,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         <MenuItem value="fully_furnished">Fully furnished</MenuItem>
       </Select>
 
-      <FormLabel sx={{ color: COLOR.white }}>Landmarks</FormLabel>
+      <FormLabel sx={{ color: COLOR.blue }}>Landmarks</FormLabel>
       <Autocomplete
         options={[]}
         freeSolo
@@ -229,7 +229,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white }}>Cooking rules</FormLabel>
+      <FormLabel sx={{ color: COLOR.blue }}>Cooking rules</FormLabel>
       <Autocomplete
         options={[]}
         freeSolo
@@ -242,7 +242,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
         Pet rules
       </FormLabel>
       <Autocomplete
@@ -257,7 +257,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
         Safety and security
       </FormLabel>
       <Autocomplete
@@ -272,7 +272,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
         Appliances
       </FormLabel>
       <Autocomplete
@@ -287,7 +287,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
         Amenities
       </FormLabel>
       <Autocomplete
@@ -302,7 +302,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
         Other rules
       </FormLabel>
       <Autocomplete

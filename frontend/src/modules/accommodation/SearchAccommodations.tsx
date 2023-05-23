@@ -47,6 +47,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
           borderRadius: theme.spacing(1),
           boxShadow: '0px 2px 4px #6e6e73',
           transition: '0.3s all',
+          height: '54px',
           width: '100%',
           [theme.breakpoints.down('sm')]: {
             width: theme.spacing(350 / 8),
@@ -71,7 +72,10 @@ const SearchAccommodations: React.FC<IProps> = () => {
                   textOverflow: 'ellipsis',
                 },
                 ['& fieldset']: {
-                  borderRadius: theme.spacing(1),
+                  borderTopLeftRadius: '8px',
+                  borderBottomLeftRadius: '8px',
+                  borderTopRightRadius: '0px',
+                  borderBottomRightRadius: '0px',
                 },
               }}
             />
@@ -88,10 +92,15 @@ const SearchAccommodations: React.FC<IProps> = () => {
             borderRadius: theme.spacing(1),
             padding: '1% 3%',
             color: COLOR.gray1,
+            borderTopLeftRadius: '0px',
+            borderBottomLeftRadius: '0px',
+            borderTopRightRadius: '8px',
+            borderBottomRightRadius: '8px',
+
             ':hover': {
               color: COLOR.green,
             },
-            height: theme.spacing(7),
+            height: '54px',
             [theme.breakpoints.down('sm')]: {
               padding: '1%',
             },

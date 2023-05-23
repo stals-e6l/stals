@@ -46,7 +46,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
     >
       <Box
         sx={{
-          backgroundColor: COLOR.gray2,
+          // backgroundColor: COLOR.gray2,
           width: '100%',
           height: '100%',
           padding: theme.spacing(2),
@@ -71,7 +71,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
             minHeight: '50%',
             border: 'solid 1px green',
             backgroundColor: COLOR.white,
-            mb:theme.spacing(1)
+            mb: theme.spacing(1),
           }}
           onClick={handleUploadImage}
         >
@@ -98,8 +98,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1)
-         }}
+          sx={{ backgroundColor: COLOR.white, mb: theme.spacing(1) }}
           multiline
           rows={3}
           name="biography"
@@ -107,25 +106,25 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
         />
 
         <Grid container spacing={1}>
-          <Grid item xs={7} sx={{mb:theme.spacing(1)}}>
-            <FormLabel >Gender</FormLabel>
+          <Grid item xs={7} sx={{ mb: theme.spacing(1) }}>
+            <FormLabel>Gender</FormLabel>
             <Select
               label=""
               fullWidth
-              sx={{ backgroundColor: COLOR.white}}
+              sx={{ backgroundColor: COLOR.white }}
               size="small"
               name="gender"
               defaultValue={user.gender}
             >
-              <MenuItem value='male'>Male</MenuItem>
-              <MenuItem value='female'>Female</MenuItem>
-              <MenuItem value='non_binary'>Non-Binary</MenuItem>
-              <MenuItem value='prefer_not_to_say'>Prefer not to say</MenuItem>
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+              <MenuItem value="non_binary">Non-Binary</MenuItem>
+              <MenuItem value="prefer_not_to_say">Prefer not to say</MenuItem>
             </Select>
           </Grid>
 
-          <Grid item xs={5} >
-            <InputLabel >Birthday</InputLabel>
+          <Grid item xs={5}>
+            <InputLabel>Birthday</InputLabel>
             <DatePicker
               // value={form.birthday as string}w}
               slotProps={{ textField: { size: 'small' } }}
@@ -134,27 +133,27 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
         </Grid>
 
         <Grid container spacing={1}>
-          <Grid item xs={6} sx={{mb:theme.spacing(1)}}>
-            <FormLabel >Phone</FormLabel>
+          <Grid item xs={6} sx={{ mb: theme.spacing(1) }}>
+            <FormLabel>Phone</FormLabel>
             <TextField
               variant="outlined"
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
               name="mobile"
-              defaultValue={user.phone === undefined ? (""):(user.phone.mobile)}
+              defaultValue={user.phone === undefined ? '' : user.phone.mobile}
             />
           </Grid>
 
           <Grid item xs={6}>
-            <FormLabel >Landline</FormLabel>
+            <FormLabel>Landline</FormLabel>
             <TextField
               variant="outlined"
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
               name="landline"
-              defaultValue={user.phone === undefined ? (""):(user.phone.landline)}
+              defaultValue={user.phone === undefined ? '' : user.phone.landline}
             />
           </Grid>
         </Grid>
@@ -164,9 +163,9 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1)}}
+          sx={{ backgroundColor: COLOR.white, mb: theme.spacing(1) }}
           name="home"
-          defaultValue={user.address === undefined ? (""):(user.address.home)}
+          defaultValue={user.address === undefined ? '' : user.address.home}
         />
 
         <FormLabel>Current Address</FormLabel>
@@ -174,9 +173,9 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1) }}
+          sx={{ backgroundColor: COLOR.white, mb: theme.spacing(1) }}
           name="current"
-          defaultValue={user.address === undefined ? (""):(user.address.current)}
+          defaultValue={user.address === undefined ? '' : user.address.current}
         />
 
         <FormLabel>Organization</FormLabel>
