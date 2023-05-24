@@ -1,4 +1,4 @@
-import { Button, TextField, Dialog, Typography, Grid, Box } from '@mui/material'
+import { Button, TextField, Dialog, DialogTitle, Typography, Grid, Box, useTheme } from '@mui/material'
 import React from 'react'
 import useDialog from '../../hooks/useDialog'
 import { updateReview } from './ReviewsProvider'
@@ -12,6 +12,7 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
   const onEditReview = updateReview()
+  const theme = useTheme()
   // state
   const [comment, setComment] = React.useState<string>(review.comment || '')
 
@@ -20,13 +21,25 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
       <Button
         variant="contained"
         onClick={toggleDialog}
-        sx={{ backgroundColor: '#fff', color: '#000' }}
+        sx={{ 
+            backgroundColor: '#fff',
+            color: '#000',
+            fontWeight: 'bold',
+            boxShadow: 0,
+            borderRadius: '0px 0px 10px 10px',
+            borderTop: '1px solid black',
+            ':hover':{
+                color: '#fff'
+            }
+            }}
       >
         Update
       </Button>
 
       <Dialog fullWidth maxWidth="sm" open={open} sx={mainDialog}>
-        <Typography variant="h5">Edit Comment</Typography>
+        <DialogTitle>
+            <Typography variant="h6">Edit Comment</Typography>
+        </DialogTitle>
 
         <TextField
           value={comment}
@@ -100,4 +113,5 @@ const mainGrid = {
 const buttonStyle = {
   width: '100%',
   maxWidth: '100%',
+  fontWeight: 'bold',
 }

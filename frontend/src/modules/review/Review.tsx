@@ -83,7 +83,7 @@ const Review: React.FC<IProps> = ({ review }) => {
             >
               <ButtonGroup
                 orientation="vertical"
-                sx={{ backgroundColor: '#fff', p: '2px' }}
+                sx={{ backgroundColor: '#fff' }}
               >
                 <DeleteReview reviewId={review._id as string} />
                 <EditReview review={review} />

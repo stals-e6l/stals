@@ -28,6 +28,10 @@ const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
         sx={{
           backgroundColor: '#fff',
           color: '#000',
+          fontWeight: 'bold',
+          boxShadow: 0,
+          borderRadius: '10px 10px 0px 0px',
+          borderBottom: '1px solid black',
           ':hover': { color: '#fff' },
         }}
       >
@@ -40,7 +44,7 @@ const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
         maxWidth={'xs'}
       >
         <DialogTitle>
-          <Grid sx={{ flexGrow: 1 }} container spacing={0}></Grid>
+            <Typography variant="h6">Delete Review</Typography>
         </DialogTitle>
         <Grid sx={{ flexGrow: 1 }} container spacing={1}>
           <Grid item xs sx={{}}>
@@ -50,8 +54,11 @@ const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
           </Grid>
         </Grid>
         <DialogActions>
-          <Button onClick={toggleDialog}>Cancel</Button>
+          <Button 
+            variant="contained" 
+            onClick={toggleDialog}>Cancel</Button>
           <Button
+            variant="contained"
             onClick={() => {
               if (onDeleteReview) onDeleteReview(reviewId).then(toggleDialog)
             }}
