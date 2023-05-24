@@ -48,7 +48,7 @@ const ProfilePage: React.FC<IProps> = () => {
         }}
       >
         <Box sx={{ display: 'flex' }}>
-          <IconButton>
+          <IconButton onClick={() => history.back()}>
             <ArrowBackIcon sx={{ fontSize: '5vh', color: COLOR.white }} />
           </IconButton>
           <Avatar
