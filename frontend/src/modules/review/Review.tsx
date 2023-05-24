@@ -24,6 +24,8 @@ const Review: React.FC<IProps> = ({ review }) => {
   const theme = useTheme()
   const { anchorEl: anchor, onClose, onOpen } = useMenu()
 
+  const date = new Date()
+
   return (
     <React.Fragment>
       <Box
@@ -67,7 +69,7 @@ const Review: React.FC<IProps> = ({ review }) => {
             </Box>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'start' }}>
-            <Typography>{review.createdAt}</Typography>
+            <Typography>{new Date(review.createdAt!).toLocaleString()}</Typography>
             <IconButton
               sx={{ marginTop: '-8px', color: '#000000' }}
               onClick={onOpen}
