@@ -14,7 +14,7 @@ import useDialog from '../../hooks/useDialog'
 import { createAccommodation } from './AccommodationsProvider'
 import { COLOR } from '../../theme'
 import AddIcon from '@mui/icons-material/Add'
-import { getMe } from '../auth/AuthProvider'
+import { ALLOWABLE_FEATURES, getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -76,6 +76,12 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
       })
   }
 
+  React.useEffect(() => {
+    if (me) {
+      setForm(prev => ({ ...prev, user_id: me._id }))
+    }
+  }, [me])
+
   const cancelBtnSx = {
     root: {
       backgroundColor: COLOR.negativeRed,
@@ -101,7 +107,7 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   }
   return (
     <React.Fragment>
-      {me && me.role !== 'tenant' && (
+      {me && ALLOWABLE_FEATURES.create.accommodation.includes(me.role) && (
         <Fab
           onClick={toggleDialog}
           sx={{

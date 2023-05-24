@@ -60,7 +60,6 @@ const AccommodationCard: React.FC<IProps> = ({
   return (
     // Initialize card
     <Card
-      onClick={toDetailPage}
       sx={{
         backgroundColor: COLOR.gray1,
         width: theme.spacing(35),
@@ -81,6 +80,7 @@ const AccommodationCard: React.FC<IProps> = ({
     >
       {/* Accommodation Image */}
       <CardMedia
+        onClick={toDetailPage}
         component="img"
         height={theme.spacing(23)}
         image={AccommodationImages.ellens}
@@ -276,12 +276,14 @@ const AccommodationCard: React.FC<IProps> = ({
                 </MenuItem>
                 <MenuItem>
                   <DeleteAccommodationFormModal
+                    userId={accommodation.user_id as string}
                     accommodationId={accommodation._id as string}
                     isSoftDelete={true}
                   />
                 </MenuItem>
                 <MenuItem>
                   <DeleteAccommodationFormModal
+                    userId={accommodation.user_id as string}
                     accommodationId={accommodation._id as string}
                     isSoftDelete={false}
                   />
