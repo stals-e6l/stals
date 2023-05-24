@@ -1,6 +1,6 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { apiGet, apiPost } from '../../services/api'
 import { ROUTES } from '../../app/AppRouter'
 
@@ -42,31 +42,24 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
 export default AuthProvider
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  // TODO: use as child RouterProvider
-  const onSetAuthLoaded = setAuthLoaded()
-  const onFetchMe = fetchMe()
+  // hooks
   const navigate = useNavigate()
-  const loaded = getAuthLoaded()
-  const location = useLocation()
+  const onFetchMe = fetchMe()
 
   React.useEffect(() => {
-    if (
-      onFetchMe &&
-      location.pathname !== ROUTES.appAuth &&
-      onSetAuthLoaded &&
-      !loaded
-    )
-      onFetchMe()
-        .then(() => {
-          navigate(ROUTES.appExplore)
-        })
-        .catch(() => {
-          navigate(ROUTES.appAuth)
-        })
-        .finally(() => {
-          onSetAuthLoaded(true)
-        })
-  }, [onFetchMe, loaded, onSetAuthLoaded])
+    // if there is a token,
+    // then we can authenticate it
+    const token = getToken()
+    if (token) {
+      if (onFetchMe)
+        onFetchMe()
+          .then(() => navigate(ROUTES.appExplore))
+          .catch(() => navigate(ROUTES.appAuth))
+      // else we can just redirect them to the auth page
+    } else {
+      navigate(ROUTES.appAuth)
+    }
+  }, [])
 
   return <React.Fragment>{children}</React.Fragment>
 }
@@ -164,7 +157,8 @@ export const signOut = () => {
 }
 
 export const fetchMe = () => {
-  const { dispatch, token } = useAuth()
+  const { dispatch } = useAuth()
+  const token = getToken()
 
   if (!dispatch) return null
 
