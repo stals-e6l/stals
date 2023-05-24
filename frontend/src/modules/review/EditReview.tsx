@@ -1,4 +1,4 @@
-import { Button, TextField, Dialog, DialogTitle, Rating, Typography, Grid, Box, useTheme } from '@mui/material'
+import { Button, TextField, Dialog, DialogTitle, DialogActions, Rating, Typography, Grid, Box, useTheme, useMediaQuery } from '@mui/material'
 import React from 'react'
 import useDialog from '../../hooks/useDialog'
 import { updateReview } from './ReviewsProvider'
@@ -13,6 +13,7 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
   const { open, toggleDialog } = useDialog()
   const onEditReview = updateReview()
   const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   // state
   const [comment, setComment] = React.useState<string>(review.comment || '')
 
@@ -36,7 +37,7 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
         Update
       </Button>
 
-      <Dialog fullWidth maxWidth="sm" open={open} sx={mainDialog}>
+      <Dialog fullWidth fullScreen={fullScreen} maxWidth="sm" open={open} sx={mainDialog}>
         <DialogTitle>
             <Typography variant="h6">Edit Comment</Typography>
         </DialogTitle>
@@ -54,19 +55,20 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
                         },
                     }} />
             </Grid>
+            <TextField
+              value={comment}
+              fullWidth
+              multiline
+              minRows={4}
+              maxRows={4}
+              onChange={e => setComment(e.target.value)}
+              placeholder="Enter comment..."
+              sx={textFieldStyle}
+            />
         </Grid>
 
-        <TextField
-          value={comment}
-          fullWidth
-          multiline
-          minRows={4}
-          maxRows={4}
-          onChange={e => setComment(e.target.value)}
-          placeholder="Enter comment..."
-          sx={textFieldStyle}
-        />
 
+        <DialogActions>
         <Grid
           container
           spacing={1}
@@ -94,6 +96,7 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
             </Button>
           </Grid>
         </Grid>
+        </DialogActions>
       </Dialog>
     </Box>
   )
@@ -110,7 +113,6 @@ const mainDialog = {
 
 const textFieldStyle = {
   paddingRight: '25px',
-  paddingLeft: '25px',
   height: '80%',
   justifyContent: 'center',
 }

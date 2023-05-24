@@ -6,6 +6,8 @@ import {
   DialogTitle,
   Typography,
   Grid,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material'
 import useDialog from '../../hooks/useDialog'
 import { deleteReview } from './ReviewsProvider'
@@ -19,6 +21,8 @@ const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
   // hook
   const { open, toggleDialog } = useDialog()
   const onDeleteReview = deleteReview()
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <>
@@ -40,6 +44,7 @@ const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
       <Dialog
         open={open}
         onClose={toggleDialog}
+        fullScreen={fullScreen}
         fullWidth={true}
         maxWidth={'xs'}
       >
