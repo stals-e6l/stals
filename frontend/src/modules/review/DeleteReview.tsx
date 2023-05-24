@@ -56,9 +56,12 @@ const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
         <DialogActions>
           <Button 
             variant="contained" 
-            onClick={toggleDialog}>Cancel</Button>
+            onClick={toggleDialog}
+            sx={{ fontWeight: 'bold' }}
+            >Cancel</Button>
           <Button
             variant="contained"
+            sx={{ fontWeight: 'bold' }}
             onClick={() => {
               if (onDeleteReview) onDeleteReview(reviewId).then(toggleDialog)
             }}
