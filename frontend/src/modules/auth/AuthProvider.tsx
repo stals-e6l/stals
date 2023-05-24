@@ -53,7 +53,11 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       if (onFetchMe)
         onFetchMe()
-          .then(() => navigate(ROUTES.appExplore))
+          .then(() => {
+            if (location.pathname === '/') {
+              navigate(ROUTES.appExplore)
+            }
+          }) // redirect to current page
           .catch(() => navigate(ROUTES.appAuth))
       // else we can just redirect them to the auth page
     } else {
