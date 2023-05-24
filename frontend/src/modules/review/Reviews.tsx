@@ -67,7 +67,7 @@ const Reviews: React.FC<IProps> = () => {
                   alignItems: 'center',
                 }}
               >
-                {averageRating || 0}
+                {Number(averageRating).toFixed(1) || 0}
                 <Typography
                   sx={{
                     color: theme.palette.primary.main,
