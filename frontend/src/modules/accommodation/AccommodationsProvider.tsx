@@ -57,6 +57,8 @@ const accommodationReducer = (
   state: IAccommodationsState,
   action: IReducerAction<TAccommodationActionType, TAccommodationPayload>
 ): IAccommodationsState => {
+  let temp
+  let buffer
   switch (action.type) {
     case 'SET_ACCOMMODATIONS':
       return {
@@ -77,8 +79,17 @@ const accommodationReducer = (
       }
     case 'DELETE_ACCOMMODATION':
       // eslint-disable-next-line no-case-declarations
-      const temp = { ...state.accommodations }
+      temp = { ...state.accommodations }
       delete temp[action.payload as string]
+      return {
+        ...state,
+        accommodations: temp,
+      }
+    case 'EDIT_ACCOMMODATION':
+      // eslint-disable-next-line no-case-declarations
+      temp = { ...state.accommodations }
+      buffer = action.payload as IAccommodation
+      temp[buffer._id as string] = buffer
       return {
         ...state,
         accommodations: temp,
@@ -209,5 +220,25 @@ export const deleteAccommodation = () => {
       if (res.messages) onShowError(res.messages[0])
       return false
     }
+  }
+}
+
+export const editAccommodation = () => {
+  const { dispatch } =
+    React.useContext<IAccommodationsState>(accommodationContext)
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
+
+  return async (accommodation: IAccommodation) => {
+    const res = await apiPut<IAccommodation, IAccommodation>(
+      `accommodation/${accommodation._id as string}`,
+      {
+        payload: accommodation,
+      }
+    )
+
+    if (res.success && res.data) {
+      dispatch({ type: 'EDIT_ACCOMMODATION', payload: res.data })
+    } else if (res.messages) onShowError(res.messages[0])
   }
 }

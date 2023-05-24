@@ -21,6 +21,8 @@ import toPhp from '../../utils/toPhp'
 import { COLOR } from '../../theme/index'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
+import AccommodationFormModal from './AccommodationFormModal'
+import { getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -35,6 +37,7 @@ const AccommodationCard: React.FC<IProps> = ({
   // hooks
   const theme = useTheme()
   const navigate = useNavigate()
+  const me = getMe()
 
   // state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -255,7 +258,7 @@ const AccommodationCard: React.FC<IProps> = ({
             </IconButton>
 
             {/* Menu Items */}
-            {accommodation && (
+            {accommodation && me?._id === accommodation.user_id && (
               <Menu
                 id="menu"
                 aria-labelledby="menu-btn"
@@ -271,8 +274,8 @@ const AccommodationCard: React.FC<IProps> = ({
                   horizontal: 'right',
                 }}
               >
-                <MenuItem onClick={handleClose}>
-                  <Typography variant="body2">Edit</Typography>
+                <MenuItem>
+                  <AccommodationFormModal defaultValues={accommodation} />
                 </MenuItem>
                 <MenuItem>
                   <DeleteAccommodationFormModal
