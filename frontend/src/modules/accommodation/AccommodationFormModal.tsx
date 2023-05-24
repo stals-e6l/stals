@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import {
   Button,
   Dialog,
@@ -11,17 +12,24 @@ import {
 import React from 'react'
 import AccommodationForm from './AccommodationForm'
 import useDialog from '../../hooks/useDialog'
-import { createAccommodation } from './AccommodationsProvider'
+import {
+  createAccommodation,
+  editAccommodation,
+} from './AccommodationsProvider'
 import { COLOR } from '../../theme'
 import AddIcon from '@mui/icons-material/Add'
-import { getMe } from '../auth/AuthProvider'
+import { ALLOWABLE_FEATURES, getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
   defaultValues?: IAccommodation
+  onClose?: () => void
 }
 
-const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
+const AccommodationFormModal: React.FC<IProps> = ({
+  defaultValues,
+  onClose,
+}) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const me = getMe()
@@ -29,6 +37,7 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
   const onCreateAccommodation = createAccommodation()
+  const onEditAccommodation = editAccommodation()
 
   // state
   const [form, setForm] = React.useState<IAccommodation>({
@@ -70,11 +79,23 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
 
   // events
   const handleSubmit = () => {
-    if (onCreateAccommodation)
+    if (onCreateAccommodation && !defaultValues)
       onCreateAccommodation(form).then(status => {
         if (status) toggleDialog()
       })
+    else if (onEditAccommodation && defaultValues) {
+      onEditAccommodation({ ...form, _id: defaultValues._id as string }).then(
+        toggleDialog
+      )
+    }
+    if (onClose) onClose()
   }
+
+  React.useEffect(() => {
+    if (me) {
+      setForm(prev => ({ ...prev, user_id: me._id }))
+    }
+  }, [me])
 
   const cancelBtnSx = {
     root: {
@@ -101,22 +122,39 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   }
   return (
     <React.Fragment>
-      {me && me.role !== 'tenant' && (
-        <Fab
-          onClick={toggleDialog}
-          sx={{
-            ...submitBtnSx.root,
-            borderRadius: '50%',
-            position: 'absolute',
-            bottom: '5%',
-            right: '5%',
-            background: theme.palette.primary.main,
-            color: theme.palette.common.white,
-          }}
-        >
-          <AddIcon />
-        </Fab>
-      )}
+      {me &&
+        ALLOWABLE_FEATURES.create.accommodation.includes(me.role) &&
+        !defaultValues && (
+          <Fab
+            onClick={toggleDialog}
+            sx={{
+              ...submitBtnSx.root,
+              borderRadius: '50%',
+              position: 'absolute',
+              bottom: '5%',
+              right: '5%',
+              background: theme.palette.primary.main,
+              color: theme.palette.common.white,
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        )}
+      {me &&
+        ALLOWABLE_FEATURES.create.accommodation.includes(me.role) &&
+        defaultValues && (
+          <Button
+            onClick={toggleDialog}
+            variant="contained"
+            sx={{
+              background: theme.palette.primary.main,
+              color: theme.palette.common.white,
+            }}
+          >
+            Edit
+          </Button>
+        )}
+
       {open && (
         <Dialog fullScreen={isMobile} open={open} onClose={toggleDialog}>
           <DialogTitle sx={{ backgroundColor: '#0c2c44', color: COLOR.white }}>
