@@ -1,4 +1,4 @@
-import { Button, TextField, Dialog, DialogTitle, Typography, Grid, Box, useTheme } from '@mui/material'
+import { Button, TextField, Dialog, DialogTitle, Rating, Typography, Grid, Box, useTheme } from '@mui/material'
 import React from 'react'
 import useDialog from '../../hooks/useDialog'
 import { updateReview } from './ReviewsProvider'
@@ -40,6 +40,21 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
         <DialogTitle>
             <Typography variant="h6">Edit Comment</Typography>
         </DialogTitle>
+        <Grid container sx={{ pl: '25px' }}>
+            <Grid item>
+                <Typography>Rating: </Typography>
+            </Grid>
+            <Grid item>
+                <Rating
+                    value={5}
+                    precision={0.5}
+                    sx={{
+                        '& .MuiRating-iconFilled': {
+                            color: theme.palette.secondary.main
+                        },
+                    }} />
+            </Grid>
+        </Grid>
 
         <TextField
           value={comment}
