@@ -22,12 +22,14 @@ interface IProps {
   accommodationId: string
   userId: string
   isSoftDelete: boolean
+  onClose?: () => void
 }
 
 const DeleteAccommodationFormModal: React.FC<IProps> = ({
   accommodationId,
   userId,
   isSoftDelete,
+  onClose,
 }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
@@ -42,7 +44,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
 
   // events
   const handleSubmit = () => {
-    if (onDeleteAccommodation && onArchiveAccommodation) {
+    if (onDeleteAccommodation && onArchiveAccommodation && onClose) {
       if (isSoftDelete) {
         onArchiveAccommodation({
           _id: accommodationId,
@@ -55,6 +57,7 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
           if (status) toggleDialog()
         })
       }
+      onClose()
     }
   }
 

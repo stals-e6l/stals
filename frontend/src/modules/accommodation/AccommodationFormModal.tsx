@@ -23,9 +23,13 @@ import { ALLOWABLE_FEATURES, getMe } from '../auth/AuthProvider'
 interface IProps {
   children?: React.ReactNode
   defaultValues?: IAccommodation
+  onClose?: () => void
 }
 
-const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
+const AccommodationFormModal: React.FC<IProps> = ({
+  defaultValues,
+  onClose,
+}) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const me = getMe()
@@ -84,6 +88,7 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
         toggleDialog
       )
     }
+    if (onClose) onClose()
   }
 
   React.useEffect(() => {

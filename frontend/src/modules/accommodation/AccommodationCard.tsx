@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
 import AccommodationFormModal from './AccommodationFormModal'
 import { getMe } from '../auth/AuthProvider'
+import useMenu from '../../hooks/useMenu'
 
 interface IProps {
   children?: React.ReactNode
@@ -38,17 +39,11 @@ const AccommodationCard: React.FC<IProps> = ({
   const theme = useTheme()
   const navigate = useNavigate()
   const me = getMe()
+  const { onClose, onOpen, anchorEl } = useMenu()
 
   // state
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   // events
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
   const toDetailPage = () => {
     navigate(
       `${ROUTES.appAccommodationDetail.replace(':id', accommodation._id || '')}`
@@ -247,7 +242,7 @@ const AccommodationCard: React.FC<IProps> = ({
               aria-controls={open ? 'menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
+              onClick={onOpen}
               sx={{ marginLeft: 'auto' }}
             >
               <MoreHorizSharpIcon
@@ -264,7 +259,7 @@ const AccommodationCard: React.FC<IProps> = ({
                 aria-labelledby="menu-btn"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
+                onClose={onClose}
                 anchorOrigin={{
                   vertical: 'bottom',
                   horizontal: 'right',
@@ -275,13 +270,17 @@ const AccommodationCard: React.FC<IProps> = ({
                 }}
               >
                 <MenuItem>
-                  <AccommodationFormModal defaultValues={accommodation} />
+                  <AccommodationFormModal
+                    defaultValues={accommodation}
+                    onClose={onClose}
+                  />
                 </MenuItem>
                 <MenuItem>
                   <DeleteAccommodationFormModal
                     userId={accommodation.user_id as string}
                     accommodationId={accommodation._id as string}
                     isSoftDelete={true}
+                    onClose={onClose}
                   />
                 </MenuItem>
                 <MenuItem>
@@ -289,6 +288,7 @@ const AccommodationCard: React.FC<IProps> = ({
                     userId={accommodation.user_id as string}
                     accommodationId={accommodation._id as string}
                     isSoftDelete={false}
+                    onClose={onClose}
                   />
                 </MenuItem>
               </Menu>
