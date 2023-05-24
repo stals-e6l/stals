@@ -199,3 +199,26 @@ export const setAuthLoaded = () => {
     dispatch({ type: 'SET_LOADED', payload: isLoaded })
   }
 }
+
+export const ALLOWABLE_FEATURES = {
+  create: {
+    accommodation: ['admin', 'owner'],
+    review: ['admin', 'owner', 'tenant'],
+    report: ['admin', 'owner', 'tenant'],
+  },
+  retrieve: {
+    accommodation: ['admin', 'owner', 'tenant'],
+    review: ['admin', 'owner', 'tenant'],
+    report: ['admin', 'owner', 'tenant'],
+  },
+  update: {
+    accommodation: ['admin', 'owner'],
+    review: ['admin', 'owner', 'tenant'],
+    report: ['admin'],
+  },
+  delete: {
+    accommodation: ['admin', 'owner'],
+    review: ['admin', 'owner', 'tenant'],
+    report: ['admin'],
+  },
+}
