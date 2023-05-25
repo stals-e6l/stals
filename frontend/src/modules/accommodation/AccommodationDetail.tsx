@@ -19,6 +19,10 @@ import toPhp from '../../utils/toPhp'
 import { COLOR } from '../../theme/index'
 import Title from './TitleComponent'
 import Reviews from '../review/Reviews'
+import { retrieveOneAccommodation } from './AccommodationsProvider'
+import { useParams } from 'react-router-dom'
+import { averageReviewRating } from '../review/ReviewsProvider'
+import { retrieveReviews } from '../review/ReviewsProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -27,35 +31,39 @@ interface IProps {
 const AccommodationDetail: React.FC<IProps> = () => {
   //
   const theme = useTheme()
+  const params = useParams()
+  const accommodation = retrieveOneAccommodation(params.id as string)
+  const rating = averageReviewRating()
+  const reviews = retrieveReviews()
 
   // Static data
-  const accommodation = {
-    name: 'Ellens Chicken',
-    max_price: 2000,
-    type: 'Apartment',
-    amenities: ['Fire exit', 'CCTV', 'Internet', 'Study Area'],
-    address:
-      'Demarces (in front of Bonitos), Brgy. Batong Malake, Los Banos, Laguna',
-    appliances: ['Aircon'],
-    safety_and_security: ['Safe', 'Low Crime Rate'],
-    meters_from_uplb: 100,
-    description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-    size_sqm: 100,
-    min_pax: 2,
-    max_pax: 4,
-    num_rooms: 30,
-    num_beds: 2,
-    landmarks: ['Near Los Banos Doctors Hospital and Medical Center'],
-    cooking_rules: ['Allowed', 'Kitchen Area Only'],
-    pet_rules: ['Allowed'],
-    other_rules: ['Allowed'],
+  // const accommodation = {
+  //   name: 'Ellens Chicken',
+  //   max_price: 2000,
+  //   type: 'Apartment',
+  //   amenities: ['Fire exit', 'CCTV', 'Internet', 'Study Area'],
+  //   address:
+  //     'Demarces (in front of Bonitos), Brgy. Batong Malake, Los Banos, Laguna',
+  //   appliances: ['Aircon'],
+  //   safety_and_security: ['Safe', 'Low Crime Rate'],
+  //   meters_from_uplb: 100,
+  //   description:
+  //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+  //   size_sqm: 100,
+  //   min_pax: 2,
+  //   max_pax: 4,
+  //   num_rooms: 30,
+  //   num_beds: 2,
+  //   landmarks: ['Near Los Banos Doctors Hospital and Medical Center'],
+  //   cooking_rules: ['Allowed', 'Kitchen Area Only'],
+  //   pet_rules: ['Allowed'],
+  //   other_rules: ['Allowed'],
 
-    ratings: 4.8,
-    number_of_reviews: 20,
-    commentor: 'Rodge Del Luna',
-    comment: 'It is a nice place. We enjoyed out stay.',
-  }
+  //   ratings: 4.8,
+  //   number_of_reviews: 20,
+  //   commentor: 'Rodge Del Luna',
+  //   comment: 'It is a nice place. We enjoyed out stay.',
+  // }
 
   // TODO: add ui/logic to handle non-existent accommodation
   if (!accommodation) {
@@ -138,7 +146,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                       <Grid item>
                         {/* Ratings */}
                         <Typography variant="h4" sx={{ color: COLOR.green }}>
-                          {accommodation.ratings}
+                          {rating || 'No ratings yet.'}
                         </Typography>
                       </Grid>
                       <Grid item>
@@ -173,7 +181,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                           variant="body1"
                           sx={{ color: COLOR.textBlack }}
                         >
-                          ({accommodation.number_of_reviews} ratings)
+                          {reviews?.length} ratings
                         </Typography>
                       </Grid>
                     </Grid>
@@ -195,12 +203,16 @@ const AccommodationDetail: React.FC<IProps> = () => {
                         <Grid container direction="column">
                           <Grid item>
                             <Typography variant="h6">
-                              {accommodation.commentor}
+                              {reviews &&
+                                reviews?.length > 0 &&
+                                reviews[0].user_id}
                             </Typography>
                           </Grid>
                           <Grid item>
                             <Typography variant="body2">
-                              {accommodation.comment}
+                              {reviews &&
+                                reviews?.length > 0 &&
+                                reviews[0].comment}
                             </Typography>
                           </Grid>
                         </Grid>
