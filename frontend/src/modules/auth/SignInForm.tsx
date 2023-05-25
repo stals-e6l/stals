@@ -62,7 +62,6 @@ const SignInForm: React.FC<IProps> = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            border: '1px solid red',
             [theme.breakpoints.down('sm')]: {
               display: 'none',
             },

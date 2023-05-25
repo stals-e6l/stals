@@ -99,15 +99,19 @@ const theme = createTheme({
     },
     MuiRadio: {
       styleOverrides: {
-        checked: {
-          color: COLOR.green,
+        root: {
+          '&.Mui-checked': {
+            color: COLOR.green,
+          },
         },
       },
     },
     MuiCheckbox: {
       styleOverrides: {
-        checked: {
-          color: COLOR.green,
+        root: {
+          '&.Mui-checked': {
+            color: COLOR.green,
+          },
         },
       },
     },
@@ -127,7 +131,11 @@ const theme = createTheme({
 
     MuiSlider: {
       styleOverrides: {
-        root: {},
+        root: {
+          '&.Mui-active': {
+            color: '#f5f5f7',
+          },
+        },
         thumb: {
           color: COLOR.green,
         },
@@ -138,9 +146,6 @@ const theme = createTheme({
           color: COLOR.gray2,
           border: '2px solid',
           borderColor: COLOR.black,
-        },
-        active: {
-          color: COLOR.gray1,
         },
       },
     },
@@ -247,14 +252,12 @@ const theme = createTheme({
 
     MuiDialog: {
       styleOverrides: {
-        root: {
-          
-        },
-        paper:{
+        root: {},
+        paper: {
           backgroundColor: COLOR.gray1,
           borderRadius: '8px',
-        }
-      }
+        },
+      },
     },
 
     // MuiFab: {
