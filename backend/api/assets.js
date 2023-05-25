@@ -1,4 +1,5 @@
-const { Router, static } = require('express')
+const { Router } = require('express')
+const express = require('express')
 resolve = require('path').resolve
 
 const { ERRORS, BAD_REQUEST, NOT_FOUND } = require('../handler/error_handler')
@@ -62,6 +63,6 @@ assetsRouter.post('/asset', upload.single('fileName'), async (req, res) => {
   }
 })
 
-assetsRouter.use('/asset', static(ASSETS_DIR))
+assetsRouter.use('/asset', express.static(ASSETS_DIR))
 
 module.exports = assetsRouter
