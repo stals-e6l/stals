@@ -11,11 +11,11 @@ import PublicPage from '../pages/PublicPage'
 
 export const ROUTES = {
   public: '/public',
-  appAuth: '/app/auth',
-  appExplore: '/app/explore',
-  appResult: '/app/result',
-  appAccommodationDetail: '/app/accommodations/:id',
-  profile: '/app/profile',
+  appAuth: '/auth',
+  appExplore: '/explore',
+  appResult: '/result',
+  appAccommodationDetail: '/accommodations/:id',
+  profile: '/profile',
 }
 
 interface IProps {
@@ -30,21 +30,25 @@ export default AppRouter
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/public',
     element: <PublicPage />,
   },
   {
-    path: '/app',
+    path: ROUTES.appAuth,
+    element: <AuthPage />,
+  },
+  {
+    path: '/',
     element: (
       <AuthGuard>
         <IndexPage />
       </AuthGuard>
     ),
     children: [
-      {
-        path: ROUTES.appAuth,
-        element: <AuthPage />,
-      },
+      // {
+      //   path: ROUTES.appAuth,
+      //   element: <AuthPage />,
+      // },
       {
         path: ROUTES.appExplore,
         element: <ExplorePage />,

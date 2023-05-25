@@ -21,6 +21,9 @@ import toPhp from '../../utils/toPhp'
 import { COLOR } from '../../theme/index'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
+import AccommodationFormModal from './AccommodationFormModal'
+import { getMe } from '../auth/AuthProvider'
+import useMenu from '../../hooks/useMenu'
 
 interface IProps {
   children?: React.ReactNode
@@ -35,17 +38,12 @@ const AccommodationCard: React.FC<IProps> = ({
   // hooks
   const theme = useTheme()
   const navigate = useNavigate()
+  const me = getMe()
+  const { onClose, onOpen, anchorEl } = useMenu()
 
   // state
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   // events
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
   const toDetailPage = () => {
     navigate(
       `${ROUTES.appAccommodationDetail.replace(':id', accommodation._id || '')}`
@@ -60,7 +58,6 @@ const AccommodationCard: React.FC<IProps> = ({
   return (
     // Initialize card
     <Card
-      onClick={toDetailPage}
       sx={{
         backgroundColor: COLOR.gray1,
         width: theme.spacing(35),
@@ -81,6 +78,7 @@ const AccommodationCard: React.FC<IProps> = ({
     >
       {/* Accommodation Image */}
       <CardMedia
+        onClick={toDetailPage}
         component="img"
         height={theme.spacing(23)}
         image={AccommodationImages.ellens}
@@ -244,7 +242,7 @@ const AccommodationCard: React.FC<IProps> = ({
               aria-controls={open ? 'menu' : undefined}
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
+              onClick={onOpen}
               sx={{ marginLeft: 'auto' }}
             >
               <MoreHorizSharpIcon
@@ -255,13 +253,13 @@ const AccommodationCard: React.FC<IProps> = ({
             </IconButton>
 
             {/* Menu Items */}
-            {accommodation && (
+            {accommodation && me?._id === accommodation.user_id && (
               <Menu
                 id="menu"
                 aria-labelledby="menu-btn"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
+                onClose={onClose}
                 anchorOrigin={{
                   vertical: 'bottom',
                   horizontal: 'right',
@@ -271,19 +269,26 @@ const AccommodationCard: React.FC<IProps> = ({
                   horizontal: 'right',
                 }}
               >
-                <MenuItem onClick={handleClose}>
-                  <Typography variant="body2">Edit</Typography>
-                </MenuItem>
                 <MenuItem>
-                  <DeleteAccommodationFormModal
-                    accommodationId={accommodation._id as string}
-                    isSoftDelete={true}
+                  <AccommodationFormModal
+                    defaultValues={accommodation}
+                    onClose={onClose}
                   />
                 </MenuItem>
                 <MenuItem>
                   <DeleteAccommodationFormModal
+                    userId={accommodation.user_id as string}
+                    accommodationId={accommodation._id as string}
+                    isSoftDelete={true}
+                    onClose={onClose}
+                  />
+                </MenuItem>
+                <MenuItem>
+                  <DeleteAccommodationFormModal
+                    userId={accommodation.user_id as string}
                     accommodationId={accommodation._id as string}
                     isSoftDelete={false}
+                    onClose={onClose}
                   />
                 </MenuItem>
               </Menu>
