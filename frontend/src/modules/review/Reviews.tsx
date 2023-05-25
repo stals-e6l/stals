@@ -42,68 +42,72 @@ const Reviews: React.FC<IProps> = () => {
   }, [])
 
   // if there are no reviews
-  if(!reviews){
-      return (
-        <Box>
-          <Grid container sx={{ mt: 2, mb: 2 }}>
-            <Grid item xs={12}>
-              {/* Grey background */}
-              <Grid
-                container
-                direction="row"
-                sx={{
-                  backgroundColor: COLOR.gray1,
-                  padding: '15px 30px',
-                  alignContent: 'center',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                }}
-              >
-                {/* No reviews icon */}
-                <Grid item>
-                    <ForumIcon 
-                    sx={{
-                        color: theme.palette.secondary.main,
-                        fontSize: '50px',
-                    }}
-                    />
-                </Grid>
+  if (!reviews || reviews.length === 0) {
+    return (
+      <Box>
+        <Grid container sx={{ mt: 2, mb: 2 }}>
+          <Grid item xs={12}>
+            {/* Grey background */}
+            <Grid
+              container
+              direction="row"
+              sx={{
+                backgroundColor: COLOR.gray1,
+                padding: '15px 30px',
+                alignContent: 'center',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
+              {/* No reviews icon */}
+              <Grid item>
+                <ForumIcon
+                  sx={{
+                    color: theme.palette.secondary.main,
+                    fontSize: '50px',
+                  }}
+                />
+              </Grid>
 
-                {/* No reviews text */}
-                <Grid item>
-                    <Typography 
-                        variant="h6"
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                            ml: '10px'
-                        }}
-                    >
-                        No reviews yet.
-                    </Typography>
-                </Grid>
+              {/* No reviews text */}
+              <Grid item>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    ml: '10px',
+                  }}
+                >
+                  No reviews yet.
+                </Typography>
+              </Grid>
 
-                <Grid item xs>
-                  {/* Add review button */}
-                  <Grid
-                    container
-                    justifyContent={move ? 'flex-start' : 'flex-end'}
-                    sx={{ width: '100%', height: '100%', alignItems: 'center' }}
-                  >
-                    <Grid item>
-                      <AddReviewModal accommodationId={params.id || ''} />
-                    </Grid>
+              <Grid item xs>
+                {/* Add review button */}
+                <Grid
+                  container
+                  justifyContent={move ? 'flex-start' : 'flex-end'}
+                  sx={{ width: '100%', height: '100%', alignItems: 'center' }}
+                >
+                  <Grid item>
+                    <AddReviewModal accommodationId={params.id || ''} />
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-            </Grid>
-        </Box>
-             )
+          </Grid>
+        </Grid>
+      </Box>
+    )
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        paddingY: theme.spacing(4),
+      }}
+    >
       <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12}>
           {/* Grey background */}

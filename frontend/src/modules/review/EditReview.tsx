@@ -1,4 +1,16 @@
-import { Button, TextField, Dialog, DialogTitle, DialogActions, Rating, Typography, Grid, Box, useTheme, useMediaQuery } from '@mui/material'
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Rating,
+  Typography,
+  Grid,
+  Box,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material'
 import React from 'react'
 import useDialog from '../../hooks/useDialog'
 import { updateReview } from './ReviewsProvider'
@@ -23,81 +35,93 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
       <Button
         variant="contained"
         onClick={toggleDialog}
-        sx={{ 
-            backgroundColor: '#fff',
-            color: '#000',
-            fontWeight: 'bold',
-            boxShadow: 0,
-            borderRadius: '0px 0px 10px 10px',
-            borderTop: '1px solid black',
-            ':hover':{
-                color: '#fff'
-            }
-            }}
+        sx={{
+          backgroundColor: '#fff',
+          color: '#000',
+          fontWeight: 'bold',
+          boxShadow: 0,
+          borderRadius: '0px 0px 10px 10px',
+          borderTop: '1px solid black',
+          ':hover': {
+            color: '#fff',
+          },
+        }}
       >
         Update
       </Button>
 
-      <Dialog fullWidth fullScreen={fullScreen} maxWidth="sm" open={open} sx={mainDialog}>
+      <Dialog
+        fullWidth
+        fullScreen={fullScreen}
+        maxWidth="sm"
+        open={open}
+        sx={mainDialog}
+      >
         <DialogTitle>
-            <Typography variant="h6">Edit Comment</Typography>
+          <Typography variant="h6">Edit Comment</Typography>
         </DialogTitle>
         <Grid container sx={{ pl: '25px' }}>
-            <Grid item>
-                <Typography>Rating: </Typography>
-            </Grid>
-            <Grid item>
-                <Rating
-                    value={rating}
-                    onChange={e => setRating(e.target.value)}
-                    precision={0.5}
-                    sx={{
-                        '& .MuiRating-iconFilled': {
-                            color: theme.palette.secondary.main
-                        },
-                    }} />
-            </Grid>
-            <TextField
-              value={comment}
-              fullWidth
-              multiline
-              minRows={4}
-              maxRows={4}
-              onChange={e => setComment(e.target.value)}
-              placeholder="Enter comment..."
-              sx={textFieldStyle}
+          <Grid item>
+            <Typography>Rating: </Typography>
+          </Grid>
+          <Grid item>
+            <Rating
+              value={rating}
+              onChange={(e, val) => setRating(val as number)}
+              precision={0.5}
+              sx={{
+                '& .MuiRating-iconFilled': {
+                  color: theme.palette.secondary.main,
+                },
+              }}
             />
+          </Grid>
+          <TextField
+            value={comment}
+            fullWidth
+            multiline
+            minRows={4}
+            maxRows={4}
+            onChange={e => setComment(e.target.value)}
+            placeholder="Enter comment..."
+            sx={textFieldStyle}
+          />
         </Grid>
-
 
         <DialogActions>
-        <Grid
-          container
-          spacing={1}
-          direction={'row'}
-          justifyContent={'flex-end'}
-          alignItems={'center'}
-          sx={mainGrid}
-        >
-          <Grid item xs={2} textAlign={'center'}>
-            <Button variant="contained" onClick={toggleDialog} sx={buttonStyle}>
-              Cancel
-            </Button>
+          <Grid
+            container
+            spacing={1}
+            direction={'row'}
+            justifyContent={'flex-end'}
+            alignItems={'center'}
+            sx={mainGrid}
+          >
+            <Grid item xs={2} textAlign={'center'}>
+              <Button
+                variant="contained"
+                onClick={toggleDialog}
+                sx={buttonStyle}
+              >
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs={2} textAlign={'center'}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  if (onEditReview) {
+                    onEditReview({ ...review, comment, rating }).then(
+                      toggleDialog
+                    )
+                  }
+                }}
+                sx={buttonStyle}
+              >
+                Confirm
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={2} textAlign={'center'}>
-            <Button
-              variant="contained"
-              onClick={() => {
-                if (onEditReview) {
-                  onEditReview({ ...review, comment }).then(toggleDialog)
-                }
-              }}
-              sx={buttonStyle}
-            >
-              Confirm
-            </Button>
-          </Grid>
-        </Grid>
         </DialogActions>
       </Dialog>
     </Box>
