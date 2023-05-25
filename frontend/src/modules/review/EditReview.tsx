@@ -16,6 +16,7 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   // state
   const [comment, setComment] = React.useState<string>(review.comment || '')
+  const [rating, setRating] = React.useState<number>(review.rating)
 
   return (
     <Box>
@@ -47,7 +48,8 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
             </Grid>
             <Grid item>
                 <Rating
-                    value={5}
+                    value={rating}
+                    onChange={e => setRating(e.target.value)}
                     precision={0.5}
                     sx={{
                         '& .MuiRating-iconFilled': {
