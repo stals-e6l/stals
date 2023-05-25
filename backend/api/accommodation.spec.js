@@ -63,7 +63,101 @@ describe('accommodation.spec.js', () => {
         expect(response.statusCode).toBe(201)
         expect(response.body).toStrictEqual({ "success": true, "data": response.body.data })
         })
+    
+    it('Create Accommodation 400 - Create accommodation FAIL (required field has no value)', async () => {
+        // do work
+        const response = await request.post('/api/accommodation').send({
+            user_id: "646ebe59dcf312f09fafc19c",
+            description: "string", //name is required
+            address: "string", 
+            type: "hotel",
+            furnishing: "fully_furnished",
+            min_price: 1000,
+            max_price: 1200,
+            size_sqm: 50,
+            meters_from_uplb: 100,
+            min_pax: 1,
+            max_pax: 4,
+            num_rooms: 2,
+            num_beds: 2,
+            num_views: 1,
+            landmarks: ["string", "string"], //these can be ommitted since we have default values as empty array
+            cooking_rules: ["string", "string"],
+            pet_rules: ["string", "string"],
+            other_rules: ["string", "string"],
+            safety_and_privacy: ["string", "string"],
+            appliances: ["string", "string"],
+            ammenities: ["string", "string"]
+        }).set('Authorization', `Bearer ${token}`);
 
+        // assert
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toStrictEqual({ "success": false, "messages": ["ValidationError: name: Accommodation name is required"]})
+    })
+
+    it('Create Accommodation 400 - Create accommodation FAIL (given value of the field is not valid)', async () => {
+        // do work
+        const response = await request.post('/api/accommodation').send({
+            user_id: "646ebe59dcf312f09fafc19c",
+            description: "string",
+            name: "string",
+            address: "string",
+            type: "garden", //here
+            furnishing: "furnished", //and here
+            min_price: 1000,
+            max_price: 1200,
+            size_sqm: 50,
+            meters_from_uplb: 100,
+            min_pax: 1,
+            max_pax: 4,
+            num_rooms: 2,
+            num_beds: 2,
+            num_views: 1,
+            landmarks: ["string", "string"],
+            cooking_rules: ["string", "string"],
+            pet_rules: ["string", "string"],
+            other_rules: ["string", "string"],
+            safety_and_privacy: ["string", "string"],
+            appliances: ["string", "string"],
+            ammenities: ["string", "string"]
+        }).set('Authorization', `Bearer ${token}`);
+
+        // assert
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toStrictEqual({ "success": false, "messages": ["ValidationError: type: garden is not a valid accommodation type, furnishing: furnished is not a valid furnishing type"]})
+    })
+
+    it('Create Accommodation 400 - Create accommodation FAIL (expected different type of value)', async () => {
+        // do work
+        const response = await request.post('/api/accommodation').send({
+            user_id: "646ebe59dcf312f09fafc19c",
+            description: "string",
+            name: "string",
+            address: "string",
+            type: "hotel", 
+            furnishing: "fully_furnished", 
+            min_price: "string", //here
+            max_price: "string", //and here
+            size_sqm: 50,
+            meters_from_uplb: 100,
+            min_pax: 1,
+            max_pax: 4,
+            num_rooms: 2,
+            num_beds: 2,
+            num_views: 1,
+            landmarks: ["string", "string"],
+            cooking_rules: ["string", "string"],
+            pet_rules: ["string", "string"],
+            other_rules: ["string", "string"],
+            safety_and_privacy: ["string", "string"],
+            appliances: ["string", "string"],
+            ammenities: ["string", "string"]
+        }).set('Authorization', `Bearer ${token}`);
+
+        // assert
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toStrictEqual({ "success": false, "messages": ["ValidationError: min_price: Cast to Number failed for value \"string\" (type string) at path \"min_price\", max_price: Cast to Number failed for value \"string\" (type string) at path \"max_price\""]})
+    })
     
     // ---------- GET ACCOMMODATION BY ID ---------- //
 
