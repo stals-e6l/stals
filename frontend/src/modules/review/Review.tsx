@@ -44,10 +44,19 @@ const Review: React.FC<IProps> = ({ review }) => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex' }}>
             <AccountCircleIcon
-              sx={{ color: '#154360', fontSize: 'xxx-large' }}
+              sx={{ color: theme.palette.primary.main , fontSize: 'xxx-large' }}
             />
             <Box>
-              <Typography sx={{ marginLeft: '3px' }}>
+              <Typography 
+                  noWrap 
+                  sx={ (theme) => ({
+                    marginLeft: '3px',
+                    textOverflow: 'ellipsis',
+                    maxWidth: '100%',
+                    [theme.breakpoints.down('sm')]: {
+                        maxWidth: '90%'
+                    },
+                          }) }>
                 {review.user_id}
               </Typography>
               <Box sx={{ display: 'flex' }}>
@@ -73,7 +82,7 @@ const Review: React.FC<IProps> = ({ review }) => {
             </Box>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'start' }}>
-            <Typography>{date.format()}</Typography>
+            <Typography sx={{ textOverflow: 'ellipsis', minWidth: '100px' }}>{date.format()}</Typography>
             <IconButton
               sx={{ marginTop: '-8px', color: '#000000' }}
               onClick={onOpen}

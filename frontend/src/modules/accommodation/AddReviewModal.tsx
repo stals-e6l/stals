@@ -43,7 +43,7 @@ const AddReviewModal: React.FC<IProps> = ({ accommodationId }) => {
       <Button
         variant="contained"
         onClick={toggleDialog}
-        sx={{ maxWidth: '200px', fontWeight: 'bold' }}
+        sx={{ minWidth: '100px', maxWidth: '200px', fontWeight: 'bold' }}
       >
         Add Review
       </Button>
