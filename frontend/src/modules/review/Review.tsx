@@ -13,6 +13,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import DeleteReview from './DeleteReview'
 import EditReview from './EditReview'
 import useMenu from '../../hooks/useMenu'
+import DateObject from 'react-date-object'
 
 interface IProps {
   children?: React.ReactNode
@@ -24,7 +25,10 @@ const Review: React.FC<IProps> = ({ review }) => {
   const theme = useTheme()
   const { anchorEl: anchor, onClose, onOpen } = useMenu()
 
-  const date = new Date()
+  const date = new DateObject({
+    date: review.createdAt,
+    format: 'MMMM DD, YYYY',
+    })
 
   return (
     <React.Fragment>
@@ -69,7 +73,7 @@ const Review: React.FC<IProps> = ({ review }) => {
             </Box>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'start' }}>
-            <Typography>{new Date(review.createdAt!).toLocaleString()}</Typography>
+            <Typography>{date.format()}</Typography>
             <IconButton
               sx={{ marginTop: '-8px', color: '#000000' }}
               onClick={onOpen}
