@@ -34,6 +34,10 @@ const router = createBrowserRouter([
     element: <PublicPage />,
   },
   {
+    path: ROUTES.appAuth,
+    element: <AuthPage />,
+  },
+  {
     path: '/',
     element: (
       <AuthGuard>
@@ -41,10 +45,10 @@ const router = createBrowserRouter([
       </AuthGuard>
     ),
     children: [
-      {
-        path: ROUTES.appAuth,
-        element: <AuthPage />,
-      },
+      // {
+      //   path: ROUTES.appAuth,
+      //   element: <AuthPage />,
+      // },
       {
         path: ROUTES.appExplore,
         element: <ExplorePage />,

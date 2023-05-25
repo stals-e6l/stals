@@ -21,6 +21,8 @@ import {
   GridToolbarFilterButton,
   GridToolbarExport,
   GridToolbarDensitySelector,
+  useGridApiRef,
+  GridPrintExportOptions,
 } from '@mui/x-data-grid'
 import { alpha, useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
@@ -399,22 +401,25 @@ function CustomToolbar() {
       },
     },
   }
-  // const apiRef = useGridApiRef();
+  const apiRef = useGridApiRef()
 
   // const printDataGrid = () => apiRef.current.exportDataAsPrint();
+  // const printDataGrid = ({ apiRef }: GridPrintExportOptions) =>
+  // gridFilteredSortedRowIdsSelector(apiRef);
   return (
     <GridToolbarContainer>
       <GridToolbarColumnsButton sx={toolbarButtonSx.root} />
       <GridToolbarFilterButton sx={toolbarButtonSx.root} />
       <GridToolbarDensitySelector sx={toolbarButtonSx.root} />
-      <GridToolbarExport
+      {/* <GridToolbarExport
         sx={toolbarButtonSx.root}
-        printOptions={{ hideToolbar: true, hideFooter: true }}
+        exportDataAsPrint={{ hideToolbar: true, hideFooter: true }}
+        // printOptions={{ hideToolbar: true, hideFooter: true }}
         csvOptions={{ disableToolbarButton: true }}
-      />
-      {/* <Button variant='contained' onClick={printDataGrid}>
+      /> */}
+      <Button variant='contained' onClick={() => apiRef.current}>
         Print 
-      </Button> */}
+      </Button>
     </GridToolbarContainer>
   )
 }

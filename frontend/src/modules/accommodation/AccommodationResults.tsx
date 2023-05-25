@@ -2,6 +2,8 @@ import { Grid, Typography } from '@mui/material'
 import React from 'react'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
+import { useLocation } from 'react-router-dom'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -9,6 +11,7 @@ interface IProps {
 }
 
 const AccommodationResults: React.FC<IProps> = () => {
+  const location = useLocation()
   const accommodations = retrieveAccommodations()
 
   if (!accommodations) {
@@ -36,7 +39,7 @@ const AccommodationResults: React.FC<IProps> = () => {
           <Grid item key={key} lg={3}>
             <AccommodationCard
               accommodation={accommodation}
-              isPublicView={true}
+              isPublicView={location.pathname === ROUTES.public}
             />
           </Grid>
         ))}
@@ -46,13 +49,13 @@ const AccommodationResults: React.FC<IProps> = () => {
         <Grid item lg={3} visibility={'hidden'}>
           <AccommodationCard
             accommodation={accommodations[0]}
-            isPublicView={true}
+            isPublicView={location.pathname === ROUTES.public}
           />
         </Grid>
         <Grid item lg={3} visibility={'hidden'}>
           <AccommodationCard
             accommodation={accommodations[0]}
-            isPublicView={true}
+            isPublicView={location.pathname === ROUTES.public}
           />
         </Grid>
       </Grid>
