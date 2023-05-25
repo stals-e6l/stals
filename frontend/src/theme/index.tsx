@@ -85,30 +85,33 @@ const theme = createTheme({
     MuiFab: {
       styleOverrides: {
         root: {
-          backgroundColor: COLOR.blue,
-          color: COLOR.white,
-          borderRadius: '50%',
-          position: 'fixed',
+          position: 'absolute',
           bottom: '5%',
           right: '5%',
-          '&:hover': {
-            backgroundColor: COLOR.white,
+          background: COLOR.blue,
+          color: COLOR.white,
+          ':hover': {
+            background: COLOR.green,
             color: COLOR.blue,
           },
-        }
-      }
+        },
+      },
     },
     MuiRadio: {
       styleOverrides: {
-        checked: {
-          color: COLOR.green,
+        root: {
+          '&.Mui-checked': {
+            color: COLOR.green,
+          },
         },
       },
     },
     MuiCheckbox: {
       styleOverrides: {
-        checked: {
-          color: COLOR.green,
+        root: {
+          '&.Mui-checked': {
+            color: COLOR.green,
+          },
         },
       },
     },
@@ -128,7 +131,11 @@ const theme = createTheme({
 
     MuiSlider: {
       styleOverrides: {
-        root: {},
+        root: {
+          '&.Mui-active': {
+            color: '#f5f5f7',
+          },
+        },
         thumb: {
           color: COLOR.green,
         },
@@ -139,9 +146,6 @@ const theme = createTheme({
           color: COLOR.gray2,
           border: '2px solid',
           borderColor: COLOR.black,
-        },
-        active: {
-          color: COLOR.gray1,
         },
       },
     },
@@ -195,7 +199,7 @@ const theme = createTheme({
             borderColor: COLOR.green,
           },
           '&&&:before': {
-            borderBottom: 'none',
+            // borderBottom: 'none',
           },
           '&&:after': {
             borderBottom: 'none',
@@ -233,6 +237,44 @@ const theme = createTheme({
         },
       },
     },
+
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: COLOR.gray1,
+          width: '300px',
+          height: '360px',
+          borderRadius: '8px',
+          boxShadow: `${alpha(COLOR.black, 0.5)} 0 2px 5px 2px`,
+        },
+      },
+    },
+
+    MuiDialog: {
+      styleOverrides: {
+        root: {},
+        paper: {
+          backgroundColor: COLOR.gray1,
+          borderRadius: '8px',
+        },
+      },
+    },
+
+    // MuiFab: {
+    //   styleOverrides: {
+    //     root: {
+    //       position: 'absolute',
+    //       bottom: '5%',
+    //       right: '5%',
+    //       background: COLOR.blue,
+    //       color: COLOR.white,
+    //       ':hover': {
+    //         background: COLOR.green,
+    //         color: COLOR.blue,
+    //       },
+    //     },
+    //   },
+    // },
   },
 })
 

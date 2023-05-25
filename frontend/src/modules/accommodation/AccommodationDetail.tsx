@@ -11,6 +11,7 @@ import {
   ListItemText,
   Card,
   Rating,
+  alpha,
 } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
@@ -68,6 +69,13 @@ const AccommodationDetail: React.FC<IProps> = () => {
   // TODO: add ui/logic to handle non-existent accommodation
   if (!accommodation) {
     return <div>accommodation does not exits!</div>
+  }
+
+  const detailCardSx = {
+    width: theme.spacing(41),
+    height: theme.spacing(20),
+    boxShadow: `${alpha(COLOR.black, 0.5)} 0 4px 10px 1px`,
+    padding: theme.spacing(2),
   }
 
   return (
@@ -130,16 +138,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           <Grid container direction="row" columnGap={0.5}>
             <Grid item xs={3.75}>
               {/* Ratings Card */}
-              <Card
-                sx={{
-                  backgroundColor: COLOR.gray1,
-                  width: theme.spacing(41),
-                  height: theme.spacing(20),
-                  borderRadius: theme.spacing(2),
-                  boxShadow: '0px 4px 4px #6e6e73',
-                  padding: theme.spacing(2),
-                }}
-              >
+              <Card sx={detailCardSx}>
                 <Grid container>
                   <Grid item>
                     <Grid container direction="row" alignItems={'center'}>
@@ -232,16 +231,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
 
             <Grid item xs={3.75}>
               {/* Facilities and Services Card */}
-              <Card
-                sx={{
-                  backgroundColor: COLOR.gray1,
-                  width: theme.spacing(41),
-                  height: theme.spacing(20),
-                  borderRadius: theme.spacing(2),
-                  boxShadow: '0px 4px 4px #6e6e73',
-                  padding: theme.spacing(2),
-                }}
-              >
+              <Card sx={detailCardSx}>
                 <Grid container>
                   <Grid item xs={12}>
                     <List dense={true}>
@@ -284,16 +274,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
 
             <Grid item xs={3.75}>
               {/* Facilities and Services Card */}
-              <Card
-                sx={{
-                  backgroundColor: COLOR.gray1,
-                  width: theme.spacing(41),
-                  height: theme.spacing(20),
-                  borderRadius: theme.spacing(2),
-                  boxShadow: '0px 4px 4px #6e6e73',
-                  padding: theme.spacing(2),
-                }}
-              >
+              <Card sx={detailCardSx}>
                 <Grid container alignContent="center">
                   {/* Pin Drop Icon */}
                   <Grid item xs={2}>

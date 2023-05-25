@@ -6,6 +6,7 @@ import {
   useTheme,
   Dialog,
   useMediaQuery,
+  alpha,
 } from '@mui/material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -71,7 +72,7 @@ const SignInForm: React.FC<IProps> = () => {
             sx={{
               display: 'block',
               marginLeft: theme.spacing(6),
-              width: '50%',
+              width: '300px',
             }}
             alt="green logo"
             src={logo}
@@ -80,7 +81,7 @@ const SignInForm: React.FC<IProps> = () => {
             sx={{
               display: 'block',
               marginLeft: theme.spacing(6),
-              width: '40%',
+              width: '250px',
             }}
           >
             <Typography
@@ -104,11 +105,11 @@ const SignInForm: React.FC<IProps> = () => {
           <Box
             sx={{
               backgroundColor: COLOR.gray2,
-              width: '45%',
+              width: '300px',
               marginRight: theme.spacing(6),
               padding: theme.spacing(3),
-              borderRadius: theme.spacing(1),
-              boxShadow: '0px 3px 5px #888888',
+              borderRadius: '8px',
+              boxShadow: `${alpha(COLOR.black, 0.5)} 0 2px 5px 2px`,
               [theme.breakpoints.down('sm')]: {
                 width: '100%',
                 height: '100%',

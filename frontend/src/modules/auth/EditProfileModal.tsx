@@ -82,6 +82,9 @@ const EditProfileModal: React.FC<IProps> = () => {
         onClose={handleClose}
         fullScreen={fullScreen}
         sx={{
+          '& .MuiDialog-paper': {
+            borderRadius: '8px',
+          },
           width: '40%',
           margin: '0 auto',
           [theme.breakpoints.down('sm')]: {
