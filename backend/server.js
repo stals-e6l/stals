@@ -61,6 +61,7 @@ const startServer = async () => {
   try {
     await connectDb()
     server.listen(PORT, HOST, () => {
+      console.log({ CORS_ALLOWABLE })
       console.log(`backend: http://${HOST}:${PORT}`)
       console.log(`api_docs: http://${HOST}:${PORT}${SWAGGER_PATH}`)
     })
