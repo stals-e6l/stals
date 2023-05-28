@@ -1,9 +1,11 @@
 import React from 'react'
 import toArray from '../../utils/toArray'
-import { apiPost } from '../../services/api'
+import { apiGet, apiPost } from '../../services/api'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import theme from '../../theme'
+import toMap from '../../utils/toMap'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -15,6 +17,8 @@ const ReportsProvider: React.FC<IProps> = ({ children }) => {
     reports: null,
     dispatch: null,
   })
+
+  console.log({ reportsState: state })
   return (
     <reportsContext.Provider
       value={{
@@ -40,13 +44,23 @@ const reportsReducer = (
   state: IReportsState,
   action: IReducerAction<TReportActionType, TReportActionPayload>
 ): IReportsState => {
+  let temp: any = undefined
+  let payload: any = undefined
   switch (action.type) {
     case 'SET_REPORTS':
       return {
         ...state,
         reports: action.payload as IMap<IReport>,
       }
+    case 'ADD_REPORT':
+      payload = action.payload as IReport
+      temp = { ...state.reports }
+      temp[payload.user_id] = payload
 
+      return {
+        ...state,
+        reports: temp,
+      }
     default:
       return state
   }
@@ -55,17 +69,43 @@ const reportsReducer = (
 // ACTION
 
 export const fetchReports = () => {
-  // TODO: use this action in dashboard maybe (admin, owner)
-  return async (userId: string) => {
-    // TODO: call reports api
-    // TODO: dispatch
+  const { dispatch } = useReports()
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
+  return async (accommodationId: string) => {
+    const res = await apiGet<IReport[]>(
+      `report?accommodation_id=${accommodationId}`
+    )
+    if (res.success && res.data) {
+      const reports = toMap<IReport>(res.data, 'user_id')
+      dispatch({ type: 'SET_REPORTS', payload: reports })
+    } else {
+      if (res.messages) onShowError(res.messages[0])
+    }
   }
 }
 
 export const getReports = () => {
   const { reports } = useReports()
   if (!reports) return null
-  return toArray<IReport>(reports)
+  // return toArray<IReport>(reports)
+  return reports
+}
+
+export const createReport = () => {
+  const { dispatch } = useReports()
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
+  return async (report: IReport) => {
+    const res = await apiPost<IReport, IReport>('report', {
+      payload: report,
+    })
+    if (res.success && res.data) {
+      dispatch({ type: 'ADD_REPORT', payload: res.data })
+    } else {
+      if (res.messages) onShowError(res.messages[0])
+    }
+  }
 }
 
 export const downloadPdf = (htmlRef: string) => {
@@ -80,18 +120,4 @@ export const downloadPdf = (htmlRef: string) => {
   })
   const res = doc.save('AccommodationDetails.pdf')
   return res.getFileId()
-}
-
-export const createReport = () => {
-  return async (report: IReport) => {
-    const res = await apiPost<IReport, IReport>('report', {
-      payload: report,
-    })
-
-    if (res.data && res.success) {
-      // TODO:
-    } else {
-      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
-    }
-  }
 }

@@ -110,10 +110,11 @@ module.exports = reportRouter
  *                      pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: User that generated the report
  *              -   in: query
- *                  name: pdf_url
+ *                  name: accommodation_id
  *                  schema:
  *                      type: string
- *                  description: URL of the PDF generated
+ *                      pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation that is being reported
  *              -   in: query
  *                  name: limit
  *                  schema:
