@@ -1,5 +1,4 @@
 import React from 'react'
-import location from '../../assets/Images/Ellens.jpg'
 import {
   Box,
   Typography,
@@ -37,36 +36,6 @@ const AccommodationDetail: React.FC<IProps> = () => {
   const rating = averageReviewRating()
   const reviews = retrieveReviews()
 
-  // Static data
-  // const accommodation = {
-  //   name: 'Ellens Chicken',
-  //   max_price: 2000,
-  //   type: 'Apartment',
-  //   amenities: ['Fire exit', 'CCTV', 'Internet', 'Study Area'],
-  //   address:
-  //     'Demarces (in front of Bonitos), Brgy. Batong Malake, Los Banos, Laguna',
-  //   appliances: ['Aircon'],
-  //   safety_and_security: ['Safe', 'Low Crime Rate'],
-  //   meters_from_uplb: 100,
-  //   description:
-  //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-  //   size_sqm: 100,
-  //   min_pax: 2,
-  //   max_pax: 4,
-  //   num_rooms: 30,
-  //   num_beds: 2,
-  //   landmarks: ['Near Los Banos Doctors Hospital and Medical Center'],
-  //   cooking_rules: ['Allowed', 'Kitchen Area Only'],
-  //   pet_rules: ['Allowed'],
-  //   other_rules: ['Allowed'],
-
-  //   ratings: 4.8,
-  //   number_of_reviews: 20,
-  //   commentor: 'Rodge Del Luna',
-  //   comment: 'It is a nice place. We enjoyed out stay.',
-  // }
-
-  // TODO: add ui/logic to handle non-existent accommodation
   if (!accommodation) {
     return <div>accommodation does not exits!</div>
   }
@@ -88,7 +57,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           objectFit: 'cover',
         }}
         alt="Location image"
-        src={location}
+        src={accommodation.image.url}
       />
 
       <br />

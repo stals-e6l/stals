@@ -2,7 +2,7 @@ import { getToken } from './localStorage'
 
 export const API_URL = import.meta.env.PROD
   ? 'https://api.airvnv.info/api'
-  : 'http://0.0.0.0:3001/api'
+  : 'http://localhost:3001/api'
 
 export async function apiGet<D>(resource: string, authToken?: string) {
   const res = await fetch(`${API_URL}/${resource}`, {
