@@ -13,11 +13,12 @@ import {
   InputLabel,
 } from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { COLOR } from '../../theme'
-import { signUp } from './AuthProvider'
+import { signIn, signUp } from './AuthProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { showErrorSnackbar } from '../general/ErrorHandler'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -28,7 +29,9 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
   // hooks
   const theme = useTheme()
   const onSignUp = signUp()
+  const onSignIn = signIn()
   const onShowError = showErrorSnackbar()
+  const navigate = useNavigate()
 
   // state
   const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
@@ -82,7 +85,19 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               : form.address.home,
         },
       })
-        .then(() => onClose())
+        .then(() => {
+          if (onSignIn) {
+            onSignIn({
+              password: form.password,
+              username: form.username,
+            })
+              .then(() => {
+                onClose()
+                navigate(ROUTES.appExplore)
+              })
+              .catch(err => onShowError(String(err)))
+          }
+        })
         .catch(err => onShowError(String(err)))
     }
   }
@@ -178,7 +193,6 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             setForm(prev => ({ ...prev, role: e.target.value as TUserRole }))
           }
         >
-          <MenuItem value={'admin'}>Admin</MenuItem>
           <MenuItem value={'tenant'}>Student</MenuItem>
           <MenuItem value={'owner'}>Accommodation Owner</MenuItem>
         </Select>

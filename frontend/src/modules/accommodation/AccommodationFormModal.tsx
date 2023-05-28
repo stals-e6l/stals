@@ -1,6 +1,5 @@
 /* eslint-disable indent */
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
