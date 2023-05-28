@@ -46,6 +46,7 @@ server.use(bodyParser.json())
 /** INSERT API BELOW */
 server.use('/api/sign-up', signUpEndpoint)
 server.use('/api/sign-in', signInEndpoint)
+server.use('/api/asset', express.static(require('./api/assets').ASSETS_DIR))
 server.use(authGuard)
 server.use('/api/me', meEndpoint)
 server.use('/api/sign-out', signOutEndpoint)
@@ -53,7 +54,7 @@ server.use('/api/ping', require('./api/ping'))
 server.use('/api', require('./api/accommodation'))
 server.use('/api', require('./api/review'))
 server.use('/api', require('./api/report'))
-server.use('/api', require('./api/assets'))
+server.use('/api', require('./api/assets').assetsRouter)
 
 /** END API */
 

@@ -16,7 +16,6 @@ import React from 'react'
 import DeleteAccommodationFormModal from './DeleteAccommodationFormModal'
 import StarPurple500SharpIcon from '@mui/icons-material/StarPurple500Sharp'
 import MoreHorizSharpIcon from '@mui/icons-material/MoreHorizSharp'
-import AccommodationImages from './accommodationImages'
 import toSentenceCase from '../../utils/toSentenceCase'
 import toPhp from '../../utils/toPhp'
 import { COLOR } from '../../theme/index'
@@ -73,7 +72,7 @@ const AccommodationCard: React.FC<IProps> = ({
         onClick={toDetailPage}
         component="img"
         height={'180px'}
-        image={AccommodationImages.ellens}
+        image={accommodation.image.url}
       />
 
       <CardContent sx={{ wordSpacing: '10' }}>

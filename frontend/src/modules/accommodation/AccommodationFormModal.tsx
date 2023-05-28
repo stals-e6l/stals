@@ -20,6 +20,7 @@ import {
 import { COLOR } from '../../theme'
 import AddIcon from '@mui/icons-material/Add'
 import { ALLOWABLE_FEATURES, getMe } from '../auth/AuthProvider'
+import imageUpload from '../../services/imageUpload'
 
 interface IProps {
   children?: React.ReactNode
@@ -69,6 +70,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
     amenities: (defaultValues && defaultValues.amenities) || [],
     is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
   })
+  const [file, setFile] = React.useState<File>()
 
   // events
   const setFieldValue = (
@@ -79,12 +81,17 @@ const AccommodationFormModal: React.FC<IProps> = ({
   }
 
   // events
-  const handleSubmit = () => {
-    if (onCreateAccommodation && !defaultValues)
-      onCreateAccommodation(form).then(status => {
+  const handleSubmit = async () => {
+    if (onCreateAccommodation && !defaultValues && file) {
+      const res = await imageUpload(file)
+      let formData = { ...form }
+      if (res.success) {
+        formData = { ...form, image: { url: res.data as string } }
+      }
+      onCreateAccommodation(formData).then(status => {
         if (status) toggleDialog()
       })
-    else if (onEditAccommodation && defaultValues) {
+    } else if (onEditAccommodation && defaultValues) {
       onEditAccommodation({ ...form, _id: defaultValues._id as string }).then(
         toggleDialog
       )
@@ -168,10 +175,14 @@ const AccommodationFormModal: React.FC<IProps> = ({
           <DialogContent sx={{}}>
             {' '}
             {/*TEMP COLOR*/}
-            <AccommodationForm form={form} setFieldValue={setFieldValue} />
+            <AccommodationForm
+              form={form}
+              setFieldValue={setFieldValue}
+              setFile={setFile}
+            />
           </DialogContent>
 
-          <DialogActions sx={{ }}>
+          <DialogActions sx={{}}>
             {' '}
             {/*TEMP COLOR*/}
             <Button onClick={toggleDialog} sx={cancelBtnSx.root}>

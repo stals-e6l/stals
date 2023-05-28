@@ -64,4 +64,5 @@ assetsRouter.post('/asset', upload.single('fileName'), async (req, res) => {
 
 assetsRouter.use('/asset', static(ASSETS_DIR))
 
-module.exports = assetsRouter
+// module.exports = assetsRouter
+module.exports = { ASSETS_DIR, assetsRouter }

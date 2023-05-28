@@ -18,9 +18,14 @@ interface IProps {
     key: keyof IAccommodation,
     val: string | number | string[]
   ) => void
+  setFile: React.Dispatch<React.SetStateAction<File | undefined>>
 }
 
-const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
+const AccommodationForm: React.FC<IProps> = ({
+  form,
+  setFieldValue,
+  setFile,
+}) => {
   // immediate
   const values = React.useMemo(() => form, [form])
 
@@ -41,7 +46,16 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
   }
 
   return (
-    <Box sx={{}}>
+    <Box>
+      <TextField
+        type="file"
+        onChange={(e: any) => {
+          if (e.target.files) {
+            setFile(e.target.files[0])
+          }
+        }}
+      />
+
       <TextField
         defaultValue={values.name}
         onBlur={e => setFieldValue('name', e.target.value)}
@@ -242,9 +256,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
-        Pet rules
-      </FormLabel>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>Pet rules</FormLabel>
       <Autocomplete
         options={[]}
         freeSolo
@@ -287,9 +299,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
-        Amenities
-      </FormLabel>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>Amenities</FormLabel>
       <Autocomplete
         options={[]}
         freeSolo
