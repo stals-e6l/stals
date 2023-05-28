@@ -9,5 +9,21 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '986436019015648',
+          autoLogAppEvents: true,
+          xfbml: true,
+          version: 'v17.0',
+        })
+      }
+    </script>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js"
+    ></script>
   </body>
 </html>

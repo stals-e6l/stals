@@ -28,6 +28,33 @@ const ProfilePage: React.FC<IProps> = () => {
   const user = getMe()
   const theme = useTheme()
   const [image, setImage] = React.useState<any>(null)
+  const [connected, setConnected] = React.useState<boolean>(false)
+
+  const handleFbConnect = () => {
+    FB.login(
+      function (response) {
+        if (response.authResponse) {
+          FB.api('/me', { user_link: true }, function (res: any) {
+            console.log({ res })
+          })
+          setConnected(true)
+        } else {
+          console.log('User cancelled login or did not fully authorize.')
+        }
+      },
+      { auth_type: 'rerequest' }
+    )
+  }
+
+  React.useEffect(() => {
+    FB.getLoginStatus(function (response) {
+      if (response.authResponse) {
+        setConnected(true)
+      } else {
+        setConnected(false)
+      }
+    })
+  }, [])
 
   if (!user) return <></>
 
@@ -272,6 +299,11 @@ const ProfilePage: React.FC<IProps> = () => {
         >
           {user.organization}
         </Typography>
+
+        {!connected && (
+          <button onClick={handleFbConnect}>Login with facebook</button>
+        )}
+        {connected && <button>Contact the person</button>}
         <Box
           sx={{
             position: 'absolute',
