@@ -193,7 +193,6 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             setForm(prev => ({ ...prev, role: e.target.value as TUserRole }))
           }
         >
-          <MenuItem value={'admin'}>Admin</MenuItem>
           <MenuItem value={'tenant'}>Student</MenuItem>
           <MenuItem value={'owner'}>Accommodation Owner</MenuItem>
         </Select>
