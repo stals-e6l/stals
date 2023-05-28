@@ -1,11 +1,11 @@
 const { RESTRouter } = require('../handler/rest_router')
 
-const Review = require('../models/v2/review')
+const Review = require('../models/v3/review')
 const reviewRouter = RESTRouter('/review', Review, {
-    create: ["admin", "owner", "tenant"],
-    retrieve: ["admin", "owner", "tenant"],
-    update: ["admin", "owner", "tenant"],
-    delete: ["admin", "owner", "tenant"]
+  create: ['admin', 'owner', 'tenant'],
+  retrieve: ['admin', 'owner', 'tenant'],
+  update: ['admin', 'owner', 'tenant'],
+  delete: ['admin', 'owner', 'tenant'],
 })
 
 module.exports = reviewRouter
@@ -19,7 +19,7 @@ module.exports = reviewRouter
  *          required:
  *              - rating
  *              - accommodation_id
- *              - user_id 
+ *              - user_id
  *          properties:
  *              rating:
  *                  type: number
@@ -220,4 +220,3 @@ module.exports = reviewRouter
  *              - Review
  *
  */
-

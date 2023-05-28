@@ -1,12 +1,12 @@
 const { RESTRouter } = require('../handler/rest_router')
 
-const Report = require('../models/v2/report')
+const Report = require('../models/v3/report')
 
 const reportRouter = RESTRouter('/report', Report, {
-    create: ["admin", "owner", "tenant"],
-    retrieve: ["admin"],
-    update: ["admin"],
-    delete: ["admin"],
+  create: ['admin', 'tenant'],
+  retrieve: ['admin', 'owner', 'tenant'],
+  update: ['admin', 'tenant'],
+  delete: ['admin', 'tenant'],
 })
 
 module.exports = reportRouter
@@ -19,15 +19,16 @@ module.exports = reportRouter
  *          type: object
  *          required:
  *              - user_id
- *              - pdf_url
+ *              - accommodation_id
  *          properties:
  *              user_id:
  *                  type: string
  *                  pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: User id that created report
- *              pdf_url:
+ *              accommodation_id:
  *                  type: string
- *                  description: URL of pdf
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation that is being reported
  * security:
  *      - bearerAuth: []
  */

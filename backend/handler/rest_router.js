@@ -9,7 +9,7 @@ const {
 const { ErrorHandler } = require('./error_handler')
 const { CREATED, OK } = require('./success_handler')
 
-const Accommodation = require('../models/v2/accommodation')
+const Accommodation = require('../models/v3/accommodation')
 
 const RESTRouter = function (name, model, restriction) {
   // create router

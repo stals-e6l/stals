@@ -1,6 +1,6 @@
 const { RESTRouter } = require('../handler/rest_router')
 
-const Accommodation = require('../models/v2/accommodation')
+const Accommodation = require('../models/v3/accommodation')
 const accommodationRouter = RESTRouter('/accommodation', Accommodation, {
   create: ['admin', 'owner'],
   retrieve: ['admin', 'owner', 'tenant'],
