@@ -13,11 +13,12 @@ import {
   InputLabel,
 } from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { COLOR } from '../../theme'
-import { signUp } from './AuthProvider'
+import { signIn, signUp } from './AuthProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { showErrorSnackbar } from '../general/ErrorHandler'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -28,7 +29,9 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
   // hooks
   const theme = useTheme()
   const onSignUp = signUp()
+  const onSignIn = signIn()
   const onShowError = showErrorSnackbar()
+  const navigate = useNavigate()
 
   // state
   const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
@@ -61,18 +64,40 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
       onSignUp({
         ...form,
         phone: {
-          mobile: form.phone.mobile === '' ? undefined : form.phone.mobile,
+          mobile:
+            !form.phone || form.phone.mobile === ''
+              ? undefined
+              : form.phone.mobile,
           landline:
-            form.phone.landline === '' ? undefined : form.phone.landline,
+            !form.phone || form.phone.landline === ''
+              ? undefined
+              : form.phone.landline,
         },
         organization: form.organization === '' ? undefined : form.organization,
         address: {
           current:
-            form.address.current === '' ? undefined : form.address.current,
-          home: form.address.home === '' ? undefined : form.address.home,
+            !form.address || form.address.current === ''
+              ? undefined
+              : form.address.current,
+          home:
+            !form.address || form.address.home === ''
+              ? undefined
+              : form.address.home,
         },
       })
-        .then(() => onClose())
+        .then(() => {
+          if (onSignIn) {
+            onSignIn({
+              password: form.password,
+              username: form.username,
+            })
+              .then(() => {
+                onClose()
+                navigate(ROUTES.appExplore)
+              })
+              .catch(err => onShowError(String(err)))
+          }
+        })
         .catch(err => onShowError(String(err)))
     }
   }
@@ -168,7 +193,6 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             setForm(prev => ({ ...prev, role: e.target.value as TUserRole }))
           }
         >
-          <MenuItem value={'admin'}>Admin</MenuItem>
           <MenuItem value={'tenant'}>Student</MenuItem>
           <MenuItem value={'owner'}>Accommodation Owner</MenuItem>
         </Select>
@@ -302,7 +326,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
-              value={form.phone.mobile}
+              value={(form.phone && form.phone.mobile) || ''}
               onChange={e =>
                 setForm(prev => ({
                   ...prev,
@@ -322,7 +346,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               size="small"
               fullWidth
               sx={{ backgroundColor: COLOR.white }}
-              value={form.phone.landline}
+              value={(form.phone && form.phone.landline) || ''}
               onChange={e =>
                 setForm(prev => ({
                   ...prev,
@@ -343,7 +367,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           fullWidth
           required
           sx={{ backgroundColor: COLOR.white }}
-          value={form.address.current}
+          value={(form.address && form.address.current) || ''}
           onChange={e =>
             setForm(prev => ({
               ...prev,
@@ -362,7 +386,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           fullWidth
           required
           sx={{ backgroundColor: COLOR.white }}
-          value={form.address.home}
+          value={(form.address && form.address.home) || ''}
           onChange={e =>
             setForm(prev => ({
               ...prev,

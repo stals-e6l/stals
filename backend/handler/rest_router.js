@@ -1,8 +1,15 @@
 const { Router } = require('express')
 
-const { ERRORS, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED } = require('./error_handler')
+const {
+  ERRORS,
+  BAD_REQUEST,
+  NOT_FOUND,
+  UNAUTHORIZED,
+} = require('./error_handler')
 const { ErrorHandler } = require('./error_handler')
 const { CREATED, OK } = require('./success_handler')
+
+const Accommodation = require('../models/v3/accommodation')
 
 const RESTRouter = function (name, model, restriction) {
   // create router
@@ -11,7 +18,7 @@ const RESTRouter = function (name, model, restriction) {
   // POST /[resource]
   router.post(name, async (req, res) => {
     try {
-      if(!restriction.create.includes(req.user.role)){
+      if (!restriction.create.includes(req.user.role)) {
         throw Error(ERRORS[UNAUTHORIZED])
       }
 
@@ -30,15 +37,23 @@ const RESTRouter = function (name, model, restriction) {
   // GET /[resource]
   router.get(name, async (req, res) => {
     try {
-      if(!restriction.retrieve.includes(req.user.role)){
+      if (!restriction.retrieve.includes(req.user.role)) {
         throw Error(ERRORS[UNAUTHORIZED])
       }
+      let data
 
       let query = { ...req.query }
       delete query['limit'] //delete every query that's not part of the database model
 
       const limit = Number(req.query.limit) || 100
-      const data = await model.find(query).limit(limit)
+
+      if (!query.search) {
+        data = await model.find(query).limit(limit)
+      } else {
+        data = await model
+          .find({ $text: { $search: query.search } })
+          .limit(limit)
+      }
 
       if (!data) {
         throw Error(ERRORS[BAD_REQUEST])
@@ -53,7 +68,7 @@ const RESTRouter = function (name, model, restriction) {
   // GET /[resource]/:id
   router.get(`${name}/:id`, async (req, res) => {
     try {
-      if(!restriction.retrieve.includes(req.user.role)){
+      if (!restriction.retrieve.includes(req.user.role)) {
         throw Error(ERRORS[UNAUTHORIZED])
       }
 
@@ -72,7 +87,7 @@ const RESTRouter = function (name, model, restriction) {
   // DELETE /[resource]/:id
   router.delete(`${name}/:id`, async (req, res) => {
     try {
-      if(!restriction.delete.includes(req.user.role)){
+      if (!restriction.delete.includes(req.user.role)) {
         throw Error(ERRORS[UNAUTHORIZED])
       }
 
@@ -91,14 +106,14 @@ const RESTRouter = function (name, model, restriction) {
   // PUT /[resource]/:id
   router.put(`${name}/:id`, async (req, res) => {
     try {
-      if(!restriction.update.includes(req.user.role)){
+      if (!restriction.update.includes(req.user.role)) {
         throw Error(ERRORS[UNAUTHORIZED])
       }
 
       const data = await model.findByIdAndUpdate(
         req.params.id,
         { ...req.body },
-        { new: true, runValidators: true },
+        { new: true, runValidators: true }
       )
 
       if (!data) {

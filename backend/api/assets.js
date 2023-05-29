@@ -7,7 +7,7 @@ const { CREATED, OK } = require('../handler/success_handler')
 const multer = require('multer')
 
 const assetsRouter = Router()
-const ASSETS_DIR = resolve('../assets/')
+const ASSETS_DIR = resolve('./assets/')
 
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -54,7 +54,7 @@ const upload = multer({ storage: storage })
  */
 assetsRouter.post('/asset', upload.single('fileName'), async (req, res) => {
   try {
-    const path = `http://${process.env.HOST}:${process.env.PORT}/api/asset/${req.file.filename}`
+    const path = `${process.env.PROTOCOL}://${process.env.API_HOST}:${process.env.ASSET_PORT}/api/asset/${req.file.filename}`
 
     res.status(CREATED).json({ success: true, data: path })
   } catch (err) {
@@ -64,4 +64,5 @@ assetsRouter.post('/asset', upload.single('fileName'), async (req, res) => {
 
 assetsRouter.use('/asset', static(ASSETS_DIR))
 
-module.exports = assetsRouter
+// module.exports = assetsRouter
+module.exports = { ASSETS_DIR, assetsRouter }

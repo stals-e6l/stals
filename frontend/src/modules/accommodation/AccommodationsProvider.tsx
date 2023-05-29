@@ -1,7 +1,9 @@
 import React from 'react'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
-import { apiDelete, apiGet, apiPost, apiPut } from '../../api'
+import { apiDelete, apiGet, apiPost, apiPut } from '../../services/api'
+import { getMe } from '../auth/AuthProvider'
+import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
   children?: React.ReactNode
@@ -9,6 +11,8 @@ interface IProps {
 
 const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   // state
+  const me = getMe()
+  const onShowError = showErrorSnackbar()
   const [state, dispatch] = React.useReducer(accommodationReducer, {
     accommodations: null,
     dispatch: null,
@@ -16,13 +20,17 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
 
   // events
   React.useEffect(() => {
-    initAccommodations().then(data => {
-      dispatch({
-        type: 'SET_ACCOMMODATIONS',
-        payload: data as IAccommodation[],
-      })
-    })
-  }, [])
+    if (me && onShowError) {
+      initAccommodations()
+        .then(data => {
+          dispatch({
+            type: 'SET_ACCOMMODATIONS',
+            payload: data as IAccommodation[],
+          })
+        })
+        .catch(err => onShowError(String(err)))
+    }
+  }, [me])
 
   console.log({ accommodationsState: state })
 
@@ -49,6 +57,8 @@ const accommodationReducer = (
   state: IAccommodationsState,
   action: IReducerAction<TAccommodationActionType, TAccommodationPayload>
 ): IAccommodationsState => {
+  let temp
+  let buffer
   switch (action.type) {
     case 'SET_ACCOMMODATIONS':
       return {
@@ -69,16 +79,20 @@ const accommodationReducer = (
       }
     case 'DELETE_ACCOMMODATION':
       // eslint-disable-next-line no-case-declarations
+      temp = { ...state.accommodations }
+      delete temp[action.payload as string]
       return {
         ...state,
-        accommodations: toMap<IAccommodation>(
-          (
-            toArray<IAccommodation>(
-              state.accommodations as IMap<IAccommodation>
-            ) as IAccommodation[]
-          ).filter(p => p._id !== (action.payload as string)),
-          '_id'
-        ),
+        accommodations: temp,
+      }
+    case 'EDIT_ACCOMMODATION':
+      // eslint-disable-next-line no-case-declarations
+      temp = { ...state.accommodations }
+      buffer = action.payload as IAccommodation
+      temp[buffer._id as string] = buffer
+      return {
+        ...state,
+        accommodations: temp,
       }
 
     default:
@@ -95,14 +109,15 @@ export const initAccommodations = async () => {
   }
 
   if (res.messages) {
-    throw new Error(res.messages[0]) // TODO: error snackbar
+    throw new Error(res.messages[0])
   }
 }
 
 export const createAccommodation = () => {
   const { dispatch } =
     React.useContext<IAccommodationsState>(accommodationContext)
-  if (!dispatch) return
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
   return async (accommodation: IAccommodation) => {
     const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
       payload: accommodation,
@@ -113,8 +128,10 @@ export const createAccommodation = () => {
         type: 'ADD_ACCOMMODATION',
         payload: res.data as IAccommodation,
       })
+      return true
     } else {
-      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+      if (res.messages) onShowError(res.messages[0])
+      return false
     }
   }
 }
@@ -138,7 +155,8 @@ export const filterAccommodations = () => {
   const { dispatch } =
     React.useContext<IAccommodationsState>(accommodationContext)
 
-  if (!dispatch) return
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
 
   return async (qs: string) => {
     // call api
@@ -151,8 +169,10 @@ export const filterAccommodations = () => {
         type: 'SET_ACCOMMODATIONS',
         payload: res.data,
       })
+      return true
     } else {
-      if (res.messages) throw new Error(res.messages[0])
+      if (res.messages) onShowError(res.messages[0])
+      return false
     }
   }
 }
@@ -160,7 +180,8 @@ export const filterAccommodations = () => {
 export const archiveAccommodation = () => {
   const { dispatch } =
     React.useContext<IAccommodationsState>(accommodationContext)
-  if (!dispatch) return
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
   return async (payload: IArchiveAccomodationPayload) => {
     const res = await apiPut<IArchiveAccomodationPayload, IAccommodation>(
       `accommodation/${payload._id}`,
@@ -170,13 +191,14 @@ export const archiveAccommodation = () => {
     )
 
     if (res.success && res.data) {
-      // dispatch
       dispatch({
         type: 'DELETE_ACCOMMODATION',
         payload: res.data._id as string,
       })
+      return true
     } else {
-      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+      if (res.messages) onShowError(res.messages[0])
+      return false
     }
   }
 }
@@ -184,16 +206,39 @@ export const archiveAccommodation = () => {
 export const deleteAccommodation = () => {
   const { dispatch } =
     React.useContext<IAccommodationsState>(accommodationContext)
-  if (!dispatch) return
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
   return async (id: string) => {
     const res = await apiDelete<string>(`accommodation/${id}`)
-    if (res.success && res.data) {
+    if (res.success) {
       dispatch({
         type: 'DELETE_ACCOMMODATION',
         payload: id as string,
       })
+      return true
     } else {
-      if (res.messages) throw new Error(res.messages[0]) // TODO: error snackbar
+      if (res.messages) onShowError(res.messages[0])
+      return false
     }
+  }
+}
+
+export const editAccommodation = () => {
+  const { dispatch } =
+    React.useContext<IAccommodationsState>(accommodationContext)
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
+
+  return async (accommodation: IAccommodation) => {
+    const res = await apiPut<IAccommodation, IAccommodation>(
+      `accommodation/${accommodation._id as string}`,
+      {
+        payload: accommodation,
+      }
+    )
+
+    if (res.success && res.data) {
+      dispatch({ type: 'EDIT_ACCOMMODATION', payload: res.data })
+    } else if (res.messages) onShowError(res.messages[0])
   }
 }

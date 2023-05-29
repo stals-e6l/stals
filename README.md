@@ -1,6 +1,6 @@
 # stals 
 
-Student Accommodation and Lodging System
+Student Accommodation and Lodging System (main-dev-dev)
 
 ## Getting started
 
@@ -27,7 +27,7 @@ Student Accommodation and Lodging System
 
 ## For frontend devs
 1. Go inside the ```frontend``` directory. 
-2. Install dependencies using the command ```npm install```.
+2. Install dependencies using the command ```npm install --legacy-peer-deps```.
 3. Run the client server using ```npm run dev```.
 
 ## For database devs

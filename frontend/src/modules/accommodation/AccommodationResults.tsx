@@ -1,70 +1,65 @@
-import { Box, Grid, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import React from 'react'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
-import { COLOR, FONT } from '../../theme'
+import { useLocation } from 'react-router-dom'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
+  isPublicView?: boolean
 }
 
 const AccommodationResults: React.FC<IProps> = () => {
+  const location = useLocation()
   const accommodations = retrieveAccommodations()
 
   if (!accommodations) {
-    return <div>{/* TODO: handle null here */}</div>
+    return (
+      <div>
+        <br />
+        <br />
+        <Typography variant="body1">No accommodations to show.</Typography>
+      </div>
+    )
   }
-  // TODO: PM's job to integrate , for now refine the styling
-  return (
-    <Box id="Retrieve-All-BoxGrid">
-      <Typography
-        sx={{
-          color: 'black',
-          fontFamily: FONT.sourceSansPro,
-          fontWeight: 'bold',
-          fontSize: '25px',
-          display: 'flex',
-          marginTop: '2%',
-          marginLeft: '10%',
-        }}
-      >
-        {' '}
-        <Typography
-          sx={{
-            color: COLOR.green,
-            fontFamily: 'inherit',
-            fontWeight: 'inherit',
-            fontSize: 'inherit',
-            marginRight: '0.25%',
-          }}
-        >
-          |
-        </Typography>{' '}
-        Most Viewed
-      </Typography>
 
+  return (
+    <React.Fragment>
       <Grid
         container
-        id="Retrieve-All-Grid"
-        rowGap={2}
-        columnGap={2}
+        rowGap={3}
+        columnGap={3}
         sx={{
-          alignContent: 'center',
           justifyContent: 'center',
-          paddingTop: '20px',
           transition: '0.3s all',
         }}
       >
         {accommodations.map((accommodation, key: number) => (
-          <Grid item lg={3} sx={{}} key={key}>
+          <Grid item key={key} lg={3}>
             <AccommodationCard
               accommodation={accommodation}
-              isPublicView={false}
+              isPublicView={location.pathname === ROUTES.public}
             />
           </Grid>
         ))}
+
+        {/* Fillers */}
+        {}
+        <Grid item lg={3} visibility={'hidden'}>
+          <AccommodationCard
+            accommodation={accommodations[0]}
+            isPublicView={location.pathname === ROUTES.public}
+          />
+        </Grid>
+        <Grid item lg={3} visibility={'hidden'}>
+          <AccommodationCard
+            accommodation={accommodations[0]}
+            isPublicView={location.pathname === ROUTES.public}
+          />
+        </Grid>
       </Grid>
-    </Box>
+    </React.Fragment>
   )
 }
 

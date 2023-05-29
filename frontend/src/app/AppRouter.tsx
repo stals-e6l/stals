@@ -1,16 +1,21 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import ModulesViewer from '../modules'
 import AuthPage from '../pages/AuthPage'
 import { AuthGuard } from '../modules/auth/AuthProvider'
 import ExplorePage from '../pages/ExplorePage'
 import ResultPage from '../pages/ResultPage'
 import IndexPage from '../pages'
+import AccommodationDetailPage from '../pages/AccommodationDetailPage'
+import ProfilePage from '../pages/ProfilePage'
+import PublicPage from '../pages/PublicPage'
 
 export const ROUTES = {
-  auth: '/auth',
-  explore: '/explore',
-  result: '/result',
+  public: '/public',
+  appAuth: '/auth',
+  appExplore: '/explore',
+  appResult: '/result',
+  appAccommodationDetail: '/accommodations/:id',
+  profile: '/profile',
 }
 
 interface IProps {
@@ -25,6 +30,14 @@ export default AppRouter
 
 const router = createBrowserRouter([
   {
+    path: '/public',
+    element: <PublicPage />,
+  },
+  {
+    path: ROUTES.appAuth,
+    element: <AuthPage />,
+  },
+  {
     path: '/',
     element: (
       <AuthGuard>
@@ -32,17 +45,25 @@ const router = createBrowserRouter([
       </AuthGuard>
     ),
     children: [
+      // {
+      //   path: ROUTES.appAuth,
+      //   element: <AuthPage />,
+      // },
       {
-        path: ROUTES.auth,
-        element: <AuthPage />,
-      },
-      {
-        path: ROUTES.explore,
+        path: ROUTES.appExplore,
         element: <ExplorePage />,
       },
       {
-        path: ROUTES.result,
+        path: ROUTES.appResult,
         element: <ResultPage />,
+      },
+      {
+        path: ROUTES.appAccommodationDetail,
+        element: <AccommodationDetailPage />,
+      },
+      {
+        path: ROUTES.profile,
+        element: <ProfilePage />,
       },
     ],
   },

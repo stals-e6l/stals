@@ -18,9 +18,14 @@ interface IProps {
     key: keyof IAccommodation,
     val: string | number | string[]
   ) => void
+  setFile: React.Dispatch<React.SetStateAction<File | undefined>>
 }
 
-const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
+const AccommodationForm: React.FC<IProps> = ({
+  form,
+  setFieldValue,
+  setFile,
+}) => {
   // immediate
   const values = React.useMemo(() => form, [form])
 
@@ -41,10 +46,19 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
   }
 
   return (
-    <Box sx={{}}>
+    <Box>
       <TextField
-        value={values.name}
-        onChange={e => setFieldValue('name', e.target.value)}
+        type="file"
+        onChange={(e: any) => {
+          if (e.target.files) {
+            setFile(e.target.files[0])
+          }
+        }}
+      />
+
+      <TextField
+        defaultValue={values.name}
+        onBlur={e => setFieldValue('name', e.target.value)}
         required
         fullWidth
         label="Name"
@@ -53,8 +67,8 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 20 }}
       />
       <TextField
-        value={values.description}
-        onChange={e => setFieldValue('description', e.target.value)}
+        defaultValue={values.description}
+        onBlur={e => setFieldValue('description', e.target.value)}
         required
         fullWidth
         multiline
@@ -64,8 +78,8 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 20 }}
       />
       <TextField
-        value={values.address}
-        onChange={e => setFieldValue('address', e.target.value)}
+        defaultValue={values.address}
+        onBlur={e => setFieldValue('address', e.target.value)}
         required
         fullWidth
         label="Address"
@@ -90,8 +104,10 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         <MenuItem value="transient">Transient</MenuItem>
       </Select>
       <TextField
-        value={Number(values.min_price) == 0 ? '' : Number(values.min_price)}
-        onChange={e => setFieldValue('min_price', e.target.value)}
+        defaultValue={
+          Number(values.min_price) == 0 ? '' : Number(values.min_price)
+        }
+        onBlur={e => setFieldValue('min_price', e.target.value)}
         required
         fullWidth
         label="Minimum price"
@@ -103,8 +119,10 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         sx={numFieldSx.root}
       />
       <TextField
-        value={Number(values.max_price) == 0 ? '' : Number(values.max_price)}
-        onChange={e => setFieldValue('max_price', e.target.value)}
+        defaultValue={
+          Number(values.max_price) == 0 ? '' : Number(values.max_price)
+        }
+        onBlur={e => setFieldValue('max_price', e.target.value)}
         required
         fullWidth
         label="Maximum price"
@@ -116,8 +134,10 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         sx={numFieldSx.root}
       />
       <TextField
-        value={Number(values.size_sqm) == 0 ? '' : Number(values.size_sqm)}
-        onChange={e => setFieldValue('size_sqm', Number(e.target.value))}
+        defaultValue={
+          Number(values.size_sqm) == 0 ? '' : Number(values.size_sqm)
+        }
+        onBlur={e => setFieldValue('size_sqm', Number(e.target.value))}
         required
         fullWidth
         label="Size sqm"
@@ -128,14 +148,12 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         sx={numFieldSx.root}
       />
       <TextField
-        value={
+        defaultValue={
           Number(values.meters_from_uplb) == 0
             ? ''
             : Number(values.meters_from_uplb)
         }
-        onChange={e =>
-          setFieldValue('meters_from_uplb', Number(e.target.value))
-        }
+        onBlur={e => setFieldValue('meters_from_uplb', Number(e.target.value))}
         required
         fullWidth
         label="Meters from UPLB"
@@ -146,8 +164,8 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         sx={numFieldSx.root}
       />
       <TextField
-        value={Number(values.min_pax) == 0 ? '' : Number(values.min_pax)}
-        onChange={e => setFieldValue('min_pax', Number(e.target.value))}
+        defaultValue={Number(values.min_pax) == 0 ? '' : Number(values.min_pax)}
+        onBlur={e => setFieldValue('min_pax', Number(e.target.value))}
         required
         fullWidth
         label="Minimum capacity"
@@ -158,8 +176,8 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         sx={numFieldSx.root}
       />
       <TextField
-        value={Number(values.max_pax) == 0 ? '' : Number(values.max_pax)}
-        onChange={e => setFieldValue('max_pax', Number(e.target.value))}
+        defaultValue={Number(values.max_pax) == 0 ? '' : Number(values.max_pax)}
+        onBlur={e => setFieldValue('max_pax', Number(e.target.value))}
         required
         fullWidth
         label="Maximum capacity"
@@ -170,8 +188,10 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         sx={numFieldSx.root}
       />
       <TextField
-        value={Number(values.num_rooms) == 0 ? '' : Number(values.num_rooms)}
-        onChange={e => setFieldValue('num_rooms', Number(e.target.value))}
+        defaultValue={
+          Number(values.num_rooms) == 0 ? '' : Number(values.num_rooms)
+        }
+        onBlur={e => setFieldValue('num_rooms', Number(e.target.value))}
         required
         fullWidth
         label="Number of rooms"
@@ -182,8 +202,10 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         sx={numFieldSx.root}
       />
       <TextField
-        value={Number(values.num_beds) == 0 ? '' : Number(values.num_beds)}
-        onChange={e => setFieldValue('num_beds', Number(e.target.value))}
+        defaultValue={
+          Number(values.num_beds) == 0 ? '' : Number(values.num_beds)
+        }
+        onBlur={e => setFieldValue('num_beds', Number(e.target.value))}
         required
         fullWidth
         label="Number of beds"
@@ -208,7 +230,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         <MenuItem value="fully_furnished">Fully furnished</MenuItem>
       </Select>
 
-      <FormLabel sx={{ color: COLOR.white }}>Landmarks</FormLabel>
+      <FormLabel sx={{ color: COLOR.blue }}>Landmarks</FormLabel>
       <Autocomplete
         options={[]}
         freeSolo
@@ -221,7 +243,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white }}>Cooking rules</FormLabel>
+      <FormLabel sx={{ color: COLOR.blue }}>Cooking rules</FormLabel>
       <Autocomplete
         options={[]}
         freeSolo
@@ -234,9 +256,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
-        Pet rules
-      </FormLabel>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>Pet rules</FormLabel>
       <Autocomplete
         options={[]}
         freeSolo
@@ -249,7 +269,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
         Safety and security
       </FormLabel>
       <Autocomplete
@@ -264,7 +284,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
         Appliances
       </FormLabel>
       <Autocomplete
@@ -279,9 +299,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
-        Amenities
-      </FormLabel>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>Amenities</FormLabel>
       <Autocomplete
         options={[]}
         freeSolo
@@ -294,7 +312,7 @@ const AccommodationForm: React.FC<IProps> = ({ form, setFieldValue }) => {
         style={{ marginTop: 5, marginBottom: 20 }}
       />
 
-      <FormLabel sx={{ color: COLOR.white, marginTop: 20 }}>
+      <FormLabel sx={{ color: COLOR.blue, marginTop: 20 }}>
         Other rules
       </FormLabel>
       <Autocomplete
