@@ -54,7 +54,7 @@ const upload = multer({ storage: storage })
  */
 assetsRouter.post('/asset', upload.single('fileName'), async (req, res) => {
   try {
-    const path = `http://${process.env.HOST}:${process.env.PORT}/api/asset/${req.file.filename}`
+    const path = `${process.env.PROTOCOL}://${process.env.API_HOST}:${process.env.ASSET_PORT}/api/asset/${req.file.filename}`
 
     res.status(CREATED).json({ success: true, data: path })
   } catch (err) {
