@@ -7,7 +7,7 @@ const { CREATED, OK } = require('../handler/success_handler')
 const multer = require('multer')
 
 const assetsRouter = Router()
-const ASSETS_DIR = resolve('../assets/')
+const ASSETS_DIR = resolve('./assets/')
 
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {

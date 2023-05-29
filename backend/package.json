@@ -12,7 +12,7 @@
     "dev:windows": "nodemon --exec npm run start:dev:windows",
     "seed": "NODE_ENV=development node seeder",
     "seed:windows": "set NODE_ENV=development&&node seeder",
-    "start": "NODE_ENV=production node ."
+    "start": "NODE_ENV=production mkdir assets && node ."
   },
   "keywords": [],
   "author": "",
