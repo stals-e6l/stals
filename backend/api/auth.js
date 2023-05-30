@@ -350,4 +350,79 @@ const meEndpoint = async (req, res) => {
   }
 }
 
-module.exports = { signUpEndpoint, signInEndpoint, signOutEndpoint, meEndpoint }
+/**
+ * @openapi
+ * /api/editUser:
+ *      post:
+ *          description: Edit currently signed in user's details
+ *          security:
+ *              -   bearerAuth: []
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *          responses:
+ *              200:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/User'
+ *              400:
+ *                  description: Bad request.
+ *              404:
+ *                  description: Null Error
+ *              422:
+ *                  description: Unprocessable Entity
+ *              500:
+ *                  description: Internal Server error.
+ *          tags:
+ *              - User
+ *
+ */
+const editUserEndpoint = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization
+
+    if (!authHeader) {
+      throw Error('Your request needs to be authenticated')
+    }
+
+    const [authMethod, token] = authHeader.split(' ')
+
+    if (authMethod !== 'Bearer') {
+      throw Error('Invalid authentication method')
+    }
+
+    if (!token) {
+      throw Error('Invalid authentication method')
+    }
+
+    let decoded
+
+    try {
+      decoded = jwt.verify(token, PRIVATE_KEY)
+    } catch (err) {
+      throw Error('You are not authenticated')
+    }
+
+    // const dbUser = await User.findOne({ _id: decoded.id }).select('-password')
+
+    // if (!dbUser) {
+    //   throw Error("We don't know this user. Try to sign up.")
+    // }
+
+    const data = await User.findByIdAndUpdate(
+      decoded.id,
+      { ...req.body },
+      { new: true, runValidators: true }
+    ).select('-password')
+
+    res.status(OK).json({ success: true, data: data })
+  } catch (err) {
+    res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
+  }
+}
+
+module.exports = { signUpEndpoint, signInEndpoint, signOutEndpoint, meEndpoint, editUserEndpoint}

@@ -12,6 +12,7 @@ const {
   signInEndpoint,
   signOutEndpoint,
   meEndpoint,
+  editUserEndpoint,
 } = require('./api/auth')
 
 const server = express()
@@ -49,6 +50,7 @@ server.use('/api/sign-in', signInEndpoint)
 server.use('/api/asset', express.static(require('./api/assets').ASSETS_DIR))
 server.use(authGuard)
 server.use('/api/me', meEndpoint)
+server.use('/api/editUser', editUserEndpoint)
 server.use('/api/sign-out', signOutEndpoint)
 server.use('/api/ping', require('./api/ping'))
 server.use('/api', require('./api/accommodation'))
