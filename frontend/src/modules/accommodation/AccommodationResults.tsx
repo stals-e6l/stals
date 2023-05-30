@@ -23,7 +23,10 @@ const AccommodationResults: React.FC<IProps> = () => {
         sx={{
           mt: theme.spacing(30),
           textAlign: 'center',
-          opacity: '75%'
+          opacity: '75%',
+          [theme.breakpoints.down('sm')]: {
+            mt: theme.spacing(15),
+          },
         }}
       >
         <SearchOffIcon sx={{ color: theme.palette.secondary.main, fontSize: theme.spacing(15)}} />
