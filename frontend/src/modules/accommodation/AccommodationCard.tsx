@@ -61,6 +61,7 @@ const AccommodationCard: React.FC<IProps> = ({
   return (
     // Initialize card
     <Card
+      onClick={toDetailPage}
       sx={{
         position: 'relative',
         cursor: 'pointer',
@@ -230,7 +231,7 @@ const AccommodationCard: React.FC<IProps> = ({
                     </ClickAwayListener>
                 </Popper>
             )}
-          </CardActions>
+        </CardActions>
         </>
       )}
     </Card>
