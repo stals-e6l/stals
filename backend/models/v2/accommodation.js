@@ -79,8 +79,8 @@ const accommodationSchema = new mongoose.Schema(
      }, required: [true, "Accommodation size in square meter is required"]},
     meters_from_uplb: { type: Number, validate: {
       validator: function(value){
-        return !isNaN(value) && value > 0;
-      }, message: "Accommodation distance from UPLB should be a number greater than 0"
+        return !isNaN(value) && value >= 0;
+      }, message: "Accommodation distance from UPLB should be a number greater than or equal to 0"
      },required: [true, "Accommodation distance from UPLB is required"]},
     min_pax: { type: Number, validate:{
       validator: function(value){
@@ -104,8 +104,8 @@ const accommodationSchema = new mongoose.Schema(
      }, required: true},
     num_views: { type: Number, validate:{
       validator: function(value){
-        return !isNaN(value) && value > 0;
-      }, message: "Minimum number of views allowed should be greater than 0"
+        return !isNaN(value) && value >= 0;
+      }, message: "Minimum number of views allowed should be greater than or equal to 0"
      }, required: true},
     landmarks: { type: [String], required: true, default: [] },
     cooking_rules: { type: [String], required: true, default: [] },
