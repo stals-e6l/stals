@@ -8,8 +8,11 @@ import {
   CardContent,
   CardActions,
   IconButton,
-  Menu,
-  MenuItem,
+  Popper,
+  ClickAwayListener,
+  ButtonGroup,
+  ButtonBase,
+  CardActionArea,
   alpha,
 } from '@mui/material'
 import React from 'react'
@@ -69,7 +72,6 @@ const AccommodationCard: React.FC<IProps> = ({
     >
       {/* Accommodation Image */}
       <CardMedia
-        onClick={toDetailPage}
         component="img"
         height={'180px'}
         image={accommodation.image.url}
@@ -199,44 +201,34 @@ const AccommodationCard: React.FC<IProps> = ({
 
             {/* Menu Items */}
             {accommodation && me?._id === accommodation.user_id && (
-              <Menu
-                id="menu"
-                aria-labelledby="menu-btn"
-                anchorEl={anchorEl}
+              <Popper
                 open={open}
-                onClose={onClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-              >
-                <MenuItem>
-                  <AccommodationFormModal
-                    defaultValues={accommodation}
-                    onClose={onClose}
-                  />
-                </MenuItem>
-                <MenuItem>
-                  <DeleteAccommodationFormModal
-                    userId={accommodation.user_id as string}
-                    accommodationId={accommodation._id as string}
-                    isSoftDelete={true}
-                    onClose={onClose}
-                  />
-                </MenuItem>
-                <MenuItem>
-                  <DeleteAccommodationFormModal
-                    userId={accommodation.user_id as string}
-                    accommodationId={accommodation._id as string}
-                    isSoftDelete={false}
-                    onClose={onClose}
-                  />
-                </MenuItem>
-              </Menu>
+                anchorEl={anchorEl}
+                >
+                <ClickAwayListener onClickAway={onClose}>
+                    <ButtonGroup
+                        orientation="vertical"
+                        sx={{ backgroundColor: '#fff' }}
+                    >
+                      <AccommodationFormModal
+                        defaultValues={accommodation}
+                        onClose={onClose}
+                      />
+                      <DeleteAccommodationFormModal
+                        userId={accommodation.user_id as string}
+                        accommodationId={accommodation._id as string}
+                        isSoftDelete={true}
+                        onClose={onClose}
+                      />
+                      <DeleteAccommodationFormModal
+                        userId={accommodation.user_id as string}
+                        accommodationId={accommodation._id as string}
+                        isSoftDelete={false}
+                        onClose={onClose}
+                      />
+                    </ButtonGroup>
+                    </ClickAwayListener>
+                </Popper>
             )}
           </CardActions>
         </>

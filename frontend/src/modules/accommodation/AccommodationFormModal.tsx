@@ -157,6 +157,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
             sx={{
               background: theme.palette.primary.main,
               color: theme.palette.common.white,
+              fontWeight: 'bold',
             }}
           >
             Edit
