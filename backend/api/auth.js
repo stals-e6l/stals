@@ -407,12 +407,6 @@ const editUserEndpoint = async (req, res) => {
       throw Error('You are not authenticated')
     }
 
-    // const dbUser = await User.findOne({ _id: decoded.id }).select('-password')
-
-    // if (!dbUser) {
-    //   throw Error("We don't know this user. Try to sign up.")
-    // }
-
     const data = await User.findByIdAndUpdate(
       decoded.id,
       { ...req.body },
