@@ -1,94 +1,39 @@
+const faker = require("faker");
 const Accommodation = require('../models/accommodation')
+
+const accommodationTypeEnum = [
+  'hotel',
+  'apartment',
+  'bedspace',
+  'dormitory',
+  'transient',
+]
+
+const accommodationFurnishingEnum = [
+  'unfurnished',
+  'semifurnished',
+  'fully_furnished',
+]
+
+const accomms = Array.from(Array(100)).map(_ => ({
+  name: faker.company.name(),
+  address: faker.location.streetAddress({ useFullAddress: true }) + faker.address.city() + faker.address.country(),
+  type: accommodationTypeEnum[Math.floor(Math.random()*accommodationTypeEnum.length)],
+  price: faker.number.int({ min: 1000, max: 20000 }),
+  size_sqm: faker.number.int({ min: 50, max: 500 }),
+  meters_from_uplb: faker.number.int({ min: 100, max: 20000 }),
+  min_pax: 1,
+  max_pax: faker.number.int({ min: 1, max: 5 }),
+  num_rooms: faker.number.int({ min: 1, max: 4 }),
+  num_beds: faker.number.int({ min: 1, max: 4 }),
+  num_views: 0,
+  furnishing: accommodationFurnishingEnum[Math.floor(Math.random()*accommodationFurnishingEnum.length)],
+}))
 
 const seedAccommodations = async () => {
   try {
     await Accommodation.deleteMany()
-    await Accommodation.create([
-      {
-        name: 'Hotel 1',
-        address: 'Some hotel address',
-        type: 'hotel',
-        price: 2000,
-        size_sqm: 800,
-        meters_from_uplb: 200,
-        min_pax: 1,
-        max_pax: 2,
-        num_rooms: 1,
-        num_beds: 2,
-        num_views: 0,
-        furnishing: 'fully_furnished',
-      },
-      {
-        name: 'Hotel 2',
-        address: 'Some hotel address',
-        type: 'hotel',
-        price: 10000,
-        size_sqm: 800,
-        meters_from_uplb: 500,
-        min_pax: 2,
-        max_pax: 5,
-        num_rooms: 3,
-        num_beds: 5,
-        num_views: 0,
-        furnishing: 'fully_furnished',
-      },
-      {
-        name: 'Apartment',
-        address: 'Some apt address',
-        type: 'apartment',
-        price: 1000,
-        size_sqm: 400,
-        meters_from_uplb: 100,
-        min_pax: 1,
-        max_pax: 1,
-        num_rooms: 1,
-        num_beds: 1,
-        num_views: 0,
-        furnishing: 'semifurnished',
-      },
-      {
-        name: 'Bedspace',
-        address: 'Some bedspace address',
-        type: 'bedspace',
-        price: 500,
-        size_sqm: 100,
-        meters_from_uplb: 50,
-        min_pax: 1,
-        max_pax: 4,
-        num_rooms: 1,
-        num_beds: 4,
-        num_views: 0,
-        furnishing: 'unfurnished',
-      },
-      {
-        name: 'Dormitory',
-        address: 'Some dorm address',
-        type: 'dormitory',
-        price: 1250,
-        size_sqm: 250,
-        meters_from_uplb: 125,
-        min_pax: 2,
-        max_pax: 4,
-        num_rooms: 2,
-        num_beds: 4,
-        num_views: 0,
-        furnishing: 'semifurnished',
-      },
-      {
-        name: 'Transient',
-        address: 'Some transient address',
-        type: 'transient',
-        price: 800,
-        size_sqm: 200,
-        meters_from_uplb: 800,
-        min_pax: 1,
-        max_pax: 1,
-        num_rooms: 1,
-        num_beds: 1,
-        num_views: 0,
-        furnishing: 'fully_furnished',
-      },
-    ])
+    await Accommodation.create(accomms)
     console.log('seed accommodations!')
   } catch (err) {
     console.error(err)
