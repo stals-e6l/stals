@@ -12,7 +12,7 @@ import {
   FormLabel,
   InputLabel,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { COLOR } from '../../theme'
 import { signIn, signUp } from './AuthProvider'
@@ -57,6 +57,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
     organization: '',
     confirm: '',
   })
+  const [error, setError] = useState('');
 
   // events
   const handleSignUp = () => {
@@ -101,6 +102,10 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         .catch(err => onShowError(String(err)))
     }
   }
+
+  //constants
+
+  const currentDate = new Date();
 
   React.useEffect(() => {
     return () =>
@@ -308,13 +313,25 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               slotProps={{ textField: { size: 'small' } }}
               onChange={value => {
                 const date = value as { $d: string }
-                const birthday = new Date(date.$d).toISOString().split('T')[0]
-                setForm(prev => ({
-                  ...prev,
-                  birthday,
-                }))
+                const inputYear = new Date(date.$d).getFullYear()
+                if(currentDate.getFullYear() - inputYear >= 18){
+                  setError('');
+                  const birthday = new Date(date.$d).toISOString().split('T')[0]
+                  setForm(prev => ({
+                    ...prev,
+                    birthday,
+                  }))
+                }else{
+                  setError('Age must be 18 or above.');
+                }
               }}
+              disableFuture
             />
+            {error && <Typography color="error" 
+              sx={{
+                fontSize: theme.spacing(1.5)
+              }}
+            >{error}</Typography>}
           </Grid>
         </Grid>
 
