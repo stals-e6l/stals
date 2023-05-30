@@ -352,8 +352,8 @@ const meEndpoint = async (req, res) => {
 
 /**
  * @openapi
- * /api/editUser:
- *      post:
+ * /api/me:
+ *      put:
  *          description: Edit currently signed in user's details
  *          security:
  *              -   bearerAuth: []
