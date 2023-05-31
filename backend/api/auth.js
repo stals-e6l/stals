@@ -330,11 +330,11 @@ const signOutEndpoint = async (req, res) => {
  *              400:
  *                  description: Bad request.
  *              401:
- *                  description: Authentication Error.
+ *                  description: Unauthorized access.
  *              500:
  *                  description: Internal Server error.
  *              404:
- *                  description: User does not exist.
+ *                  description: Not found.
  *          tags:
  *              - User
  *
@@ -381,7 +381,15 @@ const meEndpoint = async (req, res) => {
  * @openapi
  * /api/me:
  *      put:
- *          description: Edit currently signed in user's details
+ *          description: |
+ *            This endpoint edits the details of the currently signed in user and **returns the edited user**.
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          requestBody:
@@ -398,12 +406,12 @@ const meEndpoint = async (req, res) => {
  *                              $ref: '#/components/schemas/User'
  *              400:
  *                  description: Bad request.
- *              404:
- *                  description: Null Error
- *              422:
- *                  description: Unprocessable Entity
+ *              401:
+ *                  description: Unauthorized access.
  *              500:
  *                  description: Internal Server error.
+ *              404:
+ *                  description: Not found.
  *          tags:
  *              - User
  *
