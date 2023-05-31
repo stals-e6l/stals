@@ -129,6 +129,11 @@ const SignInForm: React.FC<IProps> = () => {
                 setForm(prev => ({ ...prev, username: e.target.value }))
               }
               value={form.username}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSignIn()
+                }
+              }}
             />
             <Typography>Password</Typography>
             <TextField
@@ -142,6 +147,11 @@ const SignInForm: React.FC<IProps> = () => {
               onChange={e =>
                 setForm(prev => ({ ...prev, password: e.target.value }))
               }
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSignIn()
+                }
+              }}
             />
             <Button
               variant="contained"
