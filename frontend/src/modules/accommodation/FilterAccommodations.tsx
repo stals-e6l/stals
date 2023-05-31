@@ -35,7 +35,7 @@ const FilterAccommodations: React.FC<IProps> = () => {
 
   // state
   const [filter, setFilter] = React.useState<IAccommodationsFilter>({
-    name: extractQueryString(location.search).name || '',
+    search: extractQueryString(location.search).search || '',
     type: '',
     min_price: 0,
     max_price: 10000,
@@ -58,7 +58,8 @@ const FilterAccommodations: React.FC<IProps> = () => {
 
   const onFilter = (filter: IAccommodationsFilter) => {
     const queryString = buildQueryString({
-      name: filter.name === '' ? undefined : filter.name,
+      // name: filter.name === '' ? undefined : filter.name,
+      search: filter.search === '' ? undefined : filter.search,
       type: filter.type === '' ? undefined : filter.type,
       min_price: filter.min_price === 0 ? undefined : filter.min_price,
       max_price: filter.max_price === 10000 ? undefined : filter.max_price,
@@ -81,12 +82,12 @@ const FilterAccommodations: React.FC<IProps> = () => {
 
   React.useEffect(() => {
     onFilter(filter)
-  }, [filter.name])
+  }, [filter.search])
 
   React.useEffect(() => {
     const qs = extractQueryString(location.search)
-    if (qs.name) {
-      setFilter(prev => ({ ...prev, name: qs.name }))
+    if (qs.search) {
+      setFilter(prev => ({ ...prev, search: qs.search }))
     }
   }, [location.search])
 

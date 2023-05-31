@@ -49,6 +49,7 @@ interface IArchiveAccomodationPayload {
 }
 
 interface IAccommodationsFilter {
+  search?: string
   name?: string
   type?: TAccommodationType | ''
   min_price?: number
