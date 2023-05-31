@@ -22,8 +22,6 @@ import useDialog from '../../hooks/useDialog'
 import { ROUTES } from '../../app/AppRouter'
 import { showErrorSnackbar } from '../general/ErrorHandler'
 
-import EditProfile from './EditProfile'
-
 interface IProps {
   children?: React.ReactNode
 }
@@ -232,10 +230,12 @@ const SignInForm: React.FC<IProps> = () => {
                   </Typography>
                 </DialogTitle>
                 <DialogContent sx={{}}>
-                  <EditProfile user={user}/>
-                  {/* <SignUpForm onClose={handleClose} /> */}
-                  <DialogActions sx={{}}></DialogActions>
+                  <SignUpForm onClose={handleClose} />
+                  
                 </DialogContent>
+                <DialogActions sx={{}}>
+              
+                </DialogActions>
               </Dialog>
             )}
           </Box>

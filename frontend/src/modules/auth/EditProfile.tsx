@@ -8,6 +8,8 @@ import {
   CardActionArea,
   CardContent,
   FormLabel,
+  OutlinedInput,
+  OutlinedInputProps,
   Grid,
   MenuItem,
   Select,
@@ -45,11 +47,11 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
       <FormLabel>Upload Avatar</FormLabel>
       <Card
         sx={{
-          minWidth: '100%',
-          minHeight: '50%',
+          width: '100%',
+          height: '50%',
           border: 'solid 1px green',
           backgroundColor: COLOR.white,
-          mb: theme.spacing(1),
+          boxShadow: 'none'
         }}
         onClick={handleUploadImage}
       >
@@ -58,7 +60,6 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
             sx={{
               display: 'flex',
               justifyContent: 'center',
-              pb: theme.spacing(1),
               alignItems: 'center',
               maxWidth: '100%',
               paddingBottom: '20%',
@@ -71,28 +72,29 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
         <input hidden accept="image/png, image/jpeg" type="file" />
       </Card>
 
-      <FormLabel>Biography</FormLabel>
       <TextField
-        variant="outlined"
         size="small"
         fullWidth
-        sx={{ backgroundColor: COLOR.white, mb: theme.spacing(1) }}
         multiline
-        rows={3}
+        label="Biography"
+        // rows={3}
         name="biography"
         defaultValue={user.biography}
+        variant="filled"
+        style={{ marginTop: 20 }}
       />
 
       <Grid container spacing={1}>
-        <Grid item xs={7} sx={{ mb: theme.spacing(1) }}>
-          <FormLabel>Gender</FormLabel>
+        <Grid item xs={7}>
           <Select
-            label=""
+            label="Gender"
             fullWidth
-            sx={{ backgroundColor: COLOR.white }}
+            input={<OutlinedInput />}
             size="small"
             name="gender"
             defaultValue={user.gender}
+            variant="filled"
+            style={{ marginTop: 17 }}
           >
             <MenuItem value="male">Male</MenuItem>
             <MenuItem value="female">Female</MenuItem>
@@ -102,68 +104,71 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
         </Grid>
 
         <Grid item xs={5}>
-          <InputLabel>Birthday</InputLabel>
           <DatePicker
             // value={form.birthday as string}w}
-            slotProps={{ textField: { size: 'small' } }}
+            slotProps={{ textField: { size: 'small', variant: 'filled' } }}
+            sx={{ marginTop: 2 }}
+            disableFuture
+            label="Birthday"
+            
           />
         </Grid>
       </Grid>
 
       <Grid container spacing={1}>
-        <Grid item xs={6} sx={{ mb: theme.spacing(1) }}>
-          <FormLabel>Phone</FormLabel>
+        <Grid item xs={6}>
           <TextField
-            variant="outlined"
             size="small"
             fullWidth
-            sx={{ backgroundColor: COLOR.white }}
+            label="Phone"
             name="mobile"
             defaultValue={user.phone === undefined ? '' : user.phone.mobile}
+            variant="filled"
+            style={{ marginTop: 20 }}
           />
         </Grid>
 
         <Grid item xs={6}>
-          <FormLabel>Landline</FormLabel>
           <TextField
-            variant="outlined"
             size="small"
             fullWidth
-            sx={{ backgroundColor: COLOR.white }}
+            label="Landline"
             name="landline"
             defaultValue={user.phone === undefined ? '' : user.phone.landline}
+            variant="filled"
+            style={{ marginTop: 20 }}
           />
         </Grid>
       </Grid>
 
-      <FormLabel>Home Address</FormLabel>
       <TextField
-        variant="outlined"
         size="small"
         fullWidth
-        sx={{ backgroundColor: COLOR.white, mb: theme.spacing(1) }}
+        label="Home address"
         name="home"
         defaultValue={user.address === undefined ? '' : user.address.home}
+        variant="filled"
+        style={{ marginTop: 20 }}
       />
 
-      <FormLabel>Current Address</FormLabel>
       <TextField
-        variant="outlined"
         size="small"
         fullWidth
-        sx={{ backgroundColor: COLOR.white, mb: theme.spacing(1) }}
+        label="Current address"
         name="current"
         defaultValue={user.address === undefined ? '' : user.address.current}
+        variant="filled"
+        style={{ marginTop: 20 }}
       />
 
-      <FormLabel>Organization</FormLabel>
       <TextField
-        variant="outlined"
         size="small"
         fullWidth
-        sx={{ backgroundColor: COLOR.white }}
+        label="Organization"
         name="organization"
         defaultValue={user.organization}
+        variant="filled"
+        style={{ marginTop: 20 }}
       />
     </Box>
   )

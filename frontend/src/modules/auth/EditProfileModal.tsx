@@ -96,7 +96,6 @@ const EditProfileModal: React.FC<IProps> = () => {
               sx={{
                 fontWeight: 'bold',
                 color: theme.palette.primary.main,
-                paddingBottom: theme.spacing(1),
               }}
             >
               Edit profile
@@ -104,9 +103,33 @@ const EditProfileModal: React.FC<IProps> = () => {
           </DialogTitle>
           <DialogContent sx={{}}>
             <EditProfile user={user}/>
-            {/* <SignUpForm onClose={handleClose} /> */}
-            <DialogActions sx={{}}></DialogActions>
+            
           </DialogContent>
+          <DialogActions sx={{}}>
+            {' '}
+
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                width: 'fit-content',
+                mr: theme.spacing(1),
+              }}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                width: 'fit-content',
+              }}
+            >
+              Save Changes
+            </Button>
+          </DialogActions>
         </Dialog>
       )}
       <Box>
@@ -119,27 +142,7 @@ const EditProfileModal: React.FC<IProps> = () => {
             margin: theme.spacing(1),
           }}
         >
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: theme.palette.primary.main,
-              width: 'fit-content',
-              mr: theme.spacing(1),
-            }}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: theme.palette.primary.main,
-              width: 'fit-content',
-            }}
-          >
-            Save Changes
-          </Button>
+          
         </Box>
       </Box>
     </React.Fragment>

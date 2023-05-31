@@ -211,6 +211,7 @@ const theme = createTheme({
     MuiSelect: {
       styleOverrides: {
         select: {
+          lineHeight: 1.85,
           overflow: 'hidden',
           color: COLOR.textBlack,
           borderRadius: '8px',

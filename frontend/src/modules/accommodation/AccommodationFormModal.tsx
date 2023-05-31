@@ -181,7 +181,16 @@ const AccommodationFormModal: React.FC<IProps> = ({
             />
           </DialogContent>
 
-
+          <DialogActions sx={{}}>
+            {' '}
+            {/*TEMP COLOR*/}
+            <Button onClick={toggleDialog} sx={cancelBtnSx.root}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} sx={submitBtnSx.root}>
+              Submit
+            </Button>
+          </DialogActions>
         </Dialog>
       )}
     </React.Fragment>
