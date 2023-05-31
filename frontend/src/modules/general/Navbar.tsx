@@ -62,7 +62,7 @@ const Navbar: React.FC<IProps> = () => {
         }}
         alignItems="center"
         justifyContent="space-between"
-        position={'fixed'}
+        position='sticky'
       >
         <Grid item xs={0.25}>
           <Box
