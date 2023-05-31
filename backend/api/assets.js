@@ -20,38 +20,6 @@ let storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-/**
- * @openapi
- * /api/asset:
- *      post:
- *          description: Adds image
- *          security:
- *              -   bearerAuth: []
- *          requestBody:
- *              required: true
- *              content:
- *                  multipart/form-data:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              fileName:
- *                                  type: string
- *                                  format: binary
- *          responses:
- *              201:
- *                  description: Success.
- *              400:
- *                  description: Bad request.
- *              404:
- *                  description: Not found.
- *              401:
- *                  description: Unauthorized access.
- *              500:
- *                  description: Internal Server error.
- *          tags:
- *              - Assets
- *
- */
 assetsRouter.post('/asset', upload.single('fileName'), async (req, res) => {
   try {
     const path = `http://${process.env.HOST}:${process.env.PORT}/api/asset/${req.file.filename}`
