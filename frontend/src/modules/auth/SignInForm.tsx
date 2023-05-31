@@ -5,6 +5,9 @@ import {
   Button,
   useTheme,
   Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   useMediaQuery,
   alpha,
 } from '@mui/material'
@@ -18,6 +21,8 @@ import { signIn } from './AuthProvider'
 import useDialog from '../../hooks/useDialog'
 import { ROUTES } from '../../app/AppRouter'
 import { showErrorSnackbar } from '../general/ErrorHandler'
+
+import EditProfile from './EditProfile'
 
 interface IProps {
   children?: React.ReactNode
@@ -37,6 +42,34 @@ const SignInForm: React.FC<IProps> = () => {
     username: '',
     password: '',
   })
+
+  const user: IUser = {
+    username: 'Pogi',
+    email: 'test@up.edu.ph',
+    role: 'admin',
+    full_name: {
+      first_name: 'Rodge Miguel',
+      middle_name: 'Magpantay',
+      last_name: 'De Luna',
+    },
+    gender: 'male',
+    address: {
+      home: 'Cainta, Rizal',
+      current: 'Carrot Place',
+    },
+    birthday: '07/26/2001',
+    phone: {
+      landline: '212 7388',
+      mobile: '09163342585',
+    },
+    organization: 'COSS',
+    biography: 'You miss 100% shots you dont take.',
+    _id: '',
+    password: '',
+    avatar: {
+      url: '',
+    },
+  }
 
   // events
   const handleOpen = () => toggleDialog()
@@ -104,7 +137,7 @@ const SignInForm: React.FC<IProps> = () => {
         >
           <Box
             sx={{
-              backgroundColor: COLOR.gray2,
+              backgroundColor: COLOR.gray1,
               width: '300px',
               marginRight: theme.spacing(6),
               padding: theme.spacing(3),
@@ -118,30 +151,28 @@ const SignInForm: React.FC<IProps> = () => {
               },
             }}
           >
-            <Typography>Username</Typography>
             <TextField
-              id="outlined-basic"
-              variant="outlined"
               size="small"
               fullWidth
-              sx={{ backgroundColor: COLOR.white }}
+              label="Username"
               onChange={e =>
                 setForm(prev => ({ ...prev, username: e.target.value }))
               }
               value={form.username}
+              variant="filled"
+              style={{ marginTop: 20 }}
             />
-            <Typography>Password</Typography>
             <TextField
-              id="outlined-basic"
-              variant="outlined"
               size="small"
               fullWidth
+              label="Password"
               type="password"
-              sx={{ backgroundColor: COLOR.white }}
               value={form.password}
               onChange={e =>
                 setForm(prev => ({ ...prev, password: e.target.value }))
               }
+              variant="filled"
+              style={{ marginTop: 20 }}
             />
             <Button
               variant="contained"
@@ -188,7 +219,23 @@ const SignInForm: React.FC<IProps> = () => {
                   },
                 }}
               >
-                <SignUpForm onClose={handleClose} />
+                <DialogTitle sx={{ color: COLOR.blue }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: theme.palette.primary.main,
+                      paddingBottom: theme.spacing(1),
+                    }}
+                  >
+                    Create an Account
+                  </Typography>
+                </DialogTitle>
+                <DialogContent sx={{}}>
+                  <EditProfile user={user}/>
+                  {/* <SignUpForm onClose={handleClose} /> */}
+                  <DialogActions sx={{}}></DialogActions>
+                </DialogContent>
               </Dialog>
             )}
           </Box>

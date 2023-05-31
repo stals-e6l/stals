@@ -215,6 +215,7 @@ const theme = createTheme({
           color: COLOR.textBlack,
           borderRadius: '8px',
           backgroundColor: COLOR.white,
+          height: '30px',
           border: '1px solid',
           // borderColor: COLOR.darkGreen,
           '&:hover': {
@@ -259,6 +260,18 @@ const theme = createTheme({
         },
       },
     },
+
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root:{
+          borderRadius: '8px',
+          '&.Mui-focused': {
+            boxShadow: `${alpha(COLOR.green, 0.5)} 0 0 3px 3px`,
+            borderColor: COLOR.green,
+          },
+        }
+      }
+    }
 
     // MuiFab: {
     //   styleOverrides: {

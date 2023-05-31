@@ -1,5 +1,8 @@
 import React from 'react'
-import { Box, useTheme, Button, Dialog } from '@mui/material'
+import { Box, useTheme, Button, Typography, Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent, } from '@mui/material'
 
 // import { getUser } from '../../store/auth/action'
 import { COLOR } from '../../theme/index'
@@ -77,55 +80,68 @@ const EditProfileModal: React.FC<IProps> = () => {
           Edit Profile
         </Box>
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        fullScreen={fullScreen}
-        sx={{
-          '& .MuiDialog-paper': {
-            borderRadius: '8px',
-          },
-          width: '40%',
-          margin: '0 auto',
-          [theme.breakpoints.down('sm')]: {
-            width: '100%',
-          },
-        }}
-      >
-        <Box>
-          <EditProfile user={user} />
+      {open && (
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          sx={{
+            [theme.breakpoints.down('sm')]: {
+              width: '100%',
+            },
+          }}
+        >
+          <DialogTitle sx={{ color: COLOR.blue }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 'bold',
+                color: theme.palette.primary.main,
+                paddingBottom: theme.spacing(1),
+              }}
+            >
+              Edit profile
+            </Typography>
+          </DialogTitle>
+          <DialogContent sx={{}}>
+            <EditProfile user={user}/>
+            {/* <SignUpForm onClose={handleClose} /> */}
+            <DialogActions sx={{}}></DialogActions>
+          </DialogContent>
+        </Dialog>
+      )}
+      <Box>
+        <EditProfile user={user} />
 
-          <Box
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            margin: theme.spacing(1),
+          }}
+        >
+          <Button
+            variant="contained"
             sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              margin: theme.spacing(1),
+              backgroundColor: theme.palette.primary.main,
+              width: 'fit-content',
+              mr: theme.spacing(1),
+            }}
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              width: 'fit-content',
             }}
           >
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: theme.palette.primary.main,
-                width: 'fit-content',
-                mr: theme.spacing(1),
-              }}
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: theme.palette.primary.main,
-                width: 'fit-content',
-              }}
-            >
-              Save Changes
-            </Button>
-          </Box>
+            Save Changes
+          </Button>
         </Box>
-      </Dialog>
+      </Box>
     </React.Fragment>
   )
 }
