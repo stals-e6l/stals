@@ -17,6 +17,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import PinDropIcon from '@mui/icons-material/PinDrop'
 import toPhp from '../../utils/toPhp'
+import toSentenceCase from '../../utils/toSentenceCase'
 import { COLOR } from '../../theme/index'
 import Title from './TitleComponent'
 import Reviews from '../review/Reviews'
@@ -62,7 +63,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
   }
 
   const detailCardSx = {
-    width: theme.spacing(41),
+    width: "96%",
     height: theme.spacing(20),
     boxShadow: `${alpha(COLOR.black, 0.5)} 0 4px 10px 1px`,
     padding: theme.spacing(2),
@@ -88,8 +89,9 @@ const AccommodationDetail: React.FC<IProps> = () => {
         direction="column"
         rowGap={3}
         sx={{
-          width: '70%',
-          marginLeft: '15%',
+          width: '80%',
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
       >
         <Grid item>
@@ -114,19 +116,19 @@ const AccommodationDetail: React.FC<IProps> = () => {
                   color: COLOR.blue,
                 }}
               >
-                Php {toPhp(accommodation.max_price)}
+                Php {toPhp(accommodation.min_price)} - {toPhp(accommodation.max_price)}
               </Typography>
             </Grid>
           </Grid>
 
           {/* Type */}
           <Grid item>
-            <Typography variant="body1">{accommodation.type}</Typography>
+            <Typography variant="body1">{toSentenceCase(accommodation.type)}</Typography>
           </Grid>
         </Grid>
         <Grid item>
-          <Grid container direction="row" columnGap={0.5}>
-            <Grid item xs={3.75}>
+          <Grid container direction="row">
+            <Grid item xs={12} lg ={4}>
               {/* Ratings Card */}
               <Card sx={detailCardSx}>
                 <Grid container>
@@ -241,7 +243,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
               {/* End of Ratings Card */}
             </Grid>
 
-            <Grid item xs={3.75}>
+            <Grid item xs={12} lg ={4}>
               {/* Facilities and Services Card */}
               <Card sx={detailCardSx}>
                 <Grid container>
@@ -284,7 +286,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
               {/* End of Facilities and Services Card */}
             </Grid>
 
-            <Grid item xs={3.75}>
+            <Grid item xs={12} lg ={4}>
               {/* Facilities and Services Card */}
               <Card sx={detailCardSx}>
                 <Grid container alignContent="center">
