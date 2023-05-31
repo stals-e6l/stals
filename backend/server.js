@@ -7,6 +7,7 @@ const cors = require('cors')
 const { connectDb } = require('./db')
 var bodyParser = require('body-parser')
 const { authGuard } = require('./handler/auth_middleware')
+const { publicAccomm } = require('./api/public_accommodation')
 const {
   signUpEndpoint,
   signInEndpoint,
@@ -46,6 +47,7 @@ server.use(bodyParser.json())
 /** INSERT API BELOW */
 server.use('/api/sign-up', signUpEndpoint)
 server.use('/api/sign-in', signInEndpoint)
+server.use('/api/public_accommodation', publicAccomm)
 server.use('/api/asset', express.static(require('./api/assets').ASSETS_DIR))
 server.use(authGuard)
 server.use('/api/me', meEndpoint)
