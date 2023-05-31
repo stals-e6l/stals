@@ -1,10 +1,7 @@
 const Accommodation = require('../models/v3/accommodation')
 const { Router } = require('express')
-const {
-    ERRORS,
-    BAD_REQUEST,
-  } = require('../handler/error_handler')
-  const { OK } = require('../handler/success_handler')
+const { ERRORS, BAD_REQUEST } = require('../handler/error_handler')
+const { OK } = require('../handler/success_handler')
 
 /**
  * @openapi
@@ -146,20 +143,20 @@ const {
  *              - Accommodation
  */
 const publicAccomm = async (req, res) => {
-    try {
-        let data
-        const limit = 20
+  try {
+    let data
+    const limit = Number(req.query.limit || 20)
 
-        data = await Accommodation.find({}).limit(limit)
+    data = await Accommodation.find({}).limit(limit)
 
-        if (!data) {
-            throw Error(ERRORS[BAD_REQUEST])
-        }
-
-        res.status(OK).json({ success: true, data: data })
-    } catch (err) {
-        res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
+    if (!data) {
+      throw Error(ERRORS[BAD_REQUEST])
     }
+
+    res.status(OK).json({ success: true, data: data })
+  } catch (err) {
+    res.status(BAD_REQUEST).json({ success: false, messages: [String(err)] })
+  }
 }
 
 module.exports = { publicAccomm }
