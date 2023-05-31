@@ -145,7 +145,7 @@ const { OK } = require('../handler/success_handler')
 const publicAccomm = async (req, res) => {
   try {
     let data
-    const limit = Number(req.query.limit || 20)
+    const limit = parseInt(req.query.limit || 20)
 
     data = await Accommodation.find({}).limit(limit)
 
