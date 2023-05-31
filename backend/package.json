@@ -8,11 +8,12 @@
     "test:windows": "set NODE_ENV=development&&jest",
     "start:dev": "NODE_ENV=development node .",
     "start:dev:windows": "set NODE_ENV=development&&node .",
-    "dev": "nodemon --exec npm run start:dev",
+    "dev": "npm run seed && nodemon --exec npm run start:dev",
     "dev:windows": "nodemon --exec npm run start:dev:windows",
     "seed": "NODE_ENV=development node seeder",
+    "seed:prod": "NODE_ENV=production node seeder",
     "seed:windows": "set NODE_ENV=development&&node seeder",
-    "start": "NODE_ENV=production mkdir assets && node ."
+    "start": "NODE_ENV=production npm run seed:prod && mkdir -p assets && node ."
   },
   "keywords": [],
   "author": "",
