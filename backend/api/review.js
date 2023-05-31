@@ -43,7 +43,20 @@ module.exports = reviewRouter
  * @openapi
  * /api/review:
  *      post:
- *          description: Create review
+ *          description: |
+ *            This endpoint creates a review from the request body and **returns the created review**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **201** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          requestBody:
@@ -75,7 +88,20 @@ module.exports = reviewRouter
  * @openapi
  * /api/review/{id}:
  *      get:
- *          description: Get review by id
+ *          description: |
+ *            This endpoint takes the review id and **returns the found review**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -107,7 +133,20 @@ module.exports = reviewRouter
  * @openapi
  * /api/review:
  *      get:
- *          description: Get all reviews
+ *          description: |
+ *            This endpoint takes any search query and **returns the found review/s**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -162,7 +201,20 @@ module.exports = reviewRouter
  * @openapi
  * /api/review/{id}:
  *      delete:
- *          description: Delete review by id
+ *          description: |
+ *            This endpoint takes the review id and **returns null**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -187,7 +239,20 @@ module.exports = reviewRouter
  * @openapi
  * /api/review/{id}:
  *      put:
- *          description: Edit review by id
+ *          description: |
+ *            This endpoint takes the review id, edits the specified review from the request body, and **returns the edited review**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:

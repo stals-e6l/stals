@@ -126,7 +126,14 @@ let blacklist = {}
  * @openapi
  * /api/sign-up:
  *      post:
- *          description: Create user
+ *          description: |
+ *            This endpoint creates a user from the request body and **returns the created user**.
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **201** - OK
+ *            2. **400** - Bad user request
+ *            3. **404** - Not found
+ *            4. **500** - Internal server error
  *          requestBody:
  *              required: true
  *              content:
@@ -142,9 +149,7 @@ let blacklist = {}
  *              400:
  *                  description: Bad request.
  *              404:
- *                  description: Null Error
- *              422:
- *                  description: Unprocessable Entity
+ *                  description: Not found.
  *              500:
  *                  description: Internal Server error.
  *          tags:
@@ -187,7 +192,15 @@ const signUpEndpoint = async (req, res) => {
  * @openapi
  * /api/sign-in:
  *      post:
- *          description: Sign in
+ *          description: |
+ *            This endpoint logs the user in using their username and password and **returns a token** This token must be used in the **Authorize button** in the **top right of the screen**.
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **201** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          requestBody:
  *              required: true
  *              content:
@@ -247,7 +260,13 @@ const signInEndpoint = async (req, res) => {
  * @openapi
  * /api/sign-out:
  *      post:
- *          description: Sign out
+ *          description: |
+ *            This endpoint signs a user out and **returns success**.
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **400** - Bad user request
+ *            3. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          responses:
@@ -291,7 +310,15 @@ const signOutEndpoint = async (req, res) => {
  * @openapi
  * /api/me:
  *      get:
- *          description: Get user endpoint
+ *          description: |
+ *            This endpoint looks for the information of the signed in user and **returns the found user**.
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          responses:
@@ -303,11 +330,11 @@ const signOutEndpoint = async (req, res) => {
  *              400:
  *                  description: Bad request.
  *              401:
- *                  description: Authentication Error.
+ *                  description: Unauthorized access.
  *              500:
  *                  description: Internal Server error.
  *              404:
- *                  description: User does not exist.
+ *                  description: Not found.
  *          tags:
  *              - User
  *
@@ -354,7 +381,15 @@ const meEndpoint = async (req, res) => {
  * @openapi
  * /api/me:
  *      put:
- *          description: Edit currently signed in user's details
+ *          description: |
+ *            This endpoint edits the details of the currently signed in user and **returns the edited user**.
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          requestBody:
@@ -371,12 +406,12 @@ const meEndpoint = async (req, res) => {
  *                              $ref: '#/components/schemas/User'
  *              400:
  *                  description: Bad request.
- *              404:
- *                  description: Null Error
- *              422:
- *                  description: Unprocessable Entity
+ *              401:
+ *                  description: Unauthorized access.
  *              500:
  *                  description: Internal Server error.
+ *              404:
+ *                  description: Not found.
  *          tags:
  *              - User
  *
