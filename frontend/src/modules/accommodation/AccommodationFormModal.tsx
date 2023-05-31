@@ -70,6 +70,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
     is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
   })
   const [file, setFile] = React.useState<File>()
+  const [error, setError] = React.useState<string | null>(null);
 
   // events
   const setFieldValue = (
@@ -87,8 +88,10 @@ const AccommodationFormModal: React.FC<IProps> = ({
       if (res.success) {
         formData = { ...form, image: { url: res.data as string } }
       }
-      onCreateAccommodation(formData).then(status => {
-        if (status) toggleDialog()
+      //const response = await onCreateAccommodation(formData)
+      onCreateAccommodation(formData).catch(err => {
+        console.log(String(err).split(','))
+        //setError('Invalid input')
       })
     } else if (onEditAccommodation && defaultValues) {
       onEditAccommodation({ ...form, _id: defaultValues._id as string }).then(
@@ -178,6 +181,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
               form={form}
               setFieldValue={setFieldValue}
               setFile={setFile}
+              error={error}
             />
           </DialogContent>
 
