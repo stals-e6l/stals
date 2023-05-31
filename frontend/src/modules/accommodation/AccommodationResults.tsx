@@ -31,33 +31,18 @@ const AccommodationResults: React.FC<IProps> = () => {
         rowGap={3}
         columnGap={3}
         sx={{
-          justifyContent: 'center',
           transition: '0.3s all',
         }}
       >
         {accommodations.map((accommodation, key: number) => (
-          <Grid item key={key} lg={3}>
+          <Grid item key={key}>
             <AccommodationCard
               accommodation={accommodation}
               isPublicView={location.pathname === ROUTES.public}
             />
           </Grid>
         ))}
-
-        {/* Fillers */}
-        {}
-        <Grid item lg={3} visibility={'hidden'}>
-          <AccommodationCard
-            accommodation={accommodations[0]}
-            isPublicView={location.pathname === ROUTES.public}
-          />
-        </Grid>
-        <Grid item lg={3} visibility={'hidden'}>
-          <AccommodationCard
-            accommodation={accommodations[0]}
-            isPublicView={location.pathname === ROUTES.public}
-          />
-        </Grid>
+        
       </Grid>
     </React.Fragment>
   )
