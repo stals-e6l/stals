@@ -45,16 +45,19 @@ const RESTRouter = function (name, model, restriction) {
       let query = { ...req.query }
       delete query['limit'] //delete every query that's not part of the database model
       delete query['populate']
+      delete query['search']
 
       const limit = Number(req.query.limit) || 100
       const populate = req.query.populate
+      const search = req.query.search || ''
 
       if (!query.search) {
         data = await model.find(query).limit(limit).populate(populate)
       } else {
         data = await model
-          .find({ $text: { $search: query.search } })
-          .limit(limit).populate(populate)
+          .find({ $text: { $search: search }, ...query })
+          .limit(limit)
+          .populate(populate)
       }
 
       if (!data) {
