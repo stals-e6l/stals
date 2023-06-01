@@ -9,7 +9,7 @@ const {
 const { ErrorHandler } = require('./error_handler')
 const { CREATED, OK } = require('./success_handler')
 
-const Accommodation = require('../models/v2/accommodation')
+const Accommodation = require('../models/v3/accommodation')
 
 const RESTRouter = function (name, model, restriction) {
   // create router
@@ -44,15 +44,17 @@ const RESTRouter = function (name, model, restriction) {
 
       let query = { ...req.query }
       delete query['limit'] //delete every query that's not part of the database model
+      delete query['populate']
 
       const limit = Number(req.query.limit) || 100
+      const populate = req.query.populate
 
       if (!query.search) {
-        data = await model.find(query).limit(limit)
+        data = await model.find(query).limit(limit).populate(populate)
       } else {
         data = await model
           .find({ $text: { $search: query.search } })
-          .limit(limit)
+          .limit(limit).populate(populate)
       }
 
       if (!data) {

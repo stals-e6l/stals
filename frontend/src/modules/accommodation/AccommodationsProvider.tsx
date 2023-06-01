@@ -119,6 +119,7 @@ export const createAccommodation = () => {
   const onShowError = showErrorSnackbar()
   if (!dispatch || !onShowError) return
   return async (accommodation: IAccommodation) => {
+
     const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
       payload: accommodation,
     })
@@ -128,10 +129,12 @@ export const createAccommodation = () => {
         type: 'ADD_ACCOMMODATION',
         payload: res.data as IAccommodation,
       })
-      return true
     } else {
-      if (res.messages) onShowError(res.messages[0])
-      return false
+      if (res.messages){
+        throw new Error(
+          res.messages[0]
+        )
+      }
     }
   }
 }

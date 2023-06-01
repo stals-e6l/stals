@@ -19,13 +19,43 @@ interface IProps {
     val: string | number | string[]
   ) => void
   setFile: React.Dispatch<React.SetStateAction<File | undefined>>
+  error: string | null;
 }
 
 const AccommodationForm: React.FC<IProps> = ({
   form,
   setFieldValue,
   setFile,
+  error
 }) => {
+  // state
+
+  const [fieldValues, setFieldValues] = React.useState({
+    name: '',
+    address: '',
+    min_price: '',
+    max_price: '',
+    size_sqm: '',
+    meters_from_uplb: '',
+    min_pax: '',
+    max_pax: '',
+    num_rooms: '',
+    num_beds: '',
+  });
+
+  const [fieldTouched, setFieldTouched] = React.useState({
+    name: false,
+    address: false,
+    min_price: false,
+    max_price: false,
+    size_sqm: false,
+    meters_from_uplb: false,
+    min_pax: false,
+    max_pax: false,
+    num_rooms: false,
+    num_beds: false,
+  });
+
   // immediate
   const values = React.useMemo(() => form, [form])
 
@@ -58,18 +88,29 @@ const AccommodationForm: React.FC<IProps> = ({
 
       <TextField
         defaultValue={values.name}
-        onBlur={e => setFieldValue('name', e.target.value)}
+        onBlur={e => {
+          setFieldValue('name', e.target.value); 
+          setFieldValues((prevValues) => ({
+            ...prevValues,
+            'name': e.target.value,
+          }));
+          setFieldTouched((prevTouched) => ({
+            ...prevTouched,
+            'name': true,
+          }));
+        }}
         required
         fullWidth
         label="Name"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
         style={{ marginTop: 20 }}
+        error={fieldTouched.name && fieldValues.name === ''}
+        helperText={fieldTouched.name && fieldValues.name === '' ? 'Name is required' : ''}
       />
       <TextField
         defaultValue={values.description}
         onBlur={e => setFieldValue('description', e.target.value)}
-        required
         fullWidth
         multiline
         label="Description"

@@ -1,6 +1,6 @@
 const { RESTRouter } = require('../handler/rest_router')
 
-const Accommodation = require('../models/v2/accommodation')
+const Accommodation = require('../models/v3/accommodation')
 const accommodationRouter = RESTRouter('/accommodation', Accommodation, {
   create: ['admin', 'owner'],
   retrieve: ['admin', 'owner', 'tenant'],
@@ -133,7 +133,19 @@ module.exports = accommodationRouter
  * @openapi
  * /api/accommodation:
  *      post:
- *          description: Adds accommodation
+ *          description: |
+ *            This endpoint creates an accommodation from the request body and **returns the created accommodation**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **201** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          requestBody:
@@ -165,7 +177,21 @@ module.exports = accommodationRouter
  * @openapi
  * /api/accommodation/{id}:
  *      get:
- *          description: Get accommodation by id
+ *          description: |
+ *            This endpoint takes the accommodation id and **returns the found accommodation**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            - Unregistered users
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -196,7 +222,21 @@ module.exports = accommodationRouter
  * @openapi
  * /api/accommodation:
  *      get:
- *          description: Get all accommodations
+ *          description: |
+ *            This endpoint takes any search query and **returns the found accommodation/s**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            - Unregistered users
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -288,7 +328,6 @@ module.exports = accommodationRouter
  *                      collectionFormat: csv
  *                      items:
  *                          type: string
- *                      example: ["string"]
  *                  description: The landmarks within the accommodation
  *              -   in: query
  *                  name: cooking_rules
@@ -297,7 +336,6 @@ module.exports = accommodationRouter
  *                      collectionFormat: csv
  *                      items:
  *                          type: string
- *                      example: ["string"]
  *                  description: The cooking rules of the accommodation
  *              -   in: query
  *                  name: pet_rules
@@ -306,7 +344,6 @@ module.exports = accommodationRouter
  *                      collectionFormat: csv
  *                      items:
  *                          type: string
- *                      example: ["string"]
  *                  description: The pet rules of the accommodation
  *              -   in: query
  *                  name: other_rules
@@ -315,7 +352,6 @@ module.exports = accommodationRouter
  *                      collectionFormat: csv
  *                      items:
  *                          type: string
- *                      example: ["string"]
  *                  description: The other rules of the accommodation
  *              -   in: query
  *                  name: safety_and_security
@@ -324,7 +360,6 @@ module.exports = accommodationRouter
  *                      collectionFormat: csv
  *                      items:
  *                          type: string
- *                      example: ["string"]
  *                  description: The safety and security features of the accommodation
  *              -   in: query
  *                  name: appliances
@@ -333,7 +368,6 @@ module.exports = accommodationRouter
  *                      collectionFormat: csv
  *                      items:
  *                          type: string
- *                      example: ["string"]
  *                  description: The appliances in the accommodation
  *              -   in: query
  *                  name: amenities
@@ -342,7 +376,6 @@ module.exports = accommodationRouter
  *                      collectionFormat: csv
  *                      items:
  *                          type: string
- *                      example: ["string"]
  *                  description: The included ameneties included in the accommodation
  *              -   in: query
  *                  name: is_soft_deleted
@@ -376,7 +409,19 @@ module.exports = accommodationRouter
  * @openapi
  * /api/accommodation/{id}:
  *      delete:
- *          description: Delete accommodation by id
+ *          description: |
+ *            This endpoint takes the accommodation id and **returns null**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -408,7 +453,19 @@ module.exports = accommodationRouter
  * @openapi
  * /api/accommodation/{id}:
  *      put:
- *          description: Edit accommodation by id
+ *          description: |
+ *            This endpoint takes the accommodation id, edits the specified accommodation from the request body, and **returns the edited accommodation**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:

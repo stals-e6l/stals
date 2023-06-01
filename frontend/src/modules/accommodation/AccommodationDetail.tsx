@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React from 'react'
 import {
   Box,
@@ -23,6 +24,12 @@ import { retrieveOneAccommodation } from './AccommodationsProvider'
 import { useParams } from 'react-router-dom'
 import { averageReviewRating } from '../review/ReviewsProvider'
 import { retrieveReviews } from '../review/ReviewsProvider'
+import {
+  createReport,
+  fetchReports,
+  getReports,
+} from '../report/ReportsProvider'
+import { getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -35,9 +42,23 @@ const AccommodationDetail: React.FC<IProps> = () => {
   const accommodation = retrieveOneAccommodation(params.id as string)
   const rating = averageReviewRating()
   const reviews = retrieveReviews()
+  const onFetchReports = fetchReports()
+  const reports = getReports()
+  const user = getMe()
+  const onCreateReport = createReport()
 
-  if (!accommodation) {
+  React.useEffect(() => {
+    if (accommodation && onFetchReports) {
+      onFetchReports(accommodation._id as string)
+    }
+  }, [accommodation])
+
+  if (!accommodation || !reports) {
     return <div>accommodation does not exits!</div>
+  }
+
+  if (!user) {
+    return <div>handle no user</div>
   }
 
   const detailCardSx = {
@@ -124,6 +145,28 @@ const AccommodationDetail: React.FC<IProps> = () => {
                         >
                           /5
                         </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography>
+                          Reported by {reports && Object.values(reports).length}
+                        </Typography>
+                        {reports &&
+                          !reports[user._id as string] &&
+                          user.role === 'tenant' && (
+                            <button
+                              onClick={() => {
+                                if (onCreateReport) {
+                                  onCreateReport({
+                                    user_id: user._id as string,
+                                    accommodation_id:
+                                      accommodation._id as string,
+                                  })
+                                }
+                              }}
+                            >
+                              Report this place
+                            </button>
+                          )}
                       </Grid>
                       <Grid item>
                         {/* Rating */}

@@ -12,7 +12,7 @@ import {
   FormLabel,
   InputLabel,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { COLOR } from '../../theme'
 import { signIn, signUp } from './AuthProvider'
@@ -34,7 +34,9 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
   const navigate = useNavigate()
 
   // state
-  const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
+  const [form, setForm] = React.useState<
+    IUserSignUp & { confirm: string; invalidBirthday: boolean }
+  >({
     username: '',
     password: '',
     email: '',
@@ -56,7 +58,9 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
     birthday: String(new Date()),
     organization: '',
     confirm: '',
+    invalidBirthday: true,
   })
+  const [error, setError] = useState('')
 
   // events
   const handleSignUp = () => {
@@ -102,6 +106,10 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
     }
   }
 
+  //constants
+
+  const currentDate = new Date()
+
   React.useEffect(() => {
     return () =>
       setForm({
@@ -126,6 +134,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         birthday: String(new Date()),
         confirm: '',
         organization: '',
+        invalidBirthday: true,
       })
   }, [])
 
@@ -306,15 +315,34 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             <DatePicker
               // value={form.birthday as string}
               slotProps={{ textField: { size: 'small' } }}
+              disableFuture
               onChange={value => {
                 const date = value as { $d: string }
-                const birthday = new Date(date.$d).toISOString().split('T')[0]
-                setForm(prev => ({
-                  ...prev,
-                  birthday,
-                }))
+                const inputYear = new Date(date.$d).getFullYear()
+                if (currentDate.getFullYear() - inputYear >= 18) {
+                  setError('')
+                  const birthday = new Date(date.$d).toISOString().split('T')[0]
+                  setForm(prev => ({
+                    ...prev,
+                    birthday,
+                    invalidBirthday: false,
+                  }))
+                } else {
+                  setError('Age must be 18 or above.')
+                  setForm(prev => ({ ...prev, invalidBirthday: true }))
+                }
               }}
             />
+            {error && (
+              <Typography
+                color="error"
+                sx={{
+                  fontSize: theme.spacing(1.5),
+                }}
+              >
+                {error}
+              </Typography>
+            )}
           </Grid>
         </Grid>
 
@@ -492,7 +520,9 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             marginBottom: theme.spacing(1),
           }}
           disabled={
-            form.password.length === 0 || form.password !== form.confirm
+            form.password.length === 0 ||
+            form.password !== form.confirm ||
+            form.invalidBirthday
           }
           onClick={handleSignUp}
         >
