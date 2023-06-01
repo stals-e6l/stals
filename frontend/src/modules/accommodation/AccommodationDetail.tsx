@@ -146,6 +146,9 @@ const AccommodationDetail: React.FC<IProps> = () => {
               [theme.breakpoints.up('lg')]: {
                 display: 'none',
               },
+              [theme.breakpoints.up('md')]: {
+                display: 'none',
+              },
             }}
           >
             <Typography variant="body2">{accommodation.address}</Typography>
@@ -156,6 +159,9 @@ const AccommodationDetail: React.FC<IProps> = () => {
           xs={12}
           sx={{
             [theme.breakpoints.up('lg')]: {
+              display: 'none',
+            },
+            [theme.breakpoints.up('md')]: {
               display: 'none',
             },
           }}
@@ -218,85 +224,112 @@ const AccommodationDetail: React.FC<IProps> = () => {
         <Grid
           item
           sx={{
+            [theme.breakpoints.down('md')]: {
+              display: 'none',
+            },
             [theme.breakpoints.down('sm')]: {
               display: 'none',
             },
           }}
         >
           <Grid container direction="row">
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={12} md={4} lg={4}>
               {/* Ratings Card */}
               <Card sx={detailCardSx}>
                 <Grid container>
                   <Grid item>
                     <Grid container direction="row" alignItems={'center'}>
-                      <Grid item>
-                        {/* Ratings */}
-                        <Typography variant="h4" sx={{ color: COLOR.green }}>
-                          {rating || 'No ratings yet.'}
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography
-                          variant="h5"
-                          sx={{ color: COLOR.textBlack }}
+                      {/* Ratings */}
+                      {rating === null || Number.isNaN(rating) ? (
+                        <Grid item>
+                          <Typography variant="h4" sx={{ color: COLOR.green }}>
+                            {'No ratings yet.'}
+                          </Typography>
+                        </Grid>
+                      ) : (
+                        <Grid
+                          container
+                          item
+                          direction="row"
+                          sx={{
+                            alignItems: 'flex-end',
+                          }}
                         >
-                          /5
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography>
-                          Reported by {reports && Object.values(reports).length}
-                        </Typography>
-                        {reports &&
-                          !reports[user._id as string] &&
-                          user.role === 'tenant' && (
-                            <button
-                              onClick={() => {
-                                if (onCreateReport) {
-                                  onCreateReport({
-                                    user_id: user._id as string,
-                                    accommodation_id:
-                                      accommodation._id as string,
-                                  })
-                                }
+                          {' '}
+                          <Typography variant="h3" sx={{ color: COLOR.green }}>
+                            {rating}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            sx={{ color: COLOR.textBlack }}
+                          >
+                            /5
+                          </Typography>
+                          <Box sx={{ ml: theme.spacing(1) }}>
+                            <Rating
+                              value={4.5}
+                              precision={0.5}
+                              readOnly
+                              sx={{
+                                color: COLOR.green,
+                                paddingTop: theme.spacing(1),
+                                [theme.breakpoints.down('md')]: {
+                                  fontSize: theme.spacing(2.25),
+                                },
+                                [theme.breakpoints.down('sm')]: {
+                                  display: 'none',
+                                },
+                              }}
+                            />
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                color: COLOR.textBlack,
+                                mt: theme.spacing(-1),
                               }}
                             >
-                              Report this place
-                            </button>
-                          )}
-                      </Grid>
+                              {reviews?.length} rating/s /{' '}
+                              {reports && Object.values(reports).length} Reports
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      )}
+
                       <Grid item>
                         {/* Rating */}
-                        <Rating
-                          value={4.5}
-                          precision={0.5}
-                          readOnly
-                          sx={{
-                            color: COLOR.green,
-                            paddingTop: theme.spacing(1),
-                            [theme.breakpoints.down('md')]: {
-                              fontSize: theme.spacing(2.25),
-                            },
-                            [theme.breakpoints.down('sm')]: {
-                              display: 'none',
-                            },
-                          }}
-                        />
+                        {/* {rating ||
+                          (!Number.isNaN(rating) && ( */}
+
+                        {/* ))} */}
                       </Grid>
-                      <Grid item>
-                        {/* Number of reviews */}
-                        <Typography
-                          variant="body1"
-                          sx={{ color: COLOR.textBlack }}
-                        >
-                          {reviews?.length} ratings
-                        </Typography>
-                      </Grid>
+                    </Grid>
+
+                    <Grid item>
+                      {reports &&
+                        !reports[user._id as string] &&
+                        user.role === 'tenant' && (
+                          <button
+                            onClick={() => {
+                              if (onCreateReport) {
+                                onCreateReport({
+                                  user_id: user._id as string,
+                                  accommodation_id: accommodation._id as string,
+                                })
+                              }
+                            }}
+                          >
+                            Report this place
+                          </button>
+                        )}
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Grid container direction="row" alignContent="center">
+                    <Grid
+                      xs={12}
+                      container
+                      direction="row"
+                      alignContent="center"
+                    >
                       {/* Account Circle Icon */}
                       <Grid item>
                         <AccountCircleIcon
@@ -318,7 +351,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                             </Typography>
                           </Grid>
                           <Grid item>
-                            <Typography variant="body2">
+                            <Typography variant="body2" sx={{mt:theme.spacing(-1)}}>
                               {reviews &&
                                 reviews?.length > 0 &&
                                 reviews[0].comment}
@@ -339,7 +372,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
               {/* End of Ratings Card */}
             </Grid>
 
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={12} md={4} lg={4}>
               {/* Facilities and Services Card */}
               <Card sx={detailCardSx}>
                 <Grid container>
@@ -406,10 +439,10 @@ const AccommodationDetail: React.FC<IProps> = () => {
               {/* End of Facilities and Services Card */}
             </Grid>
 
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={12} md={4} lg={4}>
               {/* Facilities and Services Card */}
               <Card sx={detailCardSx}>
-                <Grid container alignContent="center">
+                <Grid container alignItems="center">
                   {/* Pin Drop Icon */}
                   <Grid item xs={2}>
                     <PinDropIcon
