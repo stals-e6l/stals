@@ -35,7 +35,7 @@ const AccommodationResults: React.FC<IProps> = ({ endpoint }) => {
 
   React.useEffect(() => {
     fetchAccommodations()
-  }, [])
+  }, [endpoint])
 
   if (!accommodations || accommodations.length === 0) {
     return (

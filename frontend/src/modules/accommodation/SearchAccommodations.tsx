@@ -32,7 +32,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
     setName(event.target.value)
   }
   const handleSearch = () => {
-    navigate(`${ROUTES.appResult}?${buildQueryString({ name })}`, {
+    navigate(`${ROUTES.appResult}?${buildQueryString({ search: name })}`, {
       replace: true,
     })
   }
@@ -78,7 +78,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
                   borderBottomRightRadius: '0px',
                 },
               }}
-              onKeyDown={(e) => {
+              onKeyDown={e => {
                 if (e.key === 'Enter') {
                   handleSearch()
                 }
