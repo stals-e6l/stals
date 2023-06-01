@@ -33,10 +33,16 @@ const ExplorePage: React.FC<IProps> = () => {
           },
         }}
       >
-        <Grid item>
+        <Grid item xs={12}>
           <Title text="Most Viewed" />
         </Grid>
         <Grid item xs={12}>
+          <AccommodationResults isPublicView={false} />
+        </Grid>
+        <Grid item xs={12}>
+          <Title text="New Accommodations" />
+        </Grid>
+        <Grid item>
           <AccommodationResults isPublicView={false} />
         </Grid>
       </Grid>
