@@ -70,7 +70,22 @@ const AccommodationDetail: React.FC<IProps> = () => {
     position: 'relative',
     pb: theme.spacing(4),
     [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  }
+
+  const detailCardMobileSx = {
+    width: '96%',
+    height: theme.spacing(22),
+    boxShadow: `${alpha(COLOR.black, 0.5)} 0 4px 10px 1px`,
+    padding: theme.spacing(2),
+    position: 'relative',
+    pb: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
       height: 'fit-content',
+      padding: theme.spacing(1),
+      pb: theme.spacing(3),
+      mb: theme.spacing(1)
     },
   }
 
@@ -102,9 +117,12 @@ const AccommodationDetail: React.FC<IProps> = () => {
           marginLeft: 'auto',
           marginRight: 'auto',
           rowGap: theme.spacing(),
+          [theme.breakpoints.down('sm')]: {
+            width: '90%',
+          },
         }}
       >
-        <Grid item>
+        <Grid item sx={{width: '100%'}}>
           <Grid container direction="row" justifyContent="space-between">
             {/* Accommodation Name */}
             <Grid item>
@@ -154,155 +172,73 @@ const AccommodationDetail: React.FC<IProps> = () => {
             <Typography variant="body2">{accommodation.address}</Typography>
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{
-            [theme.breakpoints.up('lg')]: {
-              display: 'none',
-            },
-            [theme.breakpoints.up('md')]: {
-              display: 'none',
-            },
-          }}
-        >
-          {/* Facilities and Services Card */}
-          <Card sx={detailCardSx}>
-            <Grid container>
-              <Grid item xs={12}>
-                <List dense={true}>
-                  {accommodation.amenities[0] && (
-                    <ListItem disablePadding>
-                      <ListItemIcon>
-                        <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                      </ListItemIcon>
-                      <ListItemText>
-                        <Typography variant="body1">
-                          {accommodation.amenities[0]}
-                        </Typography>
-                      </ListItemText>
-                    </ListItem>
-                  )}
-
-                  {accommodation.appliances[0] && (
-                    <ListItem disablePadding>
-                      <ListItemIcon>
-                        <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                      </ListItemIcon>
-                      <ListItemText>
-                        <Typography variant="body1">
-                          {accommodation.appliances[0]}
-                        </Typography>
-                      </ListItemText>
-                    </ListItem>
-                  )}
-
-                  {accommodation.safety_and_security[0] && (
-                    <ListItem disablePadding>
-                      <ListItemIcon>
-                        <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                      </ListItemIcon>
-                      <ListItemText>
-                        <Typography variant="body1">
-                          {accommodation.safety_and_security[0]}
-                        </Typography>
-                      </ListItemText>
-                    </ListItem>
-                  )}
-                </List>
-              </Grid>
-              {/* Facilities and Services label */}
-              <Grid item xs={12}>
-                <Typography variant="h6" paddingTop={2} sx={detailCardLabelsx}>
-                  Facilities and Services
-                </Typography>
-              </Grid>
-            </Grid>
-          </Card>{' '}
-          {/* End of Facilities and Services Card */}
-        </Grid>
-        <Grid
-          item
-          sx={{
-            [theme.breakpoints.down('md')]: {
-              display: 'none',
-            },
-            [theme.breakpoints.down('sm')]: {
-              display: 'none',
-            },
-          }}
-        >
+        <Grid item sx={{width: '100%'}}>
           <Grid container direction="row">
             <Grid item xs={12} md={4} lg={4}>
               {/* Ratings Card */}
-              <Card sx={detailCardSx}>
+              <Card sx={detailCardMobileSx}>
                 <Grid container>
                   <Grid item>
-                    <Grid container direction="row" alignItems={'center'}>
-                      {/* Ratings */}
-                      {rating === null || Number.isNaN(rating) ? (
-                        <Grid item>
-                          <Typography variant="h4" sx={{ color: COLOR.green }}>
-                            {'No ratings yet.'}
-                          </Typography>
-                        </Grid>
-                      ) : (
-                        <Grid
-                          container
-                          item
-                          direction="row"
+                    {/* Ratings */}
+                    {rating === null || Number.isNaN(rating) ? (
+                      <Grid item>
+                        <Typography variant="h4" sx={{ color: COLOR.green }}>
+                          {'No ratings yet.'}
+                        </Typography>
+                      </Grid>
+                    ) : (
+                      <Grid
+                        container
+                        item
+                        direction="row"
+                        sx={{
+                          alignItems: 'flex-end',
+                        }}
+                      >
+                        {' '}
+                        <Typography
                           sx={{
-                            alignItems: 'flex-end',
+                            typography: {
+                              lg: 'h3',
+                              xs: 'h4',
+                            },
+                            color: COLOR.green,
                           }}
                         >
-                          {' '}
-                          <Typography variant="h3" sx={{ color: COLOR.green }}>
-                            {rating}
-                          </Typography>
+                          {rating}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          sx={{ color: COLOR.textBlack }}
+                        >
+                          /5
+                        </Typography>
+                        <Box sx={{ ml: theme.spacing(1) }}>
+                          <Rating
+                            value={rating}
+                            precision={0.5}
+                            readOnly
+                            sx={{
+                              color: COLOR.green,
+                              paddingTop: theme.spacing(1),
+                              [theme.breakpoints.down('md')]: {
+                                fontSize: theme.spacing(2.25),
+                              },
+                            }}
+                          />
                           <Typography
-                            variant="h6"
-                            sx={{ color: COLOR.textBlack }}
+                            variant="body2"
+                            sx={{
+                              color: COLOR.textBlack,
+                              mt: theme.spacing(-1),
+                            }}
                           >
-                            /5
+                            {reviews?.length} rating/s /{' '}
+                            {reports && Object.values(reports).length} Reports
                           </Typography>
-                          <Box sx={{ ml: theme.spacing(1) }}>
-                            <Rating
-                              value={rating}
-                              precision={0.5}
-                              readOnly
-                              sx={{
-                                color: COLOR.green,
-                                paddingTop: theme.spacing(1),
-                                [theme.breakpoints.down('md')]: {
-                                  fontSize: theme.spacing(2.25),
-                                },
-                                [theme.breakpoints.down('sm')]: {
-                                  display: 'none',
-                                },
-                              }}
-                            />
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                color: COLOR.textBlack,
-                                mt: theme.spacing(-1),
-                              }}
-                            >
-                              {reviews?.length} rating/s /{' '}
-                              {reports && Object.values(reports).length} Reports
-                            </Typography>
-                          </Box>
-                        </Grid>
-                      )}
-
-                      <Grid item>
-                        {/* Rating */}
-                        {/* {rating ||
-                          (!Number.isNaN(rating) && ( */}
-
-                        {/* ))} */}
+                        </Box>
                       </Grid>
-                    </Grid>
+                    )}
 
                     <Grid item>
                       {reports &&
@@ -380,7 +316,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
 
             <Grid item xs={12} md={4} lg={4}>
               {/* Facilities and Services Card */}
-              <Card sx={detailCardSx}>
+              <Card sx={detailCardMobileSx}>
                 <Grid container>
                   <Grid item xs={12}>
                     <List dense={true}>
@@ -504,7 +440,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           </Grid>
         </Grid>
         {/* | Description */}
-        <Grid item sx={{ paddingTop: theme.spacing(2) }}>
+        <Grid item sx={{ paddingTop: theme.spacing(2), width:'100%' }}>
           <Title text={'Description'} />
         </Grid>
         {/* Description */}
@@ -512,6 +448,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           item
           sx={{
             padding: theme.spacing(2),
+            width:'100%'
           }}
         >
           <Typography variant="body1">{accommodation.description}</Typography>
@@ -526,6 +463,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           sx={{
             backgroundColor: COLOR.gray1,
             padding: theme.spacing(2),
+            width: '100%',
           }}
         >
           <Grid container rowGap={1}>
@@ -588,6 +526,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
             paddingBottom: theme.spacing(2),
+            width:'100%'
           }}
         >
           <Grid container>
@@ -667,6 +606,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           item
           sx={{
             backgroundColor: COLOR.gray1,
+            width: '100%',
           }}
         >
           <Grid container rowGap={1} sx={{ padding: theme.spacing(2) }}>
@@ -697,6 +637,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
             paddingBottom: theme.spacing(2),
+            width:'100%'
           }}
         >
           <Grid container>
@@ -767,7 +708,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid item sx={{width:'100%'}}>
           <Title text="Reviews" />
           <Reviews />
         </Grid>
