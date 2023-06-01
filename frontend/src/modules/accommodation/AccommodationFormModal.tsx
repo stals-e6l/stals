@@ -94,21 +94,33 @@ const AccommodationFormModal: React.FC<IProps> = ({
         }
       }
       //const response = await onCreateAccommodation(formData)
-      onCreateAccommodation(formData).catch(err => {
-        const newError: { [key: string]: string } = {}
-        String(err)
-          .replace('Error: ValidationError: ', '')
-          .split(',')
-          .forEach(err => {
-            const [key, message] = err.split(':')
-            newError[key.trim()] = message
-          })
-        setError(newError)
-      })
+      onCreateAccommodation(formData)
+        .then(toggleDialog)
+        .catch(err => {
+          const newError: { [key: string]: string } = {}
+          String(err)
+            .replace('Error: ValidationError: ', '')
+            .split(',')
+            .forEach(err => {
+              const [key, message] = err.split(':')
+              newError[key.trim()] = message
+            })
+          setError(newError)
+        })
     } else if (onEditAccommodation && defaultValues) {
-      onEditAccommodation({ ...form, _id: defaultValues._id as string }).then(
-        toggleDialog
-      )
+      onEditAccommodation({ ...form, _id: defaultValues._id as string })
+        .then(toggleDialog)
+        .catch(err => {
+          const newError: { [key: string]: string } = {}
+          String(err)
+            .replace('Error: ValidationError: ', '')
+            .split(',')
+            .forEach(err => {
+              const [key, message] = err.split(':')
+              newError[key.trim()] = message
+            })
+          setError(newError)
+        })
     }
     if (onClose) onClose()
   }
