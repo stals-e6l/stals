@@ -1,60 +1,36 @@
 import React from 'react'
-import { Box, useTheme, Button, Typography, Dialog,
+import {
+  Box,
+  useTheme,
+  Button,
+  Typography,
+  Dialog,
   DialogTitle,
   DialogActions,
-  DialogContent, } from '@mui/material'
+  DialogContent,
+} from '@mui/material'
 
-// import { getUser } from '../../store/auth/action'
 import { COLOR } from '../../theme/index'
-import useMediaQuery from '@mui/material/useMediaQuery'
 import EditProfile from './EditProfile'
 import EditIcon from '@mui/icons-material/Edit'
+import { getMe } from './AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
 }
 
 const EditProfileModal: React.FC<IProps> = () => {
-  //   const user = getUser()
+  const user = getMe()
 
-  //   if (!user) {
-  //     return <div>no user</div>
-  //   }
   const theme = useTheme()
 
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const user: IUser = {
-    username: 'Pogi',
-    email: 'test@up.edu.ph',
-    role: 'admin',
-    full_name: {
-      first_name: 'Rodge Miguel',
-      middle_name: 'Magpantay',
-      last_name: 'De Luna',
-    },
-    gender: 'male',
-    address: {
-      home: 'Cainta, Rizal',
-      current: 'Carrot Place',
-    },
-    birthday: '07/26/2001',
-    phone: {
-      landline: '212 7388',
-      mobile: '09163342585',
-    },
-    organization: 'COSS',
-    biography: 'You miss 100% shots you dont take.',
-    _id: '',
-    password: '',
-    avatar: {
-      url: '',
-    },
+  if (!user) {
+    return <div>no user</div>
   }
-
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <React.Fragment>
@@ -102,12 +78,10 @@ const EditProfileModal: React.FC<IProps> = () => {
             </Typography>
           </DialogTitle>
           <DialogContent sx={{}}>
-            <EditProfile user={user}/>
-            
+            <EditProfile user={user} />
           </DialogContent>
           <DialogActions sx={{}}>
             {' '}
-
             <Button
               variant="contained"
               sx={{
@@ -119,7 +93,6 @@ const EditProfileModal: React.FC<IProps> = () => {
             >
               Cancel
             </Button>
-
             <Button
               variant="contained"
               sx={{
@@ -133,7 +106,7 @@ const EditProfileModal: React.FC<IProps> = () => {
         </Dialog>
       )}
       <Box>
-        <EditProfile user={user} />
+        {/* <EditProfile user={user} /> */}
 
         <Box
           sx={{
@@ -141,9 +114,7 @@ const EditProfileModal: React.FC<IProps> = () => {
             justifyContent: 'flex-end',
             margin: theme.spacing(1),
           }}
-        >
-          
-        </Box>
+        ></Box>
       </Box>
     </React.Fragment>
   )

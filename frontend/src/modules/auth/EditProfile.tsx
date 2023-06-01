@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   Box,
-  Typography,
   useTheme,
   TextField,
   Card,
@@ -9,11 +8,9 @@ import {
   CardContent,
   FormLabel,
   OutlinedInput,
-  OutlinedInputProps,
   Grid,
   MenuItem,
   Select,
-  InputLabel,
 } from '@mui/material'
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -51,7 +48,7 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
           height: '50%',
           border: 'solid 1px green',
           backgroundColor: COLOR.white,
-          boxShadow: 'none'
+          boxShadow: 'none',
         }}
         onClick={handleUploadImage}
       >
@@ -110,7 +107,6 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
             sx={{ marginTop: 2 }}
             disableFuture
             label="Birthday"
-            
           />
         </Grid>
       </Grid>
