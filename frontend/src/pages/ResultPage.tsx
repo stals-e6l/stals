@@ -9,7 +9,6 @@ import { COLOR } from '../theme/index'
 import Title from '../modules/accommodation/TitleComponent'
 import DownloadAccommodations from '../modules/accommodation/DownloadAccommodations'
 import { useLocation } from 'react-router-dom'
-import { useAccommodation } from '../modules/accommodation/AccommodationsProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -21,8 +20,6 @@ const ResultPage: React.FC<IProps> = () => {
   const location = useLocation()
 
   const search = location.search
-
-  const { dispatch } = useAccommodation()
 
   return (
     <React.Fragment>
@@ -135,10 +132,6 @@ const ResultPage: React.FC<IProps> = () => {
               <AccommodationResults
                 isPublicView={false}
                 endpoint={`accommodation${search}`}
-                callback={(data: IAccommodation) => {
-                  if (!dispatch) return
-                  dispatch({ type: 'SET_ACCOMMODATIONS', payload: data })
-                }}
               />
             </Grid>
 

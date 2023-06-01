@@ -69,9 +69,29 @@ const seedAccommodations = async () => {
   try {
     await User.deleteMany()
     await Accommodation.deleteMany()
-    const user = await User.create({
-      username: 'john.doe',
-      email: 'john.doe@gmail.com',
+    const admin = await User.create({
+      username: 'admin.john.doe',
+      email: 'admin.john.doe@gmail.com',
+      password: 'Password123$',
+      role: 'admin',
+      full_name: {
+        first_name: 'John',
+        middle_name: 'Magnifico',
+        last_name: 'Doe',
+      },
+      gender: 'male',
+      address: {
+        home: faker.location.city(),
+        current: faker.location.city(),
+      },
+      birthday: '2001-05-02',
+      organization: 'JohnDoe Residences',
+      phone: {},
+      biography: faker.lorem.paragraph(),
+    })
+    const owner = await User.create({
+      username: 'owner.john.doe',
+      email: 'owner.john.doe@gmail.com',
       password: 'Password123$',
       role: 'owner',
       full_name: {
@@ -89,7 +109,27 @@ const seedAccommodations = async () => {
       phone: {},
       biography: faker.lorem.paragraph(),
     })
-    await Accommodation.create(accomms(user._id))
+    const tenant = await User.create({
+      username: 'tenant.john.doe',
+      email: 'tenant.john.doe@gmail.com',
+      password: 'Password123$',
+      role: 'tenant',
+      full_name: {
+        first_name: 'John',
+        middle_name: 'Magnifico',
+        last_name: 'Doe',
+      },
+      gender: 'male',
+      address: {
+        home: faker.location.city(),
+        current: faker.location.city(),
+      },
+      birthday: '2001-05-02',
+      organization: 'JohnDoe Residences',
+      phone: {},
+      biography: faker.lorem.paragraph(),
+    })
+    await Accommodation.create(accomms(owner._id))
     console.log('seed accommodations!')
   } catch (err) {
     console.error(err)

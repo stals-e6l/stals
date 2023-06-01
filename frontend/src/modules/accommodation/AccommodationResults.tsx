@@ -1,6 +1,9 @@
 import { Grid, Typography, Box, useTheme } from '@mui/material'
 import React from 'react'
-import { retrieveAccommodations } from './AccommodationsProvider'
+import {
+  retrieveAccommodations,
+  useAccommodation,
+} from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
 import { useLocation } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
@@ -20,6 +23,7 @@ const AccommodationResults: React.FC<IProps> = ({ endpoint, callback }) => {
   // const accommodations = retrieveAccommodations()
   const theme = useTheme()
   const token = getToken()
+  const { dispatch } = useAccommodation()
 
   const [accommodations, setAccommodations] = React.useState<IAccommodation[]>(
     []
@@ -30,7 +34,15 @@ const AccommodationResults: React.FC<IProps> = ({ endpoint, callback }) => {
     const res = await apiGet<IAccommodation[]>(endpoint, token)
     if (res.success && res.data) {
       setAccommodations(res.data)
+
+      if (!dispatch) return
+      dispatch({
+        type: 'SET_ACCOMMODATIONS',
+        payload: res.data as IAccommodation[],
+      })
+
       if (callback) callback(res.data)
+
       return
     }
   }

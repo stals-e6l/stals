@@ -301,9 +301,9 @@ const ProfilePage: React.FC<IProps> = () => {
               <br />
               <AccommodationResults
                 isPublicView={false}
-                endpoint={`accommodation?user_id=${
-                  user._id as string
-                }&limit=12&sort_by=num_views&sort_order=descending`}
+                endpoint={
+                  'accommodation?limit=12&sort_by=num_views&sort_order=descending'
+                }
               />
             </Grid>
           </Grid>
