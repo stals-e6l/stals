@@ -19,7 +19,7 @@ interface IProps {
     val: string | number | string[]
   ) => void
   setFile: React.Dispatch<React.SetStateAction<File | undefined>>
-  error: string | null
+  error: any | null
 }
 
 const AccommodationForm: React.FC<IProps> = ({
@@ -29,32 +29,6 @@ const AccommodationForm: React.FC<IProps> = ({
   error,
 }) => {
   // state
-
-  const [fieldValues, setFieldValues] = React.useState({
-    name: '',
-    address: '',
-    min_price: '',
-    max_price: '',
-    size_sqm: '',
-    meters_from_uplb: '',
-    min_pax: '',
-    max_pax: '',
-    num_rooms: '',
-    num_beds: '',
-  })
-
-  const [fieldTouched, setFieldTouched] = React.useState({
-    name: false,
-    address: false,
-    min_price: false,
-    max_price: false,
-    size_sqm: false,
-    meters_from_uplb: false,
-    min_pax: false,
-    max_pax: false,
-    num_rooms: false,
-    num_beds: false,
-  })
 
   // immediate
   const values = React.useMemo(() => form, [form])
@@ -90,14 +64,6 @@ const AccommodationForm: React.FC<IProps> = ({
         defaultValue={values.name}
         onBlur={e => {
           setFieldValue('name', e.target.value)
-          setFieldValues(prevValues => ({
-            ...prevValues,
-            name: e.target.value,
-          }))
-          setFieldTouched(prevTouched => ({
-            ...prevTouched,
-            name: true,
-          }))
         }}
         required
         fullWidth
@@ -105,10 +71,8 @@ const AccommodationForm: React.FC<IProps> = ({
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
         style={{ marginTop: 20 }}
-        error={fieldTouched.name && fieldValues.name === ''}
-        helperText={
-          fieldTouched.name && fieldValues.name === '' ? 'Name is required' : ''
-        }
+        error={error && error.name}
+        helperText={error && error.name}
       />
       <TextField
         defaultValue={values.description}
@@ -129,6 +93,8 @@ const AccommodationForm: React.FC<IProps> = ({
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
         style={{ marginTop: 20 }}
+        error={error && error.address}
+        helperText={error && error.address}
       />
       <Select
         label="Type"
@@ -160,6 +126,8 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
+        error={error && error.min_price}
+        helperText={error && error.min_price}
       />
       <TextField
         defaultValue={
@@ -175,6 +143,8 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
+        error={error && error.max_price}
+        helperText={error && error.max_price}
       />
       <TextField
         defaultValue={
@@ -189,6 +159,8 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
+        error={error && error.size_sqm}
+        helperText={error && error.size_sqm}
       />
       <TextField
         defaultValue={
@@ -205,6 +177,8 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
+        error={error && error.meters_from_uplb}
+        helperText={error && error.meters_from_uplb}
       />
       <TextField
         defaultValue={Number(values.min_pax) == 0 ? '' : Number(values.min_pax)}
@@ -217,6 +191,8 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
+        error={error && error.min_pax}
+        helperText={error && error.min_pax}
       />
       <TextField
         defaultValue={Number(values.max_pax) == 0 ? '' : Number(values.max_pax)}
@@ -229,6 +205,8 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
+        error={error && error.max_pax}
+        helperText={error && error.max_pax}
       />
       <TextField
         defaultValue={
@@ -243,6 +221,8 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
+        error={error && error.num_rooms}
+        helperText={error && error.num_rooms}
       />
       <TextField
         defaultValue={
@@ -257,6 +237,8 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
+        error={error && error.num_beds}
+        helperText={error && error.num_beds}
       />
       <Select
         label="Furnishing"

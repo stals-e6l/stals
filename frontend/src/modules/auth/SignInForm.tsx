@@ -40,6 +40,7 @@ const SignInForm: React.FC<IProps> = () => {
     username: '',
     password: '',
   })
+  const [errorMessage, setError] = React.useState<any | null>(null)
 
   // events
   const handleOpen = () => toggleDialog()
@@ -50,7 +51,11 @@ const SignInForm: React.FC<IProps> = () => {
         .then(() => {
           navigate(ROUTES.appExplore)
         })
-        .catch(err => onShowError(String(err)))
+        .catch(err => {
+          console.log(err)
+          const newError = String(err).replace('Error: Error: ', '')
+          setError({ error: newError })
+        })
     }
   }
 
@@ -154,12 +159,23 @@ const SignInForm: React.FC<IProps> = () => {
                 }
               }}
             />
+
+            {errorMessage && errorMessage.error && (
+              <Typography fontWeight='medium' align='justify' color='error'
+                sx={{
+                  paddingTop: theme.spacing(1),
+                }}
+              >
+                {errorMessage.error}
+              </Typography>
+            )}
+
             <Button
               variant="contained"
               fullWidth
               sx={{
                 backgroundColor: theme.palette.primary.main,
-                marginTop: theme.spacing(3),
+                marginTop: theme.spacing(2),
                 marginBottom: theme.spacing(2),
               }}
               onClick={handleSignIn}

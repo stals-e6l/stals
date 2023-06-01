@@ -5,18 +5,14 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
-  OutlinedInputProps,
   FormControlLabel,
   Checkbox,
   Button,
   useTheme,
   Grid,
-  FormLabel,
-  InputLabel,
 } from '@mui/material'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { COLOR } from '../../theme'
 import { signIn, signUp } from './AuthProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { showErrorSnackbar } from '../general/ErrorHandler'
@@ -35,16 +31,14 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
   const onShowError = showErrorSnackbar()
   const navigate = useNavigate()
 
-  
-
   // state
   const [form, setForm] = React.useState<
-    IUserSignUp & { confirm: string; invalidBirthday: boolean }
+    IUserSignUp & { confirm: string; read: boolean; agreed: boolean }
   >({
     username: '',
     password: '',
     email: '',
-    role: 'admin',
+    role: 'owner',
     full_name: {
       first_name: '',
       middle_name: '',
@@ -62,12 +56,14 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
     birthday: String(new Date()),
     organization: '',
     confirm: '',
-    invalidBirthday: true,
+    read: false,
+    agreed: false,
   })
-  const [error, setError] = useState('')
+  const [error, setError] = useState<any | null>(null)
 
   // events
   const handleSignUp = () => {
+    setError(null)
     if (onSignUp && onShowError) {
       onSignUp({
         ...form,
@@ -85,12 +81,10 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         address: {
           current:
             !form.address || form.address.current === ''
-              ? undefined
+              ? ''
               : form.address.current,
           home:
-            !form.address || form.address.home === ''
-              ? undefined
-              : form.address.home,
+            !form.address || form.address.home === '' ? '' : form.address.home,
         },
       })
         .then(() => {
@@ -106,13 +100,21 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
               .catch(err => onShowError(String(err)))
           }
         })
-        .catch(err => onShowError(String(err)))
+        .catch(err => {
+          const newError: IMap<string> = {}
+          String(err)
+            .replace('Error: ValidationError: ', '')
+            .split(',')
+            .forEach(lines => {
+              const [key, message] = lines.split(':')
+              newError[key.trim()] = message.trim()
+            })
+          setError(newError)
+        })
     }
   }
 
   //constants
-
-  const currentDate = new Date()
 
   React.useEffect(() => {
     return () =>
@@ -120,7 +122,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         username: '',
         password: '',
         email: '',
-        role: 'admin',
+        role: 'owner',
         full_name: {
           first_name: '',
           middle_name: '',
@@ -138,7 +140,8 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         birthday: String(new Date()),
         confirm: '',
         organization: '',
-        invalidBirthday: true,
+        read: false,
+        agreed: false,
       })
   }, [])
 
@@ -152,6 +155,8 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         value={form.username}
         onChange={e => setForm(prev => ({ ...prev, username: e.target.value }))}
         variant="filled"
+        error={error && error.username}
+        helperText={error && error.username}
       />
 
       <TextField
@@ -163,6 +168,8 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
         variant="filled"
         style={{ marginTop: 20 }}
+        error={error && error.email}
+        helperText={error && error.email}
       />
       <Select
         label="Role"
@@ -180,18 +187,6 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         <MenuItem value={'tenant'}>Student</MenuItem>
         <MenuItem value={'owner'}>Accommodation Owner</MenuItem>
       </Select>
-
-      <TextField
-        size="small"
-        fullWidth
-        label="Organization"
-        value={form.organization}
-        onChange={e =>
-          setForm(prev => ({ ...prev, organization: e.target.value }))
-        }
-        variant="filled"
-        style={{ marginTop: 20 }}
-      />
 
       <Grid
         container
@@ -211,6 +206,27 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
                 full_name: {
                   ...prev.full_name,
                   first_name: e.target.value,
+                },
+              }))
+            }
+            variant="filled"
+            style={{ marginTop: 20 }}
+            error={error && error['full_name.first_name']}
+            helperText={error && error['full_name.first_name']}
+          />
+        </Grid>
+        <Grid item xs={12} lg={4}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Middle name"
+            value={form.full_name.middle_name}
+            onChange={e =>
+              setForm(prev => ({
+                ...prev,
+                full_name: {
+                  ...prev.full_name,
+                  middle_name: e.target.value,
                 },
               }))
             }
@@ -237,26 +253,8 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             }
             variant="filled"
             style={{ marginTop: 20 }}
-          />
-        </Grid>
-
-        <Grid item xs={12} lg={4}>
-          <TextField
-            size="small"
-            fullWidth
-            label="Middle name"
-            value={form.full_name.middle_name}
-            onChange={e =>
-              setForm(prev => ({
-                ...prev,
-                full_name: {
-                  ...prev.full_name,
-                  middle_name: e.target.value,
-                },
-              }))
-            }
-            variant="filled"
-            style={{ marginTop: 20 }}
+            error={error && error['full_name.last_name']}
+            helperText={error && error['full_name.last_name']}
           />
         </Grid>
       </Grid>
@@ -287,120 +285,31 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
 
         <Grid item xs={5}>
           <DatePicker
-            // value={form.birthday as string}
             slotProps={{ textField: { size: 'small', variant: 'filled' } }}
             sx={{ marginTop: 2 }}
             disableFuture
             label="Birthday"
             onChange={value => {
               const date = value as { $d: string }
-              const inputYear = new Date(date.$d).getFullYear()
-              if (currentDate.getFullYear() - inputYear >= 18) {
-                setError('')
-                const birthday = new Date(date.$d).toISOString().split('T')[0]
-                setForm(prev => ({
-                  ...prev,
-                  birthday,
-                  invalidBirthday: false,
-                }))
-              } else {
-                setError('Age must be 18 or above.')
-                setForm(prev => ({ ...prev, invalidBirthday: true }))
-              }
+              const birthday = new Date(date.$d).toISOString().split('T')[0]
+              setForm(prev => ({
+                ...prev,
+                birthday,
+              }))
             }}
           />
-          {error && (
+          {error && error.birthday && (
             <Typography
               color="error"
               sx={{
                 fontSize: theme.spacing(1.5),
               }}
             >
-              {error}
+              {error.birthday}
             </Typography>
           )}
         </Grid>
       </Grid>
-
-      <Grid container spacing={1}>
-        <Grid item xs={6}>
-          <TextField
-            size="small"
-            fullWidth
-            label="Phone"
-            value={(form.phone && form.phone.mobile) || ''}
-            onChange={e =>
-              setForm(prev => ({
-                ...prev,
-                phone: {
-                  ...prev.phone,
-                  mobile: e.target.value,
-                },
-              }))
-            }
-            variant="filled"
-            style={{ marginTop: 20 }}
-          />
-        </Grid>
-
-        <Grid item xs={6}>
-          <TextField
-            size="small"
-            fullWidth
-            label="Landline"
-            value={(form.phone && form.phone.landline) || ''}
-            onChange={e =>
-              setForm(prev => ({
-                ...prev,
-                phone: {
-                  ...prev.phone,
-                  landline: e.target.value,
-                },
-              }))
-            }
-            variant="filled"
-            style={{ marginTop: 20 }}
-          />
-        </Grid>
-      </Grid>
-
-      <TextField
-        size="small"
-        fullWidth
-        required
-        label="Current Address"
-        value={(form.address && form.address.current) || ''}
-        onChange={e =>
-          setForm(prev => ({
-            ...prev,
-            address: {
-              ...prev.address,
-              current: e.target.value,
-            },
-          }))
-        }
-        variant="filled"
-        style={{ marginTop: 20 }}
-      />
-
-      <TextField
-        size="small"
-        fullWidth
-        required
-        label="Home Address"
-        value={(form.address && form.address.home) || ''}
-        onChange={e =>
-          setForm(prev => ({
-            ...prev,
-            address: {
-              ...prev.address,
-              home: e.target.value,
-            },
-          }))
-        }
-        variant="filled"
-        style={{ marginTop: 20 }}
-      />
 
       <TextField
         size="small"
@@ -412,6 +321,8 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         onChange={e => setForm(prev => ({ ...prev, password: e.target.value }))}
         variant="filled"
         style={{ marginTop: 20 }}
+        error={error && error.password}
+        helperText={error && error.password}
       />
       <TextField
         size="small"
@@ -427,7 +338,14 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
 
       <FormControlLabel
         required
-        control={<Checkbox />}
+        control={
+          <Checkbox
+            value={form.read}
+            onChange={(_, checked) =>
+              setForm(prev => ({ ...prev, read: checked }))
+            }
+          />
+        }
         label={
           <Typography>
             I have read the{' '}
@@ -449,12 +367,19 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
       />
       <FormControlLabel
         required
-        control={<Checkbox />}
+        control={
+          <Checkbox
+            value={form.agreed}
+            onChange={(_, checked) =>
+              setForm(prev => ({ ...prev, agreed: checked }))
+            }
+          />
+        }
         label={
           <Typography>
             I have read and agree to{' '}
             <Link
-              to="#"
+              to="https://www.airvnv.info/terms-and-conditions.html"
               target="_blank"
               style={{
                 display: 'inline',
@@ -467,7 +392,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             </Link>{' '}
             and{' '}
             <Link
-              to="#"
+              to="https://www.airvnv.info/terms-and-conditions.html"
               target="_blank"
               style={{
                 display: 'inline',
@@ -494,7 +419,8 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         disabled={
           form.password.length === 0 ||
           form.password !== form.confirm ||
-          form.invalidBirthday
+          !form.read ||
+          !form.agreed
         }
         onClick={handleSignUp}
       >
