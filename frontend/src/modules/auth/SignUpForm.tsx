@@ -379,7 +379,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           <Typography>
             I have read and agree to{' '}
             <Link
-              to="#"
+              to="https://www.airvnv.info/terms-and-conditions.html"
               target="_blank"
               style={{
                 display: 'inline',
@@ -392,7 +392,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
             </Link>{' '}
             and{' '}
             <Link
-              to="#"
+              to="https://www.airvnv.info/terms-and-conditions.html"
               target="_blank"
               style={{
                 display: 'inline',
