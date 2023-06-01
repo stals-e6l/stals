@@ -128,7 +128,7 @@ let blacklist = {}
  *      post:
  *          description: |
  *            This endpoint creates a user from the request body and **returns the created user**.
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **201** - OK
  *            2. **400** - Bad user request
@@ -194,7 +194,7 @@ const signUpEndpoint = async (req, res) => {
  *      post:
  *          description: |
  *            This endpoint logs the user in using their username and password and **returns a token** This token must be used in the **Authorize button** in the **top right of the screen**.
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **201** - OK
  *            2. **401** - Unauthorized access
@@ -233,7 +233,7 @@ const signInEndpoint = async (req, res) => {
     const password = req.body.password
 
     // second, validate if user indeed exists
-    const user = await User.findOne({ username: username })
+    const user = await User.findOne({ username: username }).select('password')
     if (!user) throw Error("We don't know this user. Try to sign up.")
 
     // third, check if password is correct
@@ -262,7 +262,7 @@ const signInEndpoint = async (req, res) => {
  *      post:
  *          description: |
  *            This endpoint signs a user out and **returns success**.
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
  *            2. **400** - Bad user request
@@ -312,7 +312,7 @@ const signOutEndpoint = async (req, res) => {
  *      get:
  *          description: |
  *            This endpoint looks for the information of the signed in user and **returns the found user**.
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
  *            2. **401** - Unauthorized access
@@ -383,7 +383,7 @@ const meEndpoint = async (req, res) => {
  *      put:
  *          description: |
  *            This endpoint edits the details of the currently signed in user and **returns the edited user**.
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
  *            2. **401** - Unauthorized access
@@ -454,4 +454,10 @@ const editUserEndpoint = async (req, res) => {
   }
 }
 
-module.exports = { signUpEndpoint, signInEndpoint, signOutEndpoint, meEndpoint, editUserEndpoint}
+module.exports = {
+  signUpEndpoint,
+  signInEndpoint,
+  signOutEndpoint,
+  meEndpoint,
+  editUserEndpoint,
+}
