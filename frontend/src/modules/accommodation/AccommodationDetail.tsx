@@ -267,7 +267,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                           </Typography>
                           <Box sx={{ ml: theme.spacing(1) }}>
                             <Rating
-                              value={4.5}
+                              value={rating}
                               precision={0.5}
                               readOnly
                               sx={{
