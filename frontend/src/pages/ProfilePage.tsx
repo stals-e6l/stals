@@ -31,7 +31,6 @@ const ProfilePage: React.FC<IProps> = () => {
   const user = getMe()
   const theme = useTheme()
   const [image, setImage] = React.useState<any>(null)
-  const isOwner = false
 
   if (!user) return <></>
 
@@ -77,7 +76,7 @@ const ProfilePage: React.FC<IProps> = () => {
             </Typography>
 
             {user.full_name.middle_name === undefined ||
-              user.full_name.middle_name === '' ? (
+            user.full_name.middle_name === '' ? (
               <Typography
                 variant="h6"
                 sx={{
@@ -291,34 +290,61 @@ const ProfilePage: React.FC<IProps> = () => {
         </Box>
       </Grid>
 
-      {isOwner && <Grid item xs={9} padding={theme.spacing(4)}>
-        <Grid container>
-          <Grid item xs={12}>
-            <br />
-            <Title text={'My Accommodations'} />
-          </Grid>
-          <Grid item>
-            <br />
-            <AccommodationResults isPublicView={false} />
-          </Grid>
-        </Grid>
-      </Grid>}
-
-      {!isOwner && <Grid item xs={9} padding={theme.spacing(4)}>
-        <Grid container>
-          <Grid item xs={12}>
-            <br />
-            <Title text={'All Accommodations'} />
-          </Grid>
-          <Grid item>
-            <br />
-            <AccommodationResults isPublicView={false} />
+      {user.role === 'tenant' && (
+        <Grid item xs={9} padding={theme.spacing(4)}>
+          <Grid container>
+            <Grid item xs={12}>
+              <br />
+              <Title text={'Featured Accommodations'} />
+            </Grid>
+            <Grid item>
+              <br />
+              <AccommodationResults
+                isPublicView={false}
+                endpoint={`accommodation?user_id=${
+                  user._id as string
+                }&limit=12&sort_by=num_views&sort_order=descending`}
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>}
+      )}
 
+      {user.role === 'owner' && (
+        <Grid item xs={9} padding={theme.spacing(4)}>
+          <Grid container>
+            <Grid item xs={12}>
+              <br />
+              <Title text={'Archived Accommodations'} />
+            </Grid>
+            <Grid item>
+              <br />
+              <AccommodationResults
+                isPublicView={false}
+                endpoint={`accommodation?user_id=${
+                  user._id as string
+                }&limit=12&is_soft_deleted=true`}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      )}
+
+      {/* {!isOwner && (
+        <Grid item xs={9} padding={theme.spacing(4)}>
+          <Grid container>
+            <Grid item xs={12}>
+              <br />
+              <Title text={'All Accommodations'} />
+            </Grid>
+            <Grid item>
+              <br />
+              <AccommodationResults isPublicView={false} />
+            </Grid>
+          </Grid>
+        </Grid>
+      )} */}
     </Grid>
-
   )
 }
 

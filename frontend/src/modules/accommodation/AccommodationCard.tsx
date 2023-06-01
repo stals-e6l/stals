@@ -219,12 +219,14 @@ const AccommodationCard: React.FC<IProps> = ({
                       defaultValues={accommodation}
                       onClose={onClose}
                     />
-                    <DeleteAccommodationFormModal
-                      userId={accommodation.user_id as string}
-                      accommodationId={accommodation._id as string}
-                      isSoftDelete={true}
-                      onClose={onClose}
-                    />
+                    {!accommodation.is_soft_deleted && (
+                      <DeleteAccommodationFormModal
+                        userId={accommodation.user_id as string}
+                        accommodationId={accommodation._id as string}
+                        isSoftDelete={true}
+                        onClose={onClose}
+                      />
+                    )}
                     <DeleteAccommodationFormModal
                       userId={accommodation.user_id as string}
                       accommodationId={accommodation._id as string}
