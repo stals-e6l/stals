@@ -177,6 +177,11 @@ module.exports = reviewRouter
  *                  schema:
  *                      type: number
  *                  description: Number of reviews to return
+ *              -   in: query
+ *                  name: populate
+ *                  schema:
+ *                      type: string
+ *                  description: Use field to populate
  *          responses:
  *              200:
  *                  content:

@@ -21,6 +21,7 @@ const ExplorePage: React.FC<IProps> = () => {
         container
         rowGap={2}
         sx={{
+          width: '100%',
           paddingLeft: '10%',
           paddingRight: '10%',
           [theme.breakpoints.down('md')]: {
@@ -35,7 +36,7 @@ const ExplorePage: React.FC<IProps> = () => {
         <Grid item>
           <Title text="Most Viewed" />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <AccommodationResults isPublicView={false} />
         </Grid>
       </Grid>
