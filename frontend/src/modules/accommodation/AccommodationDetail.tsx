@@ -69,6 +69,9 @@ const AccommodationDetail: React.FC<IProps> = () => {
     padding: theme.spacing(2),
     position: 'relative',
     pb: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      height: 'fit-content',
+    },
   }
 
   const detailCardLabelsx = {
@@ -141,12 +144,76 @@ const AccommodationDetail: React.FC<IProps> = () => {
             item
             sx={{
               [theme.breakpoints.up('lg')]: {
-                display: 'none'
+                display: 'none',
               },
             }}
           >
             <Typography variant="body2">{accommodation.address}</Typography>
           </Grid>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            [theme.breakpoints.up('lg')]: {
+              display: 'none',
+            },
+          }}
+        >
+          {/* Facilities and Services Card */}
+          <Card sx={detailCardSx}>
+            <Grid container>
+              <Grid item xs={12}>
+                <List dense={true}>
+                  {accommodation.amenities[0] && (
+                    <ListItem disablePadding>
+                      <ListItemIcon>
+                        <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="body1">
+                          {accommodation.amenities[0]}
+                        </Typography>
+                      </ListItemText>
+                    </ListItem>
+                  )}
+
+                  {accommodation.appliances[0] && (
+                    <ListItem disablePadding>
+                      <ListItemIcon>
+                        <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="body1">
+                          {accommodation.appliances[0]}
+                        </Typography>
+                      </ListItemText>
+                    </ListItem>
+                  )}
+
+                  {accommodation.safety_and_security[0] && (
+                    <ListItem disablePadding>
+                      <ListItemIcon>
+                        <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="body1">
+                          {accommodation.safety_and_security[0]}
+                        </Typography>
+                      </ListItemText>
+                    </ListItem>
+                  )}
+                </List>
+              </Grid>
+              {/* Facilities and Services label */}
+              <Grid item xs={12}>
+                <Typography variant="h6" paddingTop={2} sx={detailCardLabelsx}>
+                  Facilities and Services
+                </Typography>
+              </Grid>
+            </Grid>
+          </Card>{' '}
+          {/* End of Facilities and Services Card */}
         </Grid>
         <Grid
           item
