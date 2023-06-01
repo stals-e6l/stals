@@ -66,7 +66,13 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
       {me &&
         ALLOWABLE_FEATURES.delete.accommodation.includes(me.role) &&
         me._id === userId && (
-          <Button variant="contained" onClick={toggleDialog}>
+          <Button 
+            variant="contained" 
+            onClick={toggleDialog} 
+            sx={{
+                borderTop: '1px #fff solid',
+                fontWeight: 'bold'
+                }}>
             {isSoftDelete ? 'Archive' : 'Delete'}
           </Button>
         )}

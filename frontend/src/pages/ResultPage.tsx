@@ -142,7 +142,7 @@ const ResultPage: React.FC<IProps> = () => {
             </Grid>
 
             {/* Accommodation Cards */}
-            <Grid item>
+            <Grid item xs={12}>
               <AccommodationResults />
             </Grid>
           </Grid>

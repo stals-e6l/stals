@@ -159,6 +159,11 @@ const SignInForm: React.FC<IProps> = () => {
               value={form.username}
               variant="filled"
               style={{ marginTop: 20 }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleSignIn()
+                }
+              }}
             />
             <TextField
               size="small"
@@ -171,6 +176,11 @@ const SignInForm: React.FC<IProps> = () => {
               }
               variant="filled"
               style={{ marginTop: 20 }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleSignIn()
+                }
+              }}
             />
             <Button
               variant="contained"
@@ -231,11 +241,8 @@ const SignInForm: React.FC<IProps> = () => {
                 </DialogTitle>
                 <DialogContent sx={{}}>
                   <SignUpForm onClose={handleClose} />
-                  
                 </DialogContent>
-                <DialogActions sx={{}}>
-              
-                </DialogActions>
+                <DialogActions sx={{}}></DialogActions>
               </Dialog>
             )}
           </Box>

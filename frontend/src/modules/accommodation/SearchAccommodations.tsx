@@ -78,6 +78,11 @@ const SearchAccommodations: React.FC<IProps> = () => {
                   borderBottomRightRadius: '0px',
                 },
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearch()
+                }
+              }}
             />
           )}
         />
