@@ -323,44 +323,50 @@ const AccommodationDetail: React.FC<IProps> = () => {
                         )}
                     </Grid>
                   </Grid>
-                  <Grid item>
-                    <Grid
-                      xs={12}
-                      container
-                      direction="row"
-                      alignContent="center"
-                    >
-                      {/* Account Circle Icon */}
-                      <Grid item>
-                        <AccountCircleIcon
-                          sx={{
-                            width: '45px',
-                            height: '45px',
-                            color: COLOR.textGray,
-                          }}
-                        />
-                      </Grid>
-                      {/* Comments */}
-                      <Grid item>
-                        <Grid container direction="column">
-                          <Grid item>
-                            <Typography variant="h6">
-                              {reviews &&
-                                reviews?.length > 0 &&
-                                reviews[0].user_id}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Typography variant="body2" sx={{mt:theme.spacing(-1)}}>
-                              {reviews &&
-                                reviews?.length > 0 &&
-                                reviews[0].comment}
-                            </Typography>
+                  {reviews && reviews?.length > 0 && (
+                    <Grid item>
+                      <Grid
+                        xs={12}
+                        container
+                        direction="row"
+                        alignContent="center"
+                      >
+                        {/* Account Circle Icon */}
+                        <Grid item>
+                          <AccountCircleIcon
+                            sx={{
+                              width: '45px',
+                              height: '45px',
+                              color: COLOR.textGray,
+                            }}
+                          />
+                        </Grid>
+                        {/* Comments */}
+                        <Grid item>
+                          <Grid container direction="column">
+                            <Grid item>
+                              <Typography variant="h6">
+                                {reviews &&
+                                  reviews?.length > 0 &&
+                                  reviews[0].user_id}
+                              </Typography>
+                            </Grid>
+                            <Grid item>
+                              <Typography
+                                variant="body2"
+                                sx={{ mt: theme.spacing(-1) }}
+                              >
+                                {reviews &&
+                                  reviews?.length > 0 &&
+                                  reviews[0].comment}
+                              </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
+                  )}
+
                   {/* Ratings label */}
                   <Grid item xs={12}>
                     <Typography variant="h6" sx={detailCardLabelsx}>
