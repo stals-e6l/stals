@@ -5,16 +5,37 @@ import AccommodationCard from './AccommodationCard'
 import { useLocation } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
 import SearchOffIcon from '@mui/icons-material/SearchOff'
+import { apiGet } from '../../services/api'
+import { getToken } from '../../services/localStorage'
 
 interface IProps {
   children?: React.ReactNode
   isPublicView?: boolean
+  endpoint: string
 }
 
-const AccommodationResults: React.FC<IProps> = () => {
+const AccommodationResults: React.FC<IProps> = ({ endpoint }) => {
   const location = useLocation()
-  const accommodations = retrieveAccommodations()
+  // const accommodations = retrieveAccommodations()
   const theme = useTheme()
+  const token = getToken()
+
+  const [accommodations, setAccommodations] = React.useState<IAccommodation[]>(
+    []
+  )
+
+  const fetchAccommodations = async () => {
+    if (!token) return
+    const res = await apiGet<IAccommodation[]>(endpoint, token)
+    if (res.success && res.data) {
+      setAccommodations(res.data)
+      return
+    }
+  }
+
+  React.useEffect(() => {
+    fetchAccommodations()
+  }, [])
 
   if (!accommodations || accommodations.length === 0) {
     return (
@@ -51,6 +72,8 @@ const AccommodationResults: React.FC<IProps> = () => {
         sx={{
           transition: '0.3s all',
         }}
+        alignItems="center"
+        justifyContent="space-around"
       >
         {accommodations.map((accommodation, key: number) => (
           <Grid item key={key}>
@@ -60,7 +83,6 @@ const AccommodationResults: React.FC<IProps> = () => {
             />
           </Grid>
         ))}
-        
       </Grid>
     </React.Fragment>
   )

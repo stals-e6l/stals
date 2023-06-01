@@ -135,11 +135,11 @@ module.exports = accommodationRouter
  *      post:
  *          description: |
  *            This endpoint creates an accommodation from the request body and **returns the created accommodation**.
- * 
+ *
  *            ### This endpoint may be accessed by:
  *            - Admin
  *            - Accommodation owners
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **201** - OK
  *            2. **401** - Unauthorized access
@@ -179,13 +179,13 @@ module.exports = accommodationRouter
  *      get:
  *          description: |
  *            This endpoint takes the accommodation id and **returns the found accommodation**.
- * 
+ *
  *            ### This endpoint may be accessed by:
  *            - Admin
  *            - Accommodation owners
  *            - Tenants
  *            - Unregistered users
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
  *            2. **401** - Unauthorized access
@@ -224,13 +224,13 @@ module.exports = accommodationRouter
  *      get:
  *          description: |
  *            This endpoint takes any search query and **returns the found accommodation/s**.
- * 
+ *
  *            ### This endpoint may be accessed by:
  *            - Admin
  *            - Accommodation owners
  *            - Tenants
  *            - Unregistered users
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
  *            2. **401** - Unauthorized access
@@ -242,6 +242,14 @@ module.exports = accommodationRouter
  *          parameters:
  *              -   in: query
  *                  name: search
+ *                  schema:
+ *                      type: string
+ *              -   in: query
+ *                  name: sort_by
+ *                  schema:
+ *                      type: string
+ *              -   in: query
+ *                  name: sort_order
  *                  schema:
  *                      type: string
  *              -   in: query
@@ -411,11 +419,11 @@ module.exports = accommodationRouter
  *      delete:
  *          description: |
  *            This endpoint takes the accommodation id and **returns null**.
- * 
+ *
  *            ### This endpoint may be accessed by:
  *            - Admin
  *            - Accommodation owners
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
  *            2. **401** - Unauthorized access
@@ -455,11 +463,11 @@ module.exports = accommodationRouter
  *      put:
  *          description: |
  *            This endpoint takes the accommodation id, edits the specified accommodation from the request body, and **returns the edited accommodation**.
- * 
+ *
  *            ### This endpoint may be accessed by:
  *            - Admin
  *            - Accommodation owners
- *            
+ *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
  *            2. **401** - Unauthorized access

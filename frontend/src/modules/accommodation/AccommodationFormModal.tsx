@@ -154,8 +154,12 @@ const AccommodationFormModal: React.FC<IProps> = ({
               ...submitBtnSx.root,
               borderRadius: '50%',
               position: 'fixed',
-              bottom: '10%',
-              right: '5%',
+              bottom: '4%',
+              right: '2.5%',
+              [theme.breakpoints.down('sm')]: {
+                bottom: '2.5%',
+                right: '1%',
+              },
               background: theme.palette.primary.main,
               color: theme.palette.common.white,
             }}

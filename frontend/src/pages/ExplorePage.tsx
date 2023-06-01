@@ -20,10 +20,12 @@ const ExplorePage: React.FC<IProps> = () => {
       <Grid
         container
         rowGap={2}
+        alignItems="center"
         sx={{
           width: '100%',
           paddingLeft: '10%',
           paddingRight: '10%',
+
           [theme.breakpoints.down('md')]: {
             padding: '0% 4%',
           },
@@ -37,13 +39,19 @@ const ExplorePage: React.FC<IProps> = () => {
           <Title text="Most Viewed" />
         </Grid>
         <Grid item xs={12}>
-          <AccommodationResults isPublicView={false} />
+          <AccommodationResults
+            isPublicView={false}
+            endpoint="accommodation?limit=4&sort_by=num_views&sort_order=descending"
+          />
         </Grid>
         <Grid item xs={12}>
           <Title text="New Accommodations" />
         </Grid>
         <Grid item>
-          <AccommodationResults isPublicView={false} />
+          <AccommodationResults
+            isPublicView={false}
+            endpoint="accommodation?limit=20"
+          />
         </Grid>
       </Grid>
     </>
