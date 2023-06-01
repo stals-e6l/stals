@@ -422,20 +422,20 @@ const AccommodationDetail: React.FC<IProps> = () => {
                   </Grid>
                   {/* Address */}
                   <Grid item xs={9}>
-                    <Typography variant="body2">
+                    <Typography variant="body1">
                       {accommodation.address}
                     </Typography>
                   </Grid>
                   {/* Distance from UPLB Gate */}
                   <Grid item xs={12}>
                     <Typography
-                      variant="body2"
+                      variant="body1"
                       noWrap
                       sx={{ fontWeight: 'bold', display: 'flex' }}
                     >
                       about
                       <Typography
-                        variant="body2"
+                        variant="body1"
                         sx={{
                           fontWeight: 'bold',
                           color: COLOR.green,
