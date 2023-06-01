@@ -5,6 +5,9 @@ import {
   Button,
   useTheme,
   Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   useMediaQuery,
   alpha,
 } from '@mui/material'
@@ -104,7 +107,7 @@ const SignInForm: React.FC<IProps> = () => {
         >
           <Box
             sx={{
-              backgroundColor: COLOR.gray2,
+              backgroundColor: COLOR.gray1,
               width: '300px',
               marginRight: theme.spacing(6),
               padding: theme.spacing(3),
@@ -118,30 +121,38 @@ const SignInForm: React.FC<IProps> = () => {
               },
             }}
           >
-            <Typography>Username</Typography>
             <TextField
-              id="outlined-basic"
-              variant="outlined"
               size="small"
               fullWidth
-              sx={{ backgroundColor: COLOR.white }}
+              label="Username"
               onChange={e =>
                 setForm(prev => ({ ...prev, username: e.target.value }))
               }
               value={form.username}
+              variant="filled"
+              style={{ marginTop: 20 }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleSignIn()
+                }
+              }}
             />
-            <Typography>Password</Typography>
             <TextField
-              id="outlined-basic"
-              variant="outlined"
               size="small"
               fullWidth
+              label="Password"
               type="password"
-              sx={{ backgroundColor: COLOR.white }}
               value={form.password}
               onChange={e =>
                 setForm(prev => ({ ...prev, password: e.target.value }))
               }
+              variant="filled"
+              style={{ marginTop: 20 }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleSignIn()
+                }
+              }}
             />
             <Button
               variant="contained"
@@ -188,7 +199,22 @@ const SignInForm: React.FC<IProps> = () => {
                   },
                 }}
               >
-                <SignUpForm onClose={handleClose} />
+                <DialogTitle sx={{ color: COLOR.blue }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: theme.palette.primary.main,
+                      paddingBottom: theme.spacing(1),
+                    }}
+                  >
+                    Create an Account
+                  </Typography>
+                </DialogTitle>
+                <DialogContent sx={{}}>
+                  <SignUpForm onClose={handleClose} />
+                </DialogContent>
+                <DialogActions sx={{}}></DialogActions>
               </Dialog>
             )}
           </Box>

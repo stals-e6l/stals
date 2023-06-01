@@ -26,6 +26,7 @@ const reviewSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+
 reviewSchema.path('rating').validate(function (value) {
   if (value < 0 || value > 5) return false;
   else return true;
