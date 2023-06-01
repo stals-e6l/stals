@@ -70,7 +70,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
     is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
   })
   const [file, setFile] = React.useState<File>()
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null)
 
   // events
   const setFieldValue = (
