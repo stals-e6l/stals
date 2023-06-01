@@ -32,7 +32,9 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
   const navigate = useNavigate()
 
   // state
-  const [form, setForm] = React.useState<IUserSignUp & { confirm: string }>({
+  const [form, setForm] = React.useState<
+    IUserSignUp & { confirm: string; read: boolean; agreed: boolean }
+  >({
     username: '',
     password: '',
     email: '',
@@ -54,6 +56,8 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
     birthday: String(new Date()),
     organization: '',
     confirm: '',
+    read: false,
+    agreed: false,
   })
   const [error, setError] = useState<any | null>(null)
 
@@ -136,6 +140,8 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         birthday: String(new Date()),
         confirm: '',
         organization: '',
+        read: false,
+        agreed: false,
       })
   }, [])
 
@@ -332,7 +338,14 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
 
       <FormControlLabel
         required
-        control={<Checkbox />}
+        control={
+          <Checkbox
+            value={form.read}
+            onChange={(_, checked) =>
+              setForm(prev => ({ ...prev, read: checked }))
+            }
+          />
+        }
         label={
           <Typography>
             I have read the{' '}
@@ -354,7 +367,14 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
       />
       <FormControlLabel
         required
-        control={<Checkbox />}
+        control={
+          <Checkbox
+            value={form.agreed}
+            onChange={(_, checked) =>
+              setForm(prev => ({ ...prev, agreed: checked }))
+            }
+          />
+        }
         label={
           <Typography>
             I have read and agree to{' '}
@@ -396,7 +416,12 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
           marginTop: theme.spacing(2),
           marginBottom: theme.spacing(1),
         }}
-        disabled={form.password.length === 0 || form.password !== form.confirm}
+        disabled={
+          form.password.length === 0 ||
+          form.password !== form.confirm ||
+          !form.read ||
+          !form.agreed
+        }
         onClick={handleSignUp}
       >
         Sign up
