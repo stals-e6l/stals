@@ -18,7 +18,11 @@ interface IProps {
   callback?: any
 }
 
-const AccommodationResults: React.FC<IProps> = ({ endpoint, callback }) => {
+const AccommodationResults: React.FC<IProps> = ({
+  endpoint,
+  callback,
+  isPublicView,
+}) => {
   const location = useLocation()
   // const accommodations = retrieveAccommodations()
   const theme = useTheme()
@@ -30,8 +34,10 @@ const AccommodationResults: React.FC<IProps> = ({ endpoint, callback }) => {
   )
 
   const fetchAccommodations = async () => {
-    if (!token) return
-    const res = await apiGet<IAccommodation[]>(endpoint, token)
+    const res = await apiGet<IAccommodation[]>(
+      endpoint,
+      isPublicView ? undefined : (token as string)
+    )
     if (res.success && res.data) {
       setAccommodations(res.data)
 
