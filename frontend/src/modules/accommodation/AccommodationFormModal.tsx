@@ -70,7 +70,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
     is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
   })
   const [file, setFile] = React.useState<File>()
-  const [error, setError] = React.useState<string | null>(null)
+  const [error, setError] = React.useState<any | null>(null)
 
   // events
   const setFieldValue = (
@@ -82,16 +82,28 @@ const AccommodationFormModal: React.FC<IProps> = ({
 
   // events
   const handleSubmit = async () => {
-    if (onCreateAccommodation && !defaultValues && file) {
-      const res = await imageUpload(file)
-      let formData = { ...form }
-      if (res.success) {
-        formData = { ...form, image: { url: res.data as string } }
+    setError(null)
+
+    if (onCreateAccommodation && !defaultValues) {
+      let formData
+      formData = { ...form }
+      if (file) {
+        const res = await imageUpload(file)
+        if (res.success) {
+          formData = { ...form, image: { url: res.data as string } }
+        }
       }
       //const response = await onCreateAccommodation(formData)
       onCreateAccommodation(formData).catch(err => {
-        console.log(String(err).split(','))
-        //setError('Invalid input')
+        const newError: { [key: string]: string } = {}
+        String(err)
+          .replace('Error: ValidationError: ', '')
+          .split(',')
+          .forEach(err => {
+            const [key, message] = err.split(':')
+            newError[key.trim()] = message
+          })
+        setError(newError)
       })
     } else if (onEditAccommodation && defaultValues) {
       onEditAccommodation({ ...form, _id: defaultValues._id as string }).then(
