@@ -4,7 +4,7 @@ import { retrieveAccommodations } from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
 import { useLocation } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
-import SearchOffIcon from '@mui/icons-material/SearchOff';
+import SearchOffIcon from '@mui/icons-material/SearchOff'
 
 interface IProps {
   children?: React.ReactNode
@@ -16,7 +16,6 @@ const AccommodationResults: React.FC<IProps> = () => {
   const accommodations = retrieveAccommodations()
   const theme = useTheme()
 
-  console.log(accommodations)
   if (!accommodations || accommodations.length === 0) {
     return (
       <Box
@@ -24,15 +23,21 @@ const AccommodationResults: React.FC<IProps> = () => {
           mt: theme.spacing(30),
           textAlign: 'center',
           opacity: '75%',
+          display: 'grid',
+          placeItems: 'center',
+          width: '100%',
           [theme.breakpoints.down('sm')]: {
             mt: theme.spacing(15),
           },
         }}
       >
-        <SearchOffIcon sx={{ color: theme.palette.secondary.main, fontSize: theme.spacing(15)}} />
-        <Typography variant="h6">
-          No Results found
-        </Typography>
+        <SearchOffIcon
+          sx={{
+            color: theme.palette.secondary.main,
+            fontSize: theme.spacing(15),
+          }}
+        />
+        <Typography variant="h6">No Results found</Typography>
       </Box>
     )
   }
