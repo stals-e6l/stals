@@ -61,24 +61,6 @@ const ResultPage: React.FC<IProps> = () => {
             <Grid item xs={12}>
               {/* Buttons when the screen is not a desktop */}
               <Grid direction="row" container>
-                {/* Sort Button */}
-                <Grid item>
-                  <Button variant="text">
-                    <SortIcon
-                      sx={{
-                        color: COLOR.green,
-                      }}
-                    />
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: COLOR.textBlack,
-                      }}
-                    >
-                      Sort
-                    </Typography>
-                  </Button>
-                </Grid>
 
                 {/* Filter Button */}
                 <Grid item>
@@ -137,13 +119,22 @@ const ResultPage: React.FC<IProps> = () => {
             </Grid>
 
             {/* | Search Results */}
-            <Grid item>
+            <Grid item xs={12}>
               <Title text="Search Results" />
             </Grid>
 
             {/* Accommodation Cards */}
             <Grid item xs={12}>
               <AccommodationResults />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button variant='text' >
+                <Typography variant='body1' sx={{
+                  color: COLOR.textBlack,
+                  textDecoration: 'underline',
+                }}>View All Results</Typography>
+              </Button>
             </Grid>
           </Grid>
         </Grid>
