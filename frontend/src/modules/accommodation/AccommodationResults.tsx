@@ -12,9 +12,10 @@ interface IProps {
   children?: React.ReactNode
   isPublicView?: boolean
   endpoint: string
+  callback?: any
 }
 
-const AccommodationResults: React.FC<IProps> = ({ endpoint }) => {
+const AccommodationResults: React.FC<IProps> = ({ endpoint, callback }) => {
   const location = useLocation()
   // const accommodations = retrieveAccommodations()
   const theme = useTheme()
@@ -29,6 +30,7 @@ const AccommodationResults: React.FC<IProps> = ({ endpoint }) => {
     const res = await apiGet<IAccommodation[]>(endpoint, token)
     if (res.success && res.data) {
       setAccommodations(res.data)
+      if (callback) callback(res.data)
       return
     }
   }

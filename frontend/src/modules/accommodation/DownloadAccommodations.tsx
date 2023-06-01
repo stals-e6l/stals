@@ -266,6 +266,12 @@ const DownloadAccommodations: React.FC<IProps> = () => {
         disabled={!accommodations}
         onClick={toggleDialog}
         sx={{
+          bottom: '4%',
+          right: '2.5%',
+          [theme.breakpoints.down('sm')]: {
+            bottom: '2.5%',
+            right: '1%',
+          },
           [theme.breakpoints.down('md')]: {
             display: 'none',
           },
@@ -417,8 +423,8 @@ function CustomToolbar() {
         // printOptions={{ hideToolbar: true, hideFooter: true }}
         csvOptions={{ disableToolbarButton: true }}
       /> */}
-      <Button variant='contained' onClick={() => apiRef.current}>
-        Print 
+      <Button variant="contained" onClick={() => apiRef.current}>
+        Print
       </Button>
     </GridToolbarContainer>
   )

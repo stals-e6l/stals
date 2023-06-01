@@ -19,18 +19,6 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   })
 
   // events
-  React.useEffect(() => {
-    if (me && onShowError) {
-      initAccommodations()
-        .then(data => {
-          dispatch({
-            type: 'SET_ACCOMMODATIONS',
-            payload: data as IAccommodation[],
-          })
-        })
-        .catch(err => onShowError(String(err)))
-    }
-  }, [me])
 
   console.log({ accommodationsState: state })
 
@@ -52,6 +40,9 @@ const accommodationContext = React.createContext<IAccommodationsState>({
   accommodations: null,
   dispatch: null,
 })
+
+export const useAccommodation = () =>
+  React.useContext<IAccommodationsState>(accommodationContext)
 
 const accommodationReducer = (
   state: IAccommodationsState,
@@ -119,7 +110,6 @@ export const createAccommodation = () => {
   const onShowError = showErrorSnackbar()
   if (!dispatch || !onShowError) return
   return async (accommodation: IAccommodation) => {
-
     const res = await apiPost<IAccommodation, IAccommodation>('accommodation', {
       payload: accommodation,
     })
@@ -130,10 +120,8 @@ export const createAccommodation = () => {
         payload: res.data as IAccommodation,
       })
     } else {
-      if (res.messages){
-        throw new Error(
-          res.messages[0]
-        )
+      if (res.messages) {
+        throw new Error(res.messages[0])
       }
     }
   }
