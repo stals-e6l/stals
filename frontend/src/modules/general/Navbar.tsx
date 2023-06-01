@@ -13,10 +13,10 @@ import {
 import React from 'react'
 import assets from '../../assets'
 import useMenu from '../../hooks/useMenu'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
 import { getMe, signOut } from '../auth/AuthProvider'
-import {COLOR} from '../../theme'
+import { COLOR } from '../../theme'
 
 interface IProps {
   children?: React.ReactNode
@@ -24,12 +24,19 @@ interface IProps {
 
 const Navbar: React.FC<IProps> = () => {
   // hook
-  const menus = ["Hotel", "Apartment", "Dormitory", "Transient Space", "Bed Space"]
+  const menus = [
+    'Hotel',
+    'Apartment',
+    'Dormitory',
+    'Transient Space',
+    'Bed Space',
+  ]
   const theme = useTheme()
   const { onClose, onOpen, anchorEl } = useMenu()
   const navigate = useNavigate()
   const me = getMe()
   const onSignOut = signOut()
+  const location = useLocation()
 
   // events
   const toSignOut = () => {
@@ -48,10 +55,11 @@ const Navbar: React.FC<IProps> = () => {
   }
 
   return (
-
-    <AppBar sx={{
-      boxShadow: `${alpha(COLOR.black, 0.3)} 0 1px 30px 3px`
-    }}>
+    <AppBar
+      sx={{
+        boxShadow: `${alpha(COLOR.black, 0.3)} 0 1px 30px 3px`,
+      }}
+    >
       <Grid
         container
         sx={{
@@ -62,7 +70,7 @@ const Navbar: React.FC<IProps> = () => {
         }}
         alignItems="center"
         justifyContent="space-between"
-        position='sticky'
+        position="sticky"
       >
         <Grid item xs={0.25}>
           <Box
@@ -80,18 +88,23 @@ const Navbar: React.FC<IProps> = () => {
             alt={assets.logoWhite}
           />
         </Grid>
-        <Grid item xs={6}>
-          <Tabs>
-            {menus.map((tab) =>
-              <MenuItem onClick={() => navigate('/')}>
-                {tab}
-              </MenuItem>)}
-          </Tabs>
-        </Grid>
+        {location.pathname === ROUTES.appResult && (
+          <Grid item xs={6}>
+            <Tabs>
+              {menus.map(tab => (
+                <MenuItem key={tab} onClick={() => navigate('/')}>
+                  {tab}
+                </MenuItem>
+              ))}
+            </Tabs>
+          </Grid>
+        )}
         {me && (
           <Grid item xs={4} container justifyContent="end">
             <IconButton onClick={onOpen}>
-              <Avatar alt={me._id}>{me.full_name.first_name[0]+me.full_name.last_name[0]}</Avatar>
+              <Avatar alt={me._id}>
+                {me.full_name.first_name[0] + me.full_name.last_name[0]}
+              </Avatar>
             </IconButton>
           </Grid>
         )}
