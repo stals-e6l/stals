@@ -5,7 +5,7 @@ const useMenu = () => {
 
   return {
     anchorEl,
-    onOpen: (e: { currentTarget: HTMLElement }) => setAnchorEl(e.currentTarget),
+    onOpen: (e: { stopPropagation: any, currentTarget: HTMLElement }) => {setAnchorEl(e.currentTarget); e.stopPropagation()},
     onClose: () => setAnchorEl(null),
   }
 }
