@@ -63,10 +63,19 @@ const AccommodationDetail: React.FC<IProps> = () => {
   }
 
   const detailCardSx = {
-    width: "96%",
-    height: theme.spacing(20),
+    width: '96%',
+    height: theme.spacing(22),
     boxShadow: `${alpha(COLOR.black, 0.5)} 0 4px 10px 1px`,
     padding: theme.spacing(2),
+    position: 'relative',
+    pb: theme.spacing(4),
+  }
+
+  const detailCardLabelsx = {
+    position: 'absolute',
+    bottom: '0',
+    pb: theme.spacing(1),
+    color: theme.palette.primary.main,
   }
 
   return (
@@ -81,9 +90,6 @@ const AccommodationDetail: React.FC<IProps> = () => {
         alt="Location image"
         src={accommodation.image.url}
       />
-
-      <br />
-      <br />
       <Grid
         container
         direction="column"
@@ -91,7 +97,8 @@ const AccommodationDetail: React.FC<IProps> = () => {
         sx={{
           width: '80%',
           marginLeft: 'auto',
-          marginRight: 'auto'
+          marginRight: 'auto',
+          rowGap: theme.spacing(),
         }}
       >
         <Grid item>
@@ -116,19 +123,41 @@ const AccommodationDetail: React.FC<IProps> = () => {
                   color: COLOR.blue,
                 }}
               >
-                Php {toPhp(accommodation.min_price)} - {toPhp(accommodation.max_price)}
+                Php {toPhp(accommodation.min_price)} -{' '}
+                {toPhp(accommodation.max_price)}
               </Typography>
             </Grid>
           </Grid>
 
           {/* Type */}
           <Grid item>
-            <Typography variant="body1">{toSentenceCase(accommodation.type)}</Typography>
+            <Typography variant="body1">
+              {toSentenceCase(accommodation.type)}
+            </Typography>
+          </Grid>
+
+          {/* Address */}
+          <Grid
+            item
+            sx={{
+              [theme.breakpoints.up('lg')]: {
+                display: 'none'
+              },
+            }}
+          >
+            <Typography variant="body2">{accommodation.address}</Typography>
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid
+          item
+          sx={{
+            [theme.breakpoints.down('sm')]: {
+              display: 'none',
+            },
+          }}
+        >
           <Grid container direction="row">
-            <Grid item xs={12} lg ={4}>
+            <Grid item xs={12} lg={4}>
               {/* Ratings Card */}
               <Card sx={detailCardSx}>
                 <Grid container>
@@ -233,8 +262,8 @@ const AccommodationDetail: React.FC<IProps> = () => {
                     </Grid>
                   </Grid>
                   {/* Ratings label */}
-                  <Grid item>
-                    <Typography variant="h6" sx={{ color: COLOR.blue }}>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" sx={detailCardLabelsx}>
                       Reviews
                     </Typography>
                   </Grid>
@@ -243,40 +272,64 @@ const AccommodationDetail: React.FC<IProps> = () => {
               {/* End of Ratings Card */}
             </Grid>
 
-            <Grid item xs={12} lg ={4}>
+            <Grid item xs={12} lg={4}>
               {/* Facilities and Services Card */}
               <Card sx={detailCardSx}>
                 <Grid container>
                   <Grid item xs={12}>
                     <List dense={true}>
-                      <ListItem disablePadding>
-                        <ListItemIcon>
-                          <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Typography variant="body1">
-                            {accommodation.amenities[0]}
-                          </Typography>
-                        </ListItemText>
-                      </ListItem>
-                      <ListItem disablePadding>
-                        <ListItemIcon>
-                          <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Typography variant="body1">
-                            {accommodation.amenities[1]}
-                          </Typography>
-                        </ListItemText>
-                      </ListItem>
+                      {accommodation.amenities[0] && (
+                        <ListItem disablePadding>
+                          <ListItemIcon>
+                            <CheckCircleOutlineIcon
+                              sx={{ color: COLOR.green }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText>
+                            <Typography variant="body1">
+                              {accommodation.amenities[0]}
+                            </Typography>
+                          </ListItemText>
+                        </ListItem>
+                      )}
+
+                      {accommodation.appliances[0] && (
+                        <ListItem disablePadding>
+                          <ListItemIcon>
+                            <CheckCircleOutlineIcon
+                              sx={{ color: COLOR.green }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText>
+                            <Typography variant="body1">
+                              {accommodation.appliances[0]}
+                            </Typography>
+                          </ListItemText>
+                        </ListItem>
+                      )}
+
+                      {accommodation.safety_and_security[0] && (
+                        <ListItem disablePadding>
+                          <ListItemIcon>
+                            <CheckCircleOutlineIcon
+                              sx={{ color: COLOR.green }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText>
+                            <Typography variant="body1">
+                              {accommodation.safety_and_security[0]}
+                            </Typography>
+                          </ListItemText>
+                        </ListItem>
+                      )}
                     </List>
                   </Grid>
                   {/* Facilities and Services label */}
-                  <Grid item>
+                  <Grid item xs={12}>
                     <Typography
                       variant="h6"
                       paddingTop={2}
-                      sx={{ color: COLOR.blue }}
+                      sx={detailCardLabelsx}
                     >
                       Facilities and Services
                     </Typography>
@@ -286,7 +339,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
               {/* End of Facilities and Services Card */}
             </Grid>
 
-            <Grid item xs={12} lg ={4}>
+            <Grid item xs={12} lg={4}>
               {/* Facilities and Services Card */}
               <Card sx={detailCardSx}>
                 <Grid container alignContent="center">
@@ -329,11 +382,11 @@ const AccommodationDetail: React.FC<IProps> = () => {
                     </Typography>
                   </Grid>
                   {/* Facilities and Services label */}
-                  <Grid item>
+                  <Grid item xs={12}>
                     <Typography
                       variant="h6"
                       paddingTop={2}
-                      sx={{ color: COLOR.blue }}
+                      sx={detailCardLabelsx}
                     >
                       Address
                     </Typography>
