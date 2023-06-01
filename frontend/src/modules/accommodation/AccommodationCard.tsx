@@ -69,7 +69,14 @@ const AccommodationCard: React.FC<IProps> = ({
         },
       }}
     >
-      <CardActionArea onClick={toDetailPage}>
+      <CardActionArea
+        onClick={toDetailPage}
+        sx={{
+          '& .MuiCardActionArea-focusHighlight': {
+            background: 'transparent',
+          },
+        }}
+      >
         {/* Accommodation Image */}
         <CardMedia
           component="img"
