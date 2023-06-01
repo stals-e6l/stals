@@ -19,14 +19,14 @@ interface IProps {
     val: string | number | string[]
   ) => void
   setFile: React.Dispatch<React.SetStateAction<File | undefined>>
-  error: string | null;
+  error: string | null
 }
 
 const AccommodationForm: React.FC<IProps> = ({
   form,
   setFieldValue,
   setFile,
-  error
+  error,
 }) => {
   // state
 
@@ -41,7 +41,7 @@ const AccommodationForm: React.FC<IProps> = ({
     max_pax: '',
     num_rooms: '',
     num_beds: '',
-  });
+  })
 
   const [fieldTouched, setFieldTouched] = React.useState({
     name: false,
@@ -54,7 +54,7 @@ const AccommodationForm: React.FC<IProps> = ({
     max_pax: false,
     num_rooms: false,
     num_beds: false,
-  });
+  })
 
   // immediate
   const values = React.useMemo(() => form, [form])
@@ -89,15 +89,15 @@ const AccommodationForm: React.FC<IProps> = ({
       <TextField
         defaultValue={values.name}
         onBlur={e => {
-          setFieldValue('name', e.target.value); 
-          setFieldValues((prevValues) => ({
+          setFieldValue('name', e.target.value)
+          setFieldValues(prevValues => ({
             ...prevValues,
-            'name': e.target.value,
-          }));
-          setFieldTouched((prevTouched) => ({
+            name: e.target.value,
+          }))
+          setFieldTouched(prevTouched => ({
             ...prevTouched,
-            'name': true,
-          }));
+            name: true,
+          }))
         }}
         required
         fullWidth
@@ -106,7 +106,9 @@ const AccommodationForm: React.FC<IProps> = ({
         variant="filled"
         style={{ marginTop: 20 }}
         error={fieldTouched.name && fieldValues.name === ''}
-        helperText={fieldTouched.name && fieldValues.name === '' ? 'Name is required' : ''}
+        helperText={
+          fieldTouched.name && fieldValues.name === '' ? 'Name is required' : ''
+        }
       />
       <TextField
         defaultValue={values.description}

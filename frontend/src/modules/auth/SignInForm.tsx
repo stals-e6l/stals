@@ -41,34 +41,6 @@ const SignInForm: React.FC<IProps> = () => {
     password: '',
   })
 
-  const user: IUser = {
-    username: 'Pogi',
-    email: 'test@up.edu.ph',
-    role: 'admin',
-    full_name: {
-      first_name: 'Rodge Miguel',
-      middle_name: 'Magpantay',
-      last_name: 'De Luna',
-    },
-    gender: 'male',
-    address: {
-      home: 'Cainta, Rizal',
-      current: 'Carrot Place',
-    },
-    birthday: '07/26/2001',
-    phone: {
-      landline: '212 7388',
-      mobile: '09163342585',
-    },
-    organization: 'COSS',
-    biography: 'You miss 100% shots you dont take.',
-    _id: '',
-    password: '',
-    avatar: {
-      url: '',
-    },
-  }
-
   // events
   const handleOpen = () => toggleDialog()
   const handleClose = () => toggleDialog()
