@@ -90,5 +90,6 @@ type TAccommodationActionType =
   | 'ADD_ACCOMMODATION'
   | 'DELETE_ACCOMMODATION'
   | 'EDIT_ACCOMMODATION'
+  | 'APPEND_ACCOMMODATIONS'
 
 type TAccommodationPayload = IAccommodation[] | IAccommodation | string

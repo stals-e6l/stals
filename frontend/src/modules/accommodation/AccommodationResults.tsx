@@ -1,9 +1,6 @@
 import { Grid, Typography, Box, useTheme } from '@mui/material'
 import React from 'react'
-import {
-  retrieveAccommodations,
-  useAccommodation,
-} from './AccommodationsProvider'
+import { appendAccommodations } from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
 import { useLocation } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
@@ -24,10 +21,9 @@ const AccommodationResults: React.FC<IProps> = ({
   isPublicView,
 }) => {
   const location = useLocation()
-  // const accommodations = retrieveAccommodations()
   const theme = useTheme()
   const token = getToken()
-  const { dispatch } = useAccommodation()
+  const onAppendAccommodations = appendAccommodations()
 
   const [accommodations, setAccommodations] = React.useState<IAccommodation[]>(
     []
@@ -38,14 +34,10 @@ const AccommodationResults: React.FC<IProps> = ({
       endpoint,
       isPublicView ? undefined : (token as string)
     )
-    if (res.success && res.data) {
+    if (res.success && res.data && onAppendAccommodations) {
       setAccommodations(res.data)
 
-      if (!dispatch) return
-      dispatch({
-        type: 'SET_ACCOMMODATIONS',
-        payload: res.data as IAccommodation[],
-      })
+      onAppendAccommodations(res.data)
 
       if (callback) callback(res.data)
 
