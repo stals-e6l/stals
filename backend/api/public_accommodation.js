@@ -124,7 +124,21 @@ const { OK } = require('../handler/success_handler')
  * @openapi
  * /api/public_accommodation:
  *      get:
- *          description: Get all accommodations
+ *          description: |
+ *            This endpoint **returns all of the accommodations**.
+ *
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            - Unregistered users
+ *
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          responses:
  *              200:
  *                  content:

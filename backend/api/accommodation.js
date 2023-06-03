@@ -184,7 +184,6 @@ module.exports = accommodationRouter
  *            - Admin
  *            - Accommodation owners
  *            - Tenants
- *            - Unregistered users
  *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
@@ -229,7 +228,6 @@ module.exports = accommodationRouter
  *            - Admin
  *            - Accommodation owners
  *            - Tenants
- *            - Unregistered users
  *
  *            ### Below is a list of status codes this API may return:
  *            1. **200** - OK
