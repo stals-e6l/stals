@@ -9,15 +9,11 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  Checkbox,
-  Rating,
-  FormGroup,
   useTheme,
   Button,
 } from '@mui/material'
 import { COLOR } from '../../theme'
 import { buildQueryString, extractQueryString } from '../../utils/queryString'
-import { filterAccommodations } from './AccommodationsProvider'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
 import Title from './TitleComponent'
@@ -267,8 +263,6 @@ const ACCOMMODATION_TYPES = [
   { label: 'Transient Space', value: 'transient' },
   { label: 'Any type', value: '' },
 ]
-
-const ACCOMMODATION_RATINGS = [0, 1, 2, 3, 4, 5]
 
 const ACCOMMODATION_FURNISHING = [
   { label: 'Unfurnished', value: 'unfurnished' },
