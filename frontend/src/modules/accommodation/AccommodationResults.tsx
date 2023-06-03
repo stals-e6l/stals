@@ -7,6 +7,7 @@ import { ROUTES } from '../../app/AppRouter'
 import SearchOffIcon from '@mui/icons-material/SearchOff'
 import { apiGet } from '../../services/api'
 import { getToken } from '../../services/localStorage'
+import { extractQueryString } from '../../utils/queryString'
 
 interface IProps {
   children?: React.ReactNode
@@ -30,16 +31,38 @@ const AccommodationResults: React.FC<IProps> = ({
   )
 
   const fetchAccommodations = async () => {
+    // normalized endpoint here
+    const qs = extractQueryString(location.search)
+
+    console.log({ qs })
+
     const res = await apiGet<IAccommodation[]>(
-      endpoint,
+      qs.search ? `accommodation?search=${qs.search}` : endpoint,
       isPublicView ? undefined : (token as string)
     )
     if (res.success && res.data && onAppendAccommodations) {
-      setAccommodations(res.data)
+      const arr = res.data.filter(p => {
+        if (
+          (p.type === qs.type || !qs.type) &&
+          (p.min_price === Number(qs.min_price) || !qs.min_price) &&
+          (p.max_price === Number(qs.max_price) || !qs.max_price) &&
+          (p.size_sqm === Number(qs.size_sqm) || !qs.size_sqm) &&
+          (p.meters_from_uplb === Number(qs.meters_from_uplb) ||
+            !qs.meters_from_uplb) &&
+          (p.min_pax === Number(qs.min_pax) || !qs.min_pax) &&
+          (p.max_pax === Number(qs.max_pax) || !qs.max_pax) &&
+          (p.num_rooms === Number(qs.num_rooms) || !qs.num_rooms) &&
+          (p.num_beds === Number(qs.num_beds) || !qs.num_beds) &&
+          (p.furnishing === qs.furnishing || !qs.furnishing)
+        )
+          return true
+        return false
+      })
+      setAccommodations(arr)
 
-      onAppendAccommodations(res.data)
+      onAppendAccommodations(arr)
 
-      if (callback) callback(res.data)
+      if (callback) callback(arr)
 
       return
     }
