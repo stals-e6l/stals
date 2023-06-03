@@ -69,6 +69,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
               {...params}
               value={name}
               onChange={handleInputChange}
+              onSelect={handleInputChange}
               placeholder="Search accommodation"
               fullWidth
               sx={{
