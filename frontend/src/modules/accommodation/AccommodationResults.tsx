@@ -15,7 +15,7 @@ interface IProps {
   children?: React.ReactNode
   isPublicView?: boolean
   endpoint: string
-  callback?: any
+  callback?: (data: IAccommodation[]) => void
 }
 
 const AccommodationResults: React.FC<IProps> = ({
