@@ -2,27 +2,18 @@
 import {
   Box,
   Typography,
-  TextField,
   Button,
   useTheme,
-  Dialog,
-  useMediaQuery,
-  Card,
-  CardContent,
   ImageList,
-  ImageListItem,
   Grid,
 } from '@mui/material'
 import React from 'react'
 import logo from '../../assets/Images/Logo_Green.png'
-import ellens from '../../assets/Ellens.jpg'
 import Navbar from '../general/Navbar'
 import assets from '../../assets'
 import { FONT } from '../../theme'
 import { COLOR } from '../../theme'
-import { ForkRight, Scale } from '@mui/icons-material'
 import { makeStyles, createStyles } from '@mui/styles'
-import ImageListItemBar from '@mui/material/ImageListItemBar'
 
 // imports for each profile image kasi di ko alam paano maglagay ng wala to
 import bene from '../../assets/Team/bene.jpg'
@@ -401,7 +392,6 @@ const LandingPage: React.FC<IProps> = () => {
           item
           xs={12}
           md={6}
-          // sm={12}
           alignItems="center"
           sx={{
             padding: theme.spacing(4),
@@ -682,42 +672,41 @@ const LandingPage: React.FC<IProps> = () => {
       <Grid
         container
         sx={{
-          paddingLeft: '2%',
-          [theme.breakpoints.down('md')]: {
-            height: theme.spacing(100 / 10),
-          },
-          [theme.breakpoints.down('sm')]: {
-            height: theme.spacing(50 / 8),
-          },
+          display: 'flex',
+          width: '100%',
+          flexDirection: 'row',
         }}
+        item
+        xs={12}
       >
-        <Grid item>
+        <Grid item xs={3}>
           <Box
+            component="img"
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '3rem',
-              [theme.breakpoints.down('sm')]: {
-                gap: '1rem',
+              [theme.breakpoints.down('md')]: {
+                height: theme.spacing(50 / 8),
               },
+              justifyContent: 'center',
+              height: theme.spacing(315 / 20),
             }}
-          >
-            <Box
-              component="img"
-              sx={{
-                [theme.breakpoints.down('sm')]: {
-                  height: theme.spacing(50 / 8),
-                },
-                justifyContent: 'center',
-                height: theme.spacing(315 / 20),
-              }}
-              alt="green logo"
-              src={logo}
-            />
+            alt="green logo"
+            src={logo}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={9}
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+          alignItems="center"
+        >
+          <Grid item xs={2}>
             <Typography
               variant="h5"
               sx={{
-                marginTop: '2%',
+                // marginTop: '50%',
                 [theme.breakpoints.down('md')]: {
                   fontSize: theme.spacing(1.75),
                 },
@@ -725,78 +714,93 @@ const LandingPage: React.FC<IProps> = () => {
                   fontSize: theme.spacing(1.25),
                 },
                 textAlign: 'center',
-                color: '#154360',
+                color: theme.palette.primary.main,
               }}
             >
               © 2023
             </Typography>
-            <Button
-              variant="text"
-              sx={{
-                marginTop: '2%',
-                [theme.breakpoints.down('sm')]: {
-                  maxWidth: '60px',
-                  maxHeight: '50px',
-                  minWidth: '60px',
-                  minHeight: '50px',
-                  fontSize: '12px',
-                },
-                maxWidth: '250px',
-                maxHeight: '70px',
-                minWidth: '250px',
-                minHeight: '70px',
-                fontSize: '20px',
-                textAlign: 'center',
-                color: '#154360',
-              }}
-            >
-              TERMS AND CONDITIONS
-            </Button>
-            <Button
-              variant="text"
-              sx={{
-                marginTop: '2%',
-                [theme.breakpoints.down('sm')]: {
-                  maxWidth: '60px',
-                  maxHeight: '50px',
-                  minWidth: '60px',
-                  minHeight: '50px',
-                  fontSize: '12px',
-                },
-                maxWidth: '200px',
-                maxHeight: '70px',
-                minWidth: '200px',
-                minHeight: '70px',
-                fontSize: '20px',
-                textAlign: 'center',
-                color: '#154360',
-              }}
-            >
-              PRIVACY POLICY
-            </Button>
-            <Button
-              variant="text"
-              sx={{
-                marginTop: '2%',
-                [theme.breakpoints.down('sm')]: {
-                  maxWidth: '60px',
-                  maxHeight: '50px',
-                  minWidth: '60px',
-                  minHeight: '50px',
-                  fontSize: '12px',
-                },
-                maxWidth: '200px',
-                maxHeight: '70px',
-                minWidth: '200px',
-                minHeight: '70px',
-                fontSize: '20px',
-                textAlign: 'center',
-                color: '#154360',
-              }}
-            >
-              CONTACT NUMBER
-            </Button>
-          </Box>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={10}
+            sx={{
+              [theme.breakpoints.down('md')]: {
+                gap: '0.5cm',
+              },
+              gap: '5rem',
+            }}
+          >
+            <Grid item xs={2}>
+              <Button
+                variant="text"
+                sx={{
+                  [theme.breakpoints.down('md')]: {
+                    maxWidth: '60px',
+                    maxHeight: '50px',
+                    minWidth: '60px',
+                    minHeight: '50px',
+                    fontSize: '12px',
+                  },
+                  maxWidth: '250px',
+                  maxHeight: '70px',
+                  minWidth: '250px',
+                  minHeight: '70px',
+                  fontSize: '20px',
+                  textAlign: 'center',
+                  color: theme.palette.primary.main,
+                }}
+              >
+                TERMS AND CONDITIONS
+              </Button>
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                variant="text"
+                sx={{
+                  [theme.breakpoints.down('md')]: {
+                    maxWidth: '60px',
+                    maxHeight: '50px',
+                    minWidth: '60px',
+                    minHeight: '50px',
+                    fontSize: '12px',
+                  },
+                  maxWidth: '200px',
+                  maxHeight: '70px',
+                  minWidth: '200px',
+                  minHeight: '70px',
+                  fontSize: '20px',
+                  textAlign: 'center',
+                  color: theme.palette.primary.main,
+                }}
+              >
+                PRIVACY POLICY
+              </Button>
+            </Grid>
+            <Grid item xs={4}>
+              <Button
+                variant="text"
+                sx={{
+                  [theme.breakpoints.down('md')]: {
+                    maxWidth: '60px',
+                    maxHeight: '50px',
+                    minWidth: '60px',
+                    minHeight: '50px',
+                    fontSize: '12px',
+                  },
+                  maxWidth: '200px',
+                  maxHeight: '70px',
+                  minWidth: '200px',
+                  minHeight: '70px',
+                  fontSize: '20px',
+                  textAlign: 'center',
+                  color: theme.palette.primary.main,
+                }}
+              >
+                CONTACT NUMBER
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </React.Fragment>
