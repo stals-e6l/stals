@@ -48,7 +48,7 @@ const ProfilePage: React.FC<IProps> = () => {
 
   return (
     <Grid container>
-      <Grid item xs={3}>
+      <Grid item xs={12} lg={3}>
         <Box
           sx={{
             display: 'flex',
@@ -60,9 +60,6 @@ const ProfilePage: React.FC<IProps> = () => {
               backgroundColor: COLOR.blue,
               width: '100%',
               padding: theme.spacing(5),
-              [theme.breakpoints.down('sm')]: {
-                width: '100%',
-              },
               position: 'relative',
             }}
           >
@@ -326,7 +323,7 @@ const ProfilePage: React.FC<IProps> = () => {
       </Grid>
 
       {user.role === 'tenant' && (
-        <Grid item xs={9} padding={theme.spacing(4)}>
+        <Grid item xs={12} lg={9} padding={theme.spacing(4)}>
           <Grid container>
             <Grid item xs={12}>
               <br />
@@ -346,7 +343,7 @@ const ProfilePage: React.FC<IProps> = () => {
       )}
 
       {user.role === 'owner' && (
-        <Grid item xs={9} padding={theme.spacing(4)}>
+        <Grid item xs={12} lg={9} padding={theme.spacing(4)}>
           <Grid container>
             <Grid item xs={12}>
               <br />
