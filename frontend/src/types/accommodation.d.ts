@@ -80,6 +80,7 @@ type IDownloadAccommodationsField = keyof IDownloadAccommodations
 
 interface IAccommodationsState {
   accommodations: IMap<IAccommodation> | null
+  globalRefresh: boolean
   dispatch: React.Dispatch<
     IReducerAction<TAccommodationActionType, TAccommodationPayload>
   > | null

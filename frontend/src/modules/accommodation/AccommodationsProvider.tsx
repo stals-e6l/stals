@@ -13,6 +13,7 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   const [state, dispatch] = React.useReducer(accommodationReducer, {
     accommodations: null,
     dispatch: null,
+    globalRefresh: false,
   })
 
   // events
@@ -23,6 +24,7 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
     <accommodationContext.Provider
       value={{
         accommodations: state.accommodations,
+        globalRefresh: state.globalRefresh,
         dispatch,
       }}
     >
@@ -36,6 +38,7 @@ export default AccommodationsProvider
 const accommodationContext = React.createContext<IAccommodationsState>({
   accommodations: null,
   dispatch: null,
+  globalRefresh: false,
 })
 
 export const useAccommodation = () =>
@@ -51,6 +54,7 @@ const accommodationReducer = (
     case 'SET_ACCOMMODATIONS':
       return {
         ...state,
+        globalRefresh: !state.globalRefresh,
         accommodations: toMap<IAccommodation>(
           action.payload as IAccommodation[],
           '_id'
@@ -59,6 +63,7 @@ const accommodationReducer = (
     case 'ADD_ACCOMMODATION':
       return {
         ...state,
+        globalRefresh: !state.globalRefresh,
         accommodations: {
           ...state.accommodations,
           [(action.payload as unknown as IAccommodation)._id as string]:
@@ -71,6 +76,7 @@ const accommodationReducer = (
       delete temp[action.payload as string]
       return {
         ...state,
+        globalRefresh: !state.globalRefresh,
         accommodations: temp,
       }
     case 'EDIT_ACCOMMODATION':
@@ -80,6 +86,7 @@ const accommodationReducer = (
       temp[buffer._id as string] = buffer
       return {
         ...state,
+        globalRefresh: !state.globalRefresh,
         accommodations: temp,
       }
     case 'APPEND_ACCOMMODATIONS':
@@ -138,6 +145,13 @@ export const retrieveAccommodations = () => {
     React.useContext<IAccommodationsState>(accommodationContext)
   if (!accommodations) return null
   return toArray<IAccommodation>(accommodations)
+}
+
+export const getGlobalRefresh = () => {
+  const { globalRefresh } =
+    React.useContext<IAccommodationsState>(accommodationContext)
+
+  return globalRefresh
 }
 
 export const retrieveOneAccommodation = (id: string) => {
@@ -212,6 +226,7 @@ export const deleteAccommodation = () => {
         type: 'DELETE_ACCOMMODATION',
         payload: id as string,
       })
+
       return true
     } else {
       if (res.messages) onShowError(res.messages[0])

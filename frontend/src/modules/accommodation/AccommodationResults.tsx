@@ -1,6 +1,9 @@
 import { Grid, Typography, Box, useTheme } from '@mui/material'
 import React from 'react'
-import { appendAccommodations } from './AccommodationsProvider'
+import {
+  appendAccommodations,
+  getGlobalRefresh,
+} from './AccommodationsProvider'
 import AccommodationCard from './AccommodationCard'
 import { useLocation } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
@@ -25,6 +28,7 @@ const AccommodationResults: React.FC<IProps> = ({
   const theme = useTheme()
   const token = getToken()
   const onAppendAccommodations = appendAccommodations()
+  const globalRefresh = getGlobalRefresh()
 
   const [accommodations, setAccommodations] = React.useState<IAccommodation[]>(
     []
@@ -70,7 +74,7 @@ const AccommodationResults: React.FC<IProps> = ({
 
   React.useEffect(() => {
     fetchAccommodations()
-  }, [endpoint])
+  }, [endpoint, globalRefresh])
 
   if (!accommodations || accommodations.length === 0) {
     return (
