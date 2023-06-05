@@ -110,6 +110,13 @@ const Navbar: React.FC<IProps> = () => {
         )}
         <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={onClose}>
           <MenuItem onClick={toProfile}>My profile</MenuItem>
+          <MenuItem
+            onClick={() => {
+              window.open('https://www.airvnv.info/faq.html', '_blank')
+            }}
+          >
+            Need help?
+          </MenuItem>
           <MenuItem onClick={toSignOut}>Log out</MenuItem>
         </Menu>
       </Grid>
