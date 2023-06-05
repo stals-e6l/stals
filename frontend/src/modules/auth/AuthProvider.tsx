@@ -1,7 +1,7 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
 import { useNavigate } from 'react-router-dom'
-import { apiGet, apiPost } from '../../services/api'
+import { apiGet, apiPost, apiPut } from '../../services/api'
 import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
@@ -197,6 +197,20 @@ export const setAuthLoaded = () => {
   if (!dispatch) return null
   return (isLoaded: boolean) => {
     dispatch({ type: 'SET_LOADED', payload: isLoaded })
+  }
+}
+
+export const upgradeRole = () => {
+  const { dispatch } = useAuth()
+  if (!dispatch) return null
+  return async () => {
+    const res = await apiPut<{ role: 'owner' }, IUser>('me', {
+      payload: { role: 'owner' },
+    })
+
+    if (res.success && res.data) {
+      dispatch({ type: 'SET_USER', payload: res.data })
+    }
   }
 }
 
