@@ -12,6 +12,8 @@ import {
   Card,
   Rating,
   alpha,
+  Button,
+  IconButton,
 } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
@@ -32,6 +34,7 @@ import {
 } from '../report/ReportsProvider'
 import { getMe } from '../auth/AuthProvider'
 import { ROUTES } from '../../app/AppRouter'
+import FlagRoundedIcon from '@mui/icons-material/FlagRounded'
 
 interface IProps {
   children?: React.ReactNode
@@ -248,11 +251,24 @@ const AccommodationDetail: React.FC<IProps> = () => {
                       </Grid>
                     )}
 
-                    <Grid item>
-                      {reports &&
-                        !reports[user._id as string] &&
-                        user.role === 'tenant' && (
-                          <button
+                    {reports && Object.keys(reports).length > 0 && (
+                      <Grid item container alignItems="center">
+                        <FlagRoundedIcon color="error" />
+                        <Typography>
+                          Reported by {reports && Object.keys(reports).length}{' '}
+                          {reports && Object.keys(reports).length === 1
+                            ? 'tenant'
+                            : 'tenants'}
+                        </Typography>
+                      </Grid>
+                    )}
+
+                    {reports &&
+                      !reports[user._id as string] &&
+                      user.role === 'tenant' && (
+                        <Grid item>
+                          <IconButton
+                            sx={{ display: 'inline' }}
                             onClick={() => {
                               if (onCreateReport) {
                                 onCreateReport({
@@ -262,10 +278,27 @@ const AccommodationDetail: React.FC<IProps> = () => {
                               }
                             }}
                           >
-                            Report this place
-                          </button>
-                        )}
-                    </Grid>
+                            <FlagRoundedIcon color="error" />
+                          </IconButton>
+                          <Typography sx={{ display: 'inline-block' }}>
+                            Report this accommodation
+                          </Typography>
+                        </Grid>
+
+                        // <Button
+                        //   variant="outlined"
+                        //   onClick={() => {
+                        //     if (onCreateReport) {
+                        //       onCreateReport({
+                        //         user_id: user._id as string,
+                        //         accommodation_id: accommodation._id as string,
+                        //       })
+                        //     }
+                        //   }}
+                        // >
+                        //   Report this place
+                        // </Button>
+                      )}
                   </Grid>
                   {reviews && reviews?.length > 0 && (
                     <Grid item>

@@ -161,7 +161,10 @@ const SignInForm: React.FC<IProps> = () => {
             />
 
             {errorMessage && errorMessage.error && (
-              <Typography fontWeight='medium' align='justify' color='error'
+              <Typography
+                fontWeight="medium"
+                align="justify"
+                color="error"
                 sx={{
                   paddingTop: theme.spacing(1),
                 }}
@@ -183,7 +186,9 @@ const SignInForm: React.FC<IProps> = () => {
               Log in
             </Button>
             <Typography align="center">
-              <Link to="#">Forgot Password?</Link>
+              <Link to="https://www.airvnv.info/faq.html" target="_blank">
+                Need help? Find our user manual
+              </Link>
             </Typography>
             <Box
               sx={{
