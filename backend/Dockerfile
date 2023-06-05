@@ -6,7 +6,7 @@ COPY package-lock.json .
 COPY package.json .
 RUN yarn set version stable
 
-RUN yarn install --frozen-lockfile
+RUN yarn install --immutable-cache
 
 COPY . ./
 
