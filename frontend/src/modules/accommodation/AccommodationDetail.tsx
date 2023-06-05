@@ -85,7 +85,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
       height: 'fit-content',
       padding: theme.spacing(1),
       pb: theme.spacing(3),
-      mb: theme.spacing(1)
+      mb: theme.spacing(1),
     },
   }
 
@@ -122,7 +122,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           },
         }}
       >
-        <Grid item sx={{width: '100%'}}>
+        <Grid item sx={{ width: '100%' }}>
           <Grid container direction="row" justifyContent="space-between">
             {/* Accommodation Name */}
             <Grid item>
@@ -144,7 +144,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                   color: COLOR.blue,
                 }}
               >
-                Php {toPhp(accommodation.min_price)} -{' '}
+                Php {toPhp(accommodation.min_price)} - Php{' '}
                 {toPhp(accommodation.max_price)}
               </Typography>
             </Grid>
@@ -172,7 +172,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
             <Typography variant="body2">{accommodation.address}</Typography>
           </Grid>
         </Grid>
-        <Grid item sx={{width: '100%'}}>
+        <Grid item sx={{ width: '100%' }}>
           <Grid container direction="row">
             <Grid item xs={12} md={4} lg={4}>
               {/* Ratings Card */}
@@ -418,7 +418,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                           paddingRight: theme.spacing(0.5),
                         }}
                       >
-                        {accommodation.meters_from_uplb} meters
+                        {toPhp(accommodation.meters_from_uplb)} meters
                       </Typography>
                       away from UPLB Gate
                     </Typography>
@@ -440,7 +440,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           </Grid>
         </Grid>
         {/* | Description */}
-        <Grid item sx={{ paddingTop: theme.spacing(2), width:'100%' }}>
+        <Grid item sx={{ paddingTop: theme.spacing(2), width: '100%' }}>
           <Title text={'Description'} />
         </Grid>
         {/* Description */}
@@ -448,7 +448,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
           item
           sx={{
             padding: theme.spacing(2),
-            width:'100%'
+            width: '100%',
           }}
         >
           <Typography variant="body1">{accommodation.description}</Typography>
@@ -482,7 +482,9 @@ const AccommodationDetail: React.FC<IProps> = () => {
               <Typography variant="body1">Minimum Capacity</Typography>
             </Grid>
             <Grid item xs={8}>
-              <Typography variant="body1">{accommodation.min_pax}</Typography>
+              <Typography variant="body1">
+                {accommodation.min_pax} pax
+              </Typography>
             </Grid>
 
             {/* Maximum Capacity */}
@@ -490,7 +492,9 @@ const AccommodationDetail: React.FC<IProps> = () => {
               <Typography variant="body1">Maximum Capacity</Typography>
             </Grid>
             <Grid item xs={8}>
-              <Typography variant="body1">{accommodation.max_pax}</Typography>
+              <Typography variant="body1">
+                {accommodation.max_pax} pax
+              </Typography>
             </Grid>
 
             {/* Number of Rooms */}
@@ -526,7 +530,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
             paddingBottom: theme.spacing(2),
-            width:'100%'
+            width: '100%',
           }}
         >
           <Grid container>
@@ -613,7 +617,8 @@ const AccommodationDetail: React.FC<IProps> = () => {
             {/* Distance from UPLB Gate */}
             <Grid item xs={12}>
               <Typography variant="body1">
-                About {accommodation.meters_from_uplb} meters from UPLB Gate
+                About {toPhp(accommodation.meters_from_uplb)} meters from UPLB
+                Gate
               </Typography>
             </Grid>
             {/* Other Landmark */}
@@ -637,7 +642,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
             paddingBottom: theme.spacing(2),
-            width:'100%'
+            width: '100%',
           }}
         >
           <Grid container>
@@ -708,7 +713,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item sx={{width:'100%'}}>
+        <Grid item sx={{ width: '100%' }}>
           <Title text="Reviews" />
           <Reviews />
         </Grid>
