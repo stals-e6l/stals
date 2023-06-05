@@ -278,7 +278,9 @@ const LandingPage: React.FC<IProps> = () => {
                   marginTop: theme.spacing(2),
                   marginRight: theme.spacing(2),
                 }}
-                //   onClick={handleOpen}
+                onClick={() => {
+                  window.open('https://www.airvnv.info/auth', '_blank')
+                }}
               >
                 Create Account
               </Button>
@@ -288,7 +290,9 @@ const LandingPage: React.FC<IProps> = () => {
                   backgroundColor: theme.palette.secondary.main,
                   marginTop: theme.spacing(2),
                 }}
-                //   onClick={handleOpen}
+                onClick={() => {
+                  window.open('https://www.airvnv.info/public', '_blank')
+                }}
               >
                 Learn More
               </Button>
