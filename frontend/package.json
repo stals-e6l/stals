@@ -16,6 +16,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@fontsource/source-sans-pro": "^4.5.11",
     "@mui/icons-material": "^5.11.16",
+    "@mui/styles": "^5.13.2",
     "@mui/lab": "^5.0.0-alpha.132",
     "@mui/material": "^5.13.1",
     "@mui/styled-engine-sc": "^5.12.0",

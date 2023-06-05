@@ -8,6 +8,7 @@ import IndexPage from '../pages'
 import AccommodationDetailPage from '../pages/AccommodationDetailPage'
 import ProfilePage from '../pages/ProfilePage'
 import PublicPage from '../pages/PublicPage'
+import LandingPage from '../modules/landing/LandingPage'
 
 export const ROUTES = {
   public: '/public',
@@ -29,6 +30,10 @@ const AppRouter: React.FC<IProps> = () => {
 export default AppRouter
 
 const router = createBrowserRouter([
+  {
+    path: '/home',
+    element: <LandingPage />,
+  },
   {
     path: '/public',
     element: <PublicPage />,
