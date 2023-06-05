@@ -35,7 +35,7 @@ import josef from '../../assets/Team/josef.jpg'
 import av from '../../assets/Team/av.jpg'
 import angcana from '../../assets/Team/Angcana.png'
 import recario from '../../assets/Team/Recario.png'
-import find from '../../assets/Images/find.jpg'
+import find from '../../assets/Images/Find.jpg'
 import create from '../../assets/Images/Create.jpg'
 interface IProps {
   children?: React.ReactNode
