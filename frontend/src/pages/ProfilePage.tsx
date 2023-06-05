@@ -8,6 +8,7 @@ import {
   Avatar,
   Divider,
   Grid,
+  Button,
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
@@ -18,10 +19,11 @@ import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import { COLOR } from '../theme/index'
-import { getMe } from '../modules/auth/AuthProvider'
-import EditProfileModal from '../modules/auth/EditProfileModal'
+import { getMe, upgradeRole } from '../modules/auth/AuthProvider'
+// import EditProfileModal from '../modules/auth/EditProfileModal'
 import Title from '../modules/accommodation/TitleComponent'
 import AccommodationResults from '../modules/accommodation/AccommodationResults'
+import UpgradeRoundedIcon from '@mui/icons-material/UpgradeRounded'
 
 interface IProps {
   children?: React.ReactNode
@@ -31,11 +33,18 @@ const ProfilePage: React.FC<IProps> = () => {
   const user = getMe()
   const theme = useTheme()
   const [image, setImage] = React.useState<any>(null)
+  const onUpgradeRole = upgradeRole()
 
   if (!user) return <></>
 
   const formattedRole = user.role[0].toUpperCase() + user.role.slice(1)
   const formattedGender = user.gender[0].toUpperCase() + user.gender.slice(1)
+
+  const handleUpgrade = () => {
+    if (onUpgradeRole) {
+      onUpgradeRole()
+    }
+  }
 
   return (
     <Grid container>
@@ -265,27 +274,48 @@ const ProfilePage: React.FC<IProps> = () => {
 
             <Divider sx={{ background: COLOR.white }} />
 
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 'light', color: COLOR.white }}
-            >
-              Organization
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 'light', color: COLOR.white }}
-            >
-              {user.organization}
-            </Typography>
-            <Box
+            {user.organization && (
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: 'light', color: COLOR.white }}
+                >
+                  Organization
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 'light', color: COLOR.white }}
+                >
+                  {user.organization}
+                </Typography>
+              </>
+            )}
+            {user.role === 'tenant' && (
+              <Button
+                variant="contained"
+                sx={{
+                  background: theme.palette.secondary.main,
+                  marginTop: theme.spacing(),
+                }}
+                onClick={handleUpgrade}
+              >
+                <UpgradeRoundedIcon
+                  sx={{
+                    color: theme.palette.common.white,
+                  }}
+                />
+                Upgrade role to owner
+              </Button>
+            )}
+            {/* <Box
               sx={{
                 position: 'absolute',
                 bottom: theme.spacing(3),
                 right: theme.spacing(3),
               }}
-            >
-              <EditProfileModal />
-            </Box>
+            > */}
+            {/* <EditProfileModal /> */}
+            {/* </Box> */}
           </Box>
         </Box>
       </Grid>

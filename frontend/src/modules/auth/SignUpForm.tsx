@@ -38,7 +38,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
     username: '',
     password: '',
     email: '',
-    role: 'owner',
+    role: 'tenant',
     full_name: {
       first_name: '',
       middle_name: '',
@@ -122,7 +122,7 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         username: '',
         password: '',
         email: '',
-        role: 'owner',
+        role: 'tenant',
         full_name: {
           first_name: '',
           middle_name: '',
@@ -171,22 +171,6 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         error={error && error.email}
         helperText={error && error.email}
       />
-      <Select
-        label="Role"
-        fullWidth
-        required
-        size="small"
-        input={<OutlinedInput />}
-        value={form.role}
-        onChange={e =>
-          setForm(prev => ({ ...prev, role: e.target.value as TUserRole }))
-        }
-        variant="filled"
-        style={{ marginTop: 20 }}
-      >
-        <MenuItem value={'tenant'}>Student</MenuItem>
-        <MenuItem value={'owner'}>Accommodation Owner</MenuItem>
-      </Select>
 
       <Grid
         container
