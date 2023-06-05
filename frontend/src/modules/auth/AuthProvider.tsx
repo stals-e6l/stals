@@ -1,7 +1,7 @@
 import React from 'react'
 import { saveToken, getToken, removeToken } from '../../services/localStorage'
 import { useNavigate } from 'react-router-dom'
-import { apiGet, apiPost } from '../../services/api'
+import { apiGet, apiPost, apiPut } from '../../services/api'
 import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
@@ -42,26 +42,28 @@ const AuthProvider: React.FC<IProps> = ({ children }) => {
 export default AuthProvider
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  // TODO: use as child RouterProvider
-  const onSetAuthLoaded = setAuthLoaded()
-  const onFetchMe = fetchMe()
+  // hooks
   const navigate = useNavigate()
-  const loaded = getAuthLoaded()
-  const { dispatch } = useAuth()
+  const onFetchMe = fetchMe()
 
   React.useEffect(() => {
-    if (onFetchMe && dispatch && !loaded && onSetAuthLoaded)
-      onFetchMe()
-        .then(() => {
-          navigate(ROUTES.appExplore)
-        })
-        .catch(() => {
-          navigate(ROUTES.appAuth)
-        })
-        .finally(() => {
-          onSetAuthLoaded(true)
-        })
-  }, [onFetchMe, loaded, onSetAuthLoaded])
+    // if there is a token,
+    // then we can authenticate it
+    const token = getToken()
+    if (token) {
+      if (onFetchMe)
+        onFetchMe()
+          .then(() => {
+            if (location.pathname === '/') {
+              navigate(ROUTES.appExplore)
+            }
+          }) // redirect to current page
+          .catch(() => navigate(ROUTES.appAuth))
+      // else we can just redirect them to the auth page
+    } else {
+      navigate(ROUTES.appAuth)
+    }
+  }, [])
 
   return <React.Fragment>{children}</React.Fragment>
 }
@@ -159,7 +161,8 @@ export const signOut = () => {
 }
 
 export const fetchMe = () => {
-  const { dispatch, token } = useAuth()
+  const { dispatch } = useAuth()
+  const token = getToken()
 
   if (!dispatch) return null
 
@@ -195,4 +198,41 @@ export const setAuthLoaded = () => {
   return (isLoaded: boolean) => {
     dispatch({ type: 'SET_LOADED', payload: isLoaded })
   }
+}
+
+export const upgradeRole = () => {
+  const { dispatch } = useAuth()
+  if (!dispatch) return null
+  return async () => {
+    const res = await apiPut<{ role: 'owner' }, IUser>('me', {
+      payload: { role: 'owner' },
+    })
+
+    if (res.success && res.data) {
+      dispatch({ type: 'SET_USER', payload: res.data })
+    }
+  }
+}
+
+export const ALLOWABLE_FEATURES = {
+  create: {
+    accommodation: ['admin', 'owner'],
+    review: ['admin', 'owner', 'tenant'],
+    report: ['admin', 'owner', 'tenant'],
+  },
+  retrieve: {
+    accommodation: ['admin', 'owner', 'tenant'],
+    review: ['admin', 'owner', 'tenant'],
+    report: ['admin', 'owner', 'tenant'],
+  },
+  update: {
+    accommodation: ['admin', 'owner'],
+    review: ['admin', 'owner', 'tenant'],
+    report: ['admin'],
+  },
+  delete: {
+    accommodation: ['admin', 'owner'],
+    review: ['admin', 'owner', 'tenant'],
+    report: ['admin'],
+  },
 }

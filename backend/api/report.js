@@ -1,12 +1,12 @@
 const { RESTRouter } = require('../handler/rest_router')
 
-const Report = require('../models/v2/report')
+const Report = require('../models/v3/report')
 
 const reportRouter = RESTRouter('/report', Report, {
-    create: ["admin", "owner", "tenant"],
-    retrieve: ["admin"],
-    update: ["admin"],
-    delete: ["admin"],
+  create: ['admin', 'tenant'],
+  retrieve: ['admin', 'owner', 'tenant'],
+  update: ['admin', 'tenant'],
+  delete: ['admin', 'tenant'],
 })
 
 module.exports = reportRouter
@@ -19,15 +19,16 @@ module.exports = reportRouter
  *          type: object
  *          required:
  *              - user_id
- *              - pdf_url
+ *              - accommodation_id
  *          properties:
  *              user_id:
  *                  type: string
  *                  pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: User id that created report
- *              pdf_url:
+ *              accommodation_id:
  *                  type: string
- *                  description: URL of pdf
+ *                  pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation that is being reported
  * security:
  *      - bearerAuth: []
  */
@@ -36,7 +37,20 @@ module.exports = reportRouter
  * @openapi
  * /api/report:
  *      post:
- *          description: Create report
+ *          description: |
+ *            This endpoint creates a report from the request body and **returns the created report**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            - Accommodation owners
+ *            - Tenants
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **201** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          requestBody:
@@ -66,7 +80,18 @@ module.exports = reportRouter
  * @openapi
  * /api/report/{id}:
  *      get:
- *          description: Get report by id
+ *          description: |
+ *            This endpoint takes the report id and **returns the found report**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -98,7 +123,18 @@ module.exports = reportRouter
  * @openapi
  * /api/report:
  *      get:
- *          description: Get all reports
+ *          description: |
+ *            This endpoint takes any search query and **returns the found report/s**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -109,10 +145,11 @@ module.exports = reportRouter
  *                      pattern: '^[0-9A-Fa-f]{24}$'
  *                  description: User that generated the report
  *              -   in: query
- *                  name: pdf_url
+ *                  name: accommodation_id
  *                  schema:
  *                      type: string
- *                  description: URL of the PDF generated
+ *                      pattern: '^[0-9A-Fa-f]{24}$'
+ *                  description: Accommodation that is being reported
  *              -   in: query
  *                  name: limit
  *                  schema:
@@ -142,7 +179,18 @@ module.exports = reportRouter
  * @openapi
  * /api/report/{id}:
  *      delete:
- *          description: Delete report by id
+ *          description: |
+ *            This endpoint takes the report id and **returns null**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:
@@ -172,7 +220,18 @@ module.exports = reportRouter
  * @openapi
  * /api/report/{id}:
  *      put:
- *          description: Edit report by id
+ *          description: |
+ *            This endpoint takes the report id, edits the specified report from the request body, and **returns the edited report**.
+ * 
+ *            ### This endpoint may be accessed by:
+ *            - Admin
+ *            
+ *            ### Below is a list of status codes this API may return:
+ *            1. **200** - OK
+ *            2. **401** - Unauthorized access
+ *            3. **400** - Bad user request
+ *            4. **404** - Not found
+ *            5. **500** - Internal server error
  *          security:
  *              -   bearerAuth: []
  *          parameters:

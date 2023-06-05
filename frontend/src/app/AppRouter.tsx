@@ -5,14 +5,18 @@ import { AuthGuard } from '../modules/auth/AuthProvider'
 import ExplorePage from '../pages/ExplorePage'
 import ResultPage from '../pages/ResultPage'
 import IndexPage from '../pages'
+import AccommodationDetailPage from '../pages/AccommodationDetailPage'
+import ProfilePage from '../pages/ProfilePage'
 import PublicPage from '../pages/PublicPage'
 import LandingPage from '../modules/landing/LandingPage'
 
 export const ROUTES = {
   public: '/public',
-  appAuth: '/app/auth',
-  appExplore: '/app/explore',
-  appResult: '/app/result',
+  appAuth: '/auth',
+  appExplore: '/explore',
+  appResult: '/result',
+  appAccommodationDetail: '/accommodations/:id',
+  profile: '/profile',
 }
 
 interface IProps {
@@ -27,21 +31,29 @@ export default AppRouter
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/home',
     element: <LandingPage />,
   },
   {
-    path: '/app',
+    path: '/public',
+    element: <PublicPage />,
+  },
+  {
+    path: ROUTES.appAuth,
+    element: <AuthPage />,
+  },
+  {
+    path: '/',
     element: (
       <AuthGuard>
         <IndexPage />
       </AuthGuard>
     ),
     children: [
-      {
-        path: ROUTES.appAuth,
-        element: <AuthPage />,
-      },
+      // {
+      //   path: ROUTES.appAuth,
+      //   element: <AuthPage />,
+      // },
       {
         path: ROUTES.appExplore,
         element: <ExplorePage />,
@@ -49,6 +61,14 @@ const router = createBrowserRouter([
       {
         path: ROUTES.appResult,
         element: <ResultPage />,
+      },
+      {
+        path: ROUTES.appAccommodationDetail,
+        element: <AccommodationDetailPage />,
+      },
+      {
+        path: ROUTES.profile,
+        element: <ProfilePage />,
       },
     ],
   },

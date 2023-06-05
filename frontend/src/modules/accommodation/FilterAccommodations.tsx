@@ -9,18 +9,14 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  Button,
-  Checkbox,
-  Rating,
-  FormGroup,
   useTheme,
-  Divider,
+  Button,
 } from '@mui/material'
 import { COLOR } from '../../theme'
 import { buildQueryString, extractQueryString } from '../../utils/queryString'
-import { filterAccommodations } from './AccommodationsProvider'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
+import Title from './TitleComponent'
 
 interface IProps {
   children?: React.ReactNode
@@ -30,12 +26,11 @@ const FilterAccommodations: React.FC<IProps> = () => {
   //hook
   const theme = useTheme()
   const navigate = useNavigate()
-  const onFilterAccommodations = filterAccommodations()
   const location = useLocation()
 
   // state
   const [filter, setFilter] = React.useState<IAccommodationsFilter>({
-    name: extractQueryString(location.search).name || '',
+    search: extractQueryString(location.search).search || '',
     type: '',
     min_price: 0,
     max_price: 10000,
@@ -58,7 +53,7 @@ const FilterAccommodations: React.FC<IProps> = () => {
 
   const onFilter = (filter: IAccommodationsFilter) => {
     const queryString = buildQueryString({
-      name: filter.name === '' ? undefined : filter.name,
+      search: extractQueryString(location.search).search,
       type: filter.type === '' ? undefined : filter.type,
       min_price: filter.min_price === 0 ? undefined : filter.min_price,
       max_price: filter.max_price === 10000 ? undefined : filter.max_price,
@@ -72,43 +67,31 @@ const FilterAccommodations: React.FC<IProps> = () => {
       furnishing: filter.furnishing === '' ? undefined : filter.furnishing,
     })
 
-    if (onFilterAccommodations) {
-      onFilterAccommodations(queryString)
-    }
-
     navigate(`${ROUTES.appResult}?${queryString}`) // ux
   }
+
+  React.useEffect(() => {
+    onFilter(filter)
+  }, [filter.search])
 
   return (
     <>
       <Grid container>
-        <Grid item xs={12}>
-          {/* | Filters */}
-          <Typography
-            variant="h5"
-            sx={{
-              color: COLOR.black,
-              display: 'flex',
-              [theme.breakpoints.down('md')]: {
-                fontSize: theme.spacing(2.5),
-              },
-              [theme.breakpoints.down('sm')]: {
-                fontSize: theme.spacing(2),
-              },
-            }}
-          >
-            <Typography
-              variant="h5"
-              sx={{
-                color: COLOR.green,
-                marginRight: theme.spacing(1),
-                fontSize: 'inherit',
-              }}
-            >
-              |
-            </Typography>{' '}
-            Filters
-          </Typography>
+        <Grid
+          item
+          xs={12}
+          alignItems="center"
+          justifyContent="space-between"
+          container
+        >
+          <Grid item xs={6}>
+            <Title text="Filters" />
+          </Grid>
+          <Grid item xs={6} container justifyContent="flex-end">
+            <Button variant="contained" onClick={() => onFilter(filter)}>
+              Filter
+            </Button>
+          </Grid>
         </Grid>
         <Grid item xs={12}>
           <Grid
@@ -144,32 +127,6 @@ const FilterAccommodations: React.FC<IProps> = () => {
                   ))}
                 </RadioGroup>
               </FormControl>
-            </Grid>
-
-            {/*  Ratings */}
-            <Grid item xs={12}>
-              <Typography variant="h6">Ratings</Typography>
-              <FormGroup>
-                {ACCOMMODATION_RATINGS.map(rating => (
-                  <FormControlLabel
-                    disabled
-                    key={rating}
-                    control={<Checkbox size="small" />}
-                    label={
-                      <Rating
-                        value={rating}
-                        readOnly
-                        sx={{
-                          color: COLOR.blue,
-                          [theme.breakpoints.down('md')]: {
-                            fontSize: theme.spacing(2.25),
-                          },
-                        }}
-                      />
-                    }
-                  />
-                ))}
-              </FormGroup>
             </Grid>
 
             {/* Price */}
@@ -291,41 +248,6 @@ const FilterAccommodations: React.FC<IProps> = () => {
             </Grid>
           </Grid>
         </Grid>
-
-        {/* Filter Search btn */}
-        <Grid item xs={12}>
-          <Divider />
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              textTransform: 'none',
-              backgroundColor: COLOR.green,
-              borderRadius: theme.spacing(1),
-              boxShadow: '1px 2px 4px #6e6e73',
-              ':hover': {
-                color: COLOR.green,
-                backgroundColor: COLOR.gray1,
-              },
-            }}
-          >
-            <Typography
-              variant="h6"
-              onClick={() => onFilter(filter)}
-              sx={{
-                fontSize: theme.spacing(2.15),
-                [theme.breakpoints.down('md')]: {
-                  fontSize: theme.spacing(2),
-                },
-                [theme.breakpoints.down('sm')]: {
-                  fontSize: theme.spacing(1.85),
-                },
-              }}
-            >
-              Filter Search
-            </Typography>
-          </Button>
-        </Grid>
       </Grid>
     </>
   )
@@ -341,8 +263,6 @@ const ACCOMMODATION_TYPES = [
   { label: 'Transient Space', value: 'transient' },
   { label: 'Any type', value: '' },
 ]
-
-const ACCOMMODATION_RATINGS = [0, 1, 2, 3, 4, 5]
 
 const ACCOMMODATION_FURNISHING = [
   { label: 'Unfurnished', value: 'unfurnished' },
