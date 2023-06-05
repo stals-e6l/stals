@@ -22,7 +22,7 @@ import { COLOR } from '../../theme/index'
 import Title from './TitleComponent'
 import Reviews from '../review/Reviews'
 import { retrieveOneAccommodation } from './AccommodationsProvider'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { averageReviewRating } from '../review/ReviewsProvider'
 import { retrieveReviews } from '../review/ReviewsProvider'
 import {
@@ -31,6 +31,7 @@ import {
   getReports,
 } from '../report/ReportsProvider'
 import { getMe } from '../auth/AuthProvider'
+import { ROUTES } from '../../app/AppRouter'
 
 interface IProps {
   children?: React.ReactNode
@@ -47,6 +48,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
   const reports = getReports()
   const user = getMe()
   const onCreateReport = createReport()
+  const navigate = useNavigate()
 
   React.useEffect(() => {
     if (accommodation && onFetchReports) {
@@ -54,7 +56,13 @@ const AccommodationDetail: React.FC<IProps> = () => {
     }
   }, [accommodation])
 
-  if (!accommodation || !reports) {
+  React.useEffect(() => {
+    if (!accommodation) {
+      navigate(ROUTES.appExplore)
+    }
+  }, [accommodation])
+
+  if (!accommodation) {
     return <div>accommodation does not exits!</div>
   }
 
