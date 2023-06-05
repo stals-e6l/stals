@@ -17,7 +17,7 @@ const accommodationFurnishingEnum = [
 ]
 
 const accomms = userId =>
-  Array.from(Array(100)).map(_ => ({
+  Array.from(Array(25)).map(_ => ({
     user_id: userId,
     name: faker.company.name(),
     description: faker.lorem.paragraph(),
