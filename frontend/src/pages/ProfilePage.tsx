@@ -49,7 +49,12 @@ const ProfilePage: React.FC<IProps> = () => {
   return (
     <Grid container>
       <Grid item xs={3}>
-        <Box sx={{ display: 'flex', height: 'calc(100vh - 60px)' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            height: '100%',
+          }}
+        >
           <Box
             sx={{
               backgroundColor: COLOR.blue,
