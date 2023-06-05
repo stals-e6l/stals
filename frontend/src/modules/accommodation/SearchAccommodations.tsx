@@ -9,7 +9,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import React from 'react'
 import { COLOR } from '../../theme'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { buildQueryString } from '../../utils/queryString'
 import { retrieveAccommodations } from './AccommodationsProvider'
 import { ROUTES } from '../../app/AppRouter'
@@ -23,6 +23,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
   const theme = useTheme()
   const navigate = useNavigate()
   const accommodations = retrieveAccommodations()
+  const location = useLocation()
 
   // state
   const [name, setName] = React.useState<string>('')
@@ -32,9 +33,13 @@ const SearchAccommodations: React.FC<IProps> = () => {
     setName(event.target.value)
   }
   const handleSearch = () => {
-    navigate(`${ROUTES.appResult}?${buildQueryString({ name })}`, {
-      replace: true,
-    })
+    if (location.pathname === ROUTES.public) {
+      navigate(ROUTES.appAuth)
+    } else {
+      navigate(`${ROUTES.appResult}?${buildQueryString({ search: name })}`, {
+        replace: true,
+      })
+    }
   }
 
   return (
@@ -64,6 +69,7 @@ const SearchAccommodations: React.FC<IProps> = () => {
               {...params}
               value={name}
               onChange={handleInputChange}
+              onSelect={handleInputChange}
               placeholder="Search accommodation"
               fullWidth
               sx={{
@@ -77,6 +83,11 @@ const SearchAccommodations: React.FC<IProps> = () => {
                   borderTopRightRadius: '0px',
                   borderBottomRightRadius: '0px',
                 },
+              }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleSearch()
+                }
               }}
             />
           )}

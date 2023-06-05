@@ -5,6 +5,9 @@ import {
   Button,
   useTheme,
   Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   useMediaQuery,
   alpha,
 } from '@mui/material'
@@ -37,6 +40,7 @@ const SignInForm: React.FC<IProps> = () => {
     username: '',
     password: '',
   })
+  const [errorMessage, setError] = React.useState<any | null>(null)
 
   // events
   const handleOpen = () => toggleDialog()
@@ -47,7 +51,11 @@ const SignInForm: React.FC<IProps> = () => {
         .then(() => {
           navigate(ROUTES.appExplore)
         })
-        .catch(err => onShowError(String(err)))
+        .catch(err => {
+          console.log(err)
+          const newError = String(err).replace('Error: Error: ', '')
+          setError({ error: newError })
+        })
     }
   }
 
@@ -104,7 +112,7 @@ const SignInForm: React.FC<IProps> = () => {
         >
           <Box
             sx={{
-              backgroundColor: COLOR.gray2,
+              backgroundColor: COLOR.gray1,
               width: '300px',
               marginRight: theme.spacing(6),
               padding: theme.spacing(3),
@@ -118,37 +126,56 @@ const SignInForm: React.FC<IProps> = () => {
               },
             }}
           >
-            <Typography>Username</Typography>
             <TextField
-              id="outlined-basic"
-              variant="outlined"
               size="small"
               fullWidth
-              sx={{ backgroundColor: COLOR.white }}
+              label="Username"
               onChange={e =>
                 setForm(prev => ({ ...prev, username: e.target.value }))
               }
               value={form.username}
+              variant="filled"
+              style={{ marginTop: 20 }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleSignIn()
+                }
+              }}
             />
-            <Typography>Password</Typography>
             <TextField
-              id="outlined-basic"
-              variant="outlined"
               size="small"
               fullWidth
+              label="Password"
               type="password"
-              sx={{ backgroundColor: COLOR.white }}
               value={form.password}
               onChange={e =>
                 setForm(prev => ({ ...prev, password: e.target.value }))
               }
+              variant="filled"
+              style={{ marginTop: 20 }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleSignIn()
+                }
+              }}
             />
+
+            {errorMessage && errorMessage.error && (
+              <Typography fontWeight='medium' align='justify' color='error'
+                sx={{
+                  paddingTop: theme.spacing(1),
+                }}
+              >
+                {errorMessage.error}
+              </Typography>
+            )}
+
             <Button
               variant="contained"
               fullWidth
               sx={{
                 backgroundColor: theme.palette.primary.main,
-                marginTop: theme.spacing(3),
+                marginTop: theme.spacing(2),
                 marginBottom: theme.spacing(2),
               }}
               onClick={handleSignIn}
@@ -188,7 +215,22 @@ const SignInForm: React.FC<IProps> = () => {
                   },
                 }}
               >
-                <SignUpForm onClose={handleClose} />
+                <DialogTitle sx={{ color: COLOR.blue }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: theme.palette.primary.main,
+                      paddingBottom: theme.spacing(1),
+                    }}
+                  >
+                    Create an Account
+                  </Typography>
+                </DialogTitle>
+                <DialogContent sx={{}}>
+                  <SignUpForm onClose={handleClose} />
+                </DialogContent>
+                <DialogActions sx={{}}></DialogActions>
               </Dialog>
             )}
           </Box>

@@ -70,6 +70,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
     is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
   })
   const [file, setFile] = React.useState<File>()
+  const [error, setError] = React.useState<any | null>(null)
 
   // events
   const setFieldValue = (
@@ -81,19 +82,45 @@ const AccommodationFormModal: React.FC<IProps> = ({
 
   // events
   const handleSubmit = async () => {
-    if (onCreateAccommodation && !defaultValues && file) {
-      const res = await imageUpload(file)
-      let formData = { ...form }
-      if (res.success) {
-        formData = { ...form, image: { url: res.data as string } }
+    setError(null)
+
+    if (onCreateAccommodation && !defaultValues) {
+      let formData
+      formData = { ...form }
+      if (file) {
+        const res = await imageUpload(file)
+        if (res.success) {
+          formData = { ...form, image: { url: res.data as string } }
+        }
       }
-      onCreateAccommodation(formData).then(status => {
-        if (status) toggleDialog()
-      })
+      //const response = await onCreateAccommodation(formData)
+      onCreateAccommodation(formData)
+        .then(toggleDialog)
+        .catch(err => {
+          const newError: { [key: string]: string } = {}
+          String(err)
+            .replace('Error: ValidationError: ', '')
+            .split(',')
+            .forEach(err => {
+              const [key, message] = err.split(':')
+              newError[key.trim()] = message
+            })
+          setError(newError)
+        })
     } else if (onEditAccommodation && defaultValues) {
-      onEditAccommodation({ ...form, _id: defaultValues._id as string }).then(
-        toggleDialog
-      )
+      onEditAccommodation({ ...form, _id: defaultValues._id as string })
+        .then(toggleDialog)
+        .catch(err => {
+          const newError: { [key: string]: string } = {}
+          String(err)
+            .replace('Error: ValidationError: ', '')
+            .split(',')
+            .forEach(err => {
+              const [key, message] = err.split(':')
+              newError[key.trim()] = message
+            })
+          setError(newError)
+        })
     }
     if (onClose) onClose()
   }
@@ -138,9 +165,13 @@ const AccommodationFormModal: React.FC<IProps> = ({
             sx={{
               ...submitBtnSx.root,
               borderRadius: '50%',
-              position: 'absolute',
-              bottom: '5%',
-              right: '5%',
+              position: 'fixed',
+              bottom: '4%',
+              right: '2.5%',
+              [theme.breakpoints.down('sm')]: {
+                bottom: '2.5%',
+                right: '1%',
+              },
               background: theme.palette.primary.main,
               color: theme.palette.common.white,
             }}
@@ -157,6 +188,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
             sx={{
               background: theme.palette.primary.main,
               color: theme.palette.common.white,
+              fontWeight: 'bold',
             }}
           >
             Edit
@@ -178,6 +210,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
               form={form}
               setFieldValue={setFieldValue}
               setFile={setFile}
+              error={error}
             />
           </DialogContent>
 

@@ -49,6 +49,7 @@ interface IArchiveAccomodationPayload {
 }
 
 interface IAccommodationsFilter {
+  search?: string
   name?: string
   type?: TAccommodationType | ''
   min_price?: number
@@ -89,5 +90,6 @@ type TAccommodationActionType =
   | 'ADD_ACCOMMODATION'
   | 'DELETE_ACCOMMODATION'
   | 'EDIT_ACCOMMODATION'
+  | 'APPEND_ACCOMMODATIONS'
 
 type TAccommodationPayload = IAccommodation[] | IAccommodation | string
