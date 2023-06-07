@@ -131,6 +131,41 @@ const AccommodationFormModal: React.FC<IProps> = ({
     }
   }, [me])
 
+  React.useEffect(() => {
+    return () => {
+      setForm({
+        image: {
+          url: (defaultValues && defaultValues.image.url) || '',
+        },
+        name: (defaultValues && defaultValues.name) || '',
+        address: (defaultValues && defaultValues.address) || '',
+        type: (defaultValues && defaultValues.type) || 'hotel',
+        min_price: (defaultValues && defaultValues.min_price) || 0,
+        max_price: (defaultValues && defaultValues.max_price) || 0,
+        size_sqm: (defaultValues && defaultValues.size_sqm) || 0,
+        meters_from_uplb:
+          (defaultValues && defaultValues.meters_from_uplb) || 0,
+        min_pax: (defaultValues && defaultValues.min_pax) || 0,
+        max_pax: (defaultValues && defaultValues.max_pax) || 0,
+        num_rooms: (defaultValues && defaultValues.num_rooms) || 0,
+        num_beds: (defaultValues && defaultValues.num_beds) || 0,
+        num_views: (defaultValues && defaultValues.num_views) || 1,
+        furnishing:
+          (defaultValues && defaultValues.furnishing) || 'fully_furnished',
+        landmarks: (defaultValues && defaultValues.landmarks) || [],
+        cooking_rules: (defaultValues && defaultValues.cooking_rules) || [],
+        pet_rules: (defaultValues && defaultValues.pet_rules) || [],
+        other_rules: (defaultValues && defaultValues.other_rules) || [],
+        safety_and_security:
+          (defaultValues && defaultValues.safety_and_security) || [],
+        appliances: (defaultValues && defaultValues.appliances) || [],
+        amenities: (defaultValues && defaultValues.amenities) || [],
+        is_soft_deleted:
+          (defaultValues && defaultValues.is_soft_deleted) || false,
+      }) // the value passed in the setForm should be a reset value, see how it was setup as a state
+    }
+  }, [form, setForm])
+
   const cancelBtnSx = {
     root: {
       backgroundColor: COLOR.negativeRed,
