@@ -24,6 +24,7 @@ import { getMe, upgradeRole } from '../modules/auth/AuthProvider'
 import Title from '../modules/accommodation/TitleComponent'
 import AccommodationResults from '../modules/accommodation/AccommodationResults'
 import UpgradeRoundedIcon from '@mui/icons-material/UpgradeRounded'
+import assets from '../assets'
 
 interface IProps {
   children?: React.ReactNode
@@ -71,7 +72,7 @@ const ProfilePage: React.FC<IProps> = () => {
                   height: theme.spacing(6),
                 }}
                 alt="profile"
-                src={image}
+                src={assets.defaultAvatar}
               />
             </Box>
             <Typography variant="h3" sx={{ color: COLOR.white }}>
