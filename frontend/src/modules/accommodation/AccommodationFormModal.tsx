@@ -249,18 +249,12 @@ const AccommodationFormModal: React.FC<IProps> = ({
               setFieldValue={setFieldValue}
               setFile={setFile}
               error={error}
+              onSubmit={handleSubmit}
+              onClose={toggleDialog}
             />
           </DialogContent>
 
           <DialogActions sx={{}}>
-            {' '}
-            {/*TEMP COLOR*/}
-            <Button onClick={toggleDialog} sx={cancelBtnSx.root}>
-              Cancel
-            </Button>
-            <Button onClick={handleSubmit} sx={submitBtnSx.root}>
-              Submit
-            </Button>
           </DialogActions>
         </Dialog>
       )}

@@ -2,12 +2,14 @@ import React from 'react'
 import {
   Autocomplete,
   Box,
+  Button,
   FormLabel,
   MenuItem,
   OutlinedInput,
   OutlinedInputProps,
   Select,
   TextField,
+  useTheme,
 } from '@mui/material'
 import { COLOR } from '../../theme/'
 
@@ -20,6 +22,8 @@ interface IProps {
   ) => void
   setFile: React.Dispatch<React.SetStateAction<File | undefined>>
   error: any | null
+  onSubmit: () => void
+  onClose: () => void
 }
 
 const AccommodationForm: React.FC<IProps> = ({
@@ -27,8 +31,11 @@ const AccommodationForm: React.FC<IProps> = ({
   setFieldValue,
   setFile,
   error,
+  onSubmit,
+  onClose
 }) => {
   // state
+  const theme = useTheme()
 
   // immediate
   const values = React.useMemo(() => form, [form])
@@ -58,6 +65,7 @@ const AccommodationForm: React.FC<IProps> = ({
             setFile(e.target.files[0])
           }
         }}
+        style={{ marginTop: 20 }}
       />
 
       <TextField
@@ -455,6 +463,30 @@ const AccommodationForm: React.FC<IProps> = ({
         renderInput={params => <TextField variant="filled" {...params} />}
         style={{ marginTop: 5, marginBottom: 20 }}
       />
+      <Button
+        variant="contained"
+        fullWidth
+        sx={{
+          backgroundColor: theme.palette.primary.main,
+          marginTop: theme.spacing(2),
+          marginBottom: theme.spacing(1),
+        }}
+        onClick={onSubmit}
+      >
+        Submit
+      </Button>
+      <Button
+        variant="contained"
+        fullWidth
+        sx={{
+          backgroundColor: theme.palette.primary.main,
+          marginTop: theme.spacing(2),
+          marginBottom: theme.spacing(1),
+        }}
+        onClick={onClose}
+      >
+        Cancel
+      </Button>
     </Box>
   )
 }
