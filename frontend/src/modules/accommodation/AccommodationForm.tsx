@@ -48,6 +48,7 @@ const AccommodationForm: React.FC<IProps> = ({
       },
     },
   }
+  
 
   return (
     <Box>
@@ -124,6 +125,7 @@ const AccommodationForm: React.FC<IProps> = ({
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         color="secondary"
         variant="filled"
+        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.min_price}
@@ -141,6 +143,7 @@ const AccommodationForm: React.FC<IProps> = ({
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         color="secondary"
         variant="filled"
+        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.max_price}
@@ -157,6 +160,7 @@ const AccommodationForm: React.FC<IProps> = ({
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
+        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.size_sqm}
@@ -175,6 +179,7 @@ const AccommodationForm: React.FC<IProps> = ({
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
+        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.meters_from_uplb}
@@ -189,6 +194,7 @@ const AccommodationForm: React.FC<IProps> = ({
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
+        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.min_pax}
@@ -203,6 +209,7 @@ const AccommodationForm: React.FC<IProps> = ({
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
+        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.max_pax}
@@ -219,6 +226,7 @@ const AccommodationForm: React.FC<IProps> = ({
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
+        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.num_rooms}
@@ -235,6 +243,7 @@ const AccommodationForm: React.FC<IProps> = ({
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
+        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.num_beds}
