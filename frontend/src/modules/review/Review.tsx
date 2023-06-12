@@ -14,6 +14,7 @@ import DeleteReview from './DeleteReview'
 import EditReview from './EditReview'
 import useMenu from '../../hooks/useMenu'
 import DateObject from 'react-date-object'
+import toFullName from '../../utils/toFullName'
 
 interface IProps {
   children?: React.ReactNode
@@ -28,7 +29,7 @@ const Review: React.FC<IProps> = ({ review }) => {
   const date = new DateObject({
     date: review.createdAt,
     format: 'MMMM DD, YYYY',
-    })
+  })
 
   return (
     <React.Fragment>
@@ -44,20 +45,21 @@ const Review: React.FC<IProps> = ({ review }) => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex' }}>
             <AccountCircleIcon
-              sx={{ color: theme.palette.primary.main , fontSize: 'xxx-large' }}
+              sx={{ color: theme.palette.primary.main, fontSize: 'xxx-large' }}
             />
             <Box>
-              <Typography 
-                  noWrap 
-                  sx={ (theme) => ({
-                    marginLeft: '3px',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '100%',
-                    [theme.breakpoints.down('sm')]: {
-                        maxWidth: '90%'
-                    },
-                          }) }>
-                {review.user_id}
+              <Typography
+                noWrap
+                sx={theme => ({
+                  marginLeft: '3px',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%',
+                  [theme.breakpoints.down('sm')]: {
+                    maxWidth: '90%',
+                  },
+                })}
+              >
+                {toFullName((review.user_id as IUser).full_name)}
               </Typography>
               <Box sx={{ display: 'flex' }}>
                 <Rating
@@ -82,7 +84,9 @@ const Review: React.FC<IProps> = ({ review }) => {
             </Box>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'start' }}>
-            <Typography sx={{ textOverflow: 'ellipsis', minWidth: '100px' }}>{date.format()}</Typography>
+            <Typography sx={{ textOverflow: 'ellipsis', minWidth: '100px' }}>
+              {date.format()}
+            </Typography>
             <IconButton
               sx={{ marginTop: '-8px', color: '#000000' }}
               onClick={onOpen}

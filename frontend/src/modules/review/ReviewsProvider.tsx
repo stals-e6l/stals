@@ -86,7 +86,7 @@ export const fetchReviews = () => {
 
   return async (accommodationId: string) => {
     const res = await apiGet<IReview[]>(
-      `review?accommodation_id=${accommodationId}`
+      `review?accommodation_id=${accommodationId}&populate=user_id`
     )
 
     if (res.data && res.success) {
