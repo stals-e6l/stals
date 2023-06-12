@@ -46,7 +46,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
   const theme = useTheme()
   const params = useParams()
   const accommodation = retrieveOneAccommodation(params.id as string)
-  const rating = averageReviewRating()
+  const averageRating = averageReviewRating()
   const reviews = retrieveReviews()
   const onFetchReports = fetchReports()
   const reports = getReports()
@@ -207,7 +207,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                 <Grid container>
                   <Grid item>
                     {/* Ratings */}
-                    {rating === null || Number.isNaN(rating) ? (
+                    {averageRating === null || Number.isNaN(averageRating) ? (
                       <Grid item>
                         <Typography variant="h4" sx={{ color: COLOR.green }}>
                           {'No ratings yet.'}
@@ -232,7 +232,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                             color: COLOR.green,
                           }}
                         >
-                          {rating}
+                          {Number(averageRating).toFixed(1) || 0}
                         </Typography>
                         <Typography
                           variant="h6"
@@ -242,7 +242,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                         </Typography>
                         <Box sx={{ ml: theme.spacing(1) }}>
                           <Rating
-                            value={rating}
+                            value={averageRating}
                             precision={0.5}
                             readOnly
                             sx={{
