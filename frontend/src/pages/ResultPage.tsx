@@ -4,11 +4,11 @@ import FilterAccommodations from '../modules/accommodation/FilterAccommodations'
 import SearchAccommodations from '../modules/accommodation/SearchAccommodations'
 import AccommodationResults from '../modules/accommodation/AccommodationResults'
 import PrintIcon from '@mui/icons-material/Print'
-import SortIcon from '@mui/icons-material/Sort'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { COLOR } from '../theme/index'
 import Title from '../modules/accommodation/TitleComponent'
 import DownloadAccommodations from '../modules/accommodation/DownloadAccommodations'
+import { useLocation } from 'react-router-dom'
 
 interface IProps {
   children?: React.ReactNode
@@ -16,6 +16,11 @@ interface IProps {
 
 const ResultPage: React.FC<IProps> = () => {
   const theme = useTheme()
+
+  const location = useLocation()
+
+  const search = location.search
+
   return (
     <React.Fragment>
       {/*Print PDF Floating Action Button*/}
@@ -61,25 +66,6 @@ const ResultPage: React.FC<IProps> = () => {
             <Grid item xs={12}>
               {/* Buttons when the screen is not a desktop */}
               <Grid direction="row" container>
-                {/* Sort Button */}
-                <Grid item>
-                  <Button variant="text">
-                    <SortIcon
-                      sx={{
-                        color: COLOR.green,
-                      }}
-                    />
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: COLOR.textBlack,
-                      }}
-                    >
-                      Sort
-                    </Typography>
-                  </Button>
-                </Grid>
-
                 {/* Filter Button */}
                 <Grid item>
                   <Button
@@ -137,13 +123,30 @@ const ResultPage: React.FC<IProps> = () => {
             </Grid>
 
             {/* | Search Results */}
-            <Grid item>
+            <Grid item xs={12}>
               <Title text="Search Results" />
             </Grid>
 
             {/* Accommodation Cards */}
-            <Grid item>
-              <AccommodationResults />
+            <Grid item xs={12}>
+              <AccommodationResults
+                isPublicView={false}
+                endpoint={`accommodation${search}`}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button variant="text">
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: COLOR.textBlack,
+                    textDecoration: 'underline',
+                  }}
+                >
+                  View All Results
+                </Typography>
+              </Button>
             </Grid>
           </Grid>
         </Grid>

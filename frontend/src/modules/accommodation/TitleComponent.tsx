@@ -34,14 +34,18 @@ const Title: React.FC<InputText> = ({ text }) => {
 
         {/* Input text */}
         <Grid item>
-          <Typography variant="h5" marginLeft={theme.spacing(1)} sx={{
-            [theme.breakpoints.down('md')]: {
-              fontSize: theme.spacing(2.5),
-            },
-            [theme.breakpoints.down('sm')]: {
-              fontSize: theme.spacing(2.25),
-            },
-          }}>
+          <Typography
+            variant="h5"
+            marginLeft={theme.spacing(1)}
+            sx={{
+              [theme.breakpoints.down('md')]: {
+                fontSize: theme.spacing(2.5),
+              },
+              [theme.breakpoints.down('sm')]: {
+                fontSize: theme.spacing(2.25),
+              },
+            }}
+          >
             {text}
           </Typography>
         </Grid>

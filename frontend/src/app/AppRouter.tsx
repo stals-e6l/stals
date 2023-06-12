@@ -8,14 +8,15 @@ import IndexPage from '../pages'
 import AccommodationDetailPage from '../pages/AccommodationDetailPage'
 import ProfilePage from '../pages/ProfilePage'
 import PublicPage from '../pages/PublicPage'
+import LandingPage from '../modules/landing/LandingPage'
 
 export const ROUTES = {
   public: '/public',
   appAuth: '/auth',
-  appExplore: '/explore',
-  appResult: '/result',
-  appAccommodationDetail: '/accommodations/:id',
-  profile: '/profile',
+  appExplore: '/app/explore',
+  appResult: '/app/result',
+  appAccommodationDetail: '/app/accommodations/:id',
+  profile: '/app/profile',
 }
 
 interface IProps {
@@ -38,17 +39,13 @@ const router = createBrowserRouter([
     element: <AuthPage />,
   },
   {
-    path: '/',
+    path: '/app',
     element: (
       <AuthGuard>
         <IndexPage />
       </AuthGuard>
     ),
     children: [
-      // {
-      //   path: ROUTES.appAuth,
-      //   element: <AuthPage />,
-      // },
       {
         path: ROUTES.appExplore,
         element: <ExplorePage />,
@@ -66,5 +63,9 @@ const router = createBrowserRouter([
         element: <ProfilePage />,
       },
     ],
+  },
+  {
+    path: '/',
+    element: <LandingPage />,
   },
 ])

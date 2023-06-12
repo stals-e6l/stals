@@ -1,17 +1,16 @@
 import React from 'react'
 import {
   Box,
-  Typography,
   useTheme,
   TextField,
   Card,
   CardActionArea,
   CardContent,
   FormLabel,
+  OutlinedInput,
   Grid,
   MenuItem,
   Select,
-  InputLabel,
 } from '@mui/material'
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -36,159 +35,137 @@ const EditProfile: React.FC<IProps> = ({ user }) => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        pb: theme.spacing(1),
-        alignItems: 'center',
         width: '100%',
-        backdropFilter: 'blur(5px)',
+        height: '100%',
+        padding: theme.spacing(2),
+        borderRadius: theme.spacing(1),
       }}
     >
-      <Box
+      <FormLabel>Upload Avatar</FormLabel>
+      <Card
         sx={{
-          backgroundColor: COLOR.gray2,
           width: '100%',
-          height: '100%',
-          padding: theme.spacing(2),
-          borderRadius: theme.spacing(1),
+          height: '50%',
+          border: 'solid 1px green',
+          backgroundColor: COLOR.white,
+          boxShadow: 'none',
         }}
+        onClick={handleUploadImage}
       >
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: 'bold',
-            color: theme.palette.primary.main,
-            paddingBottom: theme.spacing(1),
-          }}
-        >
-          Edit Profile
-        </Typography>
+        <CardActionArea>
+          <CardContent
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              maxWidth: '100%',
+              paddingBottom: '20%',
+              paddingTop: '20%',
+            }}
+          >
+            <PhotoCamera />
+          </CardContent>
+        </CardActionArea>
+        <input hidden accept="image/png, image/jpeg" type="file" />
+      </Card>
 
-        <FormLabel>Upload Avatar</FormLabel>
-        <Card
-          sx={{
-            minWidth: '100%',
-            minHeight: '50%',
-            border: 'solid 1px green',
-            backgroundColor: COLOR.white,
-            mb:theme.spacing(1)
-          }}
-          onClick={handleUploadImage}
-        >
-          <CardActionArea>
-            <CardContent
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                pb: theme.spacing(1),
-                alignItems: 'center',
-                maxWidth: '100%',
-                paddingBottom: '20%',
-                paddingTop: '20%',
-              }}
-            >
-              <PhotoCamera />
-            </CardContent>
-          </CardActionArea>
-          <input hidden accept="image/png, image/jpeg" type="file" />
-        </Card>
+      <TextField
+        size="small"
+        fullWidth
+        multiline
+        label="Biography"
+        // rows={3}
+        name="biography"
+        defaultValue={user.biography}
+        variant="filled"
+        style={{ marginTop: 20 }}
+      />
 
-        <FormLabel>Biography</FormLabel>
-        <TextField
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1)
-         }}
-          multiline
-          rows={3}
-          name="biography"
-          defaultValue={user.biography}
-        />
-
-        <Grid container spacing={1}>
-          <Grid item xs={7} sx={{mb:theme.spacing(1)}}>
-            <FormLabel >Gender</FormLabel>
-            <Select
-              label=""
-              fullWidth
-              sx={{ backgroundColor: COLOR.white}}
-              size="small"
-              name="gender"
-              defaultValue={user.gender}
-            >
-              <MenuItem value='male'>Male</MenuItem>
-              <MenuItem value='female'>Female</MenuItem>
-              <MenuItem value='non_binary'>Non-Binary</MenuItem>
-              <MenuItem value='prefer_not_to_say'>Prefer not to say</MenuItem>
-            </Select>
-          </Grid>
-
-          <Grid item xs={5} >
-            <InputLabel >Birthday</InputLabel>
-            <DatePicker
-              // value={form.birthday as string}w}
-              slotProps={{ textField: { size: 'small' } }}
-            />
-          </Grid>
+      <Grid container spacing={1}>
+        <Grid item xs={7}>
+          <Select
+            label="Gender"
+            fullWidth
+            input={<OutlinedInput />}
+            size="small"
+            name="gender"
+            defaultValue={user.gender}
+            variant="filled"
+            style={{ marginTop: 17 }}
+          >
+            <MenuItem value="male">Male</MenuItem>
+            <MenuItem value="female">Female</MenuItem>
+            <MenuItem value="non_binary">Non-Binary</MenuItem>
+            <MenuItem value="prefer_not_to_say">Prefer not to say</MenuItem>
+          </Select>
         </Grid>
 
-        <Grid container spacing={1}>
-          <Grid item xs={6} sx={{mb:theme.spacing(1)}}>
-            <FormLabel >Phone</FormLabel>
-            <TextField
-              variant="outlined"
-              size="small"
-              fullWidth
-              sx={{ backgroundColor: COLOR.white }}
-              name="mobile"
-              defaultValue={user.phone === undefined ? (""):(user.phone.mobile)}
-            />
-          </Grid>
+        <Grid item xs={5}>
+          <DatePicker
+            // value={form.birthday as string}w}
+            slotProps={{ textField: { size: 'small', variant: 'filled' } }}
+            sx={{ marginTop: 2 }}
+            disableFuture
+            label="Birthday"
+          />
+        </Grid>
+      </Grid>
 
-          <Grid item xs={6}>
-            <FormLabel >Landline</FormLabel>
-            <TextField
-              variant="outlined"
-              size="small"
-              fullWidth
-              sx={{ backgroundColor: COLOR.white }}
-              name="landline"
-              defaultValue={user.phone === undefined ? (""):(user.phone.landline)}
-            />
-          </Grid>
+      <Grid container spacing={1}>
+        <Grid item xs={6}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Phone"
+            name="mobile"
+            defaultValue={user.phone === undefined ? '' : user.phone.mobile}
+            variant="filled"
+            style={{ marginTop: 20 }}
+          />
         </Grid>
 
-        <FormLabel>Home Address</FormLabel>
-        <TextField
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1)}}
-          name="home"
-          defaultValue={user.address === undefined ? (""):(user.address.home)}
-        />
+        <Grid item xs={6}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Landline"
+            name="landline"
+            defaultValue={user.phone === undefined ? '' : user.phone.landline}
+            variant="filled"
+            style={{ marginTop: 20 }}
+          />
+        </Grid>
+      </Grid>
 
-        <FormLabel>Current Address</FormLabel>
-        <TextField
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white, mb:theme.spacing(1) }}
-          name="current"
-          defaultValue={user.address === undefined ? (""):(user.address.current)}
-        />
+      <TextField
+        size="small"
+        fullWidth
+        label="Home address"
+        name="home"
+        defaultValue={user.address === undefined ? '' : user.address.home}
+        variant="filled"
+        style={{ marginTop: 20 }}
+      />
 
-        <FormLabel>Organization</FormLabel>
-        <TextField
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ backgroundColor: COLOR.white }}
-          name="organization"
-          defaultValue={user.organization}
-        />
-      </Box>
+      <TextField
+        size="small"
+        fullWidth
+        label="Current address"
+        name="current"
+        defaultValue={user.address === undefined ? '' : user.address.current}
+        variant="filled"
+        style={{ marginTop: 20 }}
+      />
+
+      <TextField
+        size="small"
+        fullWidth
+        label="Organization"
+        name="organization"
+        defaultValue={user.organization}
+        variant="filled"
+        style={{ marginTop: 20 }}
+      />
     </Box>
   )
 }

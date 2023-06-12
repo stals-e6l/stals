@@ -8,14 +8,16 @@ import {
   CardContent,
   CardActions,
   IconButton,
-  Menu,
-  MenuItem,
+  Popper,
+  ClickAwayListener,
+  ButtonGroup,
+  CardActionArea,
+  alpha,
 } from '@mui/material'
 import React from 'react'
 import DeleteAccommodationFormModal from './DeleteAccommodationFormModal'
 import StarPurple500SharpIcon from '@mui/icons-material/StarPurple500Sharp'
 import MoreHorizSharpIcon from '@mui/icons-material/MoreHorizSharp'
-import AccommodationImages from './accommodationImages'
 import toSentenceCase from '../../utils/toSentenceCase'
 import toPhp from '../../utils/toPhp'
 import { COLOR } from '../../theme/index'
@@ -59,178 +61,131 @@ const AccommodationCard: React.FC<IProps> = ({
     // Initialize card
     <Card
       sx={{
-        backgroundColor: COLOR.gray1,
-        width: theme.spacing(35),
-        borderRadius: theme.spacing(2),
-        boxShadow: '0px 4px 4px #6e6e73',
+        position: 'relative',
         cursor: 'pointer',
         ':hover': {
-          boxShadow: '0px 4px 15px #6e6e73',
-        },
-        transition: '0.3s all',
-        [theme.breakpoints.down('md')]: {
-          width: theme.spacing(28),
-        },
-        [theme.breakpoints.down('sm')]: {
-          width: theme.spacing(19),
+          top: '-3px',
+          boxShadow: `${alpha(COLOR.black, 0.3)} 0 1px 30px 3px`,
         },
       }}
     >
-      {/* Accommodation Image */}
-      <CardMedia
+      <CardActionArea
         onClick={toDetailPage}
-        component="img"
-        height={theme.spacing(23)}
-        image={AccommodationImages.ellens}
         sx={{
-          [theme.breakpoints.down('md')]: {
-            height: theme.spacing(20),
-          },
-          [theme.breakpoints.down('sm')]: {
-            height: theme.spacing(13),
+          '& .MuiCardActionArea-focusHighlight': {
+            background: 'transparent',
           },
         }}
-      />
+      >
+        {/* Accommodation Image */}
+        <CardMedia
+          component="img"
+          height={'180px'}
+          image={accommodation.image.url}
+        />
 
-      <CardContent sx={{ wordSpacing: '10' }}>
-        {/* Type of Accommodation */}
-        <Typography
-          variant="body1"
-          sx={{
-            [theme.breakpoints.down('md')]: {
-              fontSize: theme.spacing(1.75),
-            },
-            [theme.breakpoints.down('sm')]: {
-              fontSize: theme.spacing(1.5),
-            },
-          }}
-        >
-          {toSentenceCase(accommodation.type)}
-        </Typography>
+        <CardContent sx={{ wordSpacing: '10' }}>
+          {/* Type of Accommodation */}
+          <Typography variant="body1">
+            {toSentenceCase(accommodation.type)}
+          </Typography>
 
-        {/* Name of Accommodation */}
-        <Typography
-          variant="h5"
-          sx={{
-            color: COLOR.blue,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            [theme.breakpoints.down('md')]: {
-              fontSize: theme.spacing(2.5),
-            },
-            [theme.breakpoints.down('sm')]: {
-              fontSize: theme.spacing(2),
-            },
-          }}
-        >
-          {toSentenceCase(accommodation.name)}
-        </Typography>
+          {/* Name of Accommodation */}
+          <Typography
+            variant="h5"
+            sx={{
+              color: COLOR.blue,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {toSentenceCase(accommodation.name)}
+          </Typography>
 
-        {isPublicView ? (
-          <>
-            <Box
-              sx={{
-                display: 'flex',
-              }}
-            >
-              {/* Rating */}
-              <Rating
-                value={4.5}
-                precision={0.5}
-                readOnly
+          {isPublicView ? (
+            <>
+              <Box
                 sx={{
-                  color: COLOR.green,
-                  [theme.breakpoints.down('md')]: {
-                    fontSize: theme.spacing(2.25),
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    display: 'none',
-                  },
+                  display: 'flex',
                 }}
-              />
-
-              <StarPurple500SharpIcon
-                sx={{
-                  display: 'none',
-                  [theme.breakpoints.down('sm')]: {
-                    display: 'inherit',
+              >
+                {/* Rating */}
+                <Rating
+                  value={4.5}
+                  precision={0.5}
+                  readOnly
+                  sx={{
                     color: COLOR.green,
-                    fontSize: theme.spacing(2),
-                  },
-                }}
-              />
+                    [theme.breakpoints.down('sm')]: {
+                      display: 'none',
+                    },
+                  }}
+                />
 
-              {/* Rating in Number */}
+                <StarPurple500SharpIcon
+                  sx={{
+                    display: 'none',
+                    [theme.breakpoints.down('sm')]: {
+                      display: 'inherit',
+                      color: COLOR.green,
+                    },
+                  }}
+                />
+
+                {/* Rating in Number */}
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontWeight: 'bold',
+                    color: COLOR.green,
+                  }}
+                >
+                  {4.5}
+                </Typography>
+
+                {/* Number of Reviews */}
+                <Typography
+                  variant="body1"
+                  sx={{
+                    marginLeft: '3%',
+                  }}
+                >
+                  ({10} reviews)
+                </Typography>
+              </Box>
+
+              <br />
+
+              {/* Price */}
+              <Typography
+                variant="h6"
+                sx={{
+                  color: COLOR.blue,
+                }}
+              >
+                {/* Formats the number to currency format */}
+                Php {toPhp(accommodation.min_price)}{' '}
+              </Typography>
+            </>
+          ) : (
+            // If not for public view, display only the address
+            <>
+              {/* Address */}
               <Typography
                 variant="body1"
                 sx={{
-                  fontWeight: 'bold',
-                  color: COLOR.green,
-                  [theme.breakpoints.down('md')]: {
-                    fontSize: theme.spacing(1.75),
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    fontSize: theme.spacing(1.65),
-                  },
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
-                {4.5}
+                {accommodation.address}
               </Typography>
-
-              {/* Number of Reviews */}
-              <Typography
-                variant="body1"
-                sx={{
-                  marginLeft: '1%',
-                  [theme.breakpoints.down('md')]: {
-                    fontSize: theme.spacing(1.75),
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    fontSize: theme.spacing(1.65),
-                  },
-                }}
-              >
-                ({10} reviews)
-              </Typography>
-            </Box>
-
-            <br />
-
-            {/* Price */}
-            <Typography
-              variant="h6"
-              sx={{
-                color: COLOR.blue,
-                [theme.breakpoints.down('md')]: {
-                  fontSize: theme.spacing(2),
-                },
-                [theme.breakpoints.down('sm')]: {
-                  fontSize: theme.spacing(1.75),
-                },
-              }}
-            >
-              {/* Formats the number to currency format */}
-              Php {toPhp(accommodation.min_price)}{' '}
-            </Typography>
-          </>
-        ) : (
-          // If not for public view, display only the address
-          <>
-            {/* Address */}
-            <Typography
-              variant="body1"
-              sx={{
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {accommodation.address}
-            </Typography>
-          </>
-        )}
-      </CardContent>
+            </>
+          )}
+        </CardContent>
+      </CardActionArea>
 
       {!isPublicView && (
         <>
@@ -254,44 +209,33 @@ const AccommodationCard: React.FC<IProps> = ({
 
             {/* Menu Items */}
             {accommodation && me?._id === accommodation.user_id && (
-              <Menu
-                id="menu"
-                aria-labelledby="menu-btn"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={onClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-              >
-                <MenuItem>
-                  <AccommodationFormModal
-                    defaultValues={accommodation}
-                    onClose={onClose}
-                  />
-                </MenuItem>
-                <MenuItem>
-                  <DeleteAccommodationFormModal
-                    userId={accommodation.user_id as string}
-                    accommodationId={accommodation._id as string}
-                    isSoftDelete={true}
-                    onClose={onClose}
-                  />
-                </MenuItem>
-                <MenuItem>
-                  <DeleteAccommodationFormModal
-                    userId={accommodation.user_id as string}
-                    accommodationId={accommodation._id as string}
-                    isSoftDelete={false}
-                    onClose={onClose}
-                  />
-                </MenuItem>
-              </Menu>
+              <Popper open={open} anchorEl={anchorEl}>
+                <ClickAwayListener onClickAway={onClose}>
+                  <ButtonGroup
+                    orientation="vertical"
+                    sx={{ backgroundColor: '#fff' }}
+                  >
+                    <AccommodationFormModal
+                      defaultValues={accommodation}
+                      onClose={onClose}
+                    />
+                    {!accommodation.is_soft_deleted && (
+                      <DeleteAccommodationFormModal
+                        userId={accommodation.user_id as string}
+                        accommodationId={accommodation._id as string}
+                        isSoftDelete={true}
+                        onClose={onClose}
+                      />
+                    )}
+                    <DeleteAccommodationFormModal
+                      userId={accommodation.user_id as string}
+                      accommodationId={accommodation._id as string}
+                      isSoftDelete={false}
+                      onClose={onClose}
+                    />
+                  </ButtonGroup>
+                </ClickAwayListener>
+              </Popper>
             )}
           </CardActions>
         </>
