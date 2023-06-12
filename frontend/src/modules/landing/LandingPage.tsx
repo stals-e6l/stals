@@ -37,6 +37,7 @@ import angcana from '../../assets/Team/Angcana.png'
 import recario from '../../assets/Team/Recario.png'
 import find from '../../assets/Images/Find.jpg'
 import create from '../../assets/Images/Create.jpg'
+import Footer from '../general/Footer'
 interface IProps {
   children?: React.ReactNode
 }
@@ -673,7 +674,8 @@ const LandingPage: React.FC<IProps> = () => {
         }}
       />
       {/*Copyright etc... */}
-      <Grid
+      <Footer />
+      {/* <Grid
         container
         sx={{
           display: 'flex',
@@ -805,8 +807,8 @@ const LandingPage: React.FC<IProps> = () => {
               </Button>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
+        </Grid> 
+      </Grid>*/}
     </React.Fragment>
   )
 }

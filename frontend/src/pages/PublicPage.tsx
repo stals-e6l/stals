@@ -3,6 +3,7 @@ import { Box, Grid, useTheme } from '@mui/material'
 import Banner from '../modules/general/Banner'
 import AccommodationResults from '../modules/accommodation/AccommodationResults'
 import Footer from '../modules/general/Footer'
+import Navbar from '../modules/general/Navbar'
 
 interface IProps {
   children?: React.ReactNode
@@ -12,6 +13,7 @@ const PublicPage: React.FC<IProps> = () => {
   const theme = useTheme()
   return (
     <Box sx={{ width: '100vw', height: '100vh' }}>
+      <Navbar />
       <Banner />
       <Grid
         container
