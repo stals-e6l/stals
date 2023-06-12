@@ -2,7 +2,6 @@ import React from 'react'
 import toMap from '../../utils/toMap'
 import toArray from '../../utils/toArray'
 import { apiDelete, apiGet, apiPost, apiPut } from '../../services/api'
-import { getMe } from '../auth/AuthProvider'
 import { showErrorSnackbar } from '../general/ErrorHandler'
 
 interface IProps {
@@ -11,26 +10,13 @@ interface IProps {
 
 const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
   // state
-  const me = getMe()
-  const onShowError = showErrorSnackbar()
   const [state, dispatch] = React.useReducer(accommodationReducer, {
     accommodations: null,
     dispatch: null,
+    globalRefresh: false,
   })
 
   // events
-  React.useEffect(() => {
-    if (me && onShowError) {
-      initAccommodations()
-        .then(data => {
-          dispatch({
-            type: 'SET_ACCOMMODATIONS',
-            payload: data as IAccommodation[],
-          })
-        })
-        .catch(err => onShowError(String(err)))
-    }
-  }, [me])
 
   console.log({ accommodationsState: state })
 
@@ -38,6 +24,7 @@ const AccommodationsProvider: React.FC<IProps> = ({ children }) => {
     <accommodationContext.Provider
       value={{
         accommodations: state.accommodations,
+        globalRefresh: state.globalRefresh,
         dispatch,
       }}
     >
@@ -51,16 +38,23 @@ export default AccommodationsProvider
 const accommodationContext = React.createContext<IAccommodationsState>({
   accommodations: null,
   dispatch: null,
+  globalRefresh: false,
 })
+
+export const useAccommodation = () =>
+  React.useContext<IAccommodationsState>(accommodationContext)
 
 const accommodationReducer = (
   state: IAccommodationsState,
   action: IReducerAction<TAccommodationActionType, TAccommodationPayload>
 ): IAccommodationsState => {
+  let temp
+  let buffer
   switch (action.type) {
     case 'SET_ACCOMMODATIONS':
       return {
         ...state,
+        globalRefresh: !state.globalRefresh,
         accommodations: toMap<IAccommodation>(
           action.payload as IAccommodation[],
           '_id'
@@ -69,6 +63,7 @@ const accommodationReducer = (
     case 'ADD_ACCOMMODATION':
       return {
         ...state,
+        globalRefresh: !state.globalRefresh,
         accommodations: {
           ...state.accommodations,
           [(action.payload as unknown as IAccommodation)._id as string]:
@@ -77,8 +72,28 @@ const accommodationReducer = (
       }
     case 'DELETE_ACCOMMODATION':
       // eslint-disable-next-line no-case-declarations
-      const temp = { ...state.accommodations }
+      temp = { ...state.accommodations }
       delete temp[action.payload as string]
+      return {
+        ...state,
+        globalRefresh: !state.globalRefresh,
+        accommodations: temp,
+      }
+    case 'EDIT_ACCOMMODATION':
+      // eslint-disable-next-line no-case-declarations
+      temp = { ...state.accommodations }
+      buffer = action.payload as IAccommodation
+      temp[buffer._id as string] = buffer
+      return {
+        ...state,
+        globalRefresh: !state.globalRefresh,
+        accommodations: temp,
+      }
+    case 'APPEND_ACCOMMODATIONS':
+      temp = { ...state.accommodations }
+      for (const accommodation of action.payload as IAccommodation[]) {
+        temp[accommodation._id as string] = accommodation
+      }
       return {
         ...state,
         accommodations: temp,
@@ -117,10 +132,10 @@ export const createAccommodation = () => {
         type: 'ADD_ACCOMMODATION',
         payload: res.data as IAccommodation,
       })
-      return true
     } else {
-      if (res.messages) onShowError(res.messages[0])
-      return false
+      if (res.messages) {
+        throw new Error(res.messages[0])
+      }
     }
   }
 }
@@ -130,6 +145,13 @@ export const retrieveAccommodations = () => {
     React.useContext<IAccommodationsState>(accommodationContext)
   if (!accommodations) return null
   return toArray<IAccommodation>(accommodations)
+}
+
+export const getGlobalRefresh = () => {
+  const { globalRefresh } =
+    React.useContext<IAccommodationsState>(accommodationContext)
+
+  return globalRefresh
 }
 
 export const retrieveOneAccommodation = (id: string) => {
@@ -204,10 +226,42 @@ export const deleteAccommodation = () => {
         type: 'DELETE_ACCOMMODATION',
         payload: id as string,
       })
+
       return true
     } else {
       if (res.messages) onShowError(res.messages[0])
       return false
     }
+  }
+}
+
+export const editAccommodation = () => {
+  const { dispatch } =
+    React.useContext<IAccommodationsState>(accommodationContext)
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
+
+  return async (accommodation: IAccommodation) => {
+    const res = await apiPut<IAccommodation, IAccommodation>(
+      `accommodation/${accommodation._id as string}`,
+      {
+        payload: accommodation,
+      }
+    )
+
+    if (res.success && res.data) {
+      dispatch({ type: 'EDIT_ACCOMMODATION', payload: res.data })
+    } else if (res.messages) onShowError(res.messages[0])
+  }
+}
+
+export const appendAccommodations = () => {
+  const { dispatch } =
+    React.useContext<IAccommodationsState>(accommodationContext)
+  const onShowError = showErrorSnackbar()
+  if (!dispatch || !onShowError) return
+
+  return (accommodations: IAccommodation[]) => {
+    dispatch({ type: 'APPEND_ACCOMMODATIONS', payload: accommodations })
   }
 }

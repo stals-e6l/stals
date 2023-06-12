@@ -49,6 +49,7 @@ interface IArchiveAccomodationPayload {
 }
 
 interface IAccommodationsFilter {
+  search?: string
   name?: string
   type?: TAccommodationType | ''
   min_price?: number
@@ -79,6 +80,7 @@ type IDownloadAccommodationsField = keyof IDownloadAccommodations
 
 interface IAccommodationsState {
   accommodations: IMap<IAccommodation> | null
+  globalRefresh: boolean
   dispatch: React.Dispatch<
     IReducerAction<TAccommodationActionType, TAccommodationPayload>
   > | null
@@ -88,5 +90,7 @@ type TAccommodationActionType =
   | 'SET_ACCOMMODATIONS'
   | 'ADD_ACCOMMODATION'
   | 'DELETE_ACCOMMODATION'
+  | 'EDIT_ACCOMMODATION'
+  | 'APPEND_ACCOMMODATIONS'
 
 type TAccommodationPayload = IAccommodation[] | IAccommodation | string

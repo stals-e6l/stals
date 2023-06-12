@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import {
   Button,
   Dialog,
@@ -11,17 +12,25 @@ import {
 import React from 'react'
 import AccommodationForm from './AccommodationForm'
 import useDialog from '../../hooks/useDialog'
-import { createAccommodation } from './AccommodationsProvider'
+import {
+  createAccommodation,
+  editAccommodation,
+} from './AccommodationsProvider'
 import { COLOR } from '../../theme'
-import { AddRounded } from '@mui/icons-material'
-import { getMe } from '../auth/AuthProvider'
+import AddIcon from '@mui/icons-material/Add'
+import { ALLOWABLE_FEATURES, getMe } from '../auth/AuthProvider'
+import imageUpload from '../../services/imageUpload'
 
 interface IProps {
   children?: React.ReactNode
   defaultValues?: IAccommodation
+  onClose?: () => void
 }
 
-const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
+const AccommodationFormModal: React.FC<IProps> = ({
+  defaultValues,
+  onClose,
+}) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const me = getMe()
@@ -29,6 +38,7 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
   const onCreateAccommodation = createAccommodation()
+  const onEditAccommodation = editAccommodation()
 
   // state
   const [form, setForm] = React.useState<IAccommodation>({
@@ -59,6 +69,8 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
     amenities: (defaultValues && defaultValues.amenities) || [],
     is_soft_deleted: (defaultValues && defaultValues.is_soft_deleted) || false,
   })
+  const [file, setFile] = React.useState<File>()
+  const [error, setError] = React.useState<any | null>(null)
 
   // events
   const setFieldValue = (
@@ -69,12 +81,55 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   }
 
   // events
-  const handleSubmit = () => {
-    if (onCreateAccommodation)
-      onCreateAccommodation(form).then(status => {
-        if (status) toggleDialog()
-      })
+  const handleSubmit = async () => {
+    setError(null)
+
+    if (onCreateAccommodation && !defaultValues) {
+      let formData
+      formData = { ...form }
+      if (file) {
+        const res = await imageUpload(file)
+        if (res.success) {
+          formData = { ...form, image: { url: res.data as string } }
+        }
+      }
+      //const response = await onCreateAccommodation(formData)
+      onCreateAccommodation(formData)
+        .then(toggleDialog)
+        .catch(err => {
+          const newError: { [key: string]: string } = {}
+          String(err)
+            .replace('Error: ValidationError: ', '')
+            .split(',')
+            .forEach(err => {
+              const [key, message] = err.split(':')
+              newError[key.trim()] = message
+            })
+          setError(newError)
+        })
+    } else if (onEditAccommodation && defaultValues) {
+      onEditAccommodation({ ...form, _id: defaultValues._id as string })
+        .then(toggleDialog)
+        .catch(err => {
+          const newError: { [key: string]: string } = {}
+          String(err)
+            .replace('Error: ValidationError: ', '')
+            .split(',')
+            .forEach(err => {
+              const [key, message] = err.split(':')
+              newError[key.trim()] = message
+            })
+          setError(newError)
+        })
+    }
+    if (onClose) onClose()
   }
+
+  React.useEffect(() => {
+    if (me) {
+      setForm(prev => ({ ...prev, user_id: me._id }))
+    }
+  }, [me])
 
   const cancelBtnSx = {
     root: {
@@ -94,6 +149,7 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
       color: COLOR.darkGreen,
       borderRadius: theme.spacing(0.5),
       padding: '10px 20px',
+      marginRight: '20px',
       '&:hover': {
         backgroundColor: '#93dba4',
       },
@@ -101,35 +157,64 @@ const AccommodationFormModal: React.FC<IProps> = ({ defaultValues }) => {
   }
   return (
     <React.Fragment>
-      {me && me.role !== 'tenant' && (
-        <Fab
-          onClick={toggleDialog}
-          sx={{
-            ...submitBtnSx.root,
-            borderRadius: '50%',
-            position: 'absolute',
-            bottom: '5%',
-            right: '5%',
-          }}
-        >
-          <AddRounded />
-        </Fab>
-      )}
+      {me &&
+        ALLOWABLE_FEATURES.create.accommodation.includes(me.role) &&
+        !defaultValues && (
+          <Fab
+            onClick={toggleDialog}
+            sx={{
+              ...submitBtnSx.root,
+              borderRadius: '50%',
+              position: 'fixed',
+              bottom: '4%',
+              right: '2.5%',
+              [theme.breakpoints.down('sm')]: {
+                bottom: '2.5%',
+                right: '1%',
+              },
+              background: theme.palette.primary.main,
+              color: theme.palette.common.white,
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        )}
+      {me &&
+        ALLOWABLE_FEATURES.create.accommodation.includes(me.role) &&
+        defaultValues && (
+          <Button
+            onClick={toggleDialog}
+            variant="contained"
+            sx={{
+              background: theme.palette.primary.main,
+              color: theme.palette.common.white,
+              fontWeight: 'bold',
+            }}
+          >
+            Edit
+          </Button>
+        )}
+
       {open && (
         <Dialog fullScreen={isMobile} open={open} onClose={toggleDialog}>
-          <DialogTitle sx={{ backgroundColor: '#0c2c44', color: COLOR.white }}>
+          <DialogTitle sx={{ color: COLOR.blue }}>
             {' '}
             {/*TEMP COLOR*/}
             {defaultValues ? 'Update accommodation' : 'Create accommodation'}
           </DialogTitle>
 
-          <DialogContent sx={{ backgroundColor: '#0c2c44' }}>
+          <DialogContent sx={{}}>
             {' '}
             {/*TEMP COLOR*/}
-            <AccommodationForm form={form} setFieldValue={setFieldValue} />
+            <AccommodationForm
+              form={form}
+              setFieldValue={setFieldValue}
+              setFile={setFile}
+              error={error}
+            />
           </DialogContent>
 
-          <DialogActions sx={{ backgroundColor: '#0c2c44' }}>
+          <DialogActions sx={{}}>
             {' '}
             {/*TEMP COLOR*/}
             <Button onClick={toggleDialog} sx={cancelBtnSx.root}>
