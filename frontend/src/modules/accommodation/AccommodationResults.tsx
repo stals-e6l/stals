@@ -112,15 +112,33 @@ const AccommodationResults: React.FC<IProps> = ({
         columnGap={3}
         sx={{
           transition: '0.3s all',
+          width: '90%',
+          m: 'auto',
+          [theme.breakpoints.down(1317)]: {
+            justifyContent: 'space-evenly',
+          },
         }}
         alignItems="center"
-        justifyContent="space-around"
+        justifyContent="flex-start"
       >
         {accommodations.map((accommodation, key: number) => (
-          <Grid item key={key}>
+          <Grid
+            item
+            xs
+            key={key}
+            sx={{
+              flexGrow: 1,
+              [theme.breakpoints.down(1317)]: {
+                flexGrow: 0,
+              },
+            }}
+          >
             <AccommodationCard
               accommodation={accommodation}
-              isPublicView={user! && user.role === "tenant"}
+              isPublicView={
+                (user! && user.role === 'tenant') ||
+                location.pathname === ROUTES.public
+              }
             />
           </Grid>
         ))}
