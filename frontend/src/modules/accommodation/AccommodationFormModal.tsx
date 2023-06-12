@@ -164,7 +164,7 @@ const AccommodationFormModal: React.FC<IProps> = ({
           (defaultValues && defaultValues.is_soft_deleted) || false,
       }) // the value passed in the setForm should be a reset value, see how it was setup as a state
     }
-  }, [form, setForm])
+  }, [])
 
   const cancelBtnSx = {
     root: {
