@@ -342,51 +342,53 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
             <DialogContent>
               {/* Preview table */}
-              <Box sx={{ height: '100%', width: '100%' }}>
-                <DataGrid
-                  rows={gridRows}
-                  columns={columns}
-                  slots={{
-                    noRowsOverlay: CustomNoRowsOverlay,
-                    toolbar: CustomToolbar,
-                  }}
-                  slotProps={{
-                    columnsPanel: {
-                      disableHideAllButton: true,
-                      disableShowAllButton: true,
-                    },
-                  }}
-                  sx={{
-                    textAlign: 'center',
-                    '.MuiDataGrid-columnSeparator': {
-                      display: 'none',
-                    },
-                    '&.MuiDataGrid-root': {
-                      border: 'none',
-                      maxHeight: '100%',
-                      height: '100%',
-                    },
-                    '@media print': {
-                      '@page': {
-                        size: 'A4 landscape',
-                      }
-                    }
-                  }}
-                  initialState={{
-                    columns: {
-                      columnVisibilityModel: {
-                        // Hide columns status and traderName, the other columns will remain visible
-                        size_sqm: false,
-                        meters_from_uplb: false,
-                        min_pax: false,
-                        max_pax: false,
-                        num_rooms: false,
-                        num_beds: false,
-                        furnishing: false,
+              <Box component="div" sx={{ height: '100%', width: '100%' }}>
+                <div id="pdf">
+                  <DataGrid
+                    rows={gridRows}
+                    columns={columns}
+                    slots={{
+                      noRowsOverlay: CustomNoRowsOverlay,
+                      toolbar: CustomToolbar,
+                    }}
+                    slotProps={{
+                      columnsPanel: {
+                        disableHideAllButton: true,
+                        disableShowAllButton: true,
                       },
-                    },
-                  }}
-                />
+                    }}
+                    sx={{
+                      textAlign: 'center',
+                      '.MuiDataGrid-columnSeparator': {
+                        display: 'none',
+                      },
+                      '&.MuiDataGrid-root': {
+                        border: 'none',
+                        maxHeight: '100%',
+                        height: '100%',
+                      },
+                      '@media print': {
+                        '@page': {
+                          size: 'A4 landscape',
+                        },
+                      },
+                    }}
+                    initialState={{
+                      columns: {
+                        columnVisibilityModel: {
+                          // Hide columns status and traderName, the other columns will remain visible
+                          size_sqm: false,
+                          meters_from_uplb: false,
+                          min_pax: false,
+                          max_pax: false,
+                          num_rooms: false,
+                          num_beds: false,
+                          furnishing: false,
+                        },
+                      },
+                    }}
+                  />
+                </div>
               </Box>
             </DialogContent>
           </Dialog>
@@ -424,14 +426,23 @@ function CustomToolbar() {
       <GridToolbarDensitySelector sx={toolbarButtonSx.root} />
       <GridToolbarExport
         sx={toolbarButtonSx.root}
-        exportDataAsPrint={{ hideToolbar: true, hideFooter: true }}
-        //printOptions={{ hideToolbar: true, hideFooter: true, landscape: true, }}
+        exportDataAsPrint={{
+          hideToolbar: true,
+          hideFooter: true,
+          allColumns: true,
+        }}
         csvOptions={{ disableToolbarButton: true }}
       />
-      {/* <Button variant="contained" onClick={() => apiRef.current}>
+      {/* <Button
+        variant="contained"
+        onClick={() => {
+          apiRef.current
+          downloadPdf('pdf')
+        }}
+      >
         Print
       </Button> */}
-    </GridToolbarContainer> 
+    </GridToolbarContainer>
   )
 }
 
