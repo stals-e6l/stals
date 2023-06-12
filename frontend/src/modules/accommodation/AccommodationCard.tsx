@@ -26,6 +26,7 @@ import { ROUTES } from '../../app/AppRouter'
 import AccommodationFormModal from './AccommodationFormModal'
 import { getMe } from '../auth/AuthProvider'
 import useMenu from '../../hooks/useMenu'
+import AccommodationImages from './accommodationImages'
 
 interface IProps {
   children?: React.ReactNode
@@ -78,11 +79,22 @@ const AccommodationCard: React.FC<IProps> = ({
         }}
       >
         {/* Accommodation Image */}
-        <CardMedia
-          component="img"
-          height={'180px'}
-          image={accommodation.image.url}
-        />
+        {accommodation.image.url ? (
+          <CardMedia
+            component="img"
+            height={'180px'}
+            image={accommodation.image.url}
+          />
+        ) : (
+          <CardMedia
+            component="img"
+            height={'180px'}
+            image={AccommodationImages.noPhotoAlternative}
+            sx={{opacity: '0.5',}}
+          />
+        )
+        }
+
 
         <CardContent sx={{ wordSpacing: '10' }}>
           {/* Type of Accommodation */}
