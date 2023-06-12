@@ -366,6 +366,11 @@ const DownloadAccommodations: React.FC<IProps> = () => {
                       maxHeight: '100%',
                       height: '100%',
                     },
+                    '@media print': {
+                      '@page': {
+                        size: 'A4 landscape',
+                      }
+                    }
                   }}
                   initialState={{
                     columns: {
@@ -417,16 +422,16 @@ function CustomToolbar() {
       <GridToolbarColumnsButton sx={toolbarButtonSx.root} />
       <GridToolbarFilterButton sx={toolbarButtonSx.root} />
       <GridToolbarDensitySelector sx={toolbarButtonSx.root} />
-      {/* <GridToolbarExport
+      <GridToolbarExport
         sx={toolbarButtonSx.root}
         exportDataAsPrint={{ hideToolbar: true, hideFooter: true }}
-        // printOptions={{ hideToolbar: true, hideFooter: true }}
+        //printOptions={{ hideToolbar: true, hideFooter: true, landscape: true, }}
         csvOptions={{ disableToolbarButton: true }}
-      /> */}
-      <Button variant="contained" onClick={() => apiRef.current}>
+      />
+      {/* <Button variant="contained" onClick={() => apiRef.current}>
         Print
-      </Button>
-    </GridToolbarContainer>
+      </Button> */}
+    </GridToolbarContainer> 
   )
 }
 
