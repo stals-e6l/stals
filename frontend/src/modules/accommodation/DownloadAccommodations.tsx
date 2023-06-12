@@ -399,6 +399,7 @@ function CustomToolbar() {
       backgroundColor: theme.palette.primary.main,
       paddingLeft: theme.spacing(1.5),
       paddingRight: theme.spacing(1.5),
+      boxShadow: 'none',
       '&:hover': {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.secondary.main,
@@ -423,8 +424,9 @@ function CustomToolbar() {
         // printOptions={{ hideToolbar: true, hideFooter: true }}
         csvOptions={{ disableToolbarButton: true }}
       /> */}
-      <Button variant="contained" onClick={() => apiRef.current}>
-        Print
+      <Button variant="contained" onClick={() => apiRef.current} sx={toolbarButtonSx.root} style={{height: 30}}>
+        <PrintIcon sx={{ color: 'inherit', width: 20 }} />
+       <Box style={{paddingLeft: 7}}>Print</Box>
       </Button>
     </GridToolbarContainer>
   )
