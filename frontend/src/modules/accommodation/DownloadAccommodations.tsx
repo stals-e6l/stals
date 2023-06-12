@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogContent,
   Divider,
-  Button,
   Box,
   Typography,
   IconButton,
@@ -21,14 +20,10 @@ import {
   GridToolbarFilterButton,
   GridToolbarExport,
   GridToolbarDensitySelector,
-  useGridApiRef,
-  GridPrintExportOptions,
 } from '@mui/x-data-grid'
 import { alpha, useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
-import { downloadPdf, createReport } from '../report/ReportsProvider'
 import { retrieveAccommodations } from './AccommodationsProvider'
-import { getMe } from '../auth/AuthProvider'
 import PrintIcon from '@mui/icons-material/Print'
 import toSentenceCase from '../../utils/toSentenceCase'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -44,12 +39,9 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   const theme = useTheme()
   const { open: openDialog, toggleDialog } = useDialog()
   const accommodations = retrieveAccommodations()
-  const onCreateReport = createReport()
-  const me = getMe()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
   // immediates
-  const tableId = 'accommodations-table'
 
   const accommType: IMap<string> = {
     hotel: 'Hotel',
@@ -414,11 +406,7 @@ function CustomToolbar() {
       },
     },
   }
-  const apiRef = useGridApiRef()
 
-  // const printDataGrid = () => apiRef.current.exportDataAsPrint();
-  // const printDataGrid = ({ apiRef }: GridPrintExportOptions) =>
-  // gridFilteredSortedRowIdsSelector(apiRef);
   return (
     <GridToolbarContainer>
       <GridToolbarColumnsButton sx={toolbarButtonSx.root} />
@@ -433,15 +421,6 @@ function CustomToolbar() {
         }}
         csvOptions={{ disableToolbarButton: true }}
       />
-      {/* <Button
-        variant="contained"
-        onClick={() => {
-          apiRef.current
-          downloadPdf('pdf')
-        }}
-      >
-        Print
-      </Button> */}
     </GridToolbarContainer>
   )
 }
