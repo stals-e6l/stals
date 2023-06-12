@@ -16,6 +16,7 @@ import useMenu from '../../hooks/useMenu'
 import DateObject from 'react-date-object'
 import toFullName from '../../utils/toFullName'
 import { getMe } from '../auth/AuthProvider'
+import censored from '../../services/censored'
 
 interface IProps {
   children?: React.ReactNode
@@ -128,7 +129,7 @@ const Review: React.FC<IProps> = ({ review }) => {
             textAlign: 'justify',
           }}
         >
-          {review.comment}
+          {censored.clean(review.comment || '')}
         </Typography>
       </Box>
     </React.Fragment>
