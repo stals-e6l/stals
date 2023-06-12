@@ -480,7 +480,6 @@ const AccommodationForm: React.FC<IProps> = ({
         fullWidth
         sx={{
           backgroundColor: theme.palette.primary.main,
-          marginTop: theme.spacing(2),
           marginBottom: theme.spacing(1),
         }}
         onClick={onClose}
