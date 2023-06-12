@@ -15,9 +15,10 @@ import { deleteReview } from './ReviewsProvider'
 interface IProps {
   children?: React.ReactNode
   reviewId: string
+  cb?: any
 }
 
-const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
+const DeleteReview: React.FC<IProps> = ({ reviewId, cb }) => {
   // hook
   const { open, toggleDialog } = useDialog()
   const onDeleteReview = deleteReview()
@@ -49,7 +50,7 @@ const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
         maxWidth={'xs'}
       >
         <DialogTitle>
-            <Typography variant="h6">Delete Review</Typography>
+          <Typography variant="h6">Delete Review</Typography>
         </DialogTitle>
         <Grid sx={{ flexGrow: 1 }} container spacing={1}>
           <Grid item xs sx={{}}>
@@ -59,16 +60,22 @@ const DeleteReview: React.FC<IProps> = ({ reviewId }) => {
           </Grid>
         </Grid>
         <DialogActions>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             onClick={toggleDialog}
             sx={{ fontWeight: 'bold' }}
-            >Cancel</Button>
+          >
+            Cancel
+          </Button>
           <Button
             variant="contained"
             sx={{ fontWeight: 'bold' }}
             onClick={() => {
-              if (onDeleteReview) onDeleteReview(reviewId).then(toggleDialog)
+              if (onDeleteReview)
+                onDeleteReview(reviewId).then(() => {
+                  toggleDialog()
+                  if (cb) cb()
+                })
             }}
           >
             Delete
