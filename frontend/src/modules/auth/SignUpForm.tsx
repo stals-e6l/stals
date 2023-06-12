@@ -415,7 +415,6 @@ const SignUpForm: React.FC<IProps> = ({ onClose }) => {
         fullWidth
         sx={{
           backgroundColor: theme.palette.primary.main,
-          marginTop: theme.spacing(2),
           marginBottom: theme.spacing(1),
         }}
         onClick={onClose}

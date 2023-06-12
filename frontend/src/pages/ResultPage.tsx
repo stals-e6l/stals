@@ -59,7 +59,7 @@ const ResultPage: React.FC<IProps> = () => {
             }}
           >
             {/* Search Bar */}
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{paddingTop: 2}}>
               <SearchAccommodations />
             </Grid>
 

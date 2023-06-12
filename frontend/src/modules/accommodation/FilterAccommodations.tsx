@@ -11,12 +11,17 @@ import {
   Radio,
   useTheme,
   Button,
+  Box,
+  Avatar,
+  IconButton,
 } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { COLOR } from '../../theme'
 import { buildQueryString, extractQueryString } from '../../utils/queryString'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
 import Title from './TitleComponent'
+import assets from '../../assets'
 
 interface IProps {
   children?: React.ReactNode
@@ -74,6 +79,12 @@ const FilterAccommodations: React.FC<IProps> = () => {
     onFilter(filter)
   }, [filter.search])
 
+  const toExplorePage = () => {
+    navigate(
+      `${ROUTES.appExplore}`
+    )
+  }
+
   return (
     <>
       <Grid container>
@@ -83,9 +94,16 @@ const FilterAccommodations: React.FC<IProps> = () => {
           alignItems="center"
           justifyContent="space-between"
           container
+          style={{ marginTop: 30 }}
         >
           <Grid item xs={6}>
-            <Title text="Filters" />
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {/* TODO : IMPLEMENT PROPERLY, navigate to explore page */}
+              <IconButton onClick={() => toExplorePage()}> 
+                <ArrowBackIcon sx={{ fontSize: '5vh', color: COLOR.blue }} />
+              </IconButton>
+              <Title text="Filters" />
+            </Box>
           </Grid>
           <Grid item xs={6} container justifyContent="flex-end">
             <Button variant="contained" onClick={() => onFilter(filter)}>

@@ -93,44 +93,13 @@ const DeleteAccommodationFormModal: React.FC<IProps> = ({
               setField={setField}
               input={inputField}
               isSoftDelete={isSoftDelete}
+              onSubmit={handleSubmit}
+              onClose={toggleDialog}
             />
           </DialogContent>
 
           <DialogActions>
-            <Button
-              onClick={toggleDialog}
-              sx={{
-                border: 2,
-                borderColor: theme.palette.primary.main,
-                borderRadius: 2,
-                backgroundColor: theme.palette.primary.main,
-                color: '#fff',
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              disabled={inputField != 'Confirm'}
-              onClick={handleSubmit}
-              sx={{
-                border: 2,
-                borderColor: theme.palette.primary.main,
-                borderRadius: 2,
-                backgroundColor: theme.palette.primary.main,
-                color: '#fff',
-                ':disabled': {
-                  backgroundColor: '#fff',
-                  borderColor: theme.palette.primary.main,
-                  color: theme.palette.primary.main,
-                },
-                ':hover': {
-                  backgroundColor: theme.palette.secondary.main,
-                  borderColor: theme.palette.secondary.main,
-                },
-              }}
-            >
-              {isSoftDelete ? 'Archive' : 'Delete'}
-            </Button>
+            
           </DialogActions>
         </Dialog>
       )}

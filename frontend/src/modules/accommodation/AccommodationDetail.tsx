@@ -803,7 +803,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
                   sx={{
                     backgroundColor: COLOR.white,
                     color: COLOR.blue,
-                    ":hover": {
+                    ':hover': {
                       backgroundColor: COLOR.blue,
                       color: COLOR.white,
                     }

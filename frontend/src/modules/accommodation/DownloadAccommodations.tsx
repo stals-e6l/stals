@@ -398,6 +398,7 @@ function CustomToolbar() {
       backgroundColor: theme.palette.primary.main,
       paddingLeft: theme.spacing(1.5),
       paddingRight: theme.spacing(1.5),
+      boxShadow: 'none',
       '&:hover': {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.secondary.main,
