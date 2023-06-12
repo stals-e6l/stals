@@ -35,6 +35,7 @@ import {
 import { getMe } from '../auth/AuthProvider'
 import { ROUTES } from '../../app/AppRouter'
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded'
+import AccommodationImages from './accommodationImages'
 
 interface IProps {
   children?: React.ReactNode
@@ -109,16 +110,31 @@ const AccommodationDetail: React.FC<IProps> = () => {
 
   return (
     <React.Fragment>
-      <Box
+      { accommodation.image.url ? (
+        <Box
         component="img"
         sx={{
           width: '100%',
           height: theme.spacing(60),
           objectFit: 'cover',
         }}
-        alt="Location image"
         src={accommodation.image.url}
       />
+      ) : (
+        // If no picture, display alternative picture.
+        <Box
+        component="img"
+        sx={{
+          width: '100%',
+          height: theme.spacing(60),
+          objectFit: 'cover',
+          opacity: '0.2',
+        }}
+        src={AccommodationImages.noPhotoAlternative}
+      />
+      )
+
+      }
       <Grid
         container
         direction="column"
