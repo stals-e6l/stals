@@ -6,7 +6,7 @@ describe('ping.spec.js', () => {
     const response = await request.get('/api/ping')
 
     // assert
-    expect(response.statusCode).toBe(200)
-    expect(response.body).toBe('Hello World!')
+    expect(response.statusCode).toBe(401)
+    expect(response.body).toStrictEqual({ "success": false, "messages": [ 'Error: Your request needs to be authenticated' ] })
   })
 })

@@ -12,3 +12,9 @@ services:
     image: mongo
     ports:
       - '27017:27017'
+    volumes:
+      - stals:/data/db
+    restart: unless-stopped
+
+volumes:
+  stals:
