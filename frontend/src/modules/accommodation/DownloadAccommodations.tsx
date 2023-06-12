@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogContent,
   Divider,
-  Button,
   Box,
   Typography,
   IconButton,
@@ -21,14 +20,10 @@ import {
   GridToolbarFilterButton,
   GridToolbarExport,
   GridToolbarDensitySelector,
-  useGridApiRef,
-  GridPrintExportOptions,
 } from '@mui/x-data-grid'
 import { alpha, useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
-import { downloadPdf, createReport } from '../report/ReportsProvider'
 import { retrieveAccommodations } from './AccommodationsProvider'
-import { getMe } from '../auth/AuthProvider'
 import PrintIcon from '@mui/icons-material/Print'
 import toSentenceCase from '../../utils/toSentenceCase'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -44,12 +39,9 @@ const DownloadAccommodations: React.FC<IProps> = () => {
   const theme = useTheme()
   const { open: openDialog, toggleDialog } = useDialog()
   const accommodations = retrieveAccommodations()
-  const onCreateReport = createReport()
-  const me = getMe()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
   // immediates
-  const tableId = 'accommodations-table'
 
   const accommType: IMap<string> = {
     hotel: 'Hotel',
@@ -342,46 +334,53 @@ const DownloadAccommodations: React.FC<IProps> = () => {
 
             <DialogContent>
               {/* Preview table */}
-              <Box sx={{ height: '100%', width: '100%' }}>
-                <DataGrid
-                  rows={gridRows}
-                  columns={columns}
-                  slots={{
-                    noRowsOverlay: CustomNoRowsOverlay,
-                    toolbar: CustomToolbar,
-                  }}
-                  slotProps={{
-                    columnsPanel: {
-                      disableHideAllButton: true,
-                      disableShowAllButton: true,
-                    },
-                  }}
-                  sx={{
-                    textAlign: 'center',
-                    '.MuiDataGrid-columnSeparator': {
-                      display: 'none',
-                    },
-                    '&.MuiDataGrid-root': {
-                      border: 'none',
-                      maxHeight: '100%',
-                      height: '100%',
-                    },
-                  }}
-                  initialState={{
-                    columns: {
-                      columnVisibilityModel: {
-                        // Hide columns status and traderName, the other columns will remain visible
-                        size_sqm: false,
-                        meters_from_uplb: false,
-                        min_pax: false,
-                        max_pax: false,
-                        num_rooms: false,
-                        num_beds: false,
-                        furnishing: false,
+              <Box component="div" sx={{ height: '100%', width: '100%' }}>
+                <div id="pdf">
+                  <DataGrid
+                    rows={gridRows}
+                    columns={columns}
+                    slots={{
+                      noRowsOverlay: CustomNoRowsOverlay,
+                      toolbar: CustomToolbar,
+                    }}
+                    slotProps={{
+                      columnsPanel: {
+                        disableHideAllButton: true,
+                        disableShowAllButton: true,
                       },
-                    },
-                  }}
-                />
+                    }}
+                    sx={{
+                      textAlign: 'center',
+                      '.MuiDataGrid-columnSeparator': {
+                        display: 'none',
+                      },
+                      '&.MuiDataGrid-root': {
+                        border: 'none',
+                        maxHeight: '100%',
+                        height: '100%',
+                      },
+                      '@media print': {
+                        '@page': {
+                          size: 'A4 landscape',
+                        },
+                      },
+                    }}
+                    initialState={{
+                      columns: {
+                        columnVisibilityModel: {
+                          // Hide columns status and traderName, the other columns will remain visible
+                          size_sqm: false,
+                          meters_from_uplb: false,
+                          min_pax: false,
+                          max_pax: false,
+                          num_rooms: false,
+                          num_beds: false,
+                          furnishing: false,
+                        },
+                      },
+                    }}
+                  />
+                </div>
               </Box>
             </DialogContent>
           </Dialog>
@@ -408,26 +407,21 @@ function CustomToolbar() {
       },
     },
   }
-  const apiRef = useGridApiRef()
 
-  // const printDataGrid = () => apiRef.current.exportDataAsPrint();
-  // const printDataGrid = ({ apiRef }: GridPrintExportOptions) =>
-  // gridFilteredSortedRowIdsSelector(apiRef);
   return (
     <GridToolbarContainer>
       <GridToolbarColumnsButton sx={toolbarButtonSx.root} />
       <GridToolbarFilterButton sx={toolbarButtonSx.root} />
       <GridToolbarDensitySelector sx={toolbarButtonSx.root} />
-      {/* <GridToolbarExport
+      <GridToolbarExport
         sx={toolbarButtonSx.root}
-        exportDataAsPrint={{ hideToolbar: true, hideFooter: true }}
-        // printOptions={{ hideToolbar: true, hideFooter: true }}
+        exportDataAsPrint={{
+          hideToolbar: true,
+          hideFooter: true,
+          allColumns: true,
+        }}
         csvOptions={{ disableToolbarButton: true }}
-      /> */}
-      <Button variant="contained" onClick={() => apiRef.current} sx={toolbarButtonSx.root} style={{height: 30}}>
-        <PrintIcon sx={{ color: 'inherit', width: 20 }} />
-       <Box style={{paddingLeft: 7}}>Print</Box>
-      </Button>
+      />
     </GridToolbarContainer>
   )
 }
