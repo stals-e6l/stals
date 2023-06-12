@@ -48,7 +48,6 @@ const AccommodationForm: React.FC<IProps> = ({
       },
     },
   }
-  
 
   return (
     <Box>
@@ -118,6 +117,10 @@ const AccommodationForm: React.FC<IProps> = ({
           Number(values.min_price) == 0 ? '' : Number(values.min_price)
         }
         onBlur={e => setFieldValue('min_price', e.target.value)}
+        onChange={event => {
+          const value = parseInt(event.target.value)
+          event.target.value = value < 0 ? '0' : String(value)
+        }}
         required
         fullWidth
         label="Minimum price"
@@ -125,7 +128,15 @@ const AccommodationForm: React.FC<IProps> = ({
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         color="secondary"
         variant="filled"
-        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
+        onFocus={e =>
+          e.target.addEventListener(
+            'wheel',
+            function (e) {
+              e.preventDefault()
+            },
+            { passive: false }
+          )
+        }
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.min_price}
@@ -136,6 +147,10 @@ const AccommodationForm: React.FC<IProps> = ({
           Number(values.max_price) == 0 ? '' : Number(values.max_price)
         }
         onBlur={e => setFieldValue('max_price', e.target.value)}
+        onChange={event => {
+          const value = parseInt(event.target.value)
+          event.target.value = value < 0 ? '0' : String(value)
+        }}
         required
         fullWidth
         label="Maximum price"
@@ -143,7 +158,15 @@ const AccommodationForm: React.FC<IProps> = ({
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         color="secondary"
         variant="filled"
-        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
+        onFocus={e =>
+          e.target.addEventListener(
+            'wheel',
+            function (e) {
+              e.preventDefault()
+            },
+            { passive: false }
+          )
+        }
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.max_price}
@@ -154,13 +177,25 @@ const AccommodationForm: React.FC<IProps> = ({
           Number(values.size_sqm) == 0 ? '' : Number(values.size_sqm)
         }
         onBlur={e => setFieldValue('size_sqm', Number(e.target.value))}
+        onChange={event => {
+          const value = parseInt(event.target.value)
+          event.target.value = value < 0 ? '0' : String(value)
+        }}
         required
         fullWidth
         label="Size sqm"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
-        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
+        onFocus={e =>
+          e.target.addEventListener(
+            'wheel',
+            function (e) {
+              e.preventDefault()
+            },
+            { passive: false }
+          )
+        }
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.size_sqm}
@@ -173,13 +208,25 @@ const AccommodationForm: React.FC<IProps> = ({
             : Number(values.meters_from_uplb)
         }
         onBlur={e => setFieldValue('meters_from_uplb', Number(e.target.value))}
+        onChange={event => {
+          const value = parseInt(event.target.value)
+          event.target.value = value < 0 ? '0' : String(value)
+        }}
         required
         fullWidth
         label="Meters from UPLB"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
-        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
+        onFocus={e =>
+          e.target.addEventListener(
+            'wheel',
+            function (e) {
+              e.preventDefault()
+            },
+            { passive: false }
+          )
+        }
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.meters_from_uplb}
@@ -188,13 +235,25 @@ const AccommodationForm: React.FC<IProps> = ({
       <TextField
         defaultValue={Number(values.min_pax) == 0 ? '' : Number(values.min_pax)}
         onBlur={e => setFieldValue('min_pax', Number(e.target.value))}
+        onChange={event => {
+          const value = parseInt(event.target.value)
+          event.target.value = value < 0 ? '0' : String(value)
+        }}
         required
         fullWidth
         label="Minimum capacity"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
-        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
+        onFocus={e =>
+          e.target.addEventListener(
+            'wheel',
+            function (e) {
+              e.preventDefault()
+            },
+            { passive: false }
+          )
+        }
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.min_pax}
@@ -203,13 +262,25 @@ const AccommodationForm: React.FC<IProps> = ({
       <TextField
         defaultValue={Number(values.max_pax) == 0 ? '' : Number(values.max_pax)}
         onBlur={e => setFieldValue('max_pax', Number(e.target.value))}
+        onChange={event => {
+          const value = parseInt(event.target.value)
+          event.target.value = value < 0 ? '0' : String(value)
+        }}
         required
         fullWidth
         label="Maximum capacity"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
-        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
+        onFocus={e =>
+          e.target.addEventListener(
+            'wheel',
+            function (e) {
+              e.preventDefault()
+            },
+            { passive: false }
+          )
+        }
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.max_pax}
@@ -220,13 +291,25 @@ const AccommodationForm: React.FC<IProps> = ({
           Number(values.num_rooms) == 0 ? '' : Number(values.num_rooms)
         }
         onBlur={e => setFieldValue('num_rooms', Number(e.target.value))}
+        onChange={event => {
+          const value = parseInt(event.target.value)
+          event.target.value = value < 0 ? '0' : String(value)
+        }}
         required
         fullWidth
         label="Number of rooms"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
-        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
+        onFocus={e =>
+          e.target.addEventListener(
+            'wheel',
+            function (e) {
+              e.preventDefault()
+            },
+            { passive: false }
+          )
+        }
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.num_rooms}
@@ -237,13 +320,25 @@ const AccommodationForm: React.FC<IProps> = ({
           Number(values.num_beds) == 0 ? '' : Number(values.num_beds)
         }
         onBlur={e => setFieldValue('num_beds', Number(e.target.value))}
+        onChange={event => {
+          const value = parseInt(event.target.value)
+          event.target.value = value < 0 ? '0' : String(value)
+        }}
         required
         fullWidth
         label="Number of beds"
         type="number"
         InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
         variant="filled"
-        onFocus={(e) => e.target.addEventListener('wheel', function (e) { e.preventDefault() }, { passive: false })}
+        onFocus={e =>
+          e.target.addEventListener(
+            'wheel',
+            function (e) {
+              e.preventDefault()
+            },
+            { passive: false }
+          )
+        }
         style={{ marginTop: 20 }}
         sx={numFieldSx.root}
         error={error && error.num_beds}
