@@ -11,12 +11,12 @@ import {
   useTheme,
 } from '@mui/material'
 import React from 'react'
-import assets from '../../assets'
 import useMenu from '../../hooks/useMenu'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../app/AppRouter'
 import { getMe, signOut } from '../auth/AuthProvider'
 import { COLOR } from '../../theme'
+import assets from '../../assets'
 
 interface IProps {
   children?: React.ReactNode
@@ -102,7 +102,7 @@ const Navbar: React.FC<IProps> = () => {
         {me && (
           <Grid item xs={4} container justifyContent="end">
             <IconButton onClick={onOpen}>
-              <Avatar alt={me._id}>
+              <Avatar alt={me._id} src={assets.defaultAvatar}>
                 {me.full_name.first_name[0] + me.full_name.last_name[0]}
               </Avatar>
             </IconButton>
