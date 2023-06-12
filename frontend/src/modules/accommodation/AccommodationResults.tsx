@@ -11,6 +11,7 @@ import SearchOffIcon from '@mui/icons-material/SearchOff'
 import { apiGet } from '../../services/api'
 import { getToken } from '../../services/localStorage'
 import { extractQueryString } from '../../utils/queryString'
+import { getMe } from '../auth/AuthProvider'
 
 interface IProps {
   children?: React.ReactNode
@@ -29,6 +30,7 @@ const AccommodationResults: React.FC<IProps> = ({
   const token = getToken()
   const onAppendAccommodations = appendAccommodations()
   const globalRefresh = getGlobalRefresh()
+  const user = getMe()
 
   const [accommodations, setAccommodations] = React.useState<IAccommodation[]>(
     []
@@ -118,7 +120,7 @@ const AccommodationResults: React.FC<IProps> = ({
           <Grid item key={key}>
             <AccommodationCard
               accommodation={accommodation}
-              isPublicView={location.pathname === ROUTES.public}
+              isPublicView={user! && user.role === "tenant"}
             />
           </Grid>
         ))}
