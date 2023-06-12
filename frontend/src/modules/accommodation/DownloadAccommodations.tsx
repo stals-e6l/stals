@@ -417,15 +417,15 @@ function CustomToolbar() {
       <GridToolbarColumnsButton sx={toolbarButtonSx.root} />
       <GridToolbarFilterButton sx={toolbarButtonSx.root} />
       <GridToolbarDensitySelector sx={toolbarButtonSx.root} />
-      {/* <GridToolbarExport
+      <GridToolbarExport
         sx={toolbarButtonSx.root}
-        exportDataAsPrint={{ hideToolbar: true, hideFooter: true }}
-        // printOptions={{ hideToolbar: true, hideFooter: true }}
+        // exportDataAsPrint={{ hideToolbar: true, hideFooter: true }}
+        printOptions={{ hideToolbar: true, hideFooter: true }}
         csvOptions={{ disableToolbarButton: true }}
-      /> */}
-      <Button variant="contained" onClick={() => apiRef.current}>
+      />
+      {/* <Button variant="contained" onClick={() => apiRef.current}>
         Print
-      </Button>
+      </Button> */}
     </GridToolbarContainer>
   )
 }
