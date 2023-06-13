@@ -36,6 +36,7 @@ import { getMe } from '../auth/AuthProvider'
 import { ROUTES } from '../../app/AppRouter'
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded'
 import AccommodationImages from './accommodationImages'
+import toFullName from '../../utils/toFullName'
 
 interface IProps {
   children?: React.ReactNode
@@ -266,7 +267,6 @@ const AccommodationDetail: React.FC<IProps> = () => {
                         </Box>
                       </Grid>
                     )}
-
                   </Grid>
                   {reviews && reviews?.length > 0 && (
                     <Grid item>
@@ -293,7 +293,9 @@ const AccommodationDetail: React.FC<IProps> = () => {
                               <Typography variant="h6">
                                 {reviews &&
                                   reviews?.length > 0 &&
-                                  reviews[0].user_id}
+                                  toFullName(
+                                    (reviews[0].user_id as IUser).full_name
+                                  )}
                               </Typography>
                             </Grid>
                             <Grid item>
@@ -464,10 +466,7 @@ const AccommodationDetail: React.FC<IProps> = () => {
             <Typography variant="body1">{accommodation.description}</Typography>
           ) : (
             <Typography variant="body1">No details to show</Typography>
-          )
-
-          }
-
+          )}
         </Grid>
         {/* | Apartment and Room Details */}
         <Grid item>
@@ -556,26 +555,24 @@ const AccommodationDetail: React.FC<IProps> = () => {
             </Grid>
             {/* Amenities Details */}
             <Grid item xs={8}>
-              {
-                accommodation.amenities[0] ? (
-                  <List dense={true}>
-                    {accommodation.amenities.map((value, index) => {
-                      return (
-                        <ListItem key={index} disablePadding>
-                          <ListItemIcon>
-                            <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                          </ListItemIcon>
-                          <ListItemText>
-                            <Typography variant="body1">{value}</Typography>
-                          </ListItemText>
-                        </ListItem>
-                      )
-                    })}
-                  </List>
-                ) : (
-                  <Typography variant="body1">No details to show</Typography>
-                )
-              }
+              {accommodation.amenities[0] ? (
+                <List dense={true}>
+                  {accommodation.amenities.map((value, index) => {
+                    return (
+                      <ListItem key={index} disablePadding>
+                        <ListItemIcon>
+                          <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="body1">{value}</Typography>
+                        </ListItemText>
+                      </ListItem>
+                    )
+                  })}
+                </List>
+              ) : (
+                <Typography variant="body1">No details to show</Typography>
+              )}
             </Grid>
 
             {/* Applience */}
@@ -584,26 +581,24 @@ const AccommodationDetail: React.FC<IProps> = () => {
             </Grid>
             {/* Appliances Details */}
             <Grid item xs={8}>
-              {
-                accommodation.appliances[0] ? (
-                  <List dense={true}>
-                    {accommodation.appliances.map((value, index) => {
-                      return (
-                        <ListItem key={index} disablePadding>
-                          <ListItemIcon>
-                            <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                          </ListItemIcon>
-                          <ListItemText>
-                            <Typography variant="body1">{value}</Typography>
-                          </ListItemText>
-                        </ListItem>
-                      )
-                    })}
-                  </List>
-                ) : (
-                  <Typography variant="body1">No details to show</Typography>
-                )
-              }
+              {accommodation.appliances[0] ? (
+                <List dense={true}>
+                  {accommodation.appliances.map((value, index) => {
+                    return (
+                      <ListItem key={index} disablePadding>
+                        <ListItemIcon>
+                          <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="body1">{value}</Typography>
+                        </ListItemText>
+                      </ListItem>
+                    )
+                  })}
+                </List>
+              ) : (
+                <Typography variant="body1">No details to show</Typography>
+              )}
             </Grid>
 
             {/* Safety and Security */}
@@ -612,26 +607,24 @@ const AccommodationDetail: React.FC<IProps> = () => {
             </Grid>
             {/* Appliances Details */}
             <Grid item xs={8}>
-              {
-                accommodation.safety_and_security[0] ? (
-                  <List dense={true}>
-                    {accommodation.safety_and_security.map((value, index) => {
-                      return (
-                        <ListItem key={index} disablePadding>
-                          <ListItemIcon>
-                            <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                          </ListItemIcon>
-                          <ListItemText>
-                            <Typography variant="body1">{value}</Typography>
-                          </ListItemText>
-                        </ListItem>
-                      )
-                    })}
-                  </List>
-                ) : (
-                  <Typography variant="body1">No details to show</Typography>
-                )
-              }
+              {accommodation.safety_and_security[0] ? (
+                <List dense={true}>
+                  {accommodation.safety_and_security.map((value, index) => {
+                    return (
+                      <ListItem key={index} disablePadding>
+                        <ListItemIcon>
+                          <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="body1">{value}</Typography>
+                        </ListItemText>
+                      </ListItem>
+                    )
+                  })}
+                </List>
+              ) : (
+                <Typography variant="body1">No details to show</Typography>
+              )}
             </Grid>
           </Grid>
         </Grid>
@@ -686,28 +679,24 @@ const AccommodationDetail: React.FC<IProps> = () => {
             </Grid>
             {/* Cooking Rules Details */}
             <Grid item xs={8}>
-              {
-                accommodation.cooking_rules[0] ? (
-                  <List dense={true}>
-                    {accommodation.cooking_rules.map((value, index) => {
-                      return (
-                        <ListItem key={index} disablePadding>
-                          <ListItemIcon>
-                            <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                          </ListItemIcon>
-                          <ListItemText>
-                            <Typography variant="body1">{value}</Typography>
-                          </ListItemText>
-                        </ListItem>
-                      )
-                    })}
-                  </List>
-                ) : (
-                  <Typography variant="body1">No details to show</Typography>
-                )
-              }
-
-
+              {accommodation.cooking_rules[0] ? (
+                <List dense={true}>
+                  {accommodation.cooking_rules.map((value, index) => {
+                    return (
+                      <ListItem key={index} disablePadding>
+                        <ListItemIcon>
+                          <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="body1">{value}</Typography>
+                        </ListItemText>
+                      </ListItem>
+                    )
+                  })}
+                </List>
+              ) : (
+                <Typography variant="body1">No details to show</Typography>
+              )}
             </Grid>
 
             {/* Pet Rules */}
@@ -716,28 +705,24 @@ const AccommodationDetail: React.FC<IProps> = () => {
             </Grid>
             {/* Pet Rules Details */}
             <Grid item xs={8}>
-              {
-                accommodation.pet_rules[0] ? (
-                  <List dense={true}>
-                    {accommodation.pet_rules.map((value, index) => {
-                      return (
-                        <ListItem key={index} disablePadding>
-                          <ListItemIcon>
-                            <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                          </ListItemIcon>
-                          <ListItemText>
-                            <Typography variant="body1">{value}</Typography>
-                          </ListItemText>
-                        </ListItem>
-                      )
-                    })}
-                  </List>
-                ) : (
-                  <Typography variant="body1">No details to show</Typography>
-                )
-              }
-
-
+              {accommodation.pet_rules[0] ? (
+                <List dense={true}>
+                  {accommodation.pet_rules.map((value, index) => {
+                    return (
+                      <ListItem key={index} disablePadding>
+                        <ListItemIcon>
+                          <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="body1">{value}</Typography>
+                        </ListItemText>
+                      </ListItem>
+                    )
+                  })}
+                </List>
+              ) : (
+                <Typography variant="body1">No details to show</Typography>
+              )}
             </Grid>
 
             {/* Applience */}
@@ -746,41 +731,41 @@ const AccommodationDetail: React.FC<IProps> = () => {
             </Grid>
             {/* Appliances Details */}
             <Grid item xs={8}>
-              {
-                accommodation.other_rules[0] ? (
-                  <List dense={true}>
-                    {accommodation.other_rules.map((value, index) => {
-                      return (
-                        <ListItem key={index} disablePadding>
-                          <ListItemIcon>
-                            <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
-                          </ListItemIcon>
-                          <ListItemText>
-                            <Typography variant="body1">{value}</Typography>
-                          </ListItemText>
-                        </ListItem>
-                      )
-                    })}
-                  </List>
-                ) : (
-                  <Typography variant="body1">No details to show</Typography>
-                )
-              }
+              {accommodation.other_rules[0] ? (
+                <List dense={true}>
+                  {accommodation.other_rules.map((value, index) => {
+                    return (
+                      <ListItem key={index} disablePadding>
+                        <ListItemIcon>
+                          <CheckCircleOutlineIcon sx={{ color: COLOR.green }} />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="body1">{value}</Typography>
+                        </ListItemText>
+                      </ListItem>
+                    )
+                  })}
+                </List>
+              ) : (
+                <Typography variant="body1">No details to show</Typography>
+              )}
             </Grid>
           </Grid>
         </Grid>
         <Grid item sx={{ width: '100%' }}>
           <Title text="Reviews" />
         </Grid>
-
         {/*Reports */}
-        <Grid container sx={{ padding: theme.spacing(2), paddingBottom: theme.spacing(0), }}>
+        <Grid
+          container
+          sx={{ padding: theme.spacing(2), paddingBottom: theme.spacing(0) }}
+        >
           <Grid item xs={4}>
-            <Typography variant='body1'>Number of Reports</Typography>
+            <Typography variant="body1">Number of Reports</Typography>
           </Grid>
 
           <Grid item xs={2} md={4} lg={6}>
-            <Typography variant='body1'>
+            <Typography variant="body1">
               {reports && Object.keys(reports).length}{' '}
               {reports && Object.keys(reports).length <= 1
                 ? 'tenant'
@@ -791,7 +776,8 @@ const AccommodationDetail: React.FC<IProps> = () => {
             !reports[user._id as string] &&
             user.role === 'tenant' && (
               <Grid item xs={2}>
-                <Button variant='contained'
+                <Button
+                  variant="contained"
                   onClick={() => {
                     if (onCreateReport) {
                       onCreateReport({
@@ -806,25 +792,26 @@ const AccommodationDetail: React.FC<IProps> = () => {
                     ':hover': {
                       backgroundColor: COLOR.blue,
                       color: COLOR.white,
-                    }
+                    },
                   }}
-                  startIcon={<FlagRoundedIcon
-                    sx={{ color: COLOR.green }} />}>
-                  <Typography variant='h6'
+                  startIcon={<FlagRoundedIcon sx={{ color: COLOR.green }} />}
+                >
+                  <Typography
+                    variant="h6"
                     sx={{
                       fontSize: theme.spacing(2.25),
                       color: 'inherit',
-                    }}>
-                    Report this place</Typography>
+                    }}
+                  >
+                    Report this place
+                  </Typography>
                 </Button>
               </Grid>
             )}
         </Grid>
-
         <Grid item sx={{ width: '100%' }}>
           <Reviews />
         </Grid>
-
       </Grid>
     </React.Fragment>
   )

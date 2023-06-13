@@ -90,11 +90,9 @@ const AccommodationCard: React.FC<IProps> = ({
             component="img"
             height={'180px'}
             image={AccommodationImages.noPhotoAlternative}
-            sx={{opacity: '0.5',}}
+            sx={{ opacity: '0.5' }}
           />
-        )
-        }
-
+        )}
 
         <CardContent sx={{ wordSpacing: '10' }}>
           {/* Type of Accommodation */}
@@ -204,50 +202,51 @@ const AccommodationCard: React.FC<IProps> = ({
           {/* If not public view */}
           <CardActions>
             {/* Menu Btn */}
-            <IconButton
-              id="menu-btn"
-              aria-controls={open ? 'menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              onClick={onOpen}
-              sx={{ marginLeft: 'auto' }}
-            >
-              <MoreHorizSharpIcon
-                sx={{
-                  color: COLOR.green,
-                }}
-              />
-            </IconButton>
-
-            {/* Menu Items */}
             {accommodation && me?._id === accommodation.user_id && (
-              <Popper open={open} anchorEl={anchorEl}>
-                <ClickAwayListener onClickAway={onClose}>
-                  <ButtonGroup
-                    orientation="vertical"
-                    sx={{ backgroundColor: '#fff' }}
-                  >
-                    <AccommodationFormModal
-                      defaultValues={accommodation}
-                      onClose={onClose}
-                    />
-                    {!accommodation.is_soft_deleted && (
+              <>
+                <IconButton
+                  id="menu-btn"
+                  aria-controls={open ? 'menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={onOpen}
+                  sx={{ marginLeft: 'auto' }}
+                >
+                  <MoreHorizSharpIcon
+                    sx={{
+                      color: COLOR.green,
+                    }}
+                  />
+                </IconButton>
+
+                <Popper open={open} anchorEl={anchorEl}>
+                  <ClickAwayListener onClickAway={onClose}>
+                    <ButtonGroup
+                      orientation="vertical"
+                      sx={{ backgroundColor: '#fff' }}
+                    >
+                      <AccommodationFormModal
+                        defaultValues={accommodation}
+                        onClose={onClose}
+                      />
+                      {!accommodation.is_soft_deleted && (
+                        <DeleteAccommodationFormModal
+                          userId={accommodation.user_id as string}
+                          accommodationId={accommodation._id as string}
+                          isSoftDelete={true}
+                          onClose={onClose}
+                        />
+                      )}
                       <DeleteAccommodationFormModal
                         userId={accommodation.user_id as string}
                         accommodationId={accommodation._id as string}
-                        isSoftDelete={true}
+                        isSoftDelete={false}
                         onClose={onClose}
                       />
-                    )}
-                    <DeleteAccommodationFormModal
-                      userId={accommodation.user_id as string}
-                      accommodationId={accommodation._id as string}
-                      isSoftDelete={false}
-                      onClose={onClose}
-                    />
-                  </ButtonGroup>
-                </ClickAwayListener>
-              </Popper>
+                    </ButtonGroup>
+                  </ClickAwayListener>
+                </Popper>
+              </>
             )}
           </CardActions>
         </>

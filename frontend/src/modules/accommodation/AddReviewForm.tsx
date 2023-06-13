@@ -10,6 +10,12 @@ interface IProps {
 const AddReviewForm: React.FC<IProps> = ({ review, setReview }) => {
   const theme = useTheme()
 
+  React.useEffect(() => {
+    return () => {
+      setReview(prev => ({ ...prev, comment: '', rating: 2.5 }))
+    }
+  }, [])
+
   return (
     <>
       <Grid container>

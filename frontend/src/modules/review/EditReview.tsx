@@ -18,9 +18,10 @@ import { updateReview } from './ReviewsProvider'
 interface IProps {
   children?: React.ReactNode
   review: IReview
+  cb?: any
 }
 
-const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
+const UpdateCommentFromForum: React.FC<IProps> = ({ review, cb }) => {
   // hooks
   const { open, toggleDialog } = useDialog()
   const onEditReview = updateReview()
@@ -111,9 +112,10 @@ const UpdateCommentFromForum: React.FC<IProps> = ({ review }) => {
                 variant="contained"
                 onClick={() => {
                   if (onEditReview) {
-                    onEditReview({ ...review, comment, rating }).then(
-                      toggleDialog
-                    )
+                    onEditReview({ ...review, comment, rating }).then(() => {
+                      toggleDialog()
+                      if (cb) cb()
+                    })
                   }
                 }}
                 sx={buttonStyle}

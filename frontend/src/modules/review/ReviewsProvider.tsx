@@ -86,7 +86,7 @@ export const fetchReviews = () => {
 
   return async (accommodationId: string) => {
     const res = await apiGet<IReview[]>(
-      `review?accommodation_id=${accommodationId}`
+      `review?accommodation_id=${accommodationId}&populate=user_id`
     )
 
     if (res.data && res.success) {
@@ -105,15 +105,16 @@ export const retrieveReviews = () => {
 
 export const createReview = () => {
   const { dispatch } = useReviews()
+  const onFetchReviews = fetchReviews()
   const onShowError = showErrorSnackbar()
-  if (!dispatch || !onShowError) return null
+  if (!dispatch || !onShowError || !onFetchReviews) return null
   return async (review: IReview) => {
     const res = await apiPost<IReview, IReview>('review', {
       payload: review,
     })
 
     if (res.success && res.data) {
-      dispatch({ type: 'ADD_REVIEW', payload: res.data })
+      onFetchReviews(res.data.accommodation_id)
     } else if (!res.success && res.messages) {
       onShowError(res.messages[0])
     }
@@ -123,14 +124,15 @@ export const createReview = () => {
 export const updateReview = () => {
   const { dispatch } = useReviews()
   const onShowError = showErrorSnackbar()
-  if (!dispatch || !onShowError) return null
+  const onFetchReviews = fetchReviews()
+  if (!dispatch || !onShowError || !onFetchReviews) return null
   return async (review: IReview) => {
     const res = await apiPut<IReview, IReview>(`review/${review._id}`, {
       payload: review,
     })
 
     if (res.success && res.data) {
-      dispatch({ type: 'UPDATE_REVIEW', payload: res.data })
+      onFetchReviews(res.data.accommodation_id)
     } else if (!res.success && res.messages) {
       onShowError(res.messages[0])
     }
